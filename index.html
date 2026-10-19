@@ -250,7 +250,85 @@
 
 </section>
 
-<section class="chapter" id="molecules" data-num="3" data-title="3D molecules" data-bench="viewer" hidden>
+<section class="chapter" id="anatomy" data-num="3" data-title="Anatomy in 3D" data-bench="anatomy" hidden>
+  <h1>Anatomy in 3D</h1>
+  <div class="meta-row"><span class="pill time">≈ 20 min</span></div>
+  <p class="lede">The body in 3D, system by system: turn it round, find the organs and structures of physiology, see what lies next to what, and cut through it as a scan does.</p>
+
+<p>The <b>Anatomy</b> tab shows the body in 3D, system by system: the skeleton, the muscles, the heart and the vessels, the organs, the brain and the nerves. Each structure is a separate model that you can select, hide, isolate or cut through, and each has its English and Latin names and a short definition. The models come from <a href="https://www.z-anatomy.com/" target="_blank" rel="noopener">Z-Anatomy</a>, an open atlas of anatomy built largely from BodyParts3D, a 3D reconstruction of a man’s body.</p>
+<div class="callout concept">
+  <div class="co-t">Directions in the body</div>
+  <p>Anatomy describes the body in the <em>anatomical position</em>: standing, facing forwards, arms by the sides with the palms forwards. <b>Anterior</b> is towards the front and <b>posterior</b> towards the back; <b>superior</b> is towards the head and <b>inferior</b> towards the feet; <b>medial</b> is towards the midline and <b>lateral</b> away from it. Left and right are always the body’s own: in a view from the front, the body’s left is on <em>your</em> right, as when you face someone. The small figure at the bottom left of the view shows which way the body faces (S, I, A, P, L and R).</p>
+</div>
+
+<h2 id="an-around">Finding your way round</h2>
+<p>The list on the left (<b>Systems</b>) shows and hides the systems of the body; the eye beside each makes it faint, so that you can see what lies behind it. Below it, the structures of the systems shown are listed in groups, and the search box finds any structure by its English or Latin name.</p>
+<div class="activity">
+  <div class="act-t">The endocrine glands</div>
+  <ol class="steps">
+    <li data-task="an-open" data-auto="anat:system id=endocrine on=true">Show the endocrine glands <button class="do showme" type="button" data-anat="endocrine">show me</button>. The skeleton stays faint behind them, so that you can see where each gland lies.</li>
+    <li data-task="an-turn" data-auto="anat:view">Turn the body round: drag it (one finger on a touch screen), and scroll or pinch to zoom. Then try the standard views in the <b>View</b> menu (or the keys <kbd>1</kbd> to <kbd>6</kbd>).</li>
+    <li data-task="an-select" data-auto="anat:select id=thyroid-gland">Click on the thyroid gland, at the front of the neck. Its name, its Latin name and the start of its Wikipedia article appear in the panel on the right (on a small screen, tap its name at the bottom of the view).</li>
+    <li data-task="an-find" data-auto="anat:find ok=true target~suprarenal"><button class="do showme" type="button" data-anat-find="suprarenal-gland">Find a suprarenal gland</button> (also called the adrenal gland). If you are stuck, <b>Show me</b> makes it glow.</li>
+    <li data-task="an-pit" data-auto="anat:select base~hypophysis">Look at the pituitary gland, the <em>hypophysis</em>, under the brain <button class="do showme" type="button" data-anat="endocrine:adenohypophysis">show me</button>. It has two parts: the adenohypophysis (the anterior pituitary) and the neurohypophysis (the posterior pituitary). Click on each, and find the hypothalamus just above them.</li>
+  </ol>
+</div>
+<div class="q" data-q="an-q-thyroid">
+  <div class="q-text">Show the endocrine glands with the respiratory system <button class="do showme" type="button" data-anat="endocrine+respiratory@anterior">show me</button>. What does the thyroid gland lie against, and where is its isthmus?</div>
+  <div class="q-model">It lies against the front and sides of the larynx and the trachea: its two lobes are on either side of them, and the isthmus that joins the lobes crosses the front of the trachea just below the cricoid cartilage (over the second to fourth rings of the trachea, at about the level of the vertebrae C5 to T1).</div>
+</div>
+<div class="q" data-q="an-q-pit">
+  <div class="q-text">The neurohypophysis is part of the brain, and the adenohypophysis is a gland that grew up from the roof of the mouth. How does the hypothalamus control each of them?</div>
+  <div class="q-model">The neurohypophysis is made of the axons of neurons whose cell bodies lie in the hypothalamus: they run down the pituitary stalk and release their hormones (oxytocin and vasopressin, ADH) straight into the blood. The adenohypophysis has no nerves from the hypothalamus: the hypothalamus controls it with releasing and inhibiting hormones, which travel to it in the blood of the hypophysial portal vessels of the stalk.</div>
+</div>
+
+<h2 id="an-heart">The heart and the great vessels</h2>
+<div class="activity">
+  <div class="act-t">Look at the heart</div>
+  <ol class="steps">
+    <li data-task="an-heart" data-auto="anat:system id=heart on=true">Show the heart and the great vessels <button class="do showme" type="button" data-anat="heart">show me</button>: the chambers and the valves, the coronary vessels, the aorta, the pulmonary arteries and veins, and the venae cavae.</li>
+    <li data-task="an-iso" data-auto="anat:isolate base~left ventricle on=true">Click on the left ventricle and click <b>Isolate</b> in the panel (or press <kbd>I</kbd>): only the left ventricle is shown. Turn it round, then click <b>Show the others</b>.</li>
+    <li data-task="an-find-pt" data-auto="anat:find ok=true target=pulmonary-trunk"><button class="do showme" type="button" data-anat-find="pulmonary-trunk">Find the pulmonary trunk</button>, the artery that leaves the right ventricle and divides into the two pulmonary arteries.</li>
+    <li data-task="an-fade" data-auto="anat:fade on=true">Select the aortic arch and click <b>Fade the others</b>: everything else becomes faint, so that you can follow the arch and the branches that leave it. Click <b>Unfade the others</b> when you have looked.</li>
+  </ol>
+</div>
+<div class="q" data-q="an-q-front" data-type="mcq">
+  <div class="q-text">Look at the heart from the front (the anterior view). Which chamber forms most of its front (sternocostal) surface?</div>
+  <div class="mcq"><label data-correct data-why="Yes. The heart is turned so that the right ventricle faces forwards, behind the sternum; the left ventricle forms the apex and the left border, and the right atrium the right border."><input type="radio"> The right ventricle</label><label data-why="Not most of it: from the front, the left ventricle shows only as a strip along the left border and at the apex. The heart is turned so that the right ventricle faces forwards."><input type="radio"> The left ventricle</label><label data-why="The right atrium forms the right border of the heart in the anterior view, but most of the front is the right ventricle."><input type="radio"> The right atrium</label><label data-why="No: the left atrium is the most posterior chamber, and forms most of the base (the back) of the heart."><input type="radio"> The left atrium</label></div>
+</div>
+
+<h2 id="an-section">Cutting through the body</h2>
+<p>Medical images are sections: a CT or MRI scan shows the body in transverse (axial), coronal or sagittal slices, and a histological section is a slice too. <b>Section</b> cuts through the model, so that you can match a slice to the organs in 3D. The bar at the bottom of the view moves the cut, and <b>Flip</b> keeps the other part.</p>
+<div class="activity">
+  <div class="act-t">Sections</div>
+  <ol class="steps">
+    <li data-task="an-cut" data-auto="anat:section axis=transverse">Cut through the abdomen at the level of the kidneys, and look at the cut from above <button class="do showme" type="button" data-anat="digestive+urinary+skeleton+section:transverse@0.63@superior">show me</button>.</li>
+    <li data-task="an-slide" data-auto="anat:section axis=transverse at&lt;0.55">Move the cut down, towards the pelvis, with the slider (to less than halfway), and watch which organs are cut.</li>
+    <li data-task="an-sag" data-auto="anat:section axis=sagittal">Make a sagittal section through the middle of the body, seen from the left <button class="do showme" type="button" data-anat="heart+respiratory+digestive+urinary+skeleton+section:sagittal@0.5@left">show me</button>: the trachea, the oesophagus, the heart and the vertebral column are cut along their length.</li>
+  </ol>
+</div>
+<div class="q" data-q="an-q-kidney">
+  <div class="q-text">In the transverse section at the level of the kidneys, where do the kidneys lie compared with the vertebral column and the intestines?</div>
+  <div class="q-model">On either side of the vertebral column, against the posterior wall of the abdomen, behind the intestines and the peritoneum (they are retroperitoneal), at about the level of the vertebrae T12 to L3. The liver lies above the right kidney, which is why the right kidney lies a little lower than the left.</div>
+</div>
+
+<h2 id="an-pics">Labels and pictures</h2>
+<div class="activity">
+  <div class="act-t">Label the glands and keep a picture</div>
+  <ol class="steps">
+    <li data-task="an-labels" data-auto="anat:labels on=true">Show the endocrine glands with their labels <button class="do showme" type="button" data-anat="endocrine+labels">show me</button> (the <b>Labels</b> button, or <kbd>L</kbd>): each gland is named at the side of the view. Turn the body round and watch the labels follow.</li>
+    <li data-task="an-picture" data-auto="anat:capture">Take a picture of the view with the camera button at the right of the toolbar. It is saved in your files, in the folder <code>anatomy</code>, with the labels and the credit of the models.</li>
+    <li data-task="an-files" data-auto="editor:view path~/anatomy/">Find your picture in the <b>Files</b> tab <button class="do showme" type="button" data-bench="editor">show me</button> and click on it to see it.</li>
+  </ol>
+</div>
+<div class="callout tip">
+  <div class="co-t">Using the pictures</div>
+  <p>The models are shared under the Creative Commons Attribution-ShareAlike licence (CC BY-SA 4.0): you may use the pictures, in a report or a poster, as long as you keep the credit to Z-Anatomy and BodyParts3D that is at the bottom of each picture, and share what you make with them under the same licence. The tab’s <b>About</b> panel says where each part of the models comes from, and what is not included (the body is a man’s, and there is no ear, no skin and no inside of the kidney).</p>
+</div>
+
+</section>
+
+<section class="chapter" id="molecules" data-num="4" data-title="3D molecules" data-bench="viewer" hidden>
   <h1>Molecules in 3D</h1>
   <div class="meta-row"><span class="pill time">≈ 10 min</span></div>
   <p class="lede">The structures of proteins and of the small molecules of physiology, in 3D: open them, turn them round and colour them.</p>
@@ -289,7 +367,83 @@
 
 </section>
 
-<section class="chapter" id="diagrams" data-num="4" data-title="Diagrams" data-bench="flow" hidden>
+<section class="chapter" id="organbath" data-num="5" data-title="The organ bath" data-bench="bath" hidden>
+  <h1>Drugs on an isolated tissue</h1>
+  <div class="meta-row"><span class="pill time">≈ 25 min</span></div>
+  <p class="lede">Add drugs to a piece of guinea-pig ileum in an organ bath, build concentration–response curves, see what a competitive antagonist does to them, and analyse them in R.</p>
+
+<p>An <b>organ bath</b> keeps a piece of tissue alive outside the body. A length of guinea-pig ileum, say, hangs in warm physiological salt solution, bubbled with air, and is tied by a thread to a <b>force transducer</b>, which records the tension the tissue develops. Drugs added to the bath reach the tissue’s receptors, and the tension shows how strongly it responds. The <b>Organ bath</b> tab is a simulation of one: each tissue is a little different, its responses take time to develop, and there is noise – but it follows the pharmacology of real tissues.</p>
+
+<h2 id="ob-h-setup">Setting up</h2>
+<div class="activity">
+  <div class="act-t">Set up a tissue</div>
+  <ol class="steps">
+    <li data-task="ob-tissue" data-auto="bath:setup tissue=ileum">Set up a guinea-pig ileum <button class="do showme" type="button" data-bath="ileum">set it up</button>. The drawing shows the bath, and the chart on the right shows the tension against time. The small, irregular movements are the ileum’s own.</li>
+    <li data-task="ob-speed" data-auto="bath:speed">The clock runs in real time (×1). Make it run five times faster <button class="do showme" type="button" data-bath-do="speed 5">show me</button>: the ileum responds within seconds, and the faster clock saves you waiting.</li>
+  </ol>
+</div>
+
+<h2 id="ob-h-dil">Concentrations in the bath</h2>
+<p>A drug is added from a <b>stock solution</b>, and the bath dilutes it. If you add a volume <i>v</i> of a stock of concentration <i>C</i><sub>stock</sub> to a bath of volume <i>V</i>, the concentration in the bath is</p>
+<p class="eq"><i>C</i><sub>bath</sub> = <i>C</i><sub>stock</sub> × <i>v</i> / (<i>V</i> + <i>v</i>)</p>
+<p>The tab works this out before you add the drug (under <b>Add a drug</b>). The concentrations of a curve are spaced evenly on a <b>log scale</b> – 10<sup>−8</sup>, 3 × 10<sup>−8</sup>, 10<sup>−7</sup> M and so on – because the response grows with the logarithm of the concentration over a wide range.</p>
+<div class="q" data-q="ob-q-dil" data-accept="num:9.9e-8±2%" data-placeholder="M">
+  <div class="q-text">You add 100 µL of a 10<sup>−5</sup> M stock of acetylcholine to a 10 mL bath. What is the concentration of acetylcholine in the bath, in M?</div>
+  <div class="q-model">9.9 × 10<sup>−8</sup> M: 10<sup>−5</sup> M × 0.1 mL / (10 mL + 0.1 mL) = 9.9 × 10<sup>−8</sup> M, which is close to 10<sup>−7</sup> M. (Leaving out the volume you added, 10<sup>−5</sup> × 0.1 / 10 = 10<sup>−7</sup> M, is only 1% out.)</div>
+</div>
+
+<h2 id="ob-h-curve">A concentration–response curve</h2>
+<p>Each dose is left until the response reaches its plateau, and then washed out; the tissue recovers before the next dose. The tab measures each response – the rise in tension above the baseline before the dose – when you wash, and keeps it in the <b>Results</b> under the chart.</p>
+<div class="activity">
+  <div class="act-t">Build a curve for acetylcholine</div>
+  <ol class="steps">
+    <li data-task="ob-first" data-auto="bath:add drug=acetylcholine">Add acetylcholine to give 10<sup>−8</sup> M in the bath: choose <b>Acetylcholine</b>, a stock of 10<sup>−6</sup> M and 100 µL, and press <b>Add to the bath</b> <button class="do showme" type="button" data-bath-do="add acetylcholine 1e-8">show me</button>.</li>
+    <li data-task="ob-plat" data-auto="bath:response drug=acetylcholine">Wait for the response to reach its plateau (or press <b>Plateau</b> <button class="do showme" type="button" data-bath-do="plateau">show me</button>), then <b>Wash</b> <button class="do showme" type="button" data-bath-do="wash">show me</button>. The response goes into the Results.</li>
+    <li data-task="ob-more" data-auto="bath:response drug=acetylcholine condition=control n&gt;4">Give the tissue a minute to recover after each wash, and go on up the scale: 3 × 10<sup>−8</sup>, 10<sup>−7</sup>, 3 × 10<sup>−7</sup>, 10<sup>−6</sup> and 3 × 10<sup>−6</sup> M, each to its plateau and then washed out. Use a stronger stock as you go, to keep the volumes small. When two doses give about the same response, you have reached the maximum.</li>
+  </ol>
+</div>
+
+<h2 id="ob-h-antag">In the presence of an antagonist</h2>
+<p><b>Atropine</b> is an antagonist at muscarinic receptors. To see what it does to the curve, the tissue is equilibrated with a fixed concentration of atropine, and the curve is built again. Here the atropine is put in the solution used for washing, so that its concentration stays the same after every wash.</p>
+<div class="activity">
+  <div class="act-t">Repeat the curve in atropine</div>
+  <ol class="steps">
+    <li data-task="ob-atr" data-auto="bath:antagonist drug=atropine">Put atropine (10<sup>−8</sup> M) in the washing solution, and wash the bath with it <button class="do showme" type="button" data-bath-do="antagonist atropine 1e-8">show me</button>.</li>
+    <li data-task="ob-eq" data-auto="bath:equilibrated drug=atropine">Let it equilibrate with the tissue for 10 minutes: <b>Wait</b> ▸ 10 minutes <button class="do showme" type="button" data-bath-do="wait 600">show me</button>, or let the clock run at ×20.</li>
+    <li data-task="ob-curve2" data-auto="bath:response drug=acetylcholine condition~atropine n&gt;3">Build the curve of acetylcholine again, from 10<sup>−7</sup> M up to 10<sup>−4</sup> M. In the Results, these responses are marked <i>atropine 1e-8 M</i>.</li>
+  </ol>
+</div>
+<div class="q" data-q="ob-q-shift" data-type="mcq">
+  <div class="q-text">In atropine, the curve has moved to the right, in parallel, and it reaches the same maximum. What does that tell you about atropine?</div>
+  <div class="mcq"><label data-correct data-why="Yes. Atropine binds reversibly to the same receptors as acetylcholine, so more agonist restores the same occupancy and the same maximum: the curve shifts in parallel, by the dose ratio."><input type="radio"> It is a competitive antagonist: enough acetylcholine outcompetes it for the receptors</label><label data-why="No: a drug that acted beyond the receptor would lower the maximum, and no amount of agonist could restore it."><input type="radio"> It stops the muscle from contracting, whatever the agonist</label><label data-why="No: a partial agonist would cause a response of its own, and atropine causes none."><input type="radio"> It is a partial agonist</label><label data-why="No: an irreversible antagonist removes receptors, and once the spare receptors are used up the maximum falls."><input type="radio"> It inactivates the receptors irreversibly</label></div>
+</div>
+<div class="q" data-q="ob-q-max">
+  <div class="q-text">What would it mean if, instead, the maximum response fell in the presence of a drug?</div>
+  <div class="q-model">That the antagonism is insurmountable: no amount of agonist restores the maximum. The drug might act beyond the receptor – a non-competitive antagonist, such as a relaxant or a Ca²⁺-channel blocker, which stops the muscle contracting whatever the agonist. Or it might inactivate the receptors irreversibly, as phenoxybenzamine does at α-adrenoceptors: with fewer receptors, once the tissue’s spare receptors (its receptor reserve) are used up, even a saturating concentration of agonist can’t produce the full response. (A partial agonist also has a lower maximum, but it causes a response of its own.)</div>
+</div>
+
+<h2 id="ob-h-r">Analysing the curves in R</h2>
+<div class="activity">
+  <div class="act-t">Fit the curves and work out the pA<sub>2</sub></div>
+  <ol class="steps">
+    <li data-task="ob-script" data-auto="bath:r||rstudio:doc name~ileum">Open the script for your results in RStudio <button class="do showme" type="button" data-bath-r="responses">show me</button> (or press <b>Analyse in R</b> in the tab). It reads the results of your tissue (<code>~/organbath/ileum-1.csv</code> for the first ileum), which the tab keeps up to date.</li>
+    <li data-task="ob-run" data-auto="rstudio:plot||rstudio:source path~organbath">Run it a line at a time (<kbd>Ctrl</kbd>+<kbd>Enter</kbd>). It fits a Hill curve to each set of responses with <code>nls()</code> and plots them, and it works out the EC<sub>50</sub> of each curve and the <b>dose ratio</b>: how many times more acetylcholine gave the same response in atropine.</li>
+  </ol>
+</div>
+<p>For a competitive antagonist the dose ratio (DR) follows the Schild equation, DR = 1 + [B]/<i>K</i><sub>B</sub>, where [B] is the antagonist’s concentration and <i>K</i><sub>B</sub> its dissociation constant. So each dose ratio gives an estimate of the <b>pA<sub>2</sub></b> = log(DR − 1) − log[B]: the negative log of the concentration of antagonist that makes you double the agonist’s concentration. With several concentrations of antagonist, a <b>Schild plot</b> of log(DR − 1) against log[B] should be a straight line with a slope of 1, which crosses the x-axis where log[B] = −pA<sub>2</sub>. The script draws one when you have curves at two or more concentrations of atropine.</p>
+<div class="q" data-q="ob-q-pa2" data-accept="num:9±0.05" data-placeholder="pA2">
+  <div class="q-text">In one tissue, 10<sup>−8</sup> M atropine raised the EC<sub>50</sub> of acetylcholine from 8 × 10<sup>−8</sup> M to 8.8 × 10<sup>−7</sup> M. What is the pA<sub>2</sub> of atropine?</div>
+  <div class="q-model">9.0. The dose ratio is 8.8 × 10<sup>−7</sup> / 8 × 10<sup>−8</sup> = 11, so pA<sub>2</sub> = log(11 − 1) − log(10<sup>−8</sup>) = 1 + 8 = 9.0. In other words, 10<sup>−9</sup> M (1 nM) atropine doubles the concentration of acetylcholine needed for the same response.</div>
+</div>
+
+<div class="optional">
+<h2 id="ob-h-more">If you have time</h2>
+<p>Try the other drugs of the ileum. Is the response to <b>histamine</b> blocked by atropine, or by mepyramine? What do <b>drugs X and Y</b> do, and where? (Each tissue has its own; <b>About</b>, ⓘ, tells you when you have decided.) Or set up a ring of <b>rat aorta</b> <button class="do showme" type="button" data-bath="aorta">show me</button>: contract it with phenylephrine (10<sup>−6</sup> M), and then add acetylcholine, which relaxes it through nitric oxide made by the endothelium. Then try a ring whose endothelium has been rubbed off <button class="do showme" type="button" data-bath="aorta?endothelium=off">show me</button> – the experiment with which Furchgott and Zawadzki discovered, in 1980, that the endothelium makes a relaxing factor (nitric oxide).</p>
+</div>
+
+</section>
+
+<section class="chapter" id="diagrams" data-num="6" data-title="Diagrams" data-bench="flow" hidden>
   <h1>Flow diagrams that run</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Draw the boxes-and-arrows diagrams of physiology, and run them to see how the quantities in them change with time.</p>
@@ -340,7 +494,7 @@
 
 </section>
 
-<section class="chapter" id="circuits" data-num="5" data-title="Circuits" data-bench="circuit" hidden>
+<section class="chapter" id="circuits" data-num="7" data-title="Circuits" data-bench="circuit" hidden>
   <h1>Circuits on the bench</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Build electrical circuits and run them, and use the same circuits as models of the body.</p>
@@ -401,7 +555,81 @@
 
 </section>
 
-<section class="chapter" id="exam" data-num="6" data-title="Exam practice" data-bench="exam" hidden>
+<section class="chapter" id="simulations" data-num="8" data-title="Simulations" data-bench="sims" hidden>
+  <h1>Interactive simulations</h1>
+  <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
+  <p class="lede">Models of the science behind the body that you can change and watch: the ions of an action potential, the light a solution absorbs, and the logarithmic scale of pH.</p>
+
+<p>The <b>Simulations</b> tab holds a library of simulations made by <b>PhET Interactive Simulations</b> at the University of Colorado Boulder, chosen for biomedical science. Each one is a model of a piece of science – ions crossing a membrane, light passing through a solution, the particles of a gas – that you can change and watch. Each has its own controls, and many have several screens, which you choose from the bar at the bottom of the simulation (or from the list in the tab’s toolbar). The <b>ⓘ</b> button tells you what a simulation is for, who made it and its licence.</p>
+
+<h2 id="sim-nerve">The action potential</h2>
+<p>The Neuron simulation shows a short length of an axon, cut across, with the channels in its membrane and the sodium and potassium ions on either side.</p>
+<div class="activity">
+  <div class="act-t">Stimulate a neuron</div>
+  <ol class="steps">
+    <li data-task="sim-lib" data-auto="sim:filter topic~membranes">Look through the library of the <b>Simulations</b> tab, and choose the topic <b>Membranes and nerves</b> to see the simulations about membranes.</li>
+    <li data-task="sim-neuron" data-auto="sim:open id=neuron">Open the Neuron simulation <button class="do showme" type="button" data-sim="neuron">show me</button>. The legend on the right shows the ions and the four kinds of channel.</li>
+    <li data-task="sim-stim" data-auto="sim:action id=neuron action=stimulate">Press <b>Stimulate Neuron</b> and watch the channels and the ions. Choose <b>Slow Motion</b>, or pause and step it with the buttons under the axon, to see the order of events.</li>
+    <li data-task="sim-chart" data-auto="sim:action id=neuron action=chart">Tick <b>Potential Chart</b> (under <b>Show</b>) and stimulate the neuron again: the chart plots the membrane potential against time – the action potential.</li>
+    <li data-task="sim-conc" data-auto="sim:action id=neuron action=concentrations">Tick <b>Concentrations</b> as well, and stimulate it once more, watching the concentrations of Na⁺ and K⁺ inside and outside the axon.</li>
+  </ol>
+</div>
+<div class="q" data-q="sim-q-first" data-type="mcq">
+  <div class="q-text">When the neuron is stimulated, which channels open first, and which way do the ions move through them?</div>
+  <div class="mcq"><label data-correct data-why="Yes. Na⁺ is more concentrated outside, and the inside is negative, so it flows in when its channels open, and the membrane depolarises."><input type="radio"> Voltage-gated sodium channels: Na⁺ moves into the axon</label><label data-why="The potassium channels open too, but later and more slowly: they bring the potential back down after the peak."><input type="radio"> Voltage-gated potassium channels: K⁺ moves out of the axon</label><label data-why="Na⁺ is more concentrated outside the axon, and the inside is negative: when its channels open it moves in."><input type="radio"> Voltage-gated sodium channels: Na⁺ moves out of the axon</label><label data-why="The leak channels are open all the time and set the resting potential; the action potential comes from the gated channels."><input type="radio"> The leak channels: both ions move at once</label></div>
+  <div class="q-model">The voltage-gated sodium channels open first, and Na⁺ moves into the axon: the rising phase of the action potential. Then the sodium channels close (they inactivate) and the voltage-gated potassium channels open, K⁺ moves out, and the potential falls again – briefly below the resting potential, until the potassium channels close.</div>
+</div>
+<div class="q" data-q="sim-q-conc">
+  <div class="q-text">Did the concentrations of Na⁺ and K⁺ inside the axon change much during an action potential? What does that tell you?</div>
+  <div class="q-model">Hardly at all. Only a tiny fraction of the ions cross the membrane in one action potential: enough to change the charge on the membrane, which (like a capacitor) needs little charge to change its voltage, but far too few to change the concentrations. That is why a neuron can fire many action potentials before the Na⁺/K⁺ pump has to restore the gradients.</div>
+</div>
+
+<h2 id="sim-beer-law">Absorbance and concentration</h2>
+<p>A spectrophotometer measures how much light of one wavelength a solution absorbs. The <b>Beer–Lambert law</b> says that the absorbance, <i>A</i>, is proportional to the concentration, <i>c</i>, and to the distance the light travels through the solution, the path length, <i>l</i>:</p>
+<p class="eq"><i>A</i> = <i>ε</i> <i>c</i> <i>l</i></p>
+<p>where <i>ε</i>, the molar absorptivity (or extinction coefficient), depends on the substance and on the wavelength. It is why a standard curve of absorbance against concentration is a straight line, and why cuvettes have a standard width of 1 cm.</p>
+<div class="activity">
+  <div class="act-t">Measure absorbance</div>
+  <ol class="steps">
+    <li data-task="sim-beer" data-auto="sim:open id=beers-law-lab screen=2||sim:screen id=beers-law-lab screen=2">Open Beer’s Law Lab on its <b>Beer’s Law</b> screen <button class="do showme" type="button" data-sim="beers-law-lab:2">show me</button>.</li>
+    <li data-task="sim-detect" data-auto="sim:action id=beers-law-lab action=detector">Switch the light on (the red button), choose <b>Absorbance</b> on the detector, and drag the detector’s probe into the beam behind the cuvette.</li>
+    <li data-task="sim-bconc" data-auto="sim:change id=beers-law-lab what=concentration">Change the concentration of the drink mix with its slider, and watch the absorbance: double the concentration, and the absorbance doubles.</li>
+    <li data-task="sim-path" data-auto="sim:change id=beers-law-lab what=path">Change the path length: drag the yellow arrows on the side of the cuvette to make it wider or narrower, and measure it with the ruler.</li>
+  </ol>
+</div>
+<div class="q" data-q="sim-q-beer" data-accept="num:0.51±0.02" data-placeholder="the absorbance">
+  <div class="q-text">With the drink mix at 100 mM in a 1.00 cm cuvette, the absorbance at 508 nm is 0.51. What absorbance do you expect from a 50 mM solution in a 2.00 cm cuvette? Check your answer in the simulation.</div>
+  <div class="q-model">0.51, the same: halving the concentration halves the absorbance, and doubling the path length doubles it. In <i>A</i> = <i>εcl</i>, (½<i>c</i>)(2<i>l</i>) = <i>cl</i>.</div>
+</div>
+
+<h2 id="sim-ph-log">pH, a logarithmic scale</h2>
+<p>The pH of a solution is minus the logarithm (to base 10) of the concentration of hydrogen ions – strictly, H₃O⁺ – in moles per litre:</p>
+<p class="eq">pH = −log<sub>10</sub> [H₃O⁺]</p>
+<p>so each step of one pH unit is a tenfold change in the concentration of H₃O⁺.</p>
+<div class="activity">
+  <div class="act-t">The pH of blood</div>
+  <ol class="steps">
+    <li data-task="sim-ph" data-auto="sim:open id=ph-scale screen=2||sim:screen id=ph-scale screen=2">Open pH Scale on its <b>Micro</b> screen <button class="do showme" type="button" data-sim="ph-scale:2">show me</button>, which shows the concentrations of H₃O⁺ and OH⁻ as well as the pH.</li>
+    <li data-task="sim-blood" data-auto="sim:change id=ph-scale what=solution value~blood">Choose <b>Blood</b> from the list of liquids at the top. Read its pH, and the concentration of H₃O⁺ on the graph on the left (the graph shows concentrations when its switch is set to <b>Concentration</b>).</li>
+    <li data-task="sim-water" data-auto="sim:change id=ph-scale what=water">Add water from the tap at the top right, and watch the pH and the concentrations as the blood is diluted.</li>
+  </ol>
+</div>
+<div class="q" data-q="sim-q-h" data-accept="num:40±2" data-placeholder="nmol per litre">
+  <div class="q-text">Blood has a pH of 7.4. What is the concentration of H₃O⁺ in blood, in nanomoles per litre?</div>
+  <div class="q-model">About 40 nmol L⁻¹: 10<sup>−7.4</sup> mol L⁻¹ = 4.0 × 10<sup>−8</sup> mol L⁻¹ = 40 nmol L⁻¹. A fall in pH of only 0.3, to 7.1, doubles it (10<sup>0.3</sup> ≈ 2).</div>
+</div>
+<div class="callout warn">
+  <div class="co-t">A model is not the body</div>
+  <p>In the simulation, adding water to blood moves its pH towards 7, as it would for any solution of an acid or a base. Real blood resists such changes: its buffers – bicarbonate above all, with proteins such as haemoglobin, and phosphate – take up or release H⁺, and the lungs and kidneys adjust them. A simulation shows what its model predicts, and its model is simpler than the body. Use simulations to build a picture and to test your reasoning, and keep in mind what they leave out.</p>
+</div>
+<div class="callout tip">
+  <div class="co-t">More in the library</div>
+  <p>The library also has gases and their pressures (Gas Properties), diffusion, transport across membranes, the membrane as a capacitor (Capacitor Lab: Basics), lenses and how a microscope forms an image (Geometric Optics), colour vision, concentrations of solutions (Molarity), gene expression, and fitting a straight line to data (Least-Squares Regression). Each simulation’s <b>ⓘ</b> says what it is for in biomedical science, and links to PhET’s own activities for it.</p>
+</div>
+
+</section>
+
+<section class="chapter" id="exam" data-num="9" data-title="Exam practice" data-bench="exam" hidden>
   <h1>Writing answers as in the exam</h1>
   <div class="meta-row"><span class="pill time">≈ 20 min</span></div>
   <p class="lede">Practise writing essays in the browser, as you will in the exam: a timer, a word count, the editor’s toolbar, flags, the calculator, and a Word document of your answers at the end.</p>
@@ -437,7 +665,7 @@
 
 </section>
 
-<section class="chapter" id="r" data-num="7" data-title="Data in R" data-bench="rstudio" hidden>
+<section class="chapter" id="r" data-num="10" data-title="Data in R" data-bench="rstudio" hidden>
   <h1>From the microscope to R</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Your measurements and counts are kept in files that R can read. Summarise and plot them in RStudio, and turn a calculation into a script.</p>

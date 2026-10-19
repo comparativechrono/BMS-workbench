@@ -11,6 +11,7 @@ script checks that in every file it downloads, and refuses any other.
                                                  # (asks PhET's site; writes the versions into sims.json)
     python3 build/sims/fetch_sims.py             # download the pinned versions into sims/ and write sims/index.json
     python3 build/sims/fetch_sims.py neuron      # only one
+    python3 build/sims/fetch_sims.py --index     # only write sims/index.json again (after changing sims.json)
 
 Each simulation becomes sims/<id>/<id>_en.html (PhET's English single-file build, unchanged) and sims/<id>/thumb.jpg
 (PhET's 600-pixel screenshot of it, made smaller). Needs curl (and the internet) and Pillow."""
@@ -88,15 +89,34 @@ def find(sim):
 
 def credits_of(html):
     """the credits the simulation shows in its About box: {leadDesign: …, softwareDevelopment: …, …}"""
-    m = re.search(r'credits\s*:\s*\{\s*(leadDesign|softwareDevelopment)\s*:', html)
+    m = re.search(r'(?:credits|CREDITS)\s*[:=]\s*\{\s*(leadDesign|softwareDevelopment)\s*:', html)
     if not m:
         return {}
-    i = m.end() - len(m.group(1)) - 1
-    # read the object's "key: string" pairs
+    body = html[m.start(1):m.start(1) + 4000]
     out = {}
-    for k, v in re.findall(r'(\w+)\s*:\s*"((?:[^"\\]|\\.)*)"', html[i:i + 4000].split('}')[0]):
-        out[k] = json.loads('"' + v + '"').replace('\n', ' ')
+    # the object's "key: 'string'" pairs, up to its closing brace
+    pos = 0
+    pair = re.compile(r'\s*(\w+)\s*:\s*(?:"((?:[^"\\]|\\.)*)"|\'((?:[^\'\\]|\\.)*)\')\s*(,|\})')
+    while True:
+        p = pair.match(body, pos)
+        if not p:
+            break
+        raw = p.group(2) if p.group(2) is not None else p.group(3).replace('"', '\\"').replace("\\'", "'")
+        out[p.group(1)] = re.sub(r'\s+', ' ', json.loads('"' + raw + '"')).strip()
+        pos = p.end()
+        if p.group(4) == '}':
+            break
     return out
+
+
+def describe(entry, data):
+    """what the index says about a simulation's file: its build date, size, hash and credits"""
+    text = data.decode('utf-8', 'replace')
+    t = re.search(r"phet\.chipper\.buildTimestamp\s*=\s*'([^']+)'", text)
+    entry['built'] = t.group(1) if t else ''
+    entry['bytes'] = len(data)
+    entry['sha256'] = hashlib.sha256(data).hexdigest()
+    entry['credits'] = credits_of(text)
 
 
 def fetch(entry):
@@ -112,10 +132,7 @@ def fetch(entry):
         if not i or i['version'] != version or i['licence'] != 'CC BY 4.0':
             raise SystemExit(f'{sim} {version}: not the CC BY 4.0 file expected ({i})')
         open(os.path.join(d, f'{sim}_en.html'), 'wb').write(data)
-        entry['built'] = i['built']
-        entry['bytes'] = len(data)
-        entry['sha256'] = hashlib.sha256(data).hexdigest()
-        entry['credits'] = credits_of(text)
+        describe(entry, data)
         # the picture: PhET's screenshot, 600 pixels wide, as a smaller JPEG
         png = os.path.join(tmp, 'thumb.png')
         r = subprocess.run(['curl', '-sS', '--fail', '--max-time', '60', '-o', png, f'{BASE}/{sim}/{version}/{sim}-600.png'])
@@ -147,6 +164,16 @@ def main(args):
         open(LIST, 'a').write('\n')
         return
     for s in todo:
+        if '--index' in args:
+            # (the files already here: only the index is written again)
+            f = os.path.join(OUT, s['id'], f'{s["id"]}_en.html')
+            if os.path.exists(f):
+                data = open(f, 'rb').read()
+                i = info(data[:6000].decode('utf-8', 'replace'))
+                if not i or i['version'] != s['version'] or i['licence'] != 'CC BY 4.0':
+                    raise SystemExit(f'{s["id"]}: the file here is not the CC BY 4.0 version {s["version"]} ({i})')
+                describe(s, data)
+            continue
         fetch(s)
     # the list the tab reads (everything but the hash)
     index = {'format': 'bms-sims-1', 'credit': sims['credit'], 'licence': sims['licence'], 'licenceUrl': sims['licenceUrl'],

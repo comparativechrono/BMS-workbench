@@ -1,0 +1,2 @@
+# PhET's simulations are kept as PhET published them: not diffed, and not counted as the repository's own code
+sims/*/*_en.html -diff linguist-vendored

@@ -1,1 +1,98 @@
-/* The Simulations tab (sims.js) */
+/* =====================================================================
+   The Simulations tab (sims.js): the library of PhET simulations, and a
+   simulation in its frame with a toolbar and PhET's credit.
+   ===================================================================== */
+.sm-app { display: flex; flex-direction: column; height: 100%; min-height: 0; background: #fff; position: relative; container-type: inline-size; container-name: sims; }
+.sm-app button, .sm-app select, .sm-app input { font: inherit; }
+.sm-app [hidden] { display: none !important; }
+
+/* ---------- the library ---------- */
+.sm-lib { flex: 1; min-height: 0; overflow: auto; background: var(--panel-2); }
+.sm-lib-in { max-width: 1180px; margin: 0 auto; padding: 18px 20px 26px; }
+.sm-lib-h h2 { margin: 0 0 4px; font-size: 1.25rem; }
+.sm-lib-h p { margin: 0 0 12px; color: var(--ink-2); font-size: 0.9rem; line-height: 1.45; max-width: 75ch; }
+.sm-find { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 14px; }
+.sm-search { flex: 0 1 260px; min-width: 0; padding: 7px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; font-size: 0.88rem; }
+.sm-search:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+.sm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sm-chip { border: 1px solid var(--line-2); background: #fff; color: var(--ink-2); border-radius: 99px; padding: 4px 11px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
+.sm-chip:hover { border-color: var(--accent); color: var(--accent-2); }
+.sm-chip[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 650; }
+.sm-cont { margin: -4px 0 12px; }
+.sm-cont-b { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #bfdfe9; background: var(--accent-soft); color: var(--accent-2); border-radius: 8px; padding: 6px 8px 6px 12px; cursor: pointer; font-size: 0.86rem; }
+.sm-cont-b:hover { border-color: var(--accent); }
+.sm-cont-b .ic { width: 16px; height: 16px; }
+.sm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 12px; }
+.sm-item { display: flex; min-width: 0; }
+.sm-card { flex: 1; min-width: 0; display: flex; flex-direction: column; text-align: left; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; cursor: pointer; overflow: hidden; color: var(--ink); box-shadow: var(--shadow); transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s; }
+.sm-card:hover { border-color: var(--accent); box-shadow: 0 2px 4px rgba(16, 24, 40, 0.08), 0 8px 18px rgba(16, 24, 40, 0.1); transform: translateY(-1px); }
+.sm-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sm-card.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.sm-pic { display: block; aspect-ratio: 480 / 315; background: #eef1f5; border-bottom: 1px solid var(--line); overflow: hidden; }
+.sm-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sm-card-b { display: flex; flex-direction: column; gap: 4px; padding: 9px 12px 11px; flex: 1; }
+.sm-card-t { font-size: 0.95rem; font-weight: 700; }
+.sm-desc { font-size: 0.8rem; color: var(--ink-2); line-height: 1.4; flex: 1; }
+.sm-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin-top: 4px; }
+.sm-tag { font-size: 0.68rem; font-weight: 650; color: var(--accent-2); background: var(--accent-soft); border-radius: 99px; padding: 2px 8px; }
+.sm-size { font-size: 0.7rem; color: var(--muted); margin-left: auto; white-space: nowrap; }
+.sm-none { color: var(--ink-2); font-size: 0.9rem; padding: 10px 2px; }
+.sm-credit { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.sm-credit a, .sm-foot a, .sm-about a { color: var(--accent-2); }
+
+/* ---------- a simulation ---------- */
+.sm-player { flex: 1; min-height: 0; display: flex; flex-direction: column; background: #fff; }
+.sm-player:fullscreen { width: 100%; height: 100%; }
+.sm-bar { display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); min-width: 0; }
+.sm-back { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line-2); background: #fff; color: var(--ink-2); border-radius: 7px; padding: 4px 9px 4px 6px; cursor: pointer; font-size: 0.82rem; flex: none; }
+.sm-back:hover { border-color: var(--accent); color: var(--accent-2); }
+.sm-back .ic { width: 16px; height: 16px; }
+.sm-title { font-size: 0.92rem; padding: 0 4px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 0 1 auto; }
+.sm-screen { min-width: 0; max-width: 220px; flex: 0 1 auto; padding: 4px 6px; border: 1px solid var(--line-2); border-radius: 7px; background: #fff; color: var(--ink); font-size: 0.82rem; }
+.sm-ib { border: 1px solid transparent; background: none; border-radius: 6px; padding: 5px; cursor: pointer; color: var(--ink-2); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.sm-ib:hover { background: #fff; border-color: var(--line-2); }
+.sm-ib.on { background: var(--accent-soft); color: var(--accent-2); border-color: #bfdfe9; }
+.sm-ib .ic { width: 18px; height: 18px; }
+.sm-stage-w { flex: 1; min-height: 0; position: relative; background: #f2f4f7; }
+.sm-stage { position: absolute; inset: 0; }
+.sm-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+.sm-wait { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; background: #f6f7f9; color: var(--ink-2); font-size: 0.92rem; z-index: 2; padding: 20px; text-align: center; }
+.sm-fail { position: absolute; inset: 0; display: grid; place-items: center; background: #f6f7f9; z-index: 3; padding: 20px; text-align: center; }
+.sm-fail h3 { margin: 0 0 6px; }
+.sm-fail p { margin: 6px auto 14px; color: var(--ink-2); max-width: 52ch; line-height: 1.45; }
+.sm-fail-acts { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+/* (PhET's credit, in full: on a narrow screen it takes two lines rather than being cut short) */
+.sm-foot { flex: none; padding: 3px 10px 4px; border-top: 1px solid var(--line); background: var(--panel-2); font-size: 0.72rem; line-height: 1.35; color: var(--muted); }
+.sm-turn { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); padding: 7px 12px; border-radius: 9px; background: rgba(24, 33, 47, 0.86); color: #fff; font-size: 0.82rem; text-align: center; z-index: 4; pointer-events: none; box-shadow: var(--shadow-l); }
+
+/* the About box */
+.sm-about p { line-height: 1.5; margin: 0.5em 0; }
+.sm-about h4 { margin: 1.1em 0 0.3em; font-size: 0.86rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.sm-credits { display: grid; grid-template-columns: max-content 1fr; gap: 3px 12px; margin: 0.4em 0; font-size: 0.85rem; }
+.sm-credits dt { font-weight: 650; color: var(--ink-2); }
+.sm-credits dd { margin: 0; color: var(--ink-2); }
+
+/* ---------- narrow: beside the instructions, and phones ---------- */
+@container sims (max-width: 640px) {
+  .sm-lib-in { padding: 14px 12px 20px; }
+  .sm-search { flex: 1 1 100%; }
+  .sm-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .sm-screen { max-width: 150px; }
+}
+@container sims (max-width: 470px) {
+  .sm-grid { grid-template-columns: 1fr; }
+  .sm-card { flex-direction: row; }
+  .sm-pic { width: 120px; flex: none; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--line); }
+  .sm-card-b { padding: 8px 10px 9px; }
+  .sm-desc { font-size: 0.78rem; }
+  .sm-back span { display: none; }
+  .sm-back { padding: 4px 5px; }
+  .sm-bar { gap: 4px; padding: 4px 6px; }
+  .sm-screen { max-width: 128px; }
+  .sm-ib { padding: 4px; }
+}
+@container sims (max-width: 360px) {
+  .sm-pic { width: 92px; }
+  .sm-size { display: none; }
+  .sm-title { font-size: 0.86rem; }
+}
