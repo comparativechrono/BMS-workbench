@@ -5,7 +5,7 @@
    ===================================================================== */
 window.MG_CONFIG = {
   courseTitle: 'BMS workbench',
-  courseSubtitle: 'The microscope, diagrams and circuits, exam practice, 3D molecules and R, in your browser',
+  courseSubtitle: 'The microscope, anatomy, recordings, the organ bath, models, exam practice and R, in your browser',
 
   /* The prefix for everything the page saves in the browser (files, answers, essays and settings). Practicals made
      from this workbench that are hosted at the same address (for example, GitHub Pages sites of one account) and have

@@ -17,7 +17,7 @@
   const narrow = () => window.matchMedia('(max-width: 1000px)').matches;
   let ready = false;
 
-  const TAB_NAME = { scope: 'Microscope', flow: 'Diagrams', circuit: 'Circuits', exam: 'Exam practice', viewer: '3D viewer', rstudio: 'RStudio', editor: 'Files' };
+  const TAB_NAME = { scope: 'Microscope', anatomy: 'Anatomy', viewer: 'Molecules', recorder: 'Recorder', bath: 'Organ bath', flow: 'Diagrams', circuit: 'Circuits', sims: 'Simulations', exam: 'Exam practice', rstudio: 'RStudio', editor: 'Files' };
   MG.app.tabName = TAB_NAME;
 
   /* ------------------------------------------------------------------
@@ -71,6 +71,27 @@
     tabs.forEach((t) => t.addEventListener('click', () => MG.app.showWorkbench(t.dataset.wb)));
     // arrow keys move along the tabs (as in other tab lists)
     const list = $('.wb-tabs');
+    /* the tabs' names: all of them when they fit across the workbench; else all of them in smaller type (.tight); else
+       only the open tab's, beside the others' icons (.compact). Measured with all the names, so that it is the same
+       whichever tab is open. */
+    const lbls = Array.from(list.querySelectorAll('.lbl'));
+    // (too wide: the bar overflows, or a tab or a name is squeezed – on the narrowest phones the tabs shrink to fit)
+    const over = () => list.scrollWidth > list.clientWidth + 1 || tabs.some((t) => t.scrollWidth > t.clientWidth + 1) || lbls.some((l) => l.offsetWidth && l.scrollWidth > l.clientWidth + 1);
+    const fit = () => {
+      if (!list.clientWidth) return;
+      list.classList.remove('compact', 'tight');
+      if (!over()) return;
+      list.classList.add('tight');
+      if (!over()) return;
+      list.classList.replace('tight', 'compact');
+    };
+    MG.app.fitTabs = fit;
+    if (window.ResizeObserver) new ResizeObserver(() => fit()).observe(list);
+    window.addEventListener('resize', fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    bus.on('app:bench', () => fit());
+    bus.on('app:tut', () => fit());
+    fit();
     list.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
       const i = tabs.indexOf(document.activeElement);

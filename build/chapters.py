@@ -5,6 +5,10 @@ A short tour of the tools of the workbench, using examples that are not taken fr
 corpuscles, magnification and scale bars, a haemocytometer), flow diagrams that run, circuits, exam practice, the 3D
 viewer and R. Each chapter shows how the tools link together: measurements and counts from the microscope are read by
 R, pictures go to Files, and essays are downloaded as Word documents."""
+import importlib
+import os
+import sys
+
 from lib import *
 
 # (code that contains quotes or backslashes is kept out of the f-strings below)
@@ -34,12 +38,16 @@ def tabs_figure():
     """the tabs of the workbench, as a figure"""
     items = [
         ('Microscope', 'A virtual microscope with slides of human tissues: objectives from 1× to 40×, an eyepiece graticule, and tools to measure, count, label and take pictures.'),
+        ('Anatomy', 'The human body in 3D, system by system: turn it round, pick out structures, isolate them and cut sections through them.'),
+        ('Molecules', 'Proteins and smaller molecules in 3D, with a library of molecules of physiology.'),
+        ('Recorder', 'Real recordings of people – the ECG, breathing, blood pressure, muscle and brain – to play, measure and analyse as on a chart recorder.'),
+        ('Organ bath', 'An isolated tissue in an organ bath: add drugs, watch it contract or relax, and build concentration–response curves.'),
         ('Diagrams', 'Flow diagrams of how the body controls itself – boxes, and arrows that increase (+) or decrease (−) – which you can run to see how things change with time.'),
         ('Circuits', 'Electrical circuits, and the circuit models of physiology, built and run as on a lab bench, with meters and traces.'),
+        ('Simulations', 'Interactive simulations from PhET of the science behind physiology: neurons, membranes, pH, solutions, light and more.'),
         ('Exam practice', 'An essay editor that works like the online exam system: a timer, a word count, a calculator, flags, and downloads as Word documents.'),
-        ('3D viewer', 'Proteins and smaller molecules in 3D, with a library of molecules of physiology.'),
-        ('RStudio', 'R, for analysing data – including the measurements and counts that you make with the microscope.'),
-        ('Files', 'Everything you save: measurements, counts, pictures, diagrams, circuits, essays and R scripts.'),
+        ('RStudio', 'R, for analysing data – including the measurements and counts that you make with the other tools.'),
+        ('Files', 'Everything you save: measurements, counts, pictures, recordings, results, diagrams, circuits, essays and R scripts.'),
     ]
     return '<div class="ways">' + ''.join(f'<div class="way"><b>{t}</b><span>{d}</span></div>' for t, d in items) + '</div>'
 
@@ -49,12 +57,12 @@ def eq(html):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-def ch_start():
+def ch_start(num):
     body = f'''
 <h2 id="s-what">What’s in the workbench</h2>
 <p>The workbench on the right brings together the tools of a biomedical science practical. Each tab is a different tool:</p>
 {tabs_figure()}
-<p>The tools work together. The microscope keeps your measurements and counts in files that R can read, and your pictures in <b>Files</b>; you can run a diagram or a circuit and keep its results; and the essays you write in <b>Exam practice</b> can be downloaded as Word documents. This short practical takes you round each of the tools, so that you know your way around before you use them in the practicals of the course.</p>
+<p>The tools work together. The microscope, the recorder and the organ bath keep your measurements and results in files that R can read, and your pictures in <b>Files</b>; you can run a diagram or a circuit and keep its results; and the essays you write in <b>Exam practice</b> can be downloaded as Word documents. This short practical takes you round each of the tools, so that you know your way around before you use them in the practicals of the course.</p>
 
 <h2 id="s-how">How this page works</h2>
 <ul>
@@ -62,19 +70,19 @@ def ch_start():
 <li>Each activity is a list of steps. When you complete a step, it is ticked automatically and marked <span class="auto-tag">✓ spotted</span>, but you can also tick steps yourself. Buttons such as {scope("liver", "show me")} do things for you: they open a slide, a diagram or a paper, or choose a tool.</li>
 <li>Type your answers to the questions in the boxes. Some questions check your answer (a number, for example) as soon as you press <b>Check</b>; others show a model answer when you click <b>Show answer</b>.</li>
 <li>Your answers, essays and files are saved in this web browser, on this computer. To keep a copy, use <b>My answers</b> to download your answers and <b>My files</b> to download all your files as a .zip file. Some lab computers clear the browser’s storage when you log out, so download your work before you leave.</li>
-<li>The slides, the molecules and R itself are downloaded as you use them: looking at a slide downloads a few megabytes, and R is about 30 MB, the first time you open RStudio.</li>
+<li>The slides, the 3D models, the recordings, the simulations and R itself are downloaded as you use them: looking at a slide downloads a few megabytes, and R is about 30 MB, the first time you open RStudio.</li>
 </ul>
-{callout("info", "Where things are saved", "<p>Look in the <b>Files</b> tab for what the tools save: <code>microscope/</code> holds your measurements (<code>measurements.csv</code>), counts (<code>counts.csv</code>) and pictures; <code>diagrams/</code> and <code>circuits/</code> hold the diagrams and circuits you save; and <code>essays/</code> holds your answers to exam practice.</p>")}
+{callout("info", "Where things are saved", "<p>Look in the <b>Files</b> tab for what the tools save: <code>microscope/</code> holds your measurements (<code>measurements.csv</code>), counts (<code>counts.csv</code>) and pictures; <code>anatomy/</code>, <code>recorder/</code> and <code>organbath/</code> hold what you save from those tabs; <code>diagrams/</code> and <code>circuits/</code> hold the diagrams and circuits you save; and <code>essays/</code> holds your answers to exam practice.</p>")}
 {activity("Find your way around", [
     task("s-slide", f'In the <b>Microscope</b> tab {bench("scope", "show me")}, the slide box on the left lists the slides, sorted by the system of the body they come from. Click on any slide to open it.', auto="scope:open"),
-    task("s-files", f'Have a look at the <b>Files</b> tab {bench("editor", "show me")}, where you will find the folders for your microscope work, diagrams, circuits and essays.', auto="app:bench name=editor"),
+    task("s-files", f'Have a look at the <b>Files</b> tab {bench("editor", "show me")}, where you will find the folders for your microscope work, diagrams, circuits and essays (the other tabs make their folders when they first save something).', auto="app:bench name=editor"),
 ])}
 '''
-    return chapter("start", "0", "Start here", "scope", "The BMS workbench", 10, "A virtual microscope, flow diagrams and circuits that you can run, exam practice, molecules in 3D and R for your data – the tools of your practicals, in one web page.", body)
+    return chapter("start", num, "Start here", "scope", "The BMS workbench", 10, "A virtual microscope, anatomy and molecules in 3D, real recordings, an organ bath, models and simulations that you can run, exam practice and R for your data – the tools of your practicals, in one web page.", body)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-def ch_microscope():
+def ch_microscope(num):
     body = f'''
 <p>Its objectives work as they do in digital microscopy: at 20× you see a slide at the full resolution of its scan, and 10× shows it half as big, 40× twice as big. The slides are sections of human tissues (normal, apart from one coronary artery with atherosclerosis), stained with haematoxylin and eosin (H&amp;E) and scanned at high resolution, so you can look at a whole section at low power and then zoom in on single cells. Haematoxylin stains nuclei blue-purple and eosin stains cytoplasm and collagen pink.</p>
 
@@ -117,11 +125,11 @@ def ch_microscope():
 ])}
 {q("m-q-cv", "How could you tell a central vein from a portal tract at low power?", "A central vein is a single thin-walled vessel with liver cells right up to its wall, and the plates of liver cells run out from it like spokes. A portal tract is a patch of pink connective tissue that holds several tubes: a branch of the portal vein, a small artery and one or more bile ducts.")}
 '''
-    return chapter("microscope", "1", "The microscope", "scope", "Looking at a slide", 25, "The Microscope tab works like a light microscope: a slide box, objectives from 1× to 40× and a stage you move by dragging. In this chapter you look at the kidney and the liver, find structures, label them and keep pictures.", body)
+    return chapter("microscope", num, "The microscope", "scope", "Looking at a slide", 25, "The Microscope tab works like a light microscope: a slide box, objectives from 1× to 40× and a stage you move by dragging. In this chapter you look at the kidney and the liver, find structures, label them and keep pictures.", body)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-def ch_measuring():
+def ch_measuring(num):
     body = f'''
 <p>A lot of laboratory work is measurement: how big a cell is, or how many cells there are in a millilitre. In this chapter you calibrate an eyepiece graticule with a stage micrometer, measure with the microscope’s tools, work out sizes from magnifications and scale bars, and count cells with a haemocytometer.</p>
 
@@ -168,11 +176,11 @@ def ch_measuring():
 {q("n-q-viab", "The same four squares held 26 dead cells. What percentage of the cells were alive (the <em>viability</em> of the cells)?", "89.8%. The four squares held 229 + 26 = 255 cells, of which 229 were alive: 229 ÷ 255 × 100 = 89.8%.", accept="num:89.8±0.3", placeholder="%")}
 {callout("tip", "Your counts in R", "<p>The marks you make with the Count tool are kept in <code>microscope/counts.csv</code>, with the slide, the category and where each mark is. In the last chapter you read your measurements and counts in R, and do this calculation there too.</p>")}
 '''
-    return chapter("measuring", "2", "Measuring and counting", "scope", "Measuring and counting", 30, "How big is it, and how many are there? Calibrate an eyepiece graticule, measure with the microscope’s tools, work with magnifications and scale bars, and count cells with a haemocytometer.", body)
+    return chapter("measuring", num, "Measuring and counting", "scope", "Measuring and counting", 30, "How big is it, and how many are there? Calibrate an eyepiece graticule, measure with the microscope’s tools, work with magnifications and scale bars, and count cells with a haemocytometer.", body)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-def ch_diagrams():
+def ch_diagrams(num):
     body = f'''
 <p>Physiology is full of flow diagrams: boxes for quantities, such as a concentration or a temperature, and arrows that show what increases (+) or decreases (−) what. In the <b>Diagrams</b> tab you can draw them, and you can also <em>run</em> them. The workbench turns the diagram into a simple model, in which each quantity moves towards what its arrows tell it, and plots how each quantity changes with time. Running a diagram is a good way to check that it does what you think it does.</p>
 {callout("info", "Kinds of box", "<p>A <b>quantity</b> (a rounded box) is something that changes, such as a level or a rate. A <b>stimulus</b> (a flag) pushes on the system from outside: switched on and left on, a pulse, a ramp or a wave. A <b>set point</b> is a fixed level, and a <b>comparator</b> (Σ) adds up its inputs: a + arrow adds and a − arrow subtracts. A green <b>+</b> arrow stimulates, a red <b>−</b> arrow (with a bar at its end) inhibits, and each arrow has a <em>strength</em> and can have a <em>delay</em>.</p>")}
@@ -200,10 +208,10 @@ def ch_diagrams():
 {q("f-q-loop", "How did blocking the − arrow change what happened to <i>Level</i>, and why?", "Without the loop, <i>Level</i> rose by the whole size of the push (from 1 to 2, with the settings a new box starts with). With the loop it rose only half as far (to 1.5), because <i>Response</i> rose with it and pushed it back down: the − arrow opposes the change.")}
 {callout("tip", "Diagrams in your work", "<p>The <b>Export</b> menu saves a diagram as a picture (PNG or SVG) for a report, and the results of a run as a CSV table that you can plot in RStudio. A diagram saved in your files opens again in this tab when you click on it in Files.</p>")}
 '''
-    return chapter("diagrams", "3", "Diagrams", "flow", "Flow diagrams that run", 15, "Draw the boxes-and-arrows diagrams of physiology, and run them to see how the quantities in them change with time.", body)
+    return chapter("diagrams", num, "Diagrams", "flow", "Flow diagrams that run", 15, "Draw the boxes-and-arrows diagrams of physiology, and run them to see how the quantities in them change with time.", body)
 
 
-def ch_circuits():
+def ch_circuits(num):
     body = f'''
 <p>The <b>Circuits</b> tab is an electronics bench: batteries, resistors, capacitors, switches and meters, joined by wires, and a simulator that works out the voltage at every point and the current through every part as time passes. In its <b>Physiology</b> mode the same circuits become models of the body: pressure for voltage, flow for current, resistance to flow for resistance, and compliance for capacitance.</p>
 
@@ -239,10 +247,10 @@ def ch_circuits():
     task("c-save", 'Save the circuit in your files (<b>Save</b>, in your <code>circuits</code> folder).', auto="circuit:save"),
 ])}
 '''
-    return chapter("circuits", "4", "Circuits", "circuit", "Circuits on the bench", 15, "Build electrical circuits and run them, and use the same circuits as models of the body.", body)
+    return chapter("circuits", num, "Circuits", "circuit", "Circuits on the bench", 15, "Build electrical circuits and run them, and use the same circuits as models of the body.", body)
 
 
-def ch_exam():
+def ch_exam(num):
     body = f'''
 <p>Your exams are written on a computer, in an online exam system (Inspera). The <b>Exam practice</b> tab works in the same way, so that you can get used to planning, writing and checking an essay in a browser – with a timer and a word limit – before it matters. Your practicals will set essays here too.</p>
 {callout("info", "What is the same, and what isn’t", "<p>The layout, the timer, the editor and its toolbar, flags, the calculator and the submission page work as they do in the exam system. As in the exam browser, you can copy and paste within the exam, but text copied from anywhere else can’t be pasted in – so write your answers here, not in another program. But this is practice: your answers are saved only in this browser, nobody marks them, and after you submit you can review them alongside the marking guidance and download them as a Word document.</p>")}
@@ -264,13 +272,13 @@ def ch_exam():
 <h2 id="e-free">Essays of your own</h2>
 <p><b>Write an essay…</b>, on the list of papers, starts an essay with any title, with a word limit and a time limit if you like {exam("free", "show me")}. Your attempts and essays are kept in your <code>essays</code> folder, and open again from there.</p>
 '''
-    return chapter("exam", "5", "Exam practice", "exam", "Writing answers as in the exam", 20, "Practise writing essays in the browser, as you will in the exam: a timer, a word count, the editor’s toolbar, flags, the calculator, and a Word document of your answers at the end.", body)
+    return chapter("exam", num, "Exam practice", "exam", "Writing answers as in the exam", 20, "Practise writing essays in the browser, as you will in the exam: a timer, a word count, the editor’s toolbar, flags, the calculator, and a Word document of your answers at the end.", body)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-def ch_molecules():
+def ch_molecules(num):
     body = f'''
-<p>The <b>3D viewer</b> shows the structures of proteins and smaller molecules: where each atom is, as worked out (mostly) by X-ray crystallography and cryo-electron microscopy, and kept in the Protein Data Bank (PDB). You can turn a molecule round, change how it is drawn and coloured, and look closely at the parts that matter, such as the site where something binds.</p>
+<p>The <b>Molecules</b> tab shows the structures of proteins and smaller molecules in 3D: where each atom is, as worked out (mostly) by X-ray crystallography and cryo-electron microscopy, and kept in the Protein Data Bank (PDB). You can turn a molecule round, change how it is drawn and coloured, and look closely at the parts that matter, such as the site where something binds.</p>
 
 <h2 id="v-hb">A protein: haemoglobin</h2>
 {activity("Look at haemoglobin", [
@@ -290,11 +298,11 @@ def ch_molecules():
 ])}
 {q("v-q-draw", "Why is a protein drawn as a cartoon, while a small molecule is drawn with all its atoms?", "A protein has thousands of atoms (haemoglobin has about 4500, not counting hydrogens), so drawing them all gives a tangle in which you cannot see the fold. The cartoon follows the backbone of each chain and shows its helices and sheets. A small molecule has only a few dozen atoms, so all of them can be shown, and its chemistry is in the atoms themselves.")}
 '''
-    return chapter("molecules", "6", "3D molecules", "viewer", "Molecules in 3D", 10, "The structures of proteins and of the small molecules of physiology, in 3D: open them, turn them round and colour them.", body)
+    return chapter("molecules", num, "3D molecules", "viewer", "Molecules in 3D", 10, "The structures of proteins and of the small molecules of physiology, in 3D: open them, turn them round and colour them.", body)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-def ch_r():
+def ch_r(num):
     body = f'''
 <p>The microscope keeps your measurements and counts in two files in your <code>microscope</code> folder, <code>measurements.csv</code> and <code>counts.csv</code>. Each row is one measurement (or one mark of the Count tool), so they are ready for R. In this chapter you read them in <b>RStudio</b>, summarise them and plot them. You only need to run the scripts – but have a look at each line, to see what it does.</p>
 {callout("info", "The first time", "<p>The first time you open RStudio, the workbench downloads R itself (about 30 MB), which can take a minute. After that, the browser keeps it.</p>")}
@@ -323,8 +331,39 @@ def ch_r():
 ])}
 {q("r-q-new", "With the new counts (48, 52, 50 and 46 living cells, and the same dead cells), how many living cells were there per mL of the original suspension?", "9.8 × 10<sup>5</sup> cells per mL: the mean is 196 ÷ 4 = 49 cells per large square, and 49 ÷ 10<sup>−4</sup> mL × 2 = 980 000 cells per mL.", accept="num:9.8e5±1%", placeholder="cells per mL")}
 '''
-    return chapter("r", "7", "Data in R", "rstudio", "From the microscope to R", 15, "Your measurements and counts are kept in files that R can read. Summarise and plot them in RStudio, and turn a calculation into a script.", body)
+    return chapter("r", num, "Data in R", "rstudio", "From the microscope to R", 15, "Your measurements and counts are kept in files that R can read. Summarise and plot them in RStudio, and turn a calculation into a script.", body)
+
+
+# (BMS_LENIENT=1: a chapter of its own that fails is left out with a warning, instead of stopping the build – while
+# several chapters are being written at once)
+LENIENT = os.environ.get('BMS_LENIENT') == '1'
+
+
+def _extra(name):
+    """a chapter kept in a file of its own, build/ch_<name>.py (with chapter(num) → its HTML); None when there is none"""
+    if not os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), f'ch_{name}.py')):
+        return None
+    try:
+        return importlib.import_module(f'ch_{name}').chapter
+    except Exception as e:
+        if not LENIENT:
+            raise
+        print(f'WARNING: build/ch_{name}.py left out: {e!r}', file=sys.stderr)
+        return None
 
 
 def ALL():
-    return [ch_start(), ch_microscope(), ch_measuring(), ch_diagrams(), ch_circuits(), ch_exam(), ch_molecules(), ch_r()]
+    """the chapters, in the order of the tabs of the workbench, numbered from 0"""
+    order = [ch_start, ch_microscope, ch_measuring, _extra('anatomy'), ch_molecules, _extra('recorder'), _extra('organbath'),
+             ch_diagrams, ch_circuits, _extra('sims'), ch_exam, ch_r]
+    out = []
+    for f in order:
+        if not f:
+            continue
+        try:
+            out.append(f(str(len(out))))
+        except Exception as e:
+            if not LENIENT or f.__module__ == __name__:
+                raise
+            print(f'WARNING: the chapter of build/{f.__module__}.py left out: {e!r}', file=sys.stderr)
+    return out

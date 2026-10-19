@@ -5,7 +5,7 @@ p = Page()
 p.open()
 check(not p.errors, 'no page errors on load: ' + '; '.join(p.errors[:3]))
 tabs = p.js("() => Array.from(document.querySelectorAll('.wb-tab[data-wb]')).map(t => t.dataset.wb)")
-check(tabs == ['scope', 'flow', 'circuit', 'exam', 'viewer', 'rstudio', 'editor'], 'seven tabs: ' + ','.join(tabs))
+check(tabs == ['scope', 'anatomy', 'viewer', 'recorder', 'bath', 'flow', 'circuit', 'sims', 'exam', 'rstudio', 'editor'], 'eleven tabs: ' + ','.join(tabs))
 # numerical answers in the instructions, written as students (and model answers) write them
 cases = [('num:9.8e5±1%', '980 000', True), ('num:1.145e6±4%', '1 145 000 cells per mL', True), ('num:400±2', '20000/50 = 400', True),
          ('num:22.5±0.5', '22,5', True), ('num:1.145e6±4%', '1.1 million', True), ('num:4', 'four chains', True), ('num:4±0.2', '4 µm', True),

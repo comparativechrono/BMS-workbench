@@ -60,17 +60,13 @@ body.tut-off .tut, body.tut-off .splitter { display: none; }
 .bench { container-type: inline-size; container-name: bench; }
 .wb-tabs { overflow-x: auto; scrollbar-width: thin; }
 .wb-tab { white-space: nowrap; flex: none; padding: 7px 12px 8px; gap: 6px; }
-@container bench (max-width: 760px) {
-  .wb-tab:not(.on) .lbl { display: none; }
-  .wb-tab { padding: 7px 10px 8px; }
-}
-/* the workbench over the instructions (a tablet, or a phone turned sideways): the button back to the instructions
-   needs room as well, so there too the other tabs show only their icons (with all the names, it was pushed off the
-   screen) */
-@media (max-width: 1000px) {
-  .wb-tab:not(.on) .lbl { display: none; }
-  .wb-tab { padding: 7px 10px 8px; }
-}
+/* when the names of all the tabs (and, over the instructions on a tablet or a phone, the button back to them) don't fit
+   across the workbench, they are set smaller (.tight), and when they still don't fit, the other tabs show only their
+   icons and the open tab keeps its name (.compact): workbench.js measures it (with all the names, the button back used
+   to be pushed off the screen) */
+.wb-tabs.compact .wb-tab:not(.on) .lbl { display: none; }
+:where(.wb-tabs.compact) .wb-tab { padding: 7px 10px 8px; }
+:where(.wb-tabs.tight) .wb-tab { padding: 7px 7px 8px; gap: 5px; font-size: 0.82rem; }
 /* narrower still (a phone held upright): every tab keeps its icon, and the tabs become smaller, so that all of them and
    the button back to the instructions fit across the screen. The open tab keeps its name, shortened with … when there
    isn't room for all of it; on the narrowest screens it shows only its icon, and the button back is just ✕. */

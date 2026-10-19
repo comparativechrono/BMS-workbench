@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BMS workbench – a workbench for biomedical science practicals</title>
-<meta name="description" content="A browser-based workbench for biomedical science practicals: a virtual microscope with human histology slides, flow diagrams of physiological control with a simulator, electrical circuit models of physiology, an exam-style essay editor, a 3D molecule viewer and RStudio. Everything runs in the browser, so there is nothing to install.">
+<meta name="description" content="A browser-based workbench for biomedical science practicals: a virtual microscope with human histology slides, 3D anatomy, a chart recorder with real physiological recordings, an organ bath, flow diagrams of physiological control with a simulator, electrical circuit models of physiology, interactive simulations, an exam-style essay editor, a 3D molecule viewer and RStudio. Everything runs in the browser, so there is nothing to install.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233b1c42'/%3E%3Ccircle cx='11' cy='11' r='5' fill='%23f2a7c3'/%3E%3Ccircle cx='21' cy='12' r='4' fill='%23a98bd8'/%3E%3Ccircle cx='15' cy='21' r='5' fill='%23d97aa5'/%3E%3C/svg%3E">
 <script src="assets/js/isolation.js"></script>
 <link rel="stylesheet" href="assets/vendor/codemirror/codemirror.css">
@@ -19,6 +19,10 @@
 <link rel="stylesheet" href="assets/css/flow.css">
 <link rel="stylesheet" href="assets/css/circuit.css">
 <link rel="stylesheet" href="assets/css/exam.css">
+<link rel="stylesheet" href="assets/css/anatomy.css">
+<link rel="stylesheet" href="assets/css/recorder.css">
+<link rel="stylesheet" href="assets/css/organbath.css">
+<link rel="stylesheet" href="assets/css/sims.css">
 </head>
 <body data-page="bms" data-title="BMS workbench">
 <div class="app">
@@ -29,7 +33,7 @@
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#4a2552"/><circle cx="11" cy="11" r="5.2" fill="#f2a7c3"/><circle cx="11" cy="11" r="2" fill="#6d3f9e"/><circle cx="21.5" cy="12" r="4" fill="#c9b3ee"/><circle cx="21.5" cy="12" r="1.5" fill="#5b3a8c"/><circle cx="15" cy="21.5" r="5.2" fill="#e48bb1"/><circle cx="15" cy="21.5" r="2" fill="#6d3f9e"/></svg>
       <div>
         <div class="brand-title">BMS workbench</div>
-        <div class="brand-sub">The microscope, diagrams and circuits, exam practice, 3D molecules and R, in your browser</div>
+        <div class="brand-sub">The microscope, anatomy, recordings, the organ bath, models, exam practice and R, in your browser</div>
       </div>
     </a>
     <div class="spacer"></div>
@@ -49,12 +53,12 @@
 <section class="chapter" id="start" data-num="0" data-title="Start here" data-bench="scope">
   <h1>The BMS workbench</h1>
   <div class="meta-row"><span class="pill time">≈ 10 min</span></div>
-  <p class="lede">A virtual microscope, flow diagrams and circuits that you can run, exam practice, molecules in 3D and R for your data – the tools of your practicals, in one web page.</p>
+  <p class="lede">A virtual microscope, anatomy and molecules in 3D, real recordings, an organ bath, models and simulations that you can run, exam practice and R for your data – the tools of your practicals, in one web page.</p>
 
 <h2 id="s-what">What’s in the workbench</h2>
 <p>The workbench on the right brings together the tools of a biomedical science practical. Each tab is a different tool:</p>
-<div class="ways"><div class="way"><b>Microscope</b><span>A virtual microscope with slides of human tissues: objectives from 1× to 40×, an eyepiece graticule, and tools to measure, count, label and take pictures.</span></div><div class="way"><b>Diagrams</b><span>Flow diagrams of how the body controls itself – boxes, and arrows that increase (+) or decrease (−) – which you can run to see how things change with time.</span></div><div class="way"><b>Circuits</b><span>Electrical circuits, and the circuit models of physiology, built and run as on a lab bench, with meters and traces.</span></div><div class="way"><b>Exam practice</b><span>An essay editor that works like the online exam system: a timer, a word count, a calculator, flags, and downloads as Word documents.</span></div><div class="way"><b>3D viewer</b><span>Proteins and smaller molecules in 3D, with a library of molecules of physiology.</span></div><div class="way"><b>RStudio</b><span>R, for analysing data – including the measurements and counts that you make with the microscope.</span></div><div class="way"><b>Files</b><span>Everything you save: measurements, counts, pictures, diagrams, circuits, essays and R scripts.</span></div></div>
-<p>The tools work together. The microscope keeps your measurements and counts in files that R can read, and your pictures in <b>Files</b>; you can run a diagram or a circuit and keep its results; and the essays you write in <b>Exam practice</b> can be downloaded as Word documents. This short practical takes you round each of the tools, so that you know your way around before you use them in the practicals of the course.</p>
+<div class="ways"><div class="way"><b>Microscope</b><span>A virtual microscope with slides of human tissues: objectives from 1× to 40×, an eyepiece graticule, and tools to measure, count, label and take pictures.</span></div><div class="way"><b>Anatomy</b><span>The human body in 3D, system by system: turn it round, pick out structures, isolate them and cut sections through them.</span></div><div class="way"><b>Molecules</b><span>Proteins and smaller molecules in 3D, with a library of molecules of physiology.</span></div><div class="way"><b>Recorder</b><span>Real recordings of people – the ECG, breathing, blood pressure, muscle and brain – to play, measure and analyse as on a chart recorder.</span></div><div class="way"><b>Organ bath</b><span>An isolated tissue in an organ bath: add drugs, watch it contract or relax, and build concentration–response curves.</span></div><div class="way"><b>Diagrams</b><span>Flow diagrams of how the body controls itself – boxes, and arrows that increase (+) or decrease (−) – which you can run to see how things change with time.</span></div><div class="way"><b>Circuits</b><span>Electrical circuits, and the circuit models of physiology, built and run as on a lab bench, with meters and traces.</span></div><div class="way"><b>Simulations</b><span>Interactive simulations from PhET of the science behind physiology: neurons, membranes, pH, solutions, light and more.</span></div><div class="way"><b>Exam practice</b><span>An essay editor that works like the online exam system: a timer, a word count, a calculator, flags, and downloads as Word documents.</span></div><div class="way"><b>RStudio</b><span>R, for analysing data – including the measurements and counts that you make with the other tools.</span></div><div class="way"><b>Files</b><span>Everything you save: measurements, counts, pictures, recordings, results, diagrams, circuits, essays and R scripts.</span></div></div>
+<p>The tools work together. The microscope, the recorder and the organ bath keep your measurements and results in files that R can read, and your pictures in <b>Files</b>; you can run a diagram or a circuit and keep its results; and the essays you write in <b>Exam practice</b> can be downloaded as Word documents. This short practical takes you round each of the tools, so that you know your way around before you use them in the practicals of the course.</p>
 
 <h2 id="s-how">How this page works</h2>
 <ul>
@@ -62,17 +66,17 @@
 <li>Each activity is a list of steps. When you complete a step, it is ticked automatically and marked <span class="auto-tag">✓ spotted</span>, but you can also tick steps yourself. Buttons such as <button class="do showme" type="button" data-scope="liver">show me</button> do things for you: they open a slide, a diagram or a paper, or choose a tool.</li>
 <li>Type your answers to the questions in the boxes. Some questions check your answer (a number, for example) as soon as you press <b>Check</b>; others show a model answer when you click <b>Show answer</b>.</li>
 <li>Your answers, essays and files are saved in this web browser, on this computer. To keep a copy, use <b>My answers</b> to download your answers and <b>My files</b> to download all your files as a .zip file. Some lab computers clear the browser’s storage when you log out, so download your work before you leave.</li>
-<li>The slides, the molecules and R itself are downloaded as you use them: looking at a slide downloads a few megabytes, and R is about 30 MB, the first time you open RStudio.</li>
+<li>The slides, the 3D models, the recordings, the simulations and R itself are downloaded as you use them: looking at a slide downloads a few megabytes, and R is about 30 MB, the first time you open RStudio.</li>
 </ul>
 <div class="callout info">
   <div class="co-t">Where things are saved</div>
-  <p>Look in the <b>Files</b> tab for what the tools save: <code>microscope/</code> holds your measurements (<code>measurements.csv</code>), counts (<code>counts.csv</code>) and pictures; <code>diagrams/</code> and <code>circuits/</code> hold the diagrams and circuits you save; and <code>essays/</code> holds your answers to exam practice.</p>
+  <p>Look in the <b>Files</b> tab for what the tools save: <code>microscope/</code> holds your measurements (<code>measurements.csv</code>), counts (<code>counts.csv</code>) and pictures; <code>anatomy/</code>, <code>recorder/</code> and <code>organbath/</code> hold what you save from those tabs; <code>diagrams/</code> and <code>circuits/</code> hold the diagrams and circuits you save; and <code>essays/</code> holds your answers to exam practice.</p>
 </div>
 <div class="activity">
   <div class="act-t">Find your way around</div>
   <ol class="steps">
     <li data-task="s-slide" data-auto="scope:open">In the <b>Microscope</b> tab <button class="do showme" type="button" data-bench="scope">show me</button>, the slide box on the left lists the slides, sorted by the system of the body they come from. Click on any slide to open it.</li>
-    <li data-task="s-files" data-auto="app:bench name=editor">Have a look at the <b>Files</b> tab <button class="do showme" type="button" data-bench="editor">show me</button>, where you will find the folders for your microscope work, diagrams, circuits and essays.</li>
+    <li data-task="s-files" data-auto="app:bench name=editor">Have a look at the <b>Files</b> tab <button class="do showme" type="button" data-bench="editor">show me</button>, where you will find the folders for your microscope work, diagrams, circuits and essays (the other tabs make their folders when they first save something).</li>
   </ol>
 </div>
 
@@ -246,7 +250,46 @@
 
 </section>
 
-<section class="chapter" id="diagrams" data-num="3" data-title="Diagrams" data-bench="flow" hidden>
+<section class="chapter" id="molecules" data-num="3" data-title="3D molecules" data-bench="viewer" hidden>
+  <h1>Molecules in 3D</h1>
+  <div class="meta-row"><span class="pill time">≈ 10 min</span></div>
+  <p class="lede">The structures of proteins and of the small molecules of physiology, in 3D: open them, turn them round and colour them.</p>
+
+<p>The <b>Molecules</b> tab shows the structures of proteins and smaller molecules in 3D: where each atom is, as worked out (mostly) by X-ray crystallography and cryo-electron microscopy, and kept in the Protein Data Bank (PDB). You can turn a molecule round, change how it is drawn and coloured, and look closely at the parts that matter, such as the site where something binds.</p>
+
+<h2 id="v-hb">A protein: haemoglobin</h2>
+<div class="activity">
+  <div class="act-t">Look at haemoglobin</div>
+  <ol class="steps">
+    <li data-task="v-load" data-auto="viewer:loaded id~4hhb">Open haemoglobin <button class="do showme" type="button" data-pdb="4HHB">show me</button> (its PDB ID is 4HHB). It is drawn as a <em>cartoon</em>, which follows the backbone of each chain: the coils are α helices.</li>
+    <li data-task="v-turn">Drag to turn the molecule round, scroll to zoom, and right-drag (or two-finger drag) to move it.</li>
+    <li data-task="v-chain" data-auto="viewer:color scheme=chain">Colour each chain differently <button class="do showme" type="button" data-viewer="color chain">show me</button>.</li>
+    <li data-task="v-haem" data-auto="viewer:style type=spheres">Show the haem groups as spheres <button class="do showme" type="button" data-viewer="show spheres HEM">show me</button>, coloured by element <button class="do showme" type="button" data-viewer="color element HEM">colour them</button>. The iron atom at the centre of each haem is where oxygen binds.</li>
+  </ol>
+</div>
+<div class="q" data-q="v-q-chains" data-accept="num:4" data-placeholder="the number of chains">
+  <div class="q-text">How many protein chains does haemoglobin have, and how many haem groups?</div>
+  <div class="q-model">Four chains (two α and two β globins), each with one haem group: four haem groups, so a molecule of haemoglobin can carry four molecules of oxygen.</div>
+</div>
+
+<h2 id="v-lib">The library</h2>
+<p>The viewer has a library of proteins of physiology and of small molecules – hormones, transmitters and others – ready to open. They are kept with the workbench, so they open quickly.</p>
+<div class="activity">
+  <div class="act-t">Open a small molecule</div>
+  <ol class="steps">
+    <li data-task="v-library" data-auto="viewer:library">Click <b>Library</b> (the button with a book, at the top left of the viewer) to see what it holds.</li>
+    <li data-task="v-glucose" data-auto="viewer:molecule name=Glucose">Open glucose <button class="do showme" type="button" data-viewer="clear; molecule glucose; only ballstick; color cpk">show me</button> (the button clears haemoglobin away first). A small molecule is drawn with every atom: here as balls and sticks, coloured by element – grey for carbon, red for oxygen and white for hydrogen.</li>
+    <li data-task="v-atp" data-auto="viewer:molecule name=ATP">Open ATP in the same way <button class="do showme" type="button" data-viewer="clear; molecule atp; only ballstick; color cpk">show me</button> and find its three phosphate groups (phosphorus is orange).</li>
+  </ol>
+</div>
+<div class="q" data-q="v-q-draw">
+  <div class="q-text">Why is a protein drawn as a cartoon, while a small molecule is drawn with all its atoms?</div>
+  <div class="q-model">A protein has thousands of atoms (haemoglobin has about 4500, not counting hydrogens), so drawing them all gives a tangle in which you cannot see the fold. The cartoon follows the backbone of each chain and shows its helices and sheets. A small molecule has only a few dozen atoms, so all of them can be shown, and its chemistry is in the atoms themselves.</div>
+</div>
+
+</section>
+
+<section class="chapter" id="diagrams" data-num="4" data-title="Diagrams" data-bench="flow" hidden>
   <h1>Flow diagrams that run</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Draw the boxes-and-arrows diagrams of physiology, and run them to see how the quantities in them change with time.</p>
@@ -297,7 +340,7 @@
 
 </section>
 
-<section class="chapter" id="circuits" data-num="4" data-title="Circuits" data-bench="circuit" hidden>
+<section class="chapter" id="circuits" data-num="5" data-title="Circuits" data-bench="circuit" hidden>
   <h1>Circuits on the bench</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Build electrical circuits and run them, and use the same circuits as models of the body.</p>
@@ -358,7 +401,7 @@
 
 </section>
 
-<section class="chapter" id="exam" data-num="5" data-title="Exam practice" data-bench="exam" hidden>
+<section class="chapter" id="exam" data-num="6" data-title="Exam practice" data-bench="exam" hidden>
   <h1>Writing answers as in the exam</h1>
   <div class="meta-row"><span class="pill time">≈ 20 min</span></div>
   <p class="lede">Practise writing essays in the browser, as you will in the exam: a timer, a word count, the editor’s toolbar, flags, the calculator, and a Word document of your answers at the end.</p>
@@ -391,45 +434,6 @@
 
 <h2 id="e-free">Essays of your own</h2>
 <p><b>Write an essay…</b>, on the list of papers, starts an essay with any title, with a word limit and a time limit if you like <button class="do showme" type="button" data-exam="free">show me</button>. Your attempts and essays are kept in your <code>essays</code> folder, and open again from there.</p>
-
-</section>
-
-<section class="chapter" id="molecules" data-num="6" data-title="3D molecules" data-bench="viewer" hidden>
-  <h1>Molecules in 3D</h1>
-  <div class="meta-row"><span class="pill time">≈ 10 min</span></div>
-  <p class="lede">The structures of proteins and of the small molecules of physiology, in 3D: open them, turn them round and colour them.</p>
-
-<p>The <b>3D viewer</b> shows the structures of proteins and smaller molecules: where each atom is, as worked out (mostly) by X-ray crystallography and cryo-electron microscopy, and kept in the Protein Data Bank (PDB). You can turn a molecule round, change how it is drawn and coloured, and look closely at the parts that matter, such as the site where something binds.</p>
-
-<h2 id="v-hb">A protein: haemoglobin</h2>
-<div class="activity">
-  <div class="act-t">Look at haemoglobin</div>
-  <ol class="steps">
-    <li data-task="v-load" data-auto="viewer:loaded id~4hhb">Open haemoglobin <button class="do showme" type="button" data-pdb="4HHB">show me</button> (its PDB ID is 4HHB). It is drawn as a <em>cartoon</em>, which follows the backbone of each chain: the coils are α helices.</li>
-    <li data-task="v-turn">Drag to turn the molecule round, scroll to zoom, and right-drag (or two-finger drag) to move it.</li>
-    <li data-task="v-chain" data-auto="viewer:color scheme=chain">Colour each chain differently <button class="do showme" type="button" data-viewer="color chain">show me</button>.</li>
-    <li data-task="v-haem" data-auto="viewer:style type=spheres">Show the haem groups as spheres <button class="do showme" type="button" data-viewer="show spheres HEM">show me</button>, coloured by element <button class="do showme" type="button" data-viewer="color element HEM">colour them</button>. The iron atom at the centre of each haem is where oxygen binds.</li>
-  </ol>
-</div>
-<div class="q" data-q="v-q-chains" data-accept="num:4" data-placeholder="the number of chains">
-  <div class="q-text">How many protein chains does haemoglobin have, and how many haem groups?</div>
-  <div class="q-model">Four chains (two α and two β globins), each with one haem group: four haem groups, so a molecule of haemoglobin can carry four molecules of oxygen.</div>
-</div>
-
-<h2 id="v-lib">The library</h2>
-<p>The viewer has a library of proteins of physiology and of small molecules – hormones, transmitters and others – ready to open. They are kept with the workbench, so they open quickly.</p>
-<div class="activity">
-  <div class="act-t">Open a small molecule</div>
-  <ol class="steps">
-    <li data-task="v-library" data-auto="viewer:library">Click <b>Library</b> (the button with a book, at the top left of the viewer) to see what it holds.</li>
-    <li data-task="v-glucose" data-auto="viewer:molecule name=Glucose">Open glucose <button class="do showme" type="button" data-viewer="clear; molecule glucose; only ballstick; color cpk">show me</button> (the button clears haemoglobin away first). A small molecule is drawn with every atom: here as balls and sticks, coloured by element – grey for carbon, red for oxygen and white for hydrogen.</li>
-    <li data-task="v-atp" data-auto="viewer:molecule name=ATP">Open ATP in the same way <button class="do showme" type="button" data-viewer="clear; molecule atp; only ballstick; color cpk">show me</button> and find its three phosphate groups (phosphorus is orange).</li>
-  </ol>
-</div>
-<div class="q" data-q="v-q-draw">
-  <div class="q-text">Why is a protein drawn as a cartoon, while a small molecule is drawn with all its atoms?</div>
-  <div class="q-model">A protein has thousands of atoms (haemoglobin has about 4500, not counting hydrogens), so drawing them all gives a tangle in which you cannot see the fold. The cartoon follows the backbone of each chain and shows its helices and sheets. A small molecule has only a few dozen atoms, so all of them can be shown, and its chemistry is in the atoms themselves.</div>
-</div>
 
 </section>
 
@@ -508,20 +512,28 @@ round(viability, 1)</pre><div class="cf-note"><b>Create this file</b> saves the 
       <div class="wb-tabs" role="tablist">
         <button class="wb-tab rail-btn" type="button" id="tutRail" title="Show the instructions (Ctrl+\)" hidden><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M13 10l2 2-2 2"/></svg><span>Instructions</span></button>
         <button class="wb-tab on" type="button" role="tab" data-wb="scope" title="A virtual microscope with slides of human tissues"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.5 2.8l3.6 1.4-3 7.6-3.6-1.4z"/><path d="M7.7 12.4l-.9 2.2"/><path d="M4 16.5h9"/><path d="M13.6 7.6a6.5 6.5 0 0 1 1.9 11.2"/><path d="M5 21h14"/><path d="M15.5 18.8V21"/></svg><span class="lbl">Microscope</span><span class="dot"></span></button>
+        <button class="wb-tab" type="button" role="tab" data-wb="anatomy" title="The anatomy of the human body in 3D (from Z-Anatomy)"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="4.6" r="2.3"/><path d="M12 7.6v6.6M6.2 10.6L12 8.8l5.8 1.8M8.8 21l3.2-6.8 3.2 6.8"/></svg><span class="lbl">Anatomy</span><span class="dot"></span></button>
+        <button class="wb-tab" type="button" role="tab" data-wb="viewer" title="Proteins and other molecules in 3D"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="7" r="2.6"/><circle cx="18" cy="7" r="2.6"/><circle cx="12" cy="17.5" r="2.6"/><path d="M8.6 7h6.8M7.3 9.3l3.4 5.9M16.7 9.3l-3.4 5.9"/></svg><span class="lbl">Molecules</span><span class="dot"></span></button>
+        <button class="wb-tab" type="button" role="tab" data-wb="recorder" title="A chart recorder with real recordings of people (ECG, breathing, blood pressure, muscle and brain), from PhysioNet"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M6 13h2.5l1.5-4.5 2.5 8 1.8-5.5 1 2H18"/></svg><span class="lbl">Recorder</span><span class="dot"></span></button>
+        <button class="wb-tab" type="button" role="tab" data-wb="bath" title="An organ bath: isolated tissues, drugs and concentration–response curves"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.5 3h13"/><path d="M7 3v13.5A4.5 4.5 0 0 0 11.5 21h1a4.5 4.5 0 0 0 4.5-4.5V3"/><path d="M12 3v4.5"/><rect x="10.7" y="7.5" width="2.6" height="6" rx="1.3"/><path d="M9.3 17.6h.01M14.4 16.4h.01M11.8 18.9h.01"/></svg><span class="lbl">Organ bath</span><span class="dot"></span></button>
         <button class="wb-tab" type="button" role="tab" data-wb="flow" title="Flow diagrams of physiological control, with a simulator"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="5" rx="1.2"/><rect x="14" y="3" width="7" height="5" rx="1.2"/><rect x="14" y="16" width="7" height="5" rx="1.2"/><path d="M10 5.5h4M17.5 8v8M14 18.5H7.5a1.5 1.5 0 0 1-1.5-1.5V8"/></svg><span class="lbl">Diagrams</span><span class="dot"></span></button>
         <button class="wb-tab" type="button" role="tab" data-wb="circuit" title="Electrical circuits, and the circuit models of physiology"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12h3.5l1.7-4 2.6 8 2.6-8 2.6 8 1.7-4H22"/></svg><span class="lbl">Circuits</span><span class="dot"></span></button>
+        <button class="wb-tab" type="button" role="tab" data-wb="sims" title="Interactive simulations from PhET (University of Colorado Boulder)"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h8.5M16.5 6H20M4 12h2.5M10.5 12H20M4 18h10.5M18.5 18H20"/><circle cx="14.5" cy="6" r="2"/><circle cx="8.5" cy="12" r="2"/><circle cx="16.5" cy="18" r="2"/></svg><span class="lbl">Simulations</span><span class="dot"></span></button>
         <button class="wb-tab" type="button" role="tab" data-wb="exam" title="Exam practice: write essays and answers as you will in an online exam"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H6.5A2.5 2.5 0 0 0 4 5.5v13A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg><span class="lbl">Exam practice</span><span class="dot"></span></button>
-        <button class="wb-tab" type="button" role="tab" data-wb="viewer" title="A 3D viewer for proteins and other molecules"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="7" r="2.6"/><circle cx="18" cy="7" r="2.6"/><circle cx="12" cy="17.5" r="2.6"/><path d="M8.6 7h6.8M7.3 9.3l3.4 5.9M16.7 9.3l-3.4 5.9"/></svg><span class="lbl">3D viewer</span><span class="dot"></span></button>
         <button class="wb-tab" type="button" role="tab" data-wb="rstudio" title="RStudio, for analysing data in R"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M3 12h18"/></svg><span class="lbl">RStudio</span><span class="dot"></span></button>
         <button class="wb-tab" type="button" role="tab" data-wb="editor" title="Your files"><svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v1H7l-4 9z"/><path d="M3 19l3.5-8H22l-3.5 8z"/></svg><span class="lbl">Files</span><span class="dot"></span></button>
         <button class="bench-close" type="button" aria-label="Back to the instructions" title="Back to the instructions">✕<span class="lbl">Instructions</span></button>
       </div>
       <div class="wb-body">
         <div class="wb-pane" data-wb="scope"><div id="scopeRoot"></div></div>
+        <div class="wb-pane" data-wb="anatomy" hidden><div id="anatRoot"></div></div>
+        <div class="wb-pane" data-wb="viewer" hidden><div id="viewerRoot"></div></div>
+        <div class="wb-pane" data-wb="recorder" hidden><div id="recRoot"></div></div>
+        <div class="wb-pane" data-wb="bath" hidden><div id="bathRoot"></div></div>
         <div class="wb-pane" data-wb="flow" hidden><div id="flowRoot"></div></div>
         <div class="wb-pane" data-wb="circuit" hidden><div id="circuitRoot"></div></div>
+        <div class="wb-pane" data-wb="sims" hidden><div id="simsRoot"></div></div>
         <div class="wb-pane" data-wb="exam" hidden><div id="examRoot"></div></div>
-        <div class="wb-pane" data-wb="viewer" hidden><div id="viewerRoot"></div></div>
         <div class="wb-pane" data-wb="rstudio" hidden><div id="rsRoot"></div></div>
         <div class="wb-pane" data-wb="editor" hidden><div id="edRoot"></div></div>
       </div>
