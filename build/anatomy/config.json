@@ -1,0 +1,406 @@
+{
+ "about": "Which structures of Z-Anatomy's Startup.blend go into which model file of the Anatomy tab, and how much they are simplified. Read by export.py (Blender) and make_index.py. A structure is put in the first file that names it in 'objects'; otherwise in the first file one of whose 'groups' is among its ancestors (Z-Anatomy's '.g' group labels).",
+ "exclude": {
+  "groups": [
+   "Ear.g",
+   "Auditory ossicles.g",
+   "Abdominopelvic cavity.g",
+   "Thoracic cavity.g",
+   "Fasciae.g",
+   "Meninges.g",
+   "Commissural fibres of telencephalon.g",
+   "Projection fibres of telencephalon.g",
+   "Bursae of lower limb.g",
+   "Bursae of upper limb.g",
+   "Tendon sheaths of lower limb.g",
+   "Tendon sheaths of upper limb.g",
+   "Hairs.g",
+   "Regions of human body.g",
+   "Joints.g",
+   "Teeth.g"
+  ],
+  "names": [
+   "^Renal pelvis",
+   "^Intrarenal ",
+   "^White matter of telencephalon",
+   "^Stria terminalis",
+   "segment of liver",
+   "^\\?+$",
+   "^Cochlea",
+   "^Vestibule\\.",
+   "semicircular",
+   "^Zonular fibres",
+   "-curve",
+   "^Central canal'",
+   "^Spinal dura",
+   "^Choroid plexus"
+  ],
+  "why": {
+   "Ear.g": "the inner ear is adapted from 'Anatomy of the Inner Ear' (University of Dundee), CC BY-NC-SA 4.0: not free for commercial use, so the whole ear is left out",
+   "^Renal pelvis, ^Intrarenal": "Z-Anatomy adapted a kidney by Lissie Cowley (CC BY-NC 4.0); BodyParts3D has no renal pelvis or intrarenal vessels, so these may come from it and are left out (the kidneys themselves are BodyParts3D's)",
+   "^White matter of telencephalon, fibres": "Z-Anatomy names a 'White matter' model from the University of Washington without a licence: the white matter of the hemispheres and its fibre bundles are left out",
+   "others": "left out to keep the models small and clear: fasciae, meninges, peritoneum, pleura, bursae, tendon sheaths, joints, teeth, hair, regions of the body, the segments of the liver (which overlap the liver)"
+  }
+ },
+ "files": [
+  {
+   "id": "endocrine",
+   "title": "Endocrine glands",
+   "objects": [
+    "Hypothalamus"
+   ],
+   "groups": [
+    "Endocrine glands.g"
+   ],
+   "subsurf": 2,
+   "ratio": 1.0,
+   "min": 0,
+   "max": 8000
+  },
+  {
+   "id": "respiratory",
+   "title": "Respiratory system",
+   "objects": [
+    "Diaphragm"
+   ],
+   "groups": [
+    "Respiratory system.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.6,
+   "min": 300,
+   "max": 5000,
+   "bevel": 2,
+   "resu": 4
+  },
+  {
+   "id": "heart",
+   "title": "Heart and great vessels",
+   "objects": [
+    "Ascending aorta",
+    "Aortic arch",
+    "Thoracic aorta",
+    "Abdominal aorta",
+    "Brachiocephalic trunk",
+    "Left common carotid artery",
+    "Right common carotid artery",
+    "Left subclavian artery",
+    "Right subclavian artery",
+    "Superior vena cava",
+    "Inferior vena cava (thoracic part)",
+    "Inferior vena cava (abdominal part)",
+    "Right brachiocephalic vein",
+    "Left brachiocephalic vein"
+   ],
+   "groups": [
+    "Heart.g",
+    "Arteries of heart.g",
+    "Cardiac veins.g",
+    "Pulmonary arteries.g",
+    "Pulmonary veins.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.5,
+   "min": 300,
+   "max": 5000,
+   "bevel": 2,
+   "resu": 4
+  },
+  {
+   "id": "digestive",
+   "title": "Digestive system",
+   "groups": [
+    "Digestive system.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.6,
+   "min": 300,
+   "max": 5000,
+   "bevel": 2,
+   "resu": 4
+  },
+  {
+   "id": "urinary",
+   "title": "Urinary system",
+   "groups": [
+    "Urinary system.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.8,
+   "min": 300,
+   "max": 5000,
+   "bevel": 2,
+   "resu": 4
+  },
+  {
+   "id": "reproductive",
+   "title": "Male reproductive system",
+   "groups": [
+    "Genital systems.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.8,
+   "min": 200,
+   "max": 4000,
+   "bevel": 2,
+   "resu": 4
+  },
+  {
+   "id": "lymphoid",
+   "title": "Lymphoid organs",
+   "groups": [
+    "Lymphoid organs.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.4,
+   "min": 120,
+   "max": 3000
+  },
+  {
+   "id": "brain",
+   "title": "Brain",
+   "groups": [
+    "Brain.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.55,
+   "min": 150,
+   "max": 3000
+  },
+  {
+   "id": "nerves",
+   "title": "Spinal cord, nerves and eyes",
+   "groups": [
+    "Spinal cord.g",
+    "Peripheral nervous system.g",
+    "Eye.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.5,
+   "min": 100,
+   "max": 3000,
+   "bevel": 1,
+   "resu": 3
+  },
+  {
+   "id": "vessels",
+   "title": "Arteries and veins",
+   "groups": [
+    "Arterial system.g",
+    "Venous system.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.5,
+   "min": 100,
+   "max": 3000,
+   "bevel": 1,
+   "resu": 3
+  },
+  {
+   "id": "skeleton",
+   "title": "Skeleton",
+   "groups": [
+    "Skeletal system.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.3,
+   "min": 150,
+   "max": 3500
+  },
+  {
+   "id": "muscles",
+   "title": "Muscles",
+   "groups": [
+    "Muscular system.g"
+   ],
+   "subsurf": 1,
+   "ratio": 0.15,
+   "min": 120,
+   "max": 2500
+  }
+ ],
+ "colours": {
+  "about": "the colours of the structures (sRGB): by Z-Anatomy material, then overridden by name (a regular expression on the structure's name)",
+  "material": {
+   "Bone": "#e6dcc3",
+   "Suture": "#e6dcc3",
+   "Cartilage": "#b8d4d0",
+   "Teeth": "#f2efe6",
+   "Dentine": "#f2efe6",
+   "Trapezius": "#b5473b",
+   "Muscle": "#b5473b",
+   "Diaphragm": "#b5473b",
+   "Tendon": "#e8e1cf",
+   "Ligament": "#ece5c6",
+   "Artery": "#c62f35",
+   "Vein": "#3b5bb5",
+   "Pulmonary artery": "#5a63c8",
+   "Pulmonary vein": "#cf4a63",
+   "Organ": "#a8553f",
+   "Gland": "#dfa03f",
+   "Mucosa": "#d98a8f",
+   "Mucosa of stomach": "#d07a78",
+   "Intestine": "#d4997e",
+   "Gallbladder": "#4e8a3c",
+   "Ductus": "#e3cf8f",
+   "Bronchi": "#b9cbd9",
+   "Lung": "#e7a3a1",
+   "Brain": "#e9b9a6",
+   "Brain-Inner": "#e3b39a",
+   "Frontal lobe": "#7fb2e5",
+   "Parietal lobe": "#9fd08a",
+   "Temporal lobe": "#f2b36b",
+   "Occipital lobe": "#d48fbf",
+   "Limbic lobe": "#f2dc6b",
+   "Insula": "#e47c6c",
+   "Interlobar sulci": "#c9a28f",
+   "Cerebellum": "#c48a62",
+   "White matter": "#e6e6e6",
+   "LCR": "#6cc3c0",
+   "Nucleus": "#c27a45",
+   "Nucleus (afferent fibers)": "#5aa0d6",
+   "Nucleus (efferent fibers)": "#d65a5a",
+   "Nerve": "#f2d24a",
+   "Lymph": "#7cb86a",
+   "Eye": "#f2f0ea",
+   "Iris": "#6a4632",
+   "Cornea": "#d6ebf2",
+   "Fat": "#f0d890",
+   "Nail": "#f0d8d0",
+   "Peritoneum": "#d8cf8a",
+   "Fascia": "#b8d0e0",
+   "muscle_like": "#b5473b"
+  },
+  "muscle_like": [
+   "Abductor",
+   "Adductor",
+   "Biarticular",
+   "Depressor",
+   "Extension",
+   "Extension hand/foot",
+   "Extensor extremities",
+   "External rotation",
+   "Flexion",
+   "Flexion fingers",
+   "Flexion hand/foot",
+   "Internal rotator",
+   "Levator",
+   "Masticator",
+   "Orbicularis/Constrictor",
+   "Superficial",
+   "Ingestion",
+   "Phonation"
+  ],
+  "name": [
+   [
+    "^Liver$",
+    "#8c3a2b"
+   ],
+   [
+    "^Kidney",
+    "#9b4537"
+   ],
+   [
+    "^Urinary bladder",
+    "#d9a06e"
+   ],
+   [
+    "^Spleen",
+    "#7b2f45"
+   ],
+   [
+    "^Thyroid gland",
+    "#d9663f"
+   ],
+   [
+    "parathyroid",
+    "#f0c419"
+   ],
+   [
+    "^Suprarenal",
+    "#e8b13a"
+   ],
+   [
+    "^Pineal",
+    "#b48ad6"
+   ],
+   [
+    "^Adenohypophysis",
+    "#e68a5c"
+   ],
+   [
+    "^Neurohypophysis",
+    "#c9a77a"
+   ],
+   [
+    "^Hypothalamus",
+    "#e8a6b4"
+   ],
+   [
+    "^Pancreas$",
+    "#e8c070"
+   ],
+   [
+    "^Testis",
+    "#d8b4c0"
+   ],
+   [
+    "thymus",
+    "#c8a2c8"
+   ],
+   [
+    "^Retina",
+    "#e07a5f"
+   ],
+   [
+    "^Lens",
+    "#e8f2f5"
+   ],
+   [
+    "^Vitreous",
+    "#dfeff5"
+   ],
+   [
+    "^Sclera",
+    "#f2f0ea"
+   ],
+   [
+    "^Prostate",
+    "#d9a06e"
+   ],
+   [
+    "^Seminal gland",
+    "#e3c27a"
+   ],
+   [
+    "^Epididymis",
+    "#c99ab0"
+   ],
+   [
+    "^Tongue",
+    "#d77a7a"
+   ],
+   [
+    "^Stomach",
+    "#d07a78"
+   ],
+   [
+    "^Heart",
+    "#a8413a"
+   ],
+   [
+    "papillary muscle",
+    "#c0584a"
+   ],
+   [
+    "leaflet",
+    "#efe3b0"
+   ],
+   [
+    "^Trachea",
+    "#cfdbe3"
+   ]
+  ],
+  "fallback": "#c8b8a8"
+ }
+}

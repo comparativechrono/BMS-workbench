@@ -1,0 +1,329 @@
+{
+ "format": "bms-sims-1",
+ "credit": "PhET Interactive Simulations, University of Colorado Boulder",
+ "licence": "CC BY 4.0",
+ "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+ "topics": [
+  "Membranes and nerves",
+  "Solutions and pH",
+  "Gases and pressure",
+  "Light, vision and optics",
+  "Genes",
+  "Data"
+ ],
+ "sims": [
+  {
+   "id": "neuron",
+   "title": "Neuron",
+   "topics": [
+    "Membranes and nerves"
+   ],
+   "description": "Stimulate a neuron and watch the action potential travel along its axon, with the sodium and potassium channels opening and closing.",
+   "why": "The ionic basis of the action potential: the voltage-gated channels, the ions that move, and the membrane potential on a chart.",
+   "version": "1.1.34",
+   "built": "2025-12-17 03:45:49 UTC",
+   "bytes": 1091886,
+   "credits": {
+    "leadDesign": "Noah Podolefsky, Amanda McGarry",
+    "softwareDevelopment": "John Blanco, Sharfudeen Ashraf",
+    "team": "Wendy Adams, Fanny (Benay) Bentley, Janet Casagrand, Mike Klymkowsky, Ariel Paul, Katherine Perkins",
+    "qualityAssurance": "Steele Dalton, Amanda Davis, Bryce Griebenow, Ethan Johnson, Elise Morgan, Oliver Orejola, Bryan Yoelin",
+    "thanks": "Conversion of this simulation to HTML5 was funded in part by the Ghent University."
+   },
+   "thumb": "neuron/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "membrane-transport",
+   "title": "Membrane Transport",
+   "topics": [
+    "Membranes and nerves"
+   ],
+   "description": "Put solutes either side of a membrane and add channels and carriers: watch diffusion, facilitated diffusion and active transport.",
+   "why": "How solutes cross the cell membrane – through the lipid bilayer, through channels and carriers, and against a gradient with energy.",
+   "version": "1.0.3",
+   "built": "",
+   "bytes": 3342060,
+   "credits": {
+    "leadDesign": "Brett Fiedler, Taliesin Smith",
+    "softwareDevelopment": "Jesse Greenberg, Sam Reid",
+    "team": "Holly Basta, Mike Klymkowsky, Mark Nielsen, Kathy Perkins, Amy Rouinfar, Nancy Salpepi",
+    "contributors": "",
+    "qualityAssurance": "Matthew Moore, Nancy Salpepi, Valentina Pérez, Kathryn Woessner",
+    "graphicArts": "Brett Fiedler",
+    "soundDesign": "Ashton Morris, Emily Moore",
+    "thanks": "HHMI BioInteractive for supporting the design and development of this simulation."
+   },
+   "thumb": "membrane-transport/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "diffusion",
+   "title": "Diffusion",
+   "topics": [
+    "Membranes and nerves",
+    "Gases and pressure"
+   ],
+   "description": "Lift a divider between two gases and see how the number, mass and temperature of the particles change how fast they mix.",
+   "why": "Diffusion down a concentration gradient – the movement of gases and solutes in the body – and what makes it faster or slower.",
+   "version": "1.1.5",
+   "built": "",
+   "bytes": 2371285,
+   "credits": {
+    "leadDesign": "Amy Rouinfar",
+    "softwareDevelopment": "Chris Malley (PixelZoom, Inc.)",
+    "team": "Jack Barbera, John Blanco, Michael Dubson, Amy Hanson, Linda Koch, Ron LeMaster, Trish Loeblein, Emily B. Moore, Ariel Paul, Dennis Perepelitsa, Kathy Perkins, Tom Perkins, Nancy Salpepi, Carl Wieman",
+    "qualityAssurance": "Jaspe Arias, Jaron Droder, Clifford Hardin, Matthew Moore, Liam Mulhall, Jacob Romero, Nancy Salpepi, Luisa Vargas, Kathryn Woessner"
+   },
+   "thumb": "diffusion/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "gas-properties",
+   "title": "Gas Properties",
+   "topics": [
+    "Gases and pressure"
+   ],
+   "description": "Pump particles into a box and change its volume and temperature: see the pressure change, and the gas laws behind it.",
+   "why": "The gas laws (Boyle's and Charles's) that underlie breathing, the partial pressures of the gases in air, and diffusion of gases.",
+   "version": "1.1.6",
+   "built": "",
+   "bytes": 2580775,
+   "credits": {
+    "leadDesign": "Amy Rouinfar",
+    "softwareDevelopment": "Chris Malley (PixelZoom, Inc.)",
+    "team": "Jack Barbera, John Blanco, Michael Dubson, Amy Hanson, Linda Koch, Ron LeMaster, Trish Loeblein, Emily B. Moore, Ariel Paul, Dennis Perepelitsa, Kathy Perkins, Tom Perkins, Nancy Salpepi, Carl Wieman",
+    "qualityAssurance": "Jaspe Arias, Jaron Droder, Clifford Hardin, Matthew Moore, Liam Mulhall, Jacob Romero, Nancy Salpepi, Luisa Vargas, Kathryn Woessner"
+   },
+   "thumb": "gas-properties/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "under-pressure",
+   "title": "Under Pressure",
+   "topics": [
+    "Gases and pressure"
+   ],
+   "description": "Fill a tank with fluids of different density and measure the pressure at different depths, with and without the air above.",
+   "why": "Pressure in a column of fluid (ρgh): why blood pressure differs between the head and the feet, and how pressure is measured against atmospheric pressure.",
+   "version": "1.1.34",
+   "built": "2026-02-11 05:00:33 UTC",
+   "bytes": 1204928,
+   "credits": {
+    "leadDesign": "Sam Reid",
+    "softwareDevelopment": "John Blanco, Aadish Gupta, Sam Reid",
+    "team": "Bryce Gruneich, Trish Loeblein, Ariel Paul, Kathy Perkins, Rachel Pepper, Noah Podolefsky",
+    "qualityAssurance": "Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Ben Roberts",
+    "thanks": "Thanks to Mobile Learner Labs and Actual Concepts for working with the PhET development team to convert this simulation to HTML5."
+   },
+   "thumb": "under-pressure/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "ph-scale",
+   "title": "pH Scale",
+   "topics": [
+    "Solutions and pH"
+   ],
+   "description": "Measure the pH of everyday liquids, dilute them with water, and see the concentrations of H₃O⁺ and OH⁻ on a logarithmic scale.",
+   "why": "What pH means as a logarithmic scale of the hydrogen ion concentration, the pH of body fluids, and the effect of dilution.",
+   "version": "1.7.3",
+   "built": "",
+   "bytes": 2840720,
+   "credits": {},
+   "thumb": "ph-scale/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "acid-base-solutions",
+   "title": "Acid-Base Solutions",
+   "topics": [
+    "Solutions and pH"
+   ],
+   "description": "Compare strong and weak acids and bases: how much of each dissociates, and the pH and conductivity of the solution.",
+   "why": "Weak acids that dissociate only partly – the basis of buffers, and of the bicarbonate buffer of the blood.",
+   "version": "1.3.13",
+   "built": "2026-02-06 18:14:03 UTC",
+   "bytes": 2595812,
+   "credits": {
+    "leadDesign": "Kelly Lancaster",
+    "softwareDevelopment": "Chris Malley (PixelZoom, Inc.)",
+    "team": "Bryce Gruneich, Patricia Loeblein, Emily B. Moore, Robert Parson, Kathy Perkins, Amy Rouinfar",
+    "qualityAssurance": "Steele Dalton, Jaron Droder, Bryce Griebenow, Elise Morgan, Oliver Orejola, Benjamin Roberts, Nancy Salpepi, Kathryn Woessner, Bryan Yoelin",
+    "thanks": "• Conversion of this simulation to HTML5 was funded in part by the Royal Society of Chemistry.<br>• Thanks to Mobile Learner Labs for working with the PhET development team to convert this simulation to HTML5."
+   },
+   "thumb": "acid-base-solutions/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "molarity",
+   "title": "Molarity",
+   "topics": [
+    "Solutions and pH"
+   ],
+   "description": "Change the amount of solute and the volume of solution, and see the concentration in moles per litre.",
+   "why": "Concentration in mol L⁻¹, and the arithmetic of making up solutions and diluting them for a practical.",
+   "version": "1.5.21",
+   "built": "2025-09-03 08:18:06 UTC",
+   "bytes": 1882109,
+   "credits": {
+    "leadDesign": "Julia Chamberlain",
+    "softwareDevelopment": "Chris Malley (PixelZoom, Inc.), John Blanco, Michael Kauzmann, Taylor Want",
+    "team": "Kelly Lancaster, Emily B. Moore, Matthew Moore, Robert Parson, Kathy Perkins, Taliesin Smith, Brianna Tomlinson",
+    "soundDesign": "Ashton Morris",
+    "qualityAssurance": "Jaspe Arias, Logan Bray, Steele Dalton, Alex Dornan, Ethan Johnson, Megan Lai, Elise Morgan, Liam Mulhall, Oliver Orejola, Jacob Romero, Kathryn Woessner, Bryan Yoelin"
+   },
+   "thumb": "molarity/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "beers-law-lab",
+   "title": "Beer's Law Lab",
+   "topics": [
+    "Solutions and pH",
+    "Light, vision and optics"
+   ],
+   "description": "Make up a coloured solution and measure how much light it absorbs as you change its concentration, the path length and the wavelength.",
+   "why": "Spectrophotometry: the Beer–Lambert law (absorbance = ε c l) that turns the absorbance of a solution into its concentration.",
+   "version": "1.8.4",
+   "built": "",
+   "bytes": 2754920,
+   "credits": {},
+   "thumb": "beers-law-lab/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "gene-expression-essentials",
+   "title": "Gene Expression Essentials",
+   "topics": [
+    "Genes"
+   ],
+   "description": "Make proteins from a gene: transcription factors and RNA polymerase make mRNA, and ribosomes translate it.",
+   "why": "Transcription, its control by transcription factors, translation, and the breakdown of mRNA and protein that sets how much is made.",
+   "version": "1.0.34",
+   "built": "2025-11-22 22:02:33 UTC",
+   "bytes": 5017567,
+   "credits": {},
+   "thumb": "gene-expression-essentials/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "color-vision",
+   "title": "Color Vision",
+   "topics": [
+    "Light, vision and optics"
+   ],
+   "description": "Mix red, green and blue light, or filter white light, and see the colour that a person perceives.",
+   "why": "How three kinds of cone and the mixing of their signals give colour vision, and what filters do to the light that reaches the eye.",
+   "version": "1.3.4",
+   "built": "",
+   "bytes": 5768538,
+   "credits": {
+    "leadDesign": "Bryce Gruneich, Kathy Perkins",
+    "softwareDevelopment": "Aaron Davis, Ron LeMaster, Chris Malley (PixelZoom, Inc.), Sam Reid, Marla Schulz, Luisa Vargas",
+    "team": "Wendy Adams, Danielle Harlow, Ariel Paul, Carl Wieman",
+    "qualityAssurance": "Matthew Moore, Ashton Morris, Oliver Orejola, Amy Rouinfar, Nancy Salpepi, Kathryn Woessner Bryan Yoelin",
+    "graphicArts": "Mike Fowler, Mariah Hermsmeyer, Amanda McGarry"
+   },
+   "thumb": "color-vision/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "geometric-optics",
+   "title": "Geometric Optics",
+   "topics": [
+    "Light, vision and optics"
+   ],
+   "description": "Move an object in front of a lens and follow the rays to its image: change the focal length and see the image move and grow.",
+   "why": "How a lens forms an image – the optics of the eye and of the microscope's objective and eyepiece, and their magnification.",
+   "version": "1.3.14",
+   "built": "2026-02-09 22:07:07 UTC",
+   "bytes": 2330681,
+   "credits": {},
+   "thumb": "geometric-optics/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "capacitor-lab-basics",
+   "title": "Capacitor Lab: Basics",
+   "topics": [
+    "Membranes and nerves"
+   ],
+   "description": "Charge a capacitor with a battery and change the area and separation of its plates: see the charge and energy stored.",
+   "why": "The cell membrane as a capacitor: a thin insulator that separates charge, which is why a membrane takes time to charge (Q = CV).",
+   "version": "1.6.37",
+   "built": "2026-02-08 10:35:49 UTC",
+   "bytes": 1535036,
+   "credits": {
+    "leadDesign": "Amy Rouinfar",
+    "softwareDevelopment": "Andrew Adare, Jesse Greenberg, Chris Malley, Emily Randall, Jonathan Olson",
+    "team": "Emily Moore, Ariel Paul, Kathy Perkins, Emily Randall",
+    "qualityAssurance": "Steele Dalton, Amanda Davis, Kerrie Dochen, Bryce Griebenow, Ethan Johnson, Elise Morgan, Liam Mulhall, Oliver Orejola, Arnab Purkayastha, Ben Roberts, Clara Wilson, Bryan Yoelin"
+   },
+   "thumb": "capacitor-lab-basics/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  },
+  {
+   "id": "least-squares-regression",
+   "title": "Least-Squares Regression",
+   "topics": [
+    "Data"
+   ],
+   "description": "Place data points and fit a straight line by eye and by least squares, and see the residuals and the correlation.",
+   "why": "Fitting a straight line to data – a standard curve for an assay, or a calibration – and what the residuals and r tell you.",
+   "version": "1.2.3",
+   "built": "",
+   "bytes": 2346394,
+   "credits": {
+    "leadDesign": "Amanda McGarry",
+    "softwareDevelopment": "Martin Veillette",
+    "team": "Trish Loeblein, Ariel Paul, Kathy Perkins",
+    "qualityAssurance": "Steele Dalton, Matthew Moore, Ashton Morris, Nancy Salpepi, Kathryn Woessner, Bryan Yoelin"
+   },
+   "thumb": "least-squares-regression/thumb.jpg",
+   "thumbSize": [
+    480,
+    315
+   ]
+  }
+ ]
+}
