@@ -391,11 +391,17 @@
 
   /* the Help button at the top of the page */
   MG.page.help = function () {
+    // (the tabs' own icons: on a phone the tabs show only these)
+    const ic = (id) => {
+      const s = document.querySelector(`.wb-tab[data-wb="${id}"] .ic`);
+      return s ? s.outerHTML.replace('class="ic"', 'class="ic help-ic"') : '';
+    };
     MG.modal(
       'How this page works',
       `<ul>
 <li>The <b>instructions</b> are on the left and the <b>workbench</b> is on the right. Drag the divider between them to change their widths; the button at the top left (or <kbd>Ctrl</kbd>+<kbd>\\</kbd>) hides the instructions so that the workbench fills the window.</li>
-<li>The workbench has seven tabs. <b>Microscope</b> is a virtual microscope with slides of human tissues: change the objective, measure, count, label and take pictures. <b>Diagrams</b> draws flow diagrams of physiological control and can run them as a simulation. <b>Circuits</b> builds and runs electrical circuits, including the circuit models of physiology. <b>Exam practice</b> is an essay editor that works like the online exam system, with a word count, a timer and a calculator. <b>3D viewer</b> shows proteins and other molecules in 3D. <b>RStudio</b> is for analysing data in R, and <b>Files</b> holds everything you save.</li>
+<li>The workbench has seven tabs. ${ic('scope')} <b>Microscope</b> is a virtual microscope with slides of human tissues: change the objective, measure, count, label and take pictures. ${ic('flow')} <b>Diagrams</b> draws flow diagrams of physiological control and can run them as a simulation. ${ic('circuit')} <b>Circuits</b> builds and runs electrical circuits, including the circuit models of physiology. ${ic('exam')} <b>Exam practice</b> is an essay editor that works like the online exam system, with a word count, a timer and a calculator. ${ic('viewer')} <b>3D viewer</b> shows proteins and other molecules in 3D. ${ic('rstudio')} <b>RStudio</b> is for analysing data in R, and ${ic('editor')} <b>Files</b> holds everything you save.</li>
+<li>When the workbench is narrow – on a phone or a tablet, or beside the instructions in a small window – the tabs show only their icons (the ones above), and the open tab keeps its name. On a phone, the workbench opens over the instructions with the <b>Workbench</b> button, and the ✕ at the right of its tabs goes back to the instructions.</li>
 <li>The tabs work together: measurements and counts from the microscope, pictures you take, and the results of simulations are saved in <b>Files</b>, where R can read them; and the buttons in the instructions open slides, diagrams, circuits and papers for you.</li>
 <li>The steps of each activity are ticked automatically when you do them (they are marked <b>✓ spotted</b>), and you can also tick them yourself.</li>
 <li>Your ticks and answers, your essays and your files are saved in this browser, so they will still be there if you reload the page. <b>My answers</b> downloads your answers, <b>My files</b> downloads all your files as a .zip file, and each essay can be downloaded as a Word document. Some lab computers clear the browser’s storage when you log out, so download your work before you leave.</li>

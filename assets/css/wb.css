@@ -52,7 +52,9 @@ body.tut-off .tut, body.tut-off .splitter { display: none; }
 .wb-tab.rail-btn { color: var(--accent-2); border: 1px dashed #b9d4df; border-bottom: 0; margin-right: 4px; }
 .wb-tab.rail-btn:hover { background: var(--accent-soft); }
 .splitter:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.tut { min-width: 300px; }
+/* (side by side only: on a phone the instructions are as wide as the screen – a minimum wider than the narrowest
+   phones made the page wider than the screen, and the Workbench button partly off it) */
+@media (min-width: 1001px) { .tut { min-width: 300px; } }
 
 /* ---------------- the tabs of the workbench ---------------- */
 .bench { container-type: inline-size; container-name: bench; }
@@ -61,6 +63,33 @@ body.tut-off .tut, body.tut-off .splitter { display: none; }
 @container bench (max-width: 760px) {
   .wb-tab:not(.on) .lbl { display: none; }
   .wb-tab { padding: 7px 10px 8px; }
+}
+/* the workbench over the instructions (a tablet, or a phone turned sideways): the button back to the instructions
+   needs room as well, so there too the other tabs show only their icons (with all the names, it was pushed off the
+   screen) */
+@media (max-width: 1000px) {
+  .wb-tab:not(.on) .lbl { display: none; }
+  .wb-tab { padding: 7px 10px 8px; }
+}
+/* narrower still (a phone held upright): every tab keeps its icon, and the tabs become smaller, so that all of them and
+   the button back to the instructions fit across the screen. The open tab keeps its name, shortened with … when there
+   isn't room for all of it; on the narrowest screens it shows only its icon, and the button back is just ✕. */
+@container bench (max-width: 560px) {
+  .wb-tabs { gap: 0; padding: 6px 4px 0; }
+  .wb-tab { padding: 7px 5px 8px; gap: 5px; }
+  .wb-tab .ic { flex: none; }
+  .wb-tab.on { padding: 7px 8px 8px; flex: 0 1 auto; min-width: 0; }
+  .wb-tab.on .lbl { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .bench-close { flex: none; margin-left: auto; padding: 4px 8px; }
+}
+@container bench (max-width: 430px) {
+  .wb-tab { padding: 7px 4px 8px; }
+  .bench-close .lbl { display: none; }
+  .bench-close { min-width: 34px; justify-content: center; font-size: 0.95rem; }
+}
+@container bench (max-width: 359px) {
+  .wb-tab, .wb-tab.on { flex: 1 1 0; min-width: 0; padding: 7px 0 8px; justify-content: center; }
+  .wb-tab.on .lbl { display: none; }
 }
 .wb-loading, .wb-failed { padding: 30px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
 .wb-failed { flex-direction: column; align-items: flex-start; color: var(--ink-2); }
@@ -136,7 +165,6 @@ label.check { display: inline-flex; align-items: center; gap: 8px; cursor: point
 }
 @media (max-width: 560px) {
   .brand-title { font-size: 0.92rem; }
-  .wb-tab .ic { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation-duration: 0.01ms !important; }

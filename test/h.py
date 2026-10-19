@@ -78,7 +78,8 @@ class Server:
 
 
 class Page:
-    def __init__(self, isolated=True, width=1500, height=950, extra=None, service_workers='block', base=None):
+    def __init__(self, isolated=True, width=1500, height=950, extra=None, service_workers='block', base=None, mobile=False):
+        """mobile: a phone's browser (touch, a mobile viewport and a screen of 3 device pixels to one CSS pixel)"""
         self.pw = sync_playwright().start()
         proxy = os.environ.get('HTTPS_PROXY') or os.environ.get('https_proxy')
         # (the site on localhost – Server – is not asked for through the proxy: Chromium's own --proxy-server leaves
@@ -88,7 +89,8 @@ class Page:
             args.append('--proxy-server=' + proxy)
         self.browser = self.pw.chromium.launch(headless=True, proxy={'server': proxy} if proxy and not base else None, args=args)
         self.ctx = self.browser.new_context(viewport={'width': width, 'height': height}, service_workers=service_workers,
-                                            accept_downloads=True)
+                                            accept_downloads=True,
+                                            **({'is_mobile': True, 'has_touch': True, 'device_scale_factor': 3} if mobile else {}))
         self.base = base or 'https://bms.test/'
         if not base:
             self.ctx.route('https://bms.test/**', _serve(isolated, extra))
