@@ -47,6 +47,9 @@ DBS = {
     'mitdb': {'name': 'MIT-BIH Arrhythmia Database', 'version': '1.0.0', 'doi': '10.13026/C2F305',
               'cite_database': 'Moody G, Mark R. MIT-BIH Arrhythmia Database (version 1.0.0). PhysioNet (2005). https://doi.org/10.13026/C2F305',
               'cite_original': 'Moody GB, Mark RG. The impact of the MIT-BIH Arrhythmia Database. IEEE Eng in Med and Biol 20(3):45–50 (2001).'},
+    'afdb': {'name': 'MIT-BIH Atrial Fibrillation Database', 'version': '1.0.0', 'doi': '10.13026/C2MW2D',
+             'cite_database': 'Moody G, Mark R. MIT-BIH Atrial Fibrillation Database (version 1.0.0). PhysioNet (2000). https://doi.org/10.13026/C2MW2D',
+             'cite_original': 'Moody GB, Mark RG. A new method for detecting atrial fibrillation using R-R intervals. Computers in Cardiology 10:227–230 (1983).'},
     'ptbdb': {'name': 'PTB Diagnostic ECG Database', 'version': '1.0.0', 'doi': '10.13026/C28C71',
               'cite_original': 'Bousseljot R, Kreiseler D, Schnabel A. Nutzung der EKG-Signaldatenbank CARDIODAT der PTB über das Internet. Biomedizinische Technik 40, Ergänzungsband 1, S 317 (1995).'},
     'challenge-2016': {'name': 'Classification of Heart Sound Recordings: the PhysioNet/Computing in Cardiology Challenge 2016', 'version': '1.0.0',
@@ -67,7 +70,7 @@ DBS = {
 
 # what the labels of the beats and rhythms mean (the MIT-BIH conventions)
 BEAT_MEANING = {
-    'N': 'normal beat', 'L': 'left bundle branch block beat', 'R': 'right bundle branch block beat',
+    'N': 'normal beat: a normally conducted QRS (whatever the rhythm)', 'L': 'left bundle branch block beat', 'R': 'right bundle branch block beat',
     'A': 'atrial premature beat', 'a': 'aberrated atrial premature beat', 'J': 'junctional (nodal) premature beat',
     'S': 'supraventricular premature beat', 'V': 'premature ventricular contraction (ventricular ectopic beat)',
     'F': 'fusion of a ventricular and a normal beat', 'e': 'atrial escape beat', 'j': 'junctional (nodal) escape beat',
@@ -254,6 +257,39 @@ def detect_r(x, fs):
     return np.array(keep) / fs
 
 
+# ------------------------------------------------------------------------------------------------- rhythms
+def rhythm_spans(cache, db, ver, part, ext, dur, names=None):
+    """the rhythms of an excerpt, from the rhythm annotations ('+' with an aux note such as '(AFIB') of a database's
+    annotation file: one span from each change to the next, starting with the rhythm already under way"""
+    hea = cache.get(db, ver, part['record'] + '.hea')
+    hd = wfdb.rdheader(hea[:-4])
+    a0 = int(round(part.get('from', 0) * hd.fs))
+    a1 = int(round(part['to'] * hd.fs)) if part.get('to') is not None else hd.sig_len
+    p = cache.get(db, ver, part['record'] + '.' + ext)
+    base = p[:-(len(ext) + 1)]
+    ann = wfdb.rdann(base, ext, sampfrom=a0, sampto=a1)
+    aux = [s.strip('\x00').strip() for s in ann.aux_note]
+    ch = [((s - a0) / ann.fs, a) for s, sym, a in zip(ann.sample, ann.symbol, aux) if sym == '+' and a.startswith('(')]
+    # the rhythm already under way when the excerpt starts
+    if a0 > 0:
+        full = wfdb.rdann(base, ext, sampto=a0 + 1)
+        before = [a.strip('\x00').strip() for s, a in zip(full.symbol, full.aux_note) if s == '+' and a.strip('\x00').strip().startswith('(')]
+        if before and (not ch or ch[0][0] > 0.01):
+            ch.insert(0, (0.0, before[-1]))
+    names = names or {}
+    out = []
+    for i, (tt, a) in enumerate(ch):
+        code = a.lstrip('(')
+        t1 = ch[i + 1][0] if i + 1 < len(ch) else dur
+        out.append({'t0': round(max(0.0, float(tt)), 3), 't1': round(float(t1), 3), 'code': code,
+                    'text': names.get(code, RHYTHM_MEANING.get(code, code)), 'colour': RHYTHM_COLOUR.get(code, '#eef1f5')})
+    # (a rhythm that starts in the last moment of the excerpt cannot be seen: the one before it runs to the end)
+    while len(out) > 1 and out[-1]['t1'] - out[-1]['t0'] < 0.5:
+        out.pop()
+        out[-1]['t1'] = round(float(dur), 3)
+    return out
+
+
 # ------------------------------------------------------------------------------------------------- making one
 def quantise(x):
     """float samples → int16 with scale and offset (NaN → -32768)"""
@@ -355,20 +391,10 @@ def make(defn, cache, preview=False):
             out['beats'] = {'channel': short.index(B['channel']), 't': bt, 'source': B.get('source', 'database'), 'note': B.get('note', '')}
             if codes:
                 out['beats']['code'] = codes
-                out['beats']['legend'] = {c: BEAT_MEANING[c].capitalize() for c in sorted(set(codes), key=lambda c: (c != 'N', c))}
+                out['beats']['legend'] = {c: BEAT_MEANING[c][0].upper() + BEAT_MEANING[c][1:] for c in sorted(set(codes), key=lambda c: (c != 'N', c))}
             # rhythms: from one change to the next
             if B.get('rhythms'):
-                ch = [(float(tt), a) for tt, s, a in zip(t, sym, aux) if s == '+' and a.startswith('(')]
-                # the rhythm already under way when the excerpt starts
-                full = wfdb.rdann(p[:-(len(B['ann']) + 1)], B['ann'], sampto=a0 + 1) if a0 > 0 else None
-                if full is not None:
-                    before = [a.strip('\x00').strip() for s, a in zip(full.symbol, full.aux_note) if s == '+']
-                    if before and (not ch or ch[0][0] > 0.01):
-                        ch.insert(0, (0.0, before[-1]))
-                for i, (tt, a) in enumerate(ch):
-                    code = a.lstrip('(')
-                    t1 = ch[i + 1][0] if i + 1 < len(ch) else n / fs
-                    rhythms.append({'t0': round(max(0.0, tt), 3), 't1': round(t1, 3), 'code': code, 'text': RHYTHM_MEANING.get(code, code), 'colour': RHYTHM_COLOUR.get(code, '#eef1f5')})
+                rhythms = rhythm_spans(cache, db, ver, part, B['ann'], n / fs)
             if B.get('comments'):
                 for tt, s, a in zip(t, sym, aux):
                     if s == '"' and a in COMMENT_MEANING:
@@ -379,6 +405,10 @@ def make(defn, cache, preview=False):
             bt = detect_r(x[:, k], fs)
             out['beats'] = {'channel': k, 't': [round(float(v), 4) for v in bt], 'source': 'detected',
                             'note': B.get('note', 'The beats were found automatically by the workbench (the R waves of ' + chans[k]['name'] + '), and checked by eye, but not by a cardiologist.')}
+    # the rhythms, from an annotation file of their own (when the beats are not the database's)
+    RH = defn.get('rhythms')
+    if RH:
+        rhythms = rhythm_spans(cache, db, ver, parts[0], RH['ann'], n / fs, RH.get('names'))
     for e in defn.get('events', []):
         ev = {'t': e['t'], 'text': e['text']}
         if e.get('channel'):
@@ -427,7 +457,9 @@ def make(defn, cache, preview=False):
     out['subject'] = defn.get('subject', {})
     # where it comes from
     src = defn['source']
-    excerpt = (f'{round(n / fs)} s ({fmt_s(parts[0].get("from", 0))}–{fmt_s(parts[0].get("from", 0) + n / fs)} s) of'
+    whole = len(parts) == 1 and parts[0].get('to') is None and not parts[0].get('from')
+    excerpt = (f'All {fmt_s(n / fs)} s of' if whole else
+               f'{fmt_s(n / fs)} s ({fmt_s(parts[0].get("from", 0))}–{fmt_s(parts[0].get("from", 0) + n / fs)} s) of'
                if len(parts) == 1 else ' and '.join(f'{fmt_s(p.get("to") - p.get("from", 0))} s of {p["record"].split("/")[-1].replace(".edf", "")} ({fmt_s(p.get("from", 0))}–{fmt_s(p.get("to"))} s)' for p in parts) + ', from')
     records = ', '.join(p['record'].replace('.edf', '') for p in parts)
     out['source'] = {'database': info['name'], 'version': ver, 'url': f'https://physionet.org/content/{db}/{ver}/', 'record': records,

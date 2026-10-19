@@ -17,7 +17,8 @@
      go('respiratory+skeleton')      several systems; the skeleton, when it is named, is shown in full
      go('section:transverse@0.6')    a section: sagittal, coronal or transverse, at 0–1 of the way along the body
                                      (from the right, the back, or the feet); 'section:off' ends it. It can end with a
-                                     view: 'section:transverse@0.45@inferior'. A section leaves the systems as they are;
+                                     view: 'section:transverse@0.45@inferior'; without one, it is seen as such sections are
+                                     shown (as below). A section leaves the systems as they are;
                                      systems named without a section end it. A sagittal section keeps the body's right
                                      half (seen from the left), a coronal one the back half (seen from the front), a
                                      transverse one the part above the cut, seen from below as CT and MRI images are.
@@ -82,12 +83,17 @@
   const lcFirst = (s) => (/^[A-Z][a-z]/.test(s) && !/^(Broca|Wernicke|Jensen|Meckel)/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
   const reduced = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* searching: everyday and older names → the model's names (those of Terminologia Anatomica) */
+  /* searching: everyday and older names → the model's names (those of Terminologia Anatomica), or the names of the groups
+     they stand for (the coronary vessels: the arteries of the heart and the cardiac veins) */
   const SYNONYMS = [
-    ['anterior pituitary', 'adenohypophysis'], ['posterior pituitary', 'neurohypophysis'], ['pituitary', 'hypophysis'],
+    ['anterior pituitary', 'adenohypophysis'], ['posterior pituitary', 'neurohypophysis'], ['pituitary gland', 'hypophysis'], ['pituitary', 'hypophysis'],
     ['adrenal', 'suprarenal'], ['windpipe', 'trachea'], ['voice box', 'larynx'], ['gullet', 'oesophagus'], ['food pipe', 'oesophagus'],
     ['esophagus', 'oesophagus'], ['gall bladder', 'gallbladder'], ['mitral', 'left atrioventricular'], ['bicuspid valve', 'left atrioventricular valve'],
-    ['tricuspid', 'right atrioventricular'], ['venae cavae', 'vena cava'], ['collar bone', 'clavicle'], ['collarbone', 'clavicle'],
+    ['tricuspid', 'right atrioventricular'], ['venae cavae', 'vena cava'], ['coronary vessels', ['arteries of heart', 'cardiac veins', 'coronary']],
+    ['coronary arteries', 'arteries of heart'], ['coronary veins', 'cardiac veins'], ['heart chambers', ['atrium', 'ventricle']],
+    ['chambers of the heart', ['atrium', 'ventricle']], ['chamber', ['atrium', 'ventricle']], ['heart valves', 'valvular complex of heart'],
+    ['valve', 'valvular complex of heart'], ['great vessels', ['pulmonary trunk', 'aorta', 'vena cava', 'pulmonary artery', 'pulmonary vein', 'heart and great vessels']], ['blood vessels', 'arteries and veins'],
+    ['vessels', 'arteries and veins'], ['collar bone', 'clavicle'], ['collarbone', 'clavicle'],
     ['breastbone', 'sternum'], ['breast bone', 'sternum'], ['shoulder blade', 'scapula'], ['kneecap', 'patella'], ['knee cap', 'patella'],
     ['thigh bone', 'femur'], ['thighbone', 'femur'], ['shin bone', 'tibia'], ['shinbone', 'tibia'], ['backbone', 'vertebral column'],
     ['spinal column', 'vertebral column'], ['spine', 'vertebral column'], ['skull', 'cranium'], ['brain stem', 'brainstem'],
@@ -96,7 +102,14 @@
   ];
   /* … and the adjectives of organs, which name their parts and vessels ('laryngeal cartilages', 'renal artery') */
   const FAMILY = [['larynx', 'laryngeal'], ['pharynx', 'pharyngeal'], ['heart', 'cardiac'], ['kidney', 'renal'], ['liver', 'hepatic'],
-    ['stomach', 'gastric'], ['lung', 'pulmonary'], ['brain', 'cerebral'], ['bladder', 'vesical'], ['hypophysis', 'hypophysial'], ['testis', 'testicular']];
+    ['stomach', 'gastric'], ['lung', 'pulmonary'], ['brain', 'cerebral'], ['bladder', 'vesical'], ['hypophysis', 'hypophysial'], ['testis', 'testicular'],
+    ['pelvis', 'pelvic']];
+  /* parts of a structure that are not models of their own */
+  const PARTS = [
+    [/\b(isthmus|pyramidal lobe)\b/i, 'thyroid-gland', 'The isthmus and the pyramidal lobe of the thyroid gland are not separate here: they are part of the model of the gland.'],
+    [/\btracheal (rings?|cartilages?)\b|\brings? of (the )?trachea\b/i, 'trachea', 'The rings of the trachea are not separate here: they are part of the model of the trachea.'],
+    [/\b(pituitary|hypophysial) stalk\b|\binfundibulum\b/i, 'neurohypophysis', 'The pituitary stalk (the infundibulum) is not separate here: it is part of the neurohypophysis.']
+  ];
   /* what the model does not have */
   const ABSENT = [
     [/\b(uterus|womb|ovar(y|ies)|vagina|vulva|uterine tube|fallopian|cervix of uterus|placenta|mammary|breast)\b/i, 'The female reproductive organs are not in the model: it was made from a man’s body.'],
@@ -113,14 +126,26 @@
     if (/(ch|sh|x)es$/.test(w)) return w.slice(0, -2);
     return w.replace(/s$/, '');
   }
-  /** the forms of a search to look for: as typed, in the singular, with the model's names for everyday ones */
+  const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  /** the forms of a search to look for: as typed, in the singular, and with the model's names for everyday ones (main);
+      and with the adjectives of organs (fam: 'renal' for 'kidney'), which find their parts and vessels */
   function variants(q) {
     q = String(q || '').toLowerCase().replace(/\s+/g, ' ').trim();
-    const out = new Set([q]);
-    out.add(q.split(' ').map(singular).join(' '));
-    [...out].forEach((v) => SYNONYMS.forEach(([a, b]) => v.includes(a) && out.add(v.replace(a, b))));
-    [...out].forEach((v) => FAMILY.forEach(([a, b]) => v.includes(a) && out.add(v.replace(a, b))));
-    return [...out].filter((v) => v.length >= 2);
+    const main = new Set([q]);
+    main.add(q.split(' ').map(singular).join(' '));
+    [...main].forEach((v) => SYNONYMS.forEach(([a, b]) => v.includes(a) && [].concat(b).forEach((x) => main.add(v.replace(a, x)))));
+    const fam = new Set();
+    [...main].forEach((v) => FAMILY.forEach(([a, b]) => v.includes(a) && fam.add(v.replace(a, b))));
+    const prep = (v) => ({ v, word: new RegExp('(?:^|[^a-z0-9])' + reEsc(v) + '(?![a-z0-9])'), start: new RegExp('(?:^|[^a-z0-9])' + reEsc(v)) });
+    return { main: [...main].filter((v) => v.length >= 2).map(prep), fam: [...fam].filter((v) => v.length >= 2 && !main.has(v)).map(prep) };
+  }
+  /** a side in a search ('right kidney', 'kidney left'): the side, and the rest of the words */
+  function sideOf(q) {
+    q = String(q || '').toLowerCase().replace(/\s+/g, ' ').trim();
+    let m = /^(left|right) (.+)$/.exec(q);
+    if (m) return { side: m[1], rest: m[2] };
+    m = /^(.+?)(?: | ?\()(left|right)\)?$/.exec(q);
+    return m ? { side: m[2], rest: m[1] } : null;
   }
 
   class AnatomyApp {
@@ -617,6 +642,7 @@
       if (q) {
         const R = this.search_(q);
         if (R.absent) L.appendChild(h('p.an-none.an-absent', R.absent));
+        if (R.note) L.appendChild(h('p.an-none.an-part', R.note));
         if (!R.list.length && !R.absent) L.appendChild(h('p.an-none', 'Nothing has that name. Try part of a name, in English or in Latin.'));
         R.list.slice(0, 80).forEach((r) => L.appendChild(this._row(r.s, { sys: true, via: r.via })));
         if (R.list.length > 80) L.appendChild(h('p.an-none', `…and ${R.list.length - 80} more: type more of the name.`));
@@ -661,28 +687,48 @@
         r.scrollIntoView({ block: 'nearest' });
       }
     }
-    /** the structures a search finds: by their names (English or Latin, everyday names and plurals too), then by the
-        names of their groups and systems ('heart', 'larynx'); and a word on what the model does not have */
+    /** the structures a search finds: by their names (English or Latin, everyday names and plurals too, with a side –
+        'right kidney'), then by the names of their groups and systems ('heart', 'larynx'); and a word on what the
+        model does not have, or on a part that is not a model of its own (the isthmus of the thyroid gland) */
     search_(q) {
-      const vs = variants(q);
+      const V = variants(q), sd = sideOf(q), VS = sd && variants(sd.rest);
+      // (the best first: the very name; a name that starts with the words; the structures directly in a group of that
+      // very name – the chambers of the heart; those further down in it whose names hold the words – the lobes of the
+      // lungs; a name that holds the words; the rest of such a group; a name that holds them within a word, or holds
+      // the adjective of the organ – renal; the members of a group whose name holds them)
+      const rankOf = (s, name, V) => {
+        const nm = name.toLowerCase(), base = s.base.toLowerCase();
+        const hay = nm + ' ' + (s.latin || '').toLowerCase();
+        const groups = s._groups || (s._groups = [s.group || ''].concat((this.index.paths[s.path] || []).filter((g) => g !== s.group), s.systems.map((k) => this.sys[k].title)).filter(Boolean));
+        const lg = s._lg || (s._lg = groups.map((g) => g.toLowerCase()));
+        const M = V.main, F = V.fam;
+        if (M.some((x) => nm === x.v || base === x.v)) return { rank: 0 };
+        if (M.some((x) => nm.startsWith(x.v))) return { rank: 1 };
+        let i = lg.findIndex((g) => M.some((x) => g === x.v));
+        if (i === 0 && s.group) return { rank: 2, via: groups[0] };
+        const word = M.some((x) => x.word.test(hay));
+        if (i >= 0 && word) return { rank: 2.5, via: groups[i] };
+        if (word) return { rank: 3 };
+        if (i >= 0) return { rank: 3.5, via: groups[i] };
+        if (M.some((x) => (x.v.length >= 4 ? hay.includes(x.v) : x.start.test(hay))) || F.some((x) => x.start.test(hay))) return { rank: 4 };
+        i = lg.findIndex((g) => M.concat(F).some((x) => x.v.length >= 4 && g.includes(x.v)));
+        if (i >= 0) return { rank: 5, via: groups[i] };
+        return null;
+      };
       const list = [];
+      const part = PARTS.find(([re]) => re.test(q));
       Object.values(this.S).forEach((s) => {
-        const nm = s.name.toLowerCase();
-        const hay = s._hay || (s._hay = (s.name + ' ' + (s.latin || '')).toLowerCase());
-        const groups = s._groups || (s._groups = [s.group || ''].concat(this.index.paths[s.path] || [], s.systems.map((k) => this.sys[k].title)).filter(Boolean));
-        const lg = groups.map((g) => g.toLowerCase());
-        // (first a name that starts with the words; then the members of a group of that very name – the heart, the
-        // larynx; then a name that holds them; then the members of a group or system whose name holds them)
-        let rank = -1, via = null, i;
-        if (vs.some((v) => nm.startsWith(v))) rank = 0;
-        else if ((i = lg.findIndex((g) => vs.includes(g))) >= 0) (rank = 1), (via = groups[i]);
-        else if (vs.some((v) => hay.includes(v))) rank = 2;
-        else if ((i = lg.findIndex((g) => vs.some((v) => g.includes(v)))) >= 0) (rank = 3), (via = groups[i]);
-        if (rank >= 0) list.push({ s, rank, via });
+        let r = rankOf(s, s.name, V);
+        if (sd && s.side === sd.side) {
+          const r2 = rankOf(s, s.base, VS);
+          if (r2 && (!r || r2.rank < r.rank)) r = r2;
+        }
+        if (part && part[1] === s.id) r = { rank: -1 };
+        if (r) list.push({ s, rank: r.rank, via: r.via || null });
       });
       list.sort((a, b) => a.rank - b.rank || a.s.name.localeCompare(b.s.name));
       const ab = ABSENT.find(([re]) => re.test(q));
-      return { list, absent: ab ? ab[1] : null };
+      return { list, absent: ab ? ab[1] : null, note: part ? part[2] : null };
     }
     _searched() {
       clearTimeout(this._searchT);
@@ -1473,6 +1519,8 @@
         }
       }
       if (this.findTask) this.cancelFind(true);
+      // (on a phone the list lies over the view: what the instructions ask to be shown must be seen)
+      if (this._narrow() && !this.panel.hidden) this.togglePanel(false, true);
       if (systems.length) {
         const on = {};
         systems.forEach((k) => (on[k] = 1));
@@ -1488,11 +1536,13 @@
       if (section) this.setSection(section.axis, section.at, { say: true, flip: false });
       else if (systems.length && this.section) this.setSection('off');
       if (labels) this.setLabels(true, true);
-      if (sel) await this.select(sel, { say: true, by: 'go', frame: true, view: view || 'anterior' });
+      // (without a view, a section is seen as such sections are shown – a transverse one from below; else from the front)
+      const secView = section && AXES[section.axis] ? AXES[section.axis].view : null;
+      if (sel) await this.select(sel, { say: true, by: 'go', frame: true, view: view || secView || 'anterior' });
       else {
         if (systems.length && this.sel.length) this.select([], { quiet: true });
-        if (systems.length || view) {
-          const v = view && VIEWS[view] ? view : 'anterior';
+        if (systems.length || view || secView) {
+          const v = view && VIEWS[view] ? view : secView || 'anterior';
           this._lastView = v;
           await this._frameShown(v);
         }
@@ -1512,6 +1562,7 @@
         return;
       }
       const s0 = this.S[targets[0]];
+      if (this._narrow() && !this.panel.hidden) this.togglePanel(false, true);
       if (!targets.some((id) => this.S[id].systems.some((k) => this.on[k]))) {
         const k = sysId || s0.systems[0];
         const on = Object.assign({}, this.on, { [k]: 1 });

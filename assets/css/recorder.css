@@ -71,6 +71,8 @@
 .rc-mch { max-width: 110px; padding: 1px 3px; }
 .rc-warn { color: var(--warn); font-size: 0.76rem; }
 .rc-add { flex: none; }
+.rc-mv b.rc-hz { font-weight: 600; }
+.rc-iv { max-width: 78px; padding: 2px 1px; }
 
 /* ---------- the chart ---------- */
 .rc-chart { flex: 1; position: relative; min-height: 0; outline: none; background: #fff; }
@@ -129,7 +131,15 @@
 .rc-cm:focus { border-color: var(--accent); outline: none; }
 .rc-acts { white-space: nowrap; width: 1%; }
 .rc-pad td small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 110px; }
-.rc-sum { font-weight: 650; margin: 8px 0; font-size: 0.82rem; }
+.rc-rk-w { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.rc-pad td .rc-rk-w small { display: inline; max-width: 64px; }
+.rc-rk { font-size: 0.72rem; padding: 0 1px; max-width: 64px; }
+.rc-pad td.rc-na { color: var(--muted); }
+.rc-sum { margin: 8px 0; font-size: 0.82rem; line-height: 1.45; }
+.rc-sum b { font-weight: 700; }
+.rc-sum .rc-hr { font-weight: 700; color: #c2410c; }
+.rc-sum small { color: var(--muted); font-size: 0.76rem; }
+.rc-sum .rc-dot { color: var(--muted); }
 .rc-chans { list-style: none; padding: 0; margin: 6px 0; }
 .rc-chans li { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .rc-chans small { color: var(--muted); font-size: 0.74rem; margin-left: auto; font-variant-numeric: tabular-nums; }
@@ -146,7 +156,7 @@
 @container rec (max-width: 860px) {
   .rc-list { position: absolute; left: 0; top: 0; bottom: 0; z-index: 30; box-shadow: var(--shadow-l); width: min(290px, 88%); }
   .rc-list-x { display: inline-flex; }
-  .rc-side { position: absolute; right: 0; top: 0; bottom: 0; z-index: 25; box-shadow: var(--shadow-l); width: min(340px, 92%); }
+  .rc-side { position: absolute; right: 0; top: 0; bottom: 0; z-index: 25; box-shadow: var(--shadow-l); width: min(340px, 92%); border-top: 1px solid var(--line); }
   .rc-title { max-width: 150px; }
   .rc-bar .rc-sep { display: none; }
   .rc-play span { display: none; }

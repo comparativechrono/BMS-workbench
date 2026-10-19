@@ -213,15 +213,32 @@ words = {'adrenal': 'suprarenal-gland-left', 'adrenal glands': 'suprarenal-gland
          'hypothalamus': 'hypothalamus', 'trachea': 'trachea', 'windpipe': 'trachea', 'left ventricle': 'left-ventricle', 'pulmonary trunk': 'pulmonary-trunk',
          'pulmonary arteries': 'left-pulmonary-artery', 'aortic arch': 'aortic-arch', 'aorta': 'ascending-aorta', 'venae cavae': 'superior-vena-cava',
          'coronary vessels': 'right-coronary-artery', 'kidneys': 'kidney-left', 'cricoid cartilage': 'cricoid-cartilage', 'oesophagus': 'oesophagus',
-         'esophagus': 'oesophagus', 'vertebral column': 'vertebra-l1', 'intestines': 'duodenum', 'endocrine glands': 'thyroid-gland', 'Glandula thyreoidea': 'thyroid-gland'}
+         'esophagus': 'oesophagus', 'vertebral column': 'vertebra-l1', 'intestines': 'duodenum', 'endocrine glands': 'thyroid-gland', 'Glandula thyreoidea': 'thyroid-gland',
+         'pituitary gland': 'adenohypophysis', 'pituitary stalk': 'neurohypophysis', 'coronary arteries': 'left-coronary-artery', 'pulmonary veins': 'left-superior-pulmonary-vein',
+         'right ventricle': 'right-ventricle', 'left atrium': 'left-atrium', 'chambers': 'right-atrium', 'valves': 'septal-leaflet-of-right-atrioventricular-valve',
+         'vertebrae': 'vertebra-c5', 'T12': 'vertebra-t12', 'liver': 'liver', 'sternum': 'body-of-sternum', 'great vessels': 'pulmonary-trunk', 'right kidney': 'kidney-right'}
 miss = {}
 for w, want in words.items():
     got = p.js(f"(q) => {A}.search_(q).list.slice(0, 80).map(r => r.s.id)", w)
     if want not in got:
         miss[w] = got[:4]
 check(not miss, f'the search finds what the chapter names by the words it uses (adrenal, pituitary, larynx, heart…): missed {miss}')
-top = p.js(f"() => {A}.search_('heart').list.slice(0, 20).map(r => r.s.id)")
-check('left-ventricle' in top and 'right-atrium' in top, f"'heart' lists the heart's own parts first: {top[:6]}")
+top = p.js(f"() => {A}.search_('heart').list.slice(0, 4).map(r => r.s.id)")
+check(sorted(top) == ['left-atrium', 'left-ventricle', 'right-atrium', 'right-ventricle'], f"'heart' lists the heart's four chambers first: {top}")
+top = p.js(f"() => {A}.search_('lungs').list.slice(0, 5).map(r => r.s.id)")
+check(all('lobe' in x for x in top), f"'lungs' lists the lobes of the lungs first: {top}")
+first = {'right kidney': 'kidney-right', 'kidney left': 'kidney-left', 'left suprarenal gland': 'suprarenal-gland-left', 'bladder': 'urinary-bladder', 'kidneys': 'kidney-left',
+         'thyroid gland': 'thyroid-gland', 'windpipe': 'trachea', 'isthmus': 'thyroid-gland', 'tracheal rings': 'trachea', 'aortic arch': 'aortic-arch'}
+wrong = {}
+for w, want in first.items():
+    got = p.js(f"(q) => {A}.search_(q).list.slice(0, 1).map(r => r.s.id)", w)
+    if got != [want]:
+        wrong[w] = got
+check(not wrong, f'the structure itself comes first (with its side: "right kidney"; a part that is not a model of its own: "isthmus"): {wrong}')
+cv = p.js(f"() => {A}.search_('coronary vessels').list.map(r => r.s.id)")
+check({'right-coronary-artery', 'left-coronary-artery', 'great-cardiac-vein', 'coronary-sinus'} <= set(cv), f"'coronary vessels' finds the arteries and the veins of the heart ({len(cv)})")
+search('isthmus')
+check('part of the model of the gland' in p.js(f"() => {A}.list.innerText"), 'a search for the isthmus says that it is part of the thyroid gland')
 search('ovary')
 check('man’s body' in p.js(f"() => {A}.list.innerText"), 'a search for what the model does not have says so (the female organs)')
 search('')
@@ -301,6 +318,7 @@ check(p.js(f"() => {A}.S['right-testicular-artery-right'].name") == 'Right testi
 check(not p.errors, 'no page errors: ' + '; '.join(p.errors[:3]))
 
 # ---------------------------------------------------------------- a model that cannot be loaded
+p.js(f"() => {A}.togglePanel(true)")
 p.p.route('**/anatomy/lymphoid.glb', lambda r: r.fulfill(status=404, body='not found'))
 p.js(f"() => {A}.go('lymphoid')")
 p.wait(f"() => {A}.files.lymphoid.state === 'failed'", timeout=30000)
@@ -397,8 +415,10 @@ check(not p.js(f"() => {A}.panel.hidden") and pw[1] <= pw[2] + 1, f'the list ope
 p.shot('anatomy-phone-list')
 p.js(f"() => {A}.go('urinary+section:transverse@0.6')")
 idle()
-SB = p.js(f"""() => {{ const v = {A}.view.getBoundingClientRect(); return [...{A}.secBar.children].every(c => {{ const k = c.getBoundingClientRect(); return k.left >= v.left - 0.5 && k.right <= v.right + 0.5; }}); }}""")
-check(SB, 'on a phone the section bar fits in the view')
+check(p.js(f"() => {A}.panel.hidden"), 'a button of the instructions closes the drawer, so that what it shows is seen')
+check(p.js(f"() => {A}._viewDir()")[1] < -0.95, 'a transverse section asked for without a view is seen from below, as CT shows it')
+SB = p.js(f"""() => {{ const v = {A}.view.getBoundingClientRect(); return [{A}.secBar, ...{A}.secBar.children].every(c => {{ const k = c.getBoundingClientRect(); return k.left >= v.left - 0.5 && k.right <= v.right + 0.5 && k.bottom <= v.bottom + 0.5; }}); }}""")
+check(SB, 'on a phone the section bar, with Flip and its ✕, fits in the view')
 p.shot('anatomy-phone-section')
 check(not p.errors, 'no page errors on the phone: ' + '; '.join(p.errors[:3]))
 p.close()

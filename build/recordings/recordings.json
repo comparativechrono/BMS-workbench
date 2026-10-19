@@ -6,7 +6,7 @@
    "title": "Sinus rhythm",
    "group": "The ECG",
    "summary": "Two leads of an ECG in sinus rhythm, with every beat labelled.",
-   "description": "A minute of an ECG recorded on a portable recorder, in sinus rhythm: each beat starts with a P wave, followed by a QRS complex and a T wave, and the beats come at a fairly steady rate. The upper channel is a modified lead II, the lower one a chest lead (V5). Each beat was labelled by cardiologists (N: a normal beat).",
+   "description": "A minute of an ECG recorded on a portable recorder, in sinus rhythm: each beat starts with a P wave, followed by a QRS complex and a T wave, and the beats come at a fairly steady rate. The upper channel is a modified lead II, the lower one a chest lead (V5). Each beat was labelled by cardiologists (N: a normally conducted beat).",
    "look_for": ["The P wave, the QRS complex and the T wave of each beat", "The R–R interval between two beats, and the heart rate it gives (60 ÷ the R–R interval in seconds)", "The PR interval (from the start of the P wave to the start of the QRS) and the QT interval (from the start of the QRS to the end of the T wave)"],
    "source": {"db": "mitdb", "record": "100", "from": 480, "to": 540},
    "channels": [
@@ -52,7 +52,7 @@
    "title": "Ventricular ectopic beats",
    "group": "The ECG",
    "summary": "Premature beats that start in the ventricles, at times after every normal beat.",
-   "description": "A minute of ECG in which normal beats (N) alternate, at times, with premature ventricular contractions (V): early, wide and oddly shaped QRS complexes, with no P wave before them, followed by a long pause. When every other beat is ectopic the rhythm is called ventricular bigeminy (the strip at the top names the rhythm). The beats were labelled by cardiologists.",
+   "description": "A minute of ECG in which normally conducted beats (N) alternate, at times, with premature ventricular contractions (V): early, wide and oddly shaped QRS complexes, with no P wave before them, followed by a long pause. When every other beat is ectopic the rhythm is called ventricular bigeminy (the strip at the top names the rhythm). The beats were labelled by cardiologists.",
    "look_for": ["The width of a normal QRS and of an ectopic one", "No P wave before an ectopic beat, and its T wave pointing the opposite way to its QRS", "The pause after an ectopic beat: compare the R–R intervals before and after it"],
    "source": {"db": "mitdb", "record": "119", "from": 10, "to": 70},
    "channels": [
@@ -61,7 +61,7 @@
    ],
    "beats": {"ann": "atr", "channel": "II", "source": "expert", "labels": true, "rhythms": true, "comments": true,
              "note": "Each beat was labelled by two cardiologists working independently, who then settled their differences (the reference labels of the MIT-BIH database)."},
-   "view": {"t0": 5, "span": 10},
+   "view": {"t0": 8, "span": 10},
    "subject": {"age": 51, "sex": "woman", "notes": "Taking Pronestyl (procainamide), as the database records; it notes that her ectopic beats all have the same shape."},
    "changes": "A one-minute excerpt; the samples are stored as 16-bit numbers."
   },
@@ -69,19 +69,19 @@
    "id": "ecg-af",
    "title": "Atrial fibrillation",
    "group": "The ECG",
-   "summary": "Atrial fibrillation stops, sinus rhythm returns for a while, and then the atria fibrillate again.",
-   "description": "In atrial fibrillation the atria do not contract together: there are no P waves, the baseline wavers, and the ventricles beat at irregular intervals. In this excerpt the fibrillation stops after about 20 seconds; after a pause of a couple of seconds, sinus rhythm returns, with a P wave before each QRS, and then the atria start to fibrillate again. The strip at the top names the rhythm, as the cardiologists who labelled it did.",
-   "look_for": ["No P waves, and irregular R–R intervals, during the fibrillation", "The pause when the fibrillation stops", "A P wave before each QRS in sinus rhythm, and the more regular R–R intervals"],
-   "source": {"db": "mitdb", "record": "219", "from": 280, "to": 345},
+   "summary": "Sinus rhythm, and then the atria start to fibrillate.",
+   "description": "In atrial fibrillation the atria do not contract together: there are no P waves, and impulses reach the ventricles at irregular intervals, so the R–R intervals vary without any pattern (the small, fast fibrillation waves that take the place of the P waves are often too small to see, as here). This excerpt of an ambulatory ECG begins in sinus rhythm: a small P wave before each QRS (zoom in to see it; it is clearest in ECG 2) and nearly equal R–R intervals. After about 28 seconds the atria start to fibrillate, and the ventricles beat faster and irregularly. The strip at the top names the rhythm as the database marks it (it marks atrial fibrillation, atrial flutter and junctional rhythm, and calls the rest 'other rhythms': here sinus rhythm, as the P waves and the regular beats show).",
+   "look_for": ["The R–R intervals: nearly equal in sinus rhythm, varying without any pattern once the fibrillation starts (measure a few of each)", "A small P wave before each QRS in sinus rhythm (zoom in; it is clearest in ECG 2), and none during the fibrillation", "The rate of the ventricles before and during the fibrillation (switch on the heart rate)"],
+   "source": {"db": "afdb", "record": "04048", "from": 8566, "to": 8615.5},
    "channels": [
-    {"src": "MLII", "name": "ECG (lead II)", "short": "II", "kind": "ecg", "units": "mV", "about": "a modified lead II"},
-    {"src": "V1", "name": "ECG (V1)", "short": "V1", "kind": "ecg", "units": "mV", "about": "a chest lead, to the right of the breastbone"}
+    {"src": "ECG1", "name": "ECG 1", "short": "ECG1", "kind": "ecg", "units": "mV", "about": "the first lead of an ambulatory ECG recorder (the database does not say which leads were used)"},
+    {"src": "ECG2", "name": "ECG 2", "short": "ECG2", "kind": "ecg", "units": "mV", "about": "the second lead, in which the P waves are clearer"}
    ],
-   "beats": {"ann": "atr", "channel": "II", "source": "expert", "labels": true, "rhythms": true, "comments": true,
-             "note": "Each beat was labelled by two cardiologists working independently, who then settled their differences (the reference labels of the MIT-BIH database)."},
-   "view": {"t0": 14, "span": 15},
-   "subject": {"sex": "man", "notes": "Taking digoxin, as the database records (his age is not given)."},
-   "changes": "An excerpt of 65 seconds; the samples are stored as 16-bit numbers."
+   "beats": {"detect": "ECG1", "note": "The beats were found automatically by the workbench (the R waves of ECG 1) and checked by eye, and against the database's own beat marks (which a program made, and nobody checked); they are not labelled."},
+   "rhythms": {"ann": "atr", "names": {"N": "Sinus rhythm"}},
+   "view": {"t0": 16, "span": 20},
+   "subject": {"notes": "One of 25 people with atrial fibrillation, mostly paroxysmal (it comes and goes), whose 10-hour ambulatory ECGs make up the database; their age and sex are not given."},
+   "changes": "Under a minute (49.5 seconds) of a 10-hour recording; the samples are stored as 16-bit numbers."
   },
   {
    "id": "ecg-block",
@@ -111,7 +111,7 @@
    "source": {"db": "challenge-2016", "record": "training-a/a0029"},
    "channels": [
     {"src": "PCG", "name": "Heart sounds (PCG)", "short": "PCG", "kind": "pcg", "units": "a.u.", "audio": true, "about": "the sound picked up by an electronic stethoscope on the chest, in arbitrary units"},
-    {"src": "ECG", "name": "ECG", "short": "ECG", "kind": "ecg", "units": "mV"}
+    {"src": "ECG", "name": "ECG", "short": "ECG", "kind": "ecg", "units": "a.u.", "about": "recorded at the same time; the database gives no calibration for it, so its size is in arbitrary units"}
    ],
    "beats": {"detect": "ECG"},
    "heart_sounds": {"file": "annotations/hand_corrected/training-a_StateAns/a0029_StateAns.mat", "channel": "PCG", "fs": 2000},
@@ -194,10 +194,10 @@
    "title": "EMG: a healthy muscle",
    "group": "Muscle (EMG)",
    "summary": "Motor unit potentials of a healthy muscle during a gentle contraction.",
-   "description": "The electrical activity of the tibialis anterior, the muscle at the front of the shin, recorded with a needle electrode while the person gently pulled the foot up against resistance, and then relaxed. Each spike is a motor unit action potential: the summed action potentials of the muscle fibres of one motor unit, which fire together. In a healthy muscle many motor units fire, and their potentials overlap. Switch on Sound and press Play to hear it.",
+   "description": "The electrical activity of the tibialis anterior, the muscle at the front of the shin, recorded with a needle electrode while the person gently pulled the foot up against resistance, and then relaxed. Each spike is a motor unit action potential: the summed action potentials of the muscle fibres of one motor unit, which fire together. In a healthy muscle many motor units fire, and their potentials overlap. All three EMG recordings open on the same scale (−3.5 to +3.5 mV) and the same time scale, so that the sizes of their potentials can be compared (Fit, in the menu of the channel's name, enlarges it). Switch on Sound and press Play to hear it.",
    "look_for": ["The shape and size of single motor unit potentials", "How the activity changes as the contraction ends"],
    "source": {"db": "emgdb", "record": "emg_healthy"},
-   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "about": "a concentric needle electrode in the muscle"}],
+   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "range": [-3.5, 3.5], "about": "a concentric needle electrode in the muscle; all three EMG recordings open on this scale, −3.5 to +3.5 mV"}],
    "view": {"t0": 0, "span": 2},
    "subject": {"age": 44, "sex": "man", "notes": "No history of neuromuscular disease, as the database records."},
    "changes": "The whole recording (the database recorded at 50 000 samples a second and keeps 4000); the samples are stored as 16-bit numbers."
@@ -207,10 +207,10 @@
    "title": "EMG: myopathy",
    "group": "Muscle (EMG)",
    "summary": "Small, short motor unit potentials in a diseased muscle.",
-   "description": "The same muscle (tibialis anterior), recorded in the same way, in a man with a myopathy: an inflammatory disease of the muscle fibres (polymyositis). Each motor unit has lost muscle fibres, so its potentials are small and short, and often have many phases; many units have to fire even for a gentle contraction. Compare it with the healthy muscle at the same time scale.",
+   "description": "The same muscle (tibialis anterior), recorded in the same way, in a man with a myopathy: an inflammatory disease of the muscle fibres (polymyositis). Each motor unit has lost muscle fibres, so its potentials are small and short, and often have many phases; many units have to fire even for a gentle contraction. Compare it with the healthy muscle: all three EMG recordings open on the same scale (−3.5 to +3.5 mV) and the same time scale.",
    "look_for": ["The size and length of the motor unit potentials, compared with the healthy muscle", "How crowded the recording is during the contraction"],
    "source": {"db": "emgdb", "record": "emg_myopathy"},
-   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "about": "a concentric needle electrode in the muscle"}],
+   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "range": [-3.5, 3.5], "about": "a concentric needle electrode in the muscle; all three EMG recordings open on this scale, −3.5 to +3.5 mV"}],
    "view": {"t0": 0, "span": 2},
    "subject": {"age": 57, "sex": "man", "notes": "A myopathy from long-standing polymyositis, treated with steroids and low-dose methotrexate, as the database records."},
    "changes": "The whole recording (the database recorded at 50 000 samples a second and keeps 4000); the samples are stored as 16-bit numbers."
@@ -220,10 +220,10 @@
    "title": "EMG: neuropathy",
    "group": "Muscle (EMG)",
    "summary": "Large motor unit potentials firing fast, after the loss of motor neurones.",
-   "description": "The same muscle (tibialis anterior), recorded in the same way, in a man whose nerve supply to it is damaged (a radiculopathy: an injured nerve root, L5). Fewer motor units are left, so each has to fire faster; and the surviving motor neurones have taken over muscle fibres that lost their nerve, so their potentials are large. Compare it with the healthy muscle at the same time scale.",
+   "description": "The same muscle (tibialis anterior), recorded in the same way, in a man whose nerve supply to it is damaged (a radiculopathy: an injured nerve root, L5). Fewer motor units are left, so each has to fire faster; and the surviving motor neurones have taken over muscle fibres that lost their nerve, so their potentials are large. Compare it with the healthy muscle: all three EMG recordings open on the same scale (−3.5 to +3.5 mV) and the same time scale.",
    "look_for": ["The size of the motor unit potentials, compared with the healthy muscle", "The rate at which one motor unit fires: measure the interval between its potentials"],
    "source": {"db": "emgdb", "record": "emg_neuropathy"},
-   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "about": "a concentric needle electrode in the muscle"}],
+   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "range": [-3.5, 3.5], "about": "a concentric needle electrode in the muscle; all three EMG recordings open on this scale, −3.5 to +3.5 mV"}],
    "view": {"t0": 0, "span": 2},
    "subject": {"age": 62, "sex": "man", "notes": "Chronic low back pain and a neuropathy from a right L5 radiculopathy, as the database records."},
    "changes": "The whole recording (the database recorded at 50 000 samples a second and keeps 4000); the samples are stored as 16-bit numbers."

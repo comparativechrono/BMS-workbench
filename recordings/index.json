@@ -76,19 +76,19 @@
    "id": "ecg-af",
    "title": "Atrial fibrillation",
    "group": "The ECG",
-   "summary": "Atrial fibrillation stops, sinus rhythm returns for a while, and then the atria fibrillate again.",
-   "duration": 65.0,
+   "summary": "Sinus rhythm, and then the atria start to fibrillate.",
+   "duration": 49.5,
    "kind": "ecg",
-   "fs": 360,
+   "fs": 250,
    "channels": [
-    "II",
-    "V1"
+    "ECG1",
+    "ECG2"
    ],
-   "bytes": 93600,
-   "database": "MIT-BIH Arrhythmia Database",
-   "url": "https://physionet.org/content/mitdb/1.0.0/",
+   "bytes": 49500,
+   "database": "MIT-BIH Atrial Fibrillation Database",
+   "url": "https://physionet.org/content/afdb/1.0.0/",
    "licence": "Open Data Commons Attribution License v1.0",
-   "licence_url": "https://physionet.org/content/mitdb/view-license/1.0.0/"
+   "licence_url": "https://physionet.org/content/afdb/view-license/1.0.0/"
   },
   {
    "id": "ecg-block",

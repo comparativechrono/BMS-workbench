@@ -23,18 +23,29 @@
      tool('listen' | 'listen:off')  hear a heart-sound or EMG channel while it plays
      tool('about' | 'datapad' | 'channels' | 'list')   show a panel
      tool('add')                    add the measurement between the cursors to the data pad
+     tool('padfile')                show the data pad's file (~/recorder/measurements.csv) in Files
      tool('export' | 'capture' | 'autoscale' | 'clear')
      toR('measurements')            a script that reads ~/recorder/measurements.csv, opened in RStudio
      toR('<recording id>')          the recording as a CSV file (~/recorder/<id>.csv) and a script that plots it
+
+   What an interval is: R-R (from one R wave to the next), PR, QRS, QT or other. The Recorder guesses it from where the
+   cursors lie on an ECG with beats (other for anything else); the menu beside the Data pad button, and each row of the
+   data pad, can change it. The data pad's heart rate comes from its R-R rows only.
 
    Events (MG.bus), for the steps of the practicals that tick themselves:
      rec:open     {id, title, group}                     a recording is opened
      rec:view     {id, t0, t1, span}                     the view settles after a move or a zoom (seconds)
      rec:tool     {name}                                 pan, calipers or marker is chosen
      rec:play     {id, on, speed}                        playing starts or stops
-     rec:measure  {id, channel, dt, dy, rate, units}     two cursors are placed: dt in s, rate per minute (60 / dt),
-                                                         dy the change in the channel measured
-     rec:datapad  {id, n, channel, dt, rate}             a measurement is added to the data pad (n: rows in it)
+     rec:measure  {id, kind: 'interval', channel, signal, interval, t1, t2, dt, dy, rate, hz, units}
+                                                         the calipers measure an interval: t1 < t2 and dt in s, rate per
+                                                         minute (60 / dt) and hz (1 / dt), dy the change in the channel;
+                                                         signal: the kind of channel (ecg, eeg, emg, bp, …); interval:
+                                                         R-R, PR, QRS, QT or other
+                  {id, kind: 'point', channel, signal, t, value, units}   the marker is put down (or moved)
+     rec:datapad  {id, n, channel, interval, dt, rate, n_rr, n_pr, n_qrs, n_qt, n_other}
+                                                         a row is added to the data pad, or its interval changed (n: rows
+                                                         in it; n_rr…: the rows of this recording of each interval)
      rec:hr       {id, on}                               the heart-rate channel is switched on or off
      rec:listen   {id, on}
      rec:export   {id, path, rows}
@@ -76,6 +87,21 @@
   const SPANS = [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 30, 60, 120, 300, 600];
   const GUTTER = 54; // the scale on the left of the traces (css px)
   const RIGHT = 10;
+  /* what an interval is (the data pad's kind of row): its value, its label, and what it means */
+  const INTERVALS = [
+    ['R-R', 'R–R', 'R–R interval: from one R wave to the next (the heart rate comes from these)'],
+    ['PR', 'PR', 'PR interval: from the start of the P wave to the start of the QRS'],
+    ['QRS', 'QRS', 'QRS duration'],
+    ['QT', 'QT', 'QT interval: from the start of the QRS to the end of the T wave'],
+    ['other', 'other', 'anything else']
+  ];
+  const IV_LABEL = Object.fromEntries(INTERVALS.map(([v, l]) => [v, l]));
+  const IV_TEXT = { 'R-R': 'an R–R interval', PR: 'a PR interval', QRS: 'a QRS duration', QT: 'a QT interval', other: '“other”' };
+  const IV_OK = (v) => Object.prototype.hasOwnProperty.call(IV_LABEL, v);
+  /** the kind of a row of the data pad (rows kept before there were kinds count as other) */
+  const padKind = (r) => (r && IV_OK(r.kind) ? r.kind : 'other');
+  /* (a rate means something for an interval that repeats: from one beat or wave to the next – not for a PR, QRS or QT) */
+  const HAS_RATE = (iv) => iv === 'R-R' || iv === 'other';
 
   /* ---------- small helpers ---------- */
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -119,6 +145,7 @@
   };
   const fmtDt = (dt) => (dt >= 10 ? dt.toFixed(1) : dt >= 1 ? dt.toFixed(2) : dt.toFixed(3)) + ' s';
   const fmtRate = (r) => (r >= 100 ? r.toFixed(0) : r.toFixed(1));
+  const fmtHz = (f) => (f >= 100 ? f.toFixed(0) : f >= 10 ? f.toFixed(1) : f.toFixed(2));
   /** a name for a column of a CSV file that R reads as it is: "ECG (MLII)", "mV" → ecg_mlii_mV */
   const colName = (c) => {
     const base = (c.short || c.name).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'channel';
@@ -277,6 +304,21 @@
     _narrow() {
       return (this.root.clientWidth || 1000) < 860;
     }
+    /** where the list and the side panel lie over the chart (a narrow pane, beside the instructions or on a phone): close
+        them, so that the whole chart can be seen and used → whether one was open */
+    _closeOverlays() {
+      if (!this._narrow()) return false;
+      let did = false;
+      if (!this.side.hidden) {
+        this.showSide(null, true);
+        did = true;
+      }
+      if (!this.list.hidden) {
+        this.toggleList(false, true);
+        did = true;
+      }
+      return did;
+    }
     shown() {
       setTimeout(() => this._resize(), 20);
     }
@@ -408,8 +450,11 @@
       this.R = R;
       this.A = this.B = this.M = null;
       this.mch = null;
+      this.ivPick = null;
       this.st.rec = R.id;
       this._showEmpty(null);
+      // (in a narrow pane the panels lie over the chart: the recording just opened is to be seen)
+      if (!opts.restore) this._closeOverlays();
       // the channels shown
       if (opts.channels) this.st.hidden[R.id] = R.channels.map((c) => c.short).filter((s) => !opts.channels.includes(s));
       else if (!this.st.hidden[R.id]) this.st.hidden[R.id] = R.channels.filter((c) => c.hidden).map((c) => c.short);
@@ -520,6 +565,7 @@
       if (['about', 'datapad', 'channels'].includes(n)) return this.showSide(n);
       if (n === 'list') return this.toggleList(true);
       if (n === 'add') return this.addToPad();
+      if (n === 'padfile') return this.showPadFile();
       if (n === 'export') return this.exportDialog();
       if (n === 'capture') return this.capture();
       if (n === 'autoscale') return this.autoscale();
@@ -527,6 +573,8 @@
       toast('The Recorder has no tool called ' + esc(name) + '.', 'warn');
     }
     _setTool(n) {
+      // (choosing a tool is going back to the chart: in a narrow pane, the panel over it closes)
+      this._closeOverlays();
       this.toolName = n;
       this.st.tool = n;
       this._save();
@@ -599,6 +647,7 @@
     /** zoom by a factor about a time (default: the middle of the view) */
     zoom(f, about) {
       if (!this.R) return;
+      this._closeOverlays();
       if (this.playing) this.stop();
       const c = about != null ? about : this.t0 + this.span / 2;
       const ns = clamp(this.span * f, this._minSpan(), this.R.duration);
@@ -607,6 +656,7 @@
     }
     zoomTo(span) {
       if (!this.R) return;
+      this._closeOverlays();
       if (this.playing) this.stop();
       const c = this.t0 + this.span / 2;
       const ns = clamp(isFinite(span) ? span : this.R.duration, this._minSpan(), this.R.duration);
@@ -732,6 +782,7 @@
 
     /* ---------------- sizes ---------------- */
     _resize() {
+      this._placeSide();
       const W = this.chart.clientWidth, H = this.chart.clientHeight;
       if (!W || !H) return;
       this.cssW = W;
@@ -1306,15 +1357,52 @@
       const dt = b - a;
       const st = this._stats(L, a, b);
       const breaks = this.R.blocks.slice(1).some((bl) => bl.start / this.R.fs > a && bl.start / this.R.fs < b);
-      return { lane: L, channel: L.short, name: L.name, units: L.units, t1: this.A, t2: this.B, dt, y1, y2, dy: y2 - y1, rate: dt > 0 ? 60 / dt : NaN, stats: st, breaks };
+      return {
+        lane: L, channel: L.short, name: L.name, units: L.units, t1: this.A, t2: this.B, dt, y1, y2, dy: y2 - y1,
+        rate: dt > 0 ? 60 / dt : NaN, hz: dt > 0 ? 1 / dt : NaN, stats: st, breaks, interval: this._interval(L, a, b)
+      };
+    }
+    /** what the interval between the cursors is: as chosen in the menu beside the Data pad button, else a guess */
+    _interval(L, a, b) {
+      const key = [this.R.id, this.A, this.B, L.key].join('|');
+      if (this.ivPick && this.ivPick.key === key) return this.ivPick.v;
+      return this._guessInterval(L, a, b);
+    }
+    /** a guess at what an interval from a to b (s) is, from the beats of an ECG: R-R when the cursors lie on two R waves
+        one after the other; QRS when they hold one R wave closely; PR when the second lies at the start of a QRS; QT when
+        the first does and the second is well before the next beat; else other */
+    _guessInterval(L, a, b) {
+      const B = this.R && this.R.beats;
+      if (!L || L.kind !== 'ecg' || !B || !Array.isArray(B.t) || B.t.length < 2) return 'other';
+      const t = B.t, dt = b - a;
+      const ia = nearestIndex(t, a), ib = nearestIndex(t, b);
+      if (ib === ia + 1 && Math.abs(t[ia] - a) <= 0.06 && Math.abs(t[ib] - b) <= 0.06) return 'R-R';
+      let k = nearestIndex(t, a);
+      while (k > 0 && t[k] > a) k--;
+      while (k < t.length && t[k] <= a) k++;
+      const inside = [];
+      for (let i = k; i < t.length && t[i] < b; i++) inside.push(i);
+      if (dt <= 0.16 && inside.length === 1 && t[inside[0]] - a <= 0.12 && b - t[inside[0]] <= 0.12) return 'QRS';
+      // (the R wave whose QRS starts near a time: the QRS starts up to about 0.12 s before the peak of the R wave)
+      const qrsAt = (x) => {
+        const i = nearestIndex(t, x);
+        return i >= 0 && x >= t[i] - 0.13 && x <= t[i] + 0.03 ? i : -1;
+      };
+      const ib2 = qrsAt(b);
+      if (dt >= 0.06 && dt <= 0.35 && ib2 >= 0 && inside.every((i) => t[i] >= b - 0.03)) return 'PR';
+      const ia2 = qrsAt(a);
+      if (dt >= 0.2 && dt <= 0.7 && ia2 >= 0 && (ia2 + 1 >= t.length || t[ia2 + 1] > b + 0.05)) return 'QT';
+      return 'other';
     }
     _measureBar() {
       const B = this.mbar;
       if (!B) return;
       // (redrawn only when what it shows changes: not at every frame of playing or scrolling)
-      const key = [this.R && this.R.id, this.A, this.B, this.M, this.mch, this.toolName, this._lanes().map((L) => L.key).join()].join('|');
+      const key = [this.R && this.R.id, this.A, this.B, this.M, this.mch, this.toolName, this.ivPick && this.ivPick.key + this.ivPick.v, this._lanes().map((L) => L.key).join()].join('|');
       if (key === this._mkey) return;
       this._mkey = key;
+      // (its height can change, and in a narrow pane the side panel lies below it)
+      queueMicrotask(() => this._placeSide());
       const padAdd = this.sideBody && this.sideBody.querySelector('.rc-padadd');
       if (padAdd) padAdd.disabled = !this.measurement();
       B.innerHTML = '';
@@ -1339,14 +1427,27 @@
         this._draw();
       });
       const u = m.units ? ' ' + m.units : '';
-      const vals = [h('span.rc-mv', h('i', 'Δt'), h('b', fmtDt(m.dt))), h('span.rc-mv', h('i', 'rate'), h('b', isFinite(m.rate) ? fmtRate(m.rate) + ' /min' : '–'))];
+      const vals = [h('span.rc-mv', h('i', 'Δt'), h('b', fmtDt(m.dt)))];
+      // the rate the interval corresponds to (not for a PR, QRS or QT: those do not repeat), in Hz as well for a short one
+      if (HAS_RATE(m.interval) && isFinite(m.rate)) {
+        const r = [h('i', 'rate'), h('b', fmtRate(m.rate) + ' /min')];
+        if (m.dt < 2) r.push(h('i', '='), h('b.rc-hz', fmtHz(m.hz) + ' Hz'));
+        vals.push(h('span.rc-mv', { title: 'The rate this interval corresponds to: 60 ÷ Δt per minute, or 1 ÷ Δt per second (Hz)' }, r));
+      }
       vals.push(h('span.rc-mv.rc-ch', sel));
       vals.push(h('span.rc-mv', h('i', 'Δ'), h('b', fmtV(m.dy) + u)));
       if (m.stats) vals.push(h('span.rc-mv.rc-more', h('i', 'min'), h('b', fmtV(m.stats.min)), h('i', 'max'), h('b', fmtV(m.stats.max)), h('i', 'mean'), h('b', fmtV(m.stats.mean) + u)));
       if (m.breaks) vals.push(h('span.rc-warn', 'across a break between two parts'));
+      // what the interval is (a guess, which can be changed): the data pad keeps it with the measurement
+      const iv = h('select.rc-sel.rc-iv', { 'aria-label': 'What you measured', title: 'What you measured: the data pad keeps it with the measurement, and works out the heart rate from the R–R intervals only' },
+        INTERVALS.map(([v, l, t]) => h('option', { value: v, selected: v === m.interval, title: t }, l)));
+      iv.addEventListener('change', () => {
+        this.ivPick = { key: [this.R.id, this.A, this.B, m.lane.key].join('|'), v: iv.value };
+        this._draw();
+      });
       const add = h('button.tbtn.rc-add', { type: 'button', title: 'Add this measurement to the data pad (Enter)', html: I('plus') + '<span>Data pad</span>' });
       add.addEventListener('click', () => this.addToPad());
-      B.append(h('span.rc-mvals', vals), h('span.rc-mbtns', add, this._clearBtn()));
+      B.append(h('span.rc-mvals', vals), h('span.rc-mbtns', iv, add, this._clearBtn()));
     }
     _clearBtn() {
       const b = h('button.rc-ib.sm', { type: 'button', title: 'Clear the cursors (Esc)', 'aria-label': 'Clear the cursors', html: I('x') });
@@ -1355,6 +1456,7 @@
     }
     clearCursors() {
       this.A = this.B = this.M = null;
+      this.ivPick = null;
       this._draw();
     }
     /** put the cursors at two times (seconds) and measure (for the tests and the instructions) */
@@ -1362,6 +1464,7 @@
       if (!this.R) return null;
       this.A = clamp(a, 0, this.R.duration);
       this.B = b == null ? null : clamp(b, 0, this.R.duration);
+      this.ivPick = null;
       if (lane) {
         const L = this._lanes().find((x) => x.short === lane || x.key === lane);
         if (L) this.mch = L.key;
@@ -1373,11 +1476,23 @@
     _emitMeasure() {
       const m = this.measurement();
       if (!m) return;
-      bus.emit('rec:measure', { id: this.R.id, channel: m.channel, kind: m.lane.kind, dt: +m.dt.toFixed(4), dy: +(+m.dy).toPrecision(4), rate: +m.rate.toFixed(2), units: m.units || '' });
+      bus.emit('rec:measure', {
+        id: this.R.id, kind: 'interval', channel: m.channel, signal: m.lane.kind, interval: m.interval,
+        t1: +Math.min(m.t1, m.t2).toFixed(4), t2: +Math.max(m.t1, m.t2).toFixed(4), dt: +m.dt.toFixed(4), dy: num(m.dy),
+        rate: +m.rate.toFixed(2), hz: +(+m.hz).toPrecision(4), units: m.units || ''
+      });
+    }
+    /** the marker is put down: the event of a point */
+    _emitPoint() {
+      if (!this.R || this.M == null) return;
+      const L = this._lanes().find((x) => x.key === this.mlane) || this._measLane();
+      if (!L) return;
+      bus.emit('rec:measure', { id: this.R.id, kind: 'point', channel: L.short, signal: L.kind, t: +this.M.toFixed(4), value: num(this._valueAt(L, this.M)), units: L.units || '' });
     }
 
     /* ---------------- the data pad ---------------- */
-    addToPad() {
+    /** add the measurement between the cursors to the data pad (interval: what it is; else as the bar shows it) */
+    addToPad(interval) {
       const m = this.measurement();
       if (!m) {
         toast('Put the two cursors on the trace first: choose the Calipers and drag across what you want to measure.', 'warn', 5000);
@@ -1385,7 +1500,7 @@
       }
       const R = this.R;
       const row = {
-        id: uid(), rec: R.id, title: R.title, channel: m.channel, units: m.units || '',
+        id: uid(), rec: R.id, title: R.title, channel: m.channel, kind: IV_OK(interval) ? interval : m.interval, units: m.units || '',
         t1: +Math.min(m.t1, m.t2).toFixed(4), t2: +Math.max(m.t1, m.t2).toFixed(4), dt: +m.dt.toFixed(4),
         y1: num(m.t1 <= m.t2 ? m.y1 : m.y2), y2: num(m.t1 <= m.t2 ? m.y2 : m.y1), dy: num(m.t1 <= m.t2 ? m.dy : -m.dy),
         min: m.stats ? num(m.stats.min) : null, max: m.stats ? num(m.stats.max) : null, mean: m.stats ? num(m.stats.mean) : null,
@@ -1394,11 +1509,11 @@
       this.st.pad.push(row);
       this._save();
       this._mirror();
-      bus.emit('rec:datapad', { id: R.id, n: this.st.pad.length, channel: row.channel, dt: row.dt, rate: row.rate });
-      if (this.st.side === 'datapad') this._renderSide();
+      this._emitPad(row);
+      if (this.st.side === 'datapad' && !this.side.hidden) this._renderSide();
       else {
         const tid = 'rcp' + uid();
-        toast(`Added to the data pad (${this.st.pad.length} row${this.st.pad.length === 1 ? '' : 's'}). <button class="linkbtn" type="button" id="${tid}">Show it</button>`, 'ok', 3500);
+        toast(`Added to the data pad as ${IV_TEXT[row.kind]} (${this.st.pad.length} row${this.st.pad.length === 1 ? '' : 's'}). <button class="linkbtn" type="button" id="${tid}">Show it</button>`, 'ok', 3500);
         setTimeout(() => {
           const b = document.getElementById(tid);
           if (b) b.addEventListener('click', () => this.showSide('datapad'));
@@ -1406,10 +1521,30 @@
       }
       return row;
     }
+    /** a row of the data pad is added, or its interval changed */
+    _emitPad(row) {
+      const own = this.st.pad.filter((r) => r.rec === row.rec);
+      const count = (k) => own.filter((r) => padKind(r) === k).length;
+      bus.emit('rec:datapad', {
+        id: row.rec, n: this.st.pad.length, channel: row.channel, interval: padKind(row), dt: row.dt, rate: row.rate,
+        n_rr: count('R-R'), n_pr: count('PR'), n_qrs: count('QRS'), n_qt: count('QT'), n_other: count('other')
+      });
+    }
+    /** the data pad as CSV text: one row for each measurement */
     _padCsv() {
-      const rows = [['recording', 'channel', 'units', 't1_s', 't2_s', 'dt_s', 'rate_per_min', 'value1', 'value2', 'change', 'min', 'max', 'mean', 'comment', 'time']];
-      this.st.pad.forEach((r) => rows.push([r.rec, r.channel, r.units, r.t1, r.t2, r.dt, r.rate, r.y1, r.y2, r.dy, r.min, r.max, r.mean, r.comment, r.time]));
+      const rows = [['recording', 'channel', 'kind', 'units', 't1_s', 't2_s', 'dt_s', 'rate_per_min', 'freq_hz', 'value1', 'value2', 'change', 'min', 'max', 'mean', 'comment', 'time']];
+      this.st.pad.forEach((r) => {
+        const k = padKind(r);
+        const rated = HAS_RATE(k) && r.dt > 0;
+        rows.push([r.rec, r.channel, k, r.units, r.t1, r.t2, r.dt, rated ? r.rate : null, rated ? +(1 / r.dt).toPrecision(4) : null, r.y1, r.y2, r.dy, r.min, r.max, r.mean, r.comment, r.time]);
+      });
       return rows.map((r) => r.map((v) => csvCell(v == null || (typeof v === 'number' && !isFinite(v)) ? 'NA' : v)).join(',')).join('\n') + '\n';
+    }
+    /** show the data pad's file in Files */
+    showPadFile() {
+      this._writePad();
+      if (!this.fs.exists(DIR() + '/measurements.csv')) return toast('The data pad is empty: add a measurement to it first.', 'warn');
+      MG.app.editFile(DIR() + '/measurements.csv');
     }
     _writePad() {
       const fs = this.fs;
@@ -1475,6 +1610,7 @@
       const R = this.R;
       if (!R) return toast('Open a recording first.', 'warn');
       if (this.playing) this.stop(true);
+      this._closeOverlays();
       let t = from != null ? from : this.t0;
       if (t >= R.duration - 0.05) t = 0;
       const speed = this.st.speed || 1;
@@ -1590,18 +1726,27 @@
         const i = Math.floor((y - this._bandH()) / (this.laneH || 60));
         return this._lanes()[i] || null;
       };
-      const handleAt = (p) => {
+      // the cursors move only by their flags, in the band above the lanes (a drag anywhere else on the trace starts a
+      // new measurement – even one that starts where the last one ended)
+      const handleAt = (p, touch) => {
         const row2 = this._bandH() - 18;
         if (p.y > row2 + 18) return null;
-        for (const k of ['B', 'A', 'M']) if (this[k] != null && Math.abs(this._xOf(this[k]) - p.x) <= 9) return k;
-        return null;
-      };
-      const nearCursor = (p) => {
-        for (const k of ['B', 'A', 'M']) if (this[k] != null && Math.abs(this._xOf(this[k]) - p.x) <= 5) return k;
-        return null;
+        const reach = touch ? 14 : 9;
+        let best = null, bd = Infinity;
+        for (const k of ['B', 'A', 'M']) {
+          if (this[k] == null) continue;
+          const d = Math.abs(this._xOf(this[k]) - p.x);
+          if (d <= reach && d < bd) {
+            best = k;
+            bd = d;
+          }
+        }
+        return best;
       };
       cv.addEventListener('pointerdown', (e) => {
         if (!this.R || (e.pointerType === 'mouse' && e.button !== 0)) return;
+        // (a narrow pane: the panel over the chart closes when the chart is used again)
+        this._closeOverlays();
         pts.set(e.pointerId, local(e));
         try {
           cv.setPointerCapture(e.pointerId);
@@ -1618,7 +1763,9 @@
         const p = local(e);
         if (this.playing) this.stop();
         const hit = this._titleHits.find((r) => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h);
-        const hk = handleAt(p) || (this.toolName !== 'pan' ? nearCursor(p) : null);
+        const hk = handleAt(p, e.pointerType !== 'mouse');
+        // (a menu's choice of what was measured holds for those cursors only: moved or new ones are guessed again)
+        if (hk !== 'M' && (hk || this.toolName === 'calipers')) this.ivPick = null;
         if (hk) drag = { kind: 'cursor', which: hk, x0: p.x, moved: false };
         else if (hit) drag = { kind: 'title', L: hit.L, x0: p.x, y0: p.y, moved: false };
         else if (this.toolName === 'calipers') {
@@ -1628,6 +1775,8 @@
         } else if (this.toolName === 'marker') {
           drag = { kind: 'marker', x0: p.x, moved: false };
           this.M = clamp(this._tOf(p.x), 0, this.R.duration);
+          const L = laneAt(p.y);
+          if (L) this.mlane = L.key;
           this._draw();
         } else drag = { kind: 'pan', x0: p.x, t0: this.t0, moved: false };
         e.preventDefault();
@@ -1698,6 +1847,7 @@
             this._draw();
           }
         } else if (d.kind === 'cursor' && d.moved && (d.which === 'A' || d.which === 'B') && this.A != null && this.B != null) this._emitMeasure();
+        else if ((d.kind === 'cursor' && d.moved && d.which === 'M') || d.kind === 'marker') this._emitPoint();
         else if (d.kind === 'pan' && !d.moved && this.toolName === 'pan') this._hover(p, e);
         this._measureBar();
       };
@@ -1732,6 +1882,7 @@
       };
       this.ov.addEventListener('pointerdown', (e) => {
         if (!this.R) return;
+        this._closeOverlays();
         if (this.playing) this.stop();
         ovDrag = true;
         try {
@@ -1863,8 +2014,16 @@
       });
       this.padBtn.classList.toggle('on', id === 'datapad');
       this.chBtn.classList.toggle('on', id === 'channels');
+      this._placeSide();
       this._renderSide();
       setTimeout(() => this._resize(), 20);
+    }
+    /** in a narrow pane the side panel lies over the chart, below the readout of the cursors: that stays in sight, with
+        the menu of what was measured and the Data pad button */
+    _placeSide() {
+      if (!this.side || !this.mbar) return;
+      const top = this._narrow() ? this.mbar.offsetHeight : 0;
+      this.side.style.top = top ? top + 'px' : '';
     }
     _renderSide() {
       const id = this.st.side;
@@ -1925,7 +2084,7 @@
     }
     _sidePad(B) {
       const rows = this.st.pad;
-      B.appendChild(h('p.rc-help', 'Measure with the Calipers, then add the measurement here with the button above the trace (or Enter). Everything in the data pad is kept in ', h('code', 'recorder/measurements.csv'), ', which R can read.'));
+      B.appendChild(h('p.rc-help', 'Measure with the Calipers, then add the measurement here with the button above the trace (or Enter). The menu beside that button says what you measured – R–R, PR, QRS, QT or other – and each row’s menu here can change it: the heart rate comes from the R–R rows only. Everything in the data pad is kept in ', h('code', 'recorder/measurements.csv'), ', which R can read.'));
       const m = this.measurement();
       const add = h('button.btn.primary.rc-padadd', { type: 'button', disabled: !m, html: I('plus') + '<span>Add the measurement</span>' });
       add.addEventListener('click', () => this.addToPad());
@@ -1934,11 +2093,21 @@
       else {
         const tb = h('tbody');
         rows.forEach((r, i) => {
+          const kind = padKind(r);
           const cm = h('input.rc-cm', { type: 'text', value: r.comment || '', placeholder: 'note', 'aria-label': 'A note about this measurement', maxlength: 60 });
           cm.addEventListener('change', () => {
             r.comment = cm.value.trim();
             this._save();
             this._mirror();
+          });
+          const ks = h('select.rc-sel.rc-rk', { 'aria-label': 'What this measurement is', title: 'What this measurement is (the heart rate comes from the R–R rows only)' },
+            INTERVALS.map(([v, l, t]) => h('option', { value: v, selected: v === kind, title: t }, l)));
+          ks.addEventListener('change', () => {
+            r.kind = ks.value;
+            this._save();
+            this._mirror();
+            this._emitPad(r);
+            this._renderSide();
           });
           const del = h('button.rc-ib.sm', { type: 'button', title: 'Delete this row', 'aria-label': 'Delete this row', html: I('trash') });
           del.addEventListener('click', () => {
@@ -1956,32 +2125,51 @@
             this.B = r.t2;
             const L = this._lanes().find((x) => x.short === r.channel);
             if (L) this.mch = L.key;
+            if (L) this.ivPick = { key: [this.R.id, this.A, this.B, L.key].join('|'), v: padKind(r) };
+            this._closeOverlays();
             this._draw();
           });
           const dy = r.dy == null ? '' : ` · Δ ${fmtV(r.dy)} ${r.units || ''}`;
-          tb.appendChild(h('tr', h('td', { title: `${r.title}, ${r.channel}: from ${r.t1} s to ${r.t2} s${dy}` }, h('span.rc-rid', (i + 1) + '. ' + r.rec), h('small', r.channel + dy)), h('td.num', r.dt.toFixed(3)), h('td.num', fmtRate(r.rate)), h('td', cm), h('td.rc-acts', go, del)));
+          const rated = HAS_RATE(kind) && r.dt > 0;
+          const rate = rated
+            ? h('td.num', { title: `${fmtRate(60 / r.dt)} per minute = ${fmtHz(1 / r.dt)} Hz` }, fmtRate(60 / r.dt), kind === 'other' ? h('small', fmtHz(1 / r.dt) + ' Hz') : null)
+            : h('td.num.rc-na', { title: 'A PR, QRS or QT interval does not repeat: it has no rate' }, '–');
+          tb.appendChild(h('tr', { dataset: { kind } },
+            h('td', { title: `${r.title}, ${r.channel}: from ${r.t1} s to ${r.t2} s${dy}` }, h('span.rc-rid', (i + 1) + '. ' + r.rec), h('span.rc-rk-w', ks, h('small', r.channel))),
+            h('td.num', r.dt.toFixed(3)), rate, h('td', cm), h('td.rc-acts', go, del)));
         });
-        B.appendChild(h('div.rc-padwrap', h('table.rc-pad', h('thead', h('tr', h('th', 'Recording'), h('th.num', 'Δt (s)'), h('th.num', '/min'), h('th', 'Note'), h('th', ''))), tb)));
-        // the mean of the intervals of each recording and channel
-        const groups = new Map();
+        B.appendChild(h('div.rc-padwrap', h('table.rc-pad', h('thead', h('tr', h('th', 'Recording, what'), h('th.num', 'Δt (s)'), h('th.num', '/min'), h('th', 'Note'), h('th', ''))), tb)));
+        // for each recording: the heart rate from its R–R intervals only, and the mean of each other kind of interval
+        const recs = new Map();
         rows.forEach((r) => {
-          const k = r.rec + ' · ' + r.channel;
-          if (!groups.has(k)) groups.set(k, []);
-          groups.get(k).push(r.dt);
+          if (!recs.has(r.rec)) recs.set(r.rec, []);
+          recs.get(r.rec).push(r);
         });
-        groups.forEach((dts, k) => {
-          if (dts.length < 2) return;
-          const mean = dts.reduce((a, b) => a + b, 0) / dts.length;
-          B.appendChild(h('p.rc-sum', `${k}: ${dts.length} intervals, mean ${mean.toFixed(3)} s (${fmtRate(60 / mean)} /min)`));
+        recs.forEach((rs, rec) => {
+          if (rs.length < 2) return;
+          const mean = (a) => a.reduce((x, y) => x + y, 0) / a.length;
+          const of = (k) => rs.filter((r) => padKind(r) === k).map((r) => r.dt);
+          const parts = [];
+          const rr = of('R-R');
+          if (rr.length) {
+            const mr = mean(rr);
+            parts.push(h('span.rc-hr', `heart rate ${fmtRate(60 / mr)} /min`, h('small', ` – from ${rr.length} R–R interval${rr.length === 1 ? '' : 's'} (mean ${mr.toFixed(3)} s)`)));
+          }
+          ['PR', 'QRS', 'QT'].forEach((k) => {
+            const v = of(k);
+            if (v.length) parts.push(h('span', `${k} ${Math.round(mean(v) * 1000)} ms` + (v.length > 1 ? ` (mean of ${v.length})` : '')));
+          });
+          const ot = of('other');
+          if (ot.length) {
+            const mo = mean(ot);
+            parts.push(h('span', `other: ${ot.length === 1 ? '' : ot.length + ', mean '}${mo.toFixed(3)} s (${fmtRate(60 / mo)} /min, ${fmtHz(1 / mo)} Hz)`));
+          }
+          B.appendChild(h('p.rc-sum', h('b', rec), parts.map((x, k) => [k ? h('span.rc-dot', ' · ') : ': ', x])));
         });
       }
       const acts = h('div.rc-side-acts');
       const f = h('button.tbtn', { type: 'button', html: I('file') + '<span>measurements.csv</span>', title: 'Show the file in Files' });
-      f.addEventListener('click', () => {
-        this._writePad();
-        if (!this.fs.exists(DIR() + '/measurements.csv')) return toast('The data pad is empty.', 'warn');
-        MG.app.editFile(DIR() + '/measurements.csv');
-      });
+      f.addEventListener('click', () => this.showPadFile());
       const rs = h('button.tbtn', { type: 'button', html: I('r') + '<span>Analyse in R</span>', title: 'Open a script that reads your measurements in RStudio' });
       rs.addEventListener('click', () => this.toR('measurements'));
       const clr = h('button.tbtn', { type: 'button', html: I('trash') + '<span>Clear</span>', disabled: !rows.length });
@@ -2132,7 +2320,9 @@
         this._writePad();
         if (!fs.exists(DIR() + '/measurements.csv')) fs.writeText(DIR() + '/measurements.csv', this._padCsv());
         const path = DIR() + '/recorder-measurements.R';
-        if (!fs.exists(path)) fs.writeText(path, R_PAD);
+        const e = fs.exists(path) ? fs.get(path) : null;
+        // (a script of the first version, left as it was, is brought up to date: it took every interval for an R-R)
+        if (!e || (typeof e.text === 'string' && e.text.trim() === R_PAD_V1.trim())) fs.writeText(path, R_PAD);
         return MG.app.openInRStudio(path);
       }
       const id = String(what);
@@ -2210,9 +2400,9 @@
 <li><b>Recordings</b>: real recordings of people, from the open databases of PhysioNet: the ECG, heart sounds, blood pressure, the pulse, breathing, muscle (EMG) and the brain (EEG). The list button (top left) shows them; <b>About</b> (click the recording's name) says what each one shows and where it comes from.</li>
 <li><b>Moving along</b>: drag the trace, use the arrow keys, or click or drag in the strip at the bottom, which shows the whole recording. <b>Zoom</b> with − and + (or Ctrl and the mouse wheel, or two fingers): the menu between them sets the time across the screen.</li>
 <li><b>Play</b> replays the recording in real time, as if it were being recorded, with the pen moving across the chart (×2 or ×5 plays it faster). The heart sounds and the EMG can be heard as they play: switch on <b>Sound</b>.</li>
-<li><b>Calipers</b>: drag across the trace (or click at each end) to put two cursors, A and B. The bar above the trace shows the time between them (Δt), the rate that interval corresponds to (60 ÷ Δt, per minute), and the change, lowest, highest and mean values of the channel you measured (choose it in the bar). Drag the cursors' flags to adjust them. <b>Marker</b> puts down one cursor: the readout by the pointer then measures from it.</li>
+<li><b>Calipers</b>: drag across the trace (or click at each end) to put two cursors, A and B. The bar above the trace shows the time between them (Δt), the rate that interval corresponds to (60 ÷ Δt per minute, and 1 ÷ Δt per second, in Hz, for a short one), and the change, lowest, highest and mean values of the channel you measured (choose it in the bar). Drag the cursors' flags (at the top of the chart) to adjust them; a drag anywhere else starts a new measurement. <b>Marker</b> puts down one cursor: the readout by the pointer then measures from it.</li>
 <li><b>Heart rate</b> adds a channel of the heart rate, worked out beat by beat from the time between heartbeats.</li>
-<li><b>The data pad</b> keeps your measurements: add one with the button above the trace (or Enter). It is saved as <code>~/recorder/measurements.csv</code>, and <b>Analyse in R</b> opens a script that reads it.</li>
+<li><b>The data pad</b> keeps your measurements: add one with the button above the trace (or Enter). The menu beside that button says what you measured – an R–R interval (from one R wave to the next), a PR, QRS or QT interval, or other: the Recorder guesses it from where the cursors lie on an ECG, and you can change it there or in the data pad. The data pad works out the heart rate from the R–R intervals only. It is saved as <code>~/recorder/measurements.csv</code>, and <b>Analyse in R</b> opens a script that reads it.</li>
 <li><b>Channels</b>: click a channel's name for its menu (fit or set its scale, hide it). Pictures (the camera) and CSV files go into <code>~/recorder</code> in Files.</li>
 <li>Keys: ← → move, Shift+← → a screen at a time, + − zoom, space plays, C calipers, M marker, P move, H heart rate, Enter adds to the data pad, Esc clears the cursors.</li>
 </ul>`);
@@ -2273,6 +2463,33 @@
 
   /* ---------- the scripts for R ---------- */
   const R_PAD = `# Measurements from the Recorder's data pad
+# Each row is one measurement that you added to the data pad: its recording and channel, what it is (kind: R-R, PR,
+# QRS, QT or other), and the time between the cursors (dt_s, in seconds). The Recorder keeps this file up to date.
+m <- read.csv("~/recorder/measurements.csv")
+head(m)
+
+# how many measurements of each kind, for each recording
+table(m$recording, m$kind)
+
+# the heart rate comes from the R-R intervals only: 60 divided by the mean R-R interval (in seconds)
+rr <- subset(m, kind == "R-R")
+round(tapply(rr$dt_s, rr$recording, mean), 3)       # the mean R-R interval of each recording (s)
+round(60 / tapply(rr$dt_s, rr$recording, mean), 1)  # its heart rate (beats per minute)
+
+# the PR, QRS and QT intervals, in milliseconds: the mean of each, for each recording
+ecg <- subset(m, kind %in% c("PR", "QRS", "QT"))
+if (nrow(ecg) > 0) round(tapply(ecg$dt_s * 1000, list(ecg$recording, ecg$kind), mean))
+
+# anything else (kind "other"), with its frequency in hertz (1 / dt_s)
+other <- subset(m, kind == "other")
+if (nrow(other) > 0) other[, c("recording", "channel", "dt_s", "freq_hz", "comment")]
+
+# the intervals of each kind, as a strip chart
+stripchart(dt_s ~ kind, data = m, vertical = TRUE, method = "jitter", pch = 19,
+           col = "steelblue", ylab = "Interval (s)", xlab = "")
+`;
+  /* the first version of that script, which took the mean of every interval as R-R (replaced if it was left unchanged) */
+  const R_PAD_V1 = `# Measurements from the Recorder's data pad
 # (each row is one measurement that you added to the data pad; the Recorder keeps this file up to date)
 m <- read.csv("~/recorder/measurements.csv")
 head(m)

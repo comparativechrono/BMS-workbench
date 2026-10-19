@@ -12,6 +12,7 @@
 /* ---------- the systems and the structures ---------- */
 .an-panel { width: 268px; flex: none; display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); background: var(--panel-2); }
 .an-absent { color: var(--warn); background: var(--warn-soft); border-radius: 7px; margin: 4px 2px 8px; }
+.an-part { color: var(--ink); background: var(--accent-soft); border-radius: 7px; margin: 4px 2px 8px; }
 .an-panel-h { display: flex; align-items: center; gap: 6px; padding: 8px 8px 2px 12px; font-size: 0.9rem; }
 .an-panel-x { display: none; }
 .an-systems { padding: 2px 6px 6px; display: flex; flex-direction: column; gap: 1px; flex: none; max-height: 46%; overflow: auto; }
@@ -153,6 +154,6 @@
   .an-title { max-width: 84px; }
   .an-tool { padding: 4px 5px; }
   .an-banner { font-size: 0.82rem; }
-  .an-secbar { width: calc(100% - 20px); bottom: 8px; }
+  .an-secbar { left: 60px; right: 8px; bottom: 8px; }
   .an-compass { transform: scale(0.85); transform-origin: left bottom; }
 }
