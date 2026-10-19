@@ -310,6 +310,9 @@ def make(defn, cache, preview=False):
     channels, raw = [], []
     for k, c in enumerate(chans):
         v = x[:, k] * c.get('factor', 1)
+        if c.get('center'):
+            # (a channel with a large, meaningless offset – an uncalibrated baseline – is centred on zero)
+            v = v - float(np.nanmedian(v))
         q, scale, off = quantise(v)
         raw.append(q)
         ch = {'name': c['name'], 'short': c.get('short', c['name']), 'units': c.get('units', units0[k]), 'kind': c.get('kind', 'other'),
@@ -492,7 +495,9 @@ def write_index(defs):
         if not os.path.exists(p):
             continue
         r = json.load(open(p, encoding='utf-8'))
-        recs.append({'id': r['id'], 'title': r['title'], 'group': r['group'], 'summary': r['summary'], 'duration': r['duration'],
+        kinds = [c['kind'] for c in r['channels']]
+        kind = next((k for k in ('eeg', 'emg', 'pcg', 'bp', 'ppg', 'resp', 'ecg') if k in kinds), 'other')
+        recs.append({'id': r['id'], 'title': r['title'], 'group': r['group'], 'summary': r['summary'], 'duration': r['duration'], 'kind': kind,
                      'fs': r['fs'], 'channels': [c['short'] for c in r['channels'] if not c.get('hidden')] or [c['short'] for c in r['channels']],
                      'bytes': r['bytes'], 'database': r['source']['database'], 'url': r['source']['url'],
                      'licence': r['source']['licence'], 'licence_url': r['source']['licence_url']})

@@ -14,6 +14,7 @@
    "group": "The ECG",
    "summary": "Two leads of an ECG in sinus rhythm, with every beat labelled.",
    "duration": 60.0,
+   "kind": "ecg",
    "fs": 360,
    "channels": [
     "II",
@@ -31,6 +32,7 @@
    "group": "The ECG",
    "summary": "A standard 12-lead ECG of a healthy 29-year-old man.",
    "duration": 30.0,
+   "kind": "ecg",
    "fs": 500,
    "channels": [
     "I",
@@ -58,6 +60,7 @@
    "group": "The ECG",
    "summary": "Premature beats that start in the ventricles, at times after every normal beat.",
    "duration": 60.0,
+   "kind": "ecg",
    "fs": 360,
    "channels": [
     "II",
@@ -75,6 +78,7 @@
    "group": "The ECG",
    "summary": "Atrial fibrillation stops, sinus rhythm returns for a while, and then the atria fibrillate again.",
    "duration": 65.0,
+   "kind": "ecg",
    "fs": 360,
    "channels": [
     "II",
@@ -92,6 +96,7 @@
    "group": "The ECG",
    "summary": "Every other P wave is not followed by a QRS: a 2:1 heart block.",
    "duration": 75.0,
+   "kind": "ecg",
    "fs": 360,
    "channels": [
     "II",
@@ -109,6 +114,7 @@
    "group": "Heart and circulation",
    "summary": "The heart sounds (a phonocardiogram) recorded with an ECG.",
    "duration": 30.72,
+   "kind": "pcg",
    "fs": 2000,
    "channels": [
     "PCG",
@@ -126,6 +132,7 @@
    "group": "Heart and circulation",
    "summary": "Arterial blood pressure and the ECG as a healthy volunteer stands up.",
    "duration": 120.0,
+   "kind": "bp",
    "fs": 250,
    "channels": [
     "BP",
@@ -143,9 +150,10 @@
    "group": "Heart and circulation",
    "summary": "The pulse at a fingertip (a photoplethysmogram) with the ECG and breathing.",
    "duration": 60.0,
+   "kind": "ppg",
    "fs": 125,
    "channels": [
-    "II",
+    "ECG",
     "PPG",
     "Resp"
    ],
@@ -161,6 +169,7 @@
    "group": "Breathing and exercise",
    "summary": "The heart rate rises as you breathe in and falls as you breathe out.",
    "duration": 90.0,
+   "kind": "resp",
    "fs": 250,
    "channels": [
     "ECG",
@@ -178,6 +187,7 @@
    "group": "Breathing and exercise",
    "summary": "Ten minutes of cycling against a high resistance: the heart rate climbs.",
    "duration": 589.004,
+   "kind": "ecg",
    "fs": 256,
    "channels": [
     "ECG"
@@ -194,6 +204,7 @@
    "group": "Muscle (EMG)",
    "summary": "Motor unit potentials of a healthy muscle during a gentle contraction.",
    "duration": 12.715,
+   "kind": "emg",
    "fs": 4000,
    "channels": [
     "EMG"
@@ -210,6 +221,7 @@
    "group": "Muscle (EMG)",
    "summary": "Small, short motor unit potentials in a diseased muscle.",
    "duration": 27.584,
+   "kind": "emg",
    "fs": 4000,
    "channels": [
     "EMG"
@@ -226,6 +238,7 @@
    "group": "Muscle (EMG)",
    "summary": "Large motor unit potentials firing fast, after the loss of motor neurones.",
    "duration": 36.965,
+   "kind": "emg",
    "fs": 4000,
    "channels": [
     "EMG"
@@ -242,6 +255,7 @@
    "group": "Brain (EEG)",
    "summary": "Alpha waves appear over the back of the head when the eyes close.",
    "duration": 60.0,
+   "kind": "eeg",
    "fs": 160.0,
    "channels": [
     "Fp1",

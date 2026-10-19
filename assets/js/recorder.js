@@ -70,6 +70,7 @@
 
   /* the colours of the traces, by kind of signal */
   const KIND_COLOUR = { ecg: '#1d1d22', bp: '#1c5fb0', resp: '#2b8a3e', ppg: '#9c36b5', pcg: '#5c4033', emg: '#0b7285', eeg: '#3b4cc0', scg: '#6b7280', angle: '#c2620a', hr: '#d9480f', other: '#384355' };
+  const ITEM_COLOUR = { ecg: '#c92a2a', pcg: '#8d5524', bp: '#1c5fb0', ppg: '#9c36b5', resp: '#2b8a3e', emg: '#0b7285', eeg: '#3b4cc0' };
   const BEAT_COLOUR = { N: '#7a8494', V: '#c92a2a', A: '#1c7ed6', a: '#1c7ed6', S: '#1c7ed6', J: '#7048e8', j: '#7048e8', R: '#2f9e44', L: '#2f9e44', F: '#e67700', E: '#c92a2a', e: '#7048e8', Q: '#868e96' };
   const SPEEDS = [0.5, 1, 2, 5];
   const SPANS = [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 30, 60, 120, 300, 600];
@@ -110,6 +111,12 @@
     if (a >= 0.01) return v.toFixed(4);
     return v.toPrecision(3);
   }
+  /** a label of the scale: as many decimals as the step between the labels needs */
+  const fmtTick = (v, step) => {
+    const d = Math.max(0, Math.min(5, -Math.floor(Math.log10(step) + 1e-9)));
+    const s = (Math.abs(v) < step * 1e-6 ? 0 : v).toFixed(d);
+    return s === '-0' ? '0' : s;
+  };
   const fmtDt = (dt) => (dt >= 10 ? dt.toFixed(1) : dt >= 1 ? dt.toFixed(2) : dt.toFixed(3)) + ' s';
   const fmtRate = (r) => (r >= 100 ? r.toFixed(0) : r.toFixed(1));
   /** a name for a column of a CSV file that R reads as it is: "ECG (MLII)", "mV" → ecg_mlii_mV */
@@ -143,6 +150,7 @@
       this.mch = null; // the lane that measurements are of (its key)
       this.toolName = ['pan', 'calipers', 'marker'].includes(this.st.tool) ? this.st.tool : 'pan';
       this.playing = null;
+      this._titleHits = [];
       this._save = MG.debounce(() => store.set('recorder', this.st), 300);
       this._mirror = MG.debounce(() => this._writePad(), 500);
       this._viewEv = MG.debounce(() => this._emitView(), 350);
@@ -210,8 +218,8 @@
       this.hair = h('div.rc-hair', { hidden: true });
       this.tip = h('div.rc-tip', { hidden: true });
       this.scroller = h('div.rc-scroll', this.cv, this.hair);
-      this.axis = h('canvas.rc-axis', { 'aria-hidden': 'true' });
-      this.ov = h('canvas.rc-ov', { title: 'The whole recording: click or drag to move the view' });
+      this.axis = h('canvas.rc-axis', { 'aria-hidden': 'true', width: 600, height: 24 });
+      this.ov = h('canvas.rc-ov', { title: 'The whole recording: click or drag to move the view', width: 600, height: 36 });
       this.empty = h('div.rc-empty', h('div', h('h3', 'Choose a recording'), h('p', 'Pick a recording from the list to start.'), this._openListBtn()));
       this.banner = h('div.rc-banner', { hidden: true, role: 'status' });
       this.chart = h('div.rc-chart', { tabindex: '0', 'aria-label': 'The recording. Arrow keys move along it, + and − zoom, space plays.' }, this.scroller, this.tip, this.banner, this.empty);
@@ -260,7 +268,10 @@
       const want = this.st.rec && this._entry(this.st.rec) ? this.st.rec : null;
       this.toggleList(this.st.list != null ? this.st.list && W0 >= 1100 : !want || W0 >= 1300, true);
       if (want) await this.open(want, { quiet: true, restore: true }).catch(() => {});
-      else this._refresh();
+      else {
+        this._refreshTitle();
+        this._draw();
+      }
       this.showSide(W0 >= 980 ? this.st.side || null : null, true);
     }
     _narrow() {
@@ -292,7 +303,7 @@
         this.listEl.appendChild(h('div.rc-grp', gname));
         groups[gname].forEach((s) => {
           const b = h('button.rc-item', { type: 'button', role: 'listitem', dataset: { id: s.id }, title: s.summary || '' },
-            h('span.rc-item-ic', { html: I('wave') }),
+            h('span.rc-item-ic', { html: I('wave'), style: { color: ITEM_COLOUR[s.kind] || ITEM_COLOUR.ecg } }),
             h('span.rc-item-t', h('b', s.title), h('small', `${(s.channels || []).slice(0, 3).join(', ')}${(s.channels || []).length > 3 ? '…' : ''} · ${durText(s.duration)}`)));
           b.addEventListener('click', () => {
             this.open(s.id);
@@ -381,15 +392,19 @@
     async open(id, opts = {}) {
       if (this.playing) this.stop();
       const entry = this._entry(id);
-      this._showEmpty(`<h3>Loading ${esc(entry ? entry.title : id)}…</h3><span class="spinner"></span>`);
+      // (a recording that is already here opens at once: "Loading" only for one that takes a moment)
+      const slow = setTimeout(() => this._showEmpty(`<h3>Loading ${esc(entry ? entry.title : id)}…</h3><span class="spinner"></span>`), 150);
       let R;
       try {
         R = await this._load(id);
       } catch (e) {
+        clearTimeout(slow);
         this._showEmpty(`<h3>The recording could not be loaded</h3><p>${esc(e.message || e)}</p><p>Check your internet connection, then try again.</p>`, () => this.open(id, opts));
         throw e;
       }
+      clearTimeout(slow);
       const same = this.R && this.R.id === R.id;
+      this._hideHover();
       this.R = R;
       this.A = this.B = this.M = null;
       this.mch = null;
@@ -399,6 +414,7 @@
       if (opts.channels) this.st.hidden[R.id] = R.channels.map((c) => c.short).filter((s) => !opts.channels.includes(s));
       else if (!this.st.hidden[R.id]) this.st.hidden[R.id] = R.channels.filter((c) => c.hidden).map((c) => c.short);
       if (opts.hr != null) this.st.hr[R.id] = !!opts.hr && !!R.hr;
+      else if (this.st.hr[R.id] == null && R.view && R.view.hr && R.hr) this.st.hr[R.id] = true;
       // the view
       const v = this.st.views[R.id];
       const def = R.view || {};
@@ -481,7 +497,7 @@
         if (t1 != null && t1 > t0) opts.span = t1 - t0;
       }
       await this.open(id, opts);
-      if (this._narrow()) this.toggleList(false, true);
+      if ((this.root.clientWidth || 0) < 1300) this.toggleList(false, true);
       return this.R;
     }
     _chanBy(R, s) {
@@ -556,7 +572,7 @@
       if (!R) return;
       const lo = this._minSpan();
       SPANS.filter((s) => s >= lo * 0.999 && s < R.duration * 0.98).forEach((s) => this.spanSel.appendChild(h('option', { value: s }, spanText(s))));
-      this.spanSel.appendChild(h('option', { value: 'all' }, 'All (' + durText(R.duration) + ')'));
+      this.spanSel.appendChild(h('option', { value: 'all', title: 'The whole recording (' + durText(R.duration) + ')' }, 'All'));
     }
     _syncSpanSel() {
       if (!this.R) return;
@@ -912,11 +928,11 @@
       marks.forEach((v) => {
         const y = yOf(v);
         if (y < y0 + 6 || y > y0 + LH - 6) return;
-        g.fillText(fmtV(Math.abs(v) < ys * 1e-6 ? 0 : v), GUTTER - 5, y);
+        g.fillText(fmtTick(v, ys), GUTTER - 5, y);
         g.fillRect(GUTTER - 3, Math.round(y), 3, 1);
       });
       // the name (a button: click it for the channel's menu)
-      const label = L.name + (L.units ? ' (' + L.units + ')' : '');
+      const label = L.name + (L.units ? ' · ' + L.units : '');
       g.font = '600 11px system-ui, sans-serif';
       g.textAlign = 'left';
       g.textBaseline = 'top';
@@ -1202,9 +1218,7 @@
       g.stroke();
       g.textAlign = 'left';
       g.fillStyle = '#647086';
-      g.fillText('s', 6, 7);
-      g.textAlign = 'right';
-      g.fillText(spanText(this.span) + ' across', W - 6, 7);
+      g.fillText('time (s)', 4, 7, GUTTER - 6);
     }
     _paintOverview() {
       const c = this.ov, g = c.getContext('2d'), dpr = this.dpr || 1;
@@ -1272,11 +1286,9 @@
       }
       g.fillStyle = '#647086';
       g.font = '10px system-ui, sans-serif';
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      g.fillText('0', 8, H / 2);
       g.textAlign = 'right';
-      g.fillText(durText(R.duration), GUTTER - 6, H / 2);
+      g.textBaseline = 'middle';
+      g.fillText(R.duration < 100 ? Math.round(R.duration) + ' s' : (R.duration / 60).toFixed(1) + ' min', GUTTER - 6, H / 2, GUTTER - 8);
     }
 
     /* ---------------- the readout of the cursors ---------------- */
@@ -1299,6 +1311,12 @@
     _measureBar() {
       const B = this.mbar;
       if (!B) return;
+      // (redrawn only when what it shows changes: not at every frame of playing or scrolling)
+      const key = [this.R && this.R.id, this.A, this.B, this.M, this.mch, this.toolName, this._lanes().map((L) => L.key).join()].join('|');
+      if (key === this._mkey) return;
+      this._mkey = key;
+      const padAdd = this.sideBody && this.sideBody.querySelector('.rc-padadd');
+      if (padAdd) padAdd.disabled = !this.measurement();
       B.innerHTML = '';
       if (!this.R) {
         B.appendChild(h('span.rc-hint', 'Open a recording from the list.'));
@@ -1328,7 +1346,7 @@
       if (m.breaks) vals.push(h('span.rc-warn', 'across a break between two parts'));
       const add = h('button.tbtn.rc-add', { type: 'button', title: 'Add this measurement to the data pad (Enter)', html: I('plus') + '<span>Data pad</span>' });
       add.addEventListener('click', () => this.addToPad());
-      B.append(h('span.rc-mvals', vals), h('span.grow'), add, this._clearBtn());
+      B.append(h('span.rc-mvals', vals), h('span.rc-mbtns', add, this._clearBtn()));
     }
     _clearBtn() {
       const b = h('button.rc-ib.sm', { type: 'button', title: 'Clear the cursors (Esc)', 'aria-label': 'Clear the cursors', html: I('x') });
@@ -1378,11 +1396,14 @@
       this._mirror();
       bus.emit('rec:datapad', { id: R.id, n: this.st.pad.length, channel: row.channel, dt: row.dt, rate: row.rate });
       if (this.st.side === 'datapad') this._renderSide();
-      else toast(`Added to the data pad (${this.st.pad.length} row${this.st.pad.length === 1 ? '' : 's'}). <button class="linkbtn" type="button" data-rc-pad>Show it</button>`, 'ok', 3500);
-      setTimeout(() => {
-        const b = document.querySelector('[data-rc-pad]');
-        if (b) b.addEventListener('click', () => this.showSide('datapad'));
-      }, 0);
+      else {
+        const tid = 'rcp' + uid();
+        toast(`Added to the data pad (${this.st.pad.length} row${this.st.pad.length === 1 ? '' : 's'}). <button class="linkbtn" type="button" id="${tid}">Show it</button>`, 'ok', 3500);
+        setTimeout(() => {
+          const b = document.getElementById(tid);
+          if (b) b.addEventListener('click', () => this.showSide('datapad'));
+        }, 0);
+      }
       return row;
     }
     _padCsv() {
@@ -1457,6 +1478,7 @@
       let t = from != null ? from : this.t0;
       if (t >= R.duration - 0.05) t = 0;
       const speed = this.st.speed || 1;
+      this._hideHover();
       this.playing = { t, t0: t, start: performance.now(), speed };
       if (from == null && t !== this.t0) this._setView(t, this.span, true);
       this.playBtn.classList.add('on');
@@ -1653,6 +1675,11 @@
           return;
         }
         drag = null;
+        // (a finger leaves no pointer behind: the readout goes after a moment)
+        if (e.pointerType !== 'mouse') {
+          clearTimeout(this._tipT);
+          this._tipT = setTimeout(() => this._hideHover(), 1800);
+        }
         if (e.type === 'pointercancel') return;
         if (d.kind === 'title' && !d.moved) return this._chanMenu(d.L, e.clientX, e.clientY);
         if (d.kind === 'calipers') {
@@ -1931,9 +1958,10 @@
             if (L) this.mch = L.key;
             this._draw();
           });
-          tb.appendChild(h('tr', h('td', String(i + 1)), h('td', { title: r.title }, h('span.rc-rid', r.rec), h('small', r.channel)), h('td.num', r.dt.toFixed(3)), h('td.num', fmtRate(r.rate)), h('td.num', { title: r.units }, fmtV(r.dy)), h('td', cm), h('td.rc-acts', go, del)));
+          const dy = r.dy == null ? '' : ` · Δ ${fmtV(r.dy)} ${r.units || ''}`;
+          tb.appendChild(h('tr', h('td', { title: `${r.title}, ${r.channel}: from ${r.t1} s to ${r.t2} s${dy}` }, h('span.rc-rid', (i + 1) + '. ' + r.rec), h('small', r.channel + dy)), h('td.num', r.dt.toFixed(3)), h('td.num', fmtRate(r.rate)), h('td', cm), h('td.rc-acts', go, del)));
         });
-        B.appendChild(h('div.rc-padwrap', h('table.rc-pad', h('thead', h('tr', h('th', '#'), h('th', 'Recording'), h('th.num', 'Δt (s)'), h('th.num', 'Rate (/min)'), h('th.num', 'Δ'), h('th', 'Note'), h('th', ''))), tb)));
+        B.appendChild(h('div.rc-padwrap', h('table.rc-pad', h('thead', h('tr', h('th', 'Recording'), h('th.num', 'Δt (s)'), h('th.num', '/min'), h('th', 'Note'), h('th', ''))), tb)));
         // the mean of the intervals of each recording and channel
         const groups = new Map();
         rows.forEach((r) => {

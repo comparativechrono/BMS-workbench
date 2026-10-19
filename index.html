@@ -367,7 +367,93 @@
 
 </section>
 
-<section class="chapter" id="organbath" data-num="5" data-title="The organ bath" data-bench="bath" hidden>
+<section class="chapter" id="recordings" data-num="5" data-title="Recordings" data-bench="recorder" hidden>
+  <h1>Real recordings of the body</h1>
+  <div class="meta-row"><span class="pill time">≈ 20 min</span></div>
+  <p class="lede">The Recorder plays back real recordings of people, as a chart recorder does in a physiology practical – the ECG, heart sounds, blood pressure, breathing, muscle and the brain. Measure intervals, work out rates, and keep your measurements for R.</p>
+
+<p>In a physiology practical, a <em>chart recorder</em> (on a computer, with an amplifier and a data-acquisition unit) records signals from the body – the ECG, the pulse, breathing, blood pressure, muscle – as traces against time. The <b>Recorder</b> tab works the same way, with real recordings of people from <a href="https://physionet.org" target="_blank" rel="noopener">PhysioNet</a>, a collection of open databases of physiological signals. Each recording's <b>About</b> panel (click its name above the trace) says what it shows, who it comes from and how to cite it.</p>
+<p>The traces of a recording are its <em>channels</em>, one above the other, all on the same time axis. You move along a recording by dragging the trace (or with the strip at the bottom, which shows the whole recording), and zoom with the <b>−</b> and <b>+</b> buttons, or the menu of the time across the screen between them.</p>
+
+<h2 id="rec-ecg">Measuring the ECG</h2>
+<p>Each heartbeat shows in the ECG as a P wave (the atria depolarising), a QRS complex (the ventricles depolarising) and a T wave (the ventricles repolarising). The time from one R wave to the next, the <em>R–R interval</em>, gives the heart rate: <b>heart rate (beats per minute) = 60 ÷ R–R interval (s)</b>. The <b>Calipers</b> measure the time between two cursors and work out this rate for you.</p>
+<div class="activity">
+  <div class="act-t">Measure a heart rate</div>
+  <ol class="steps">
+    <li data-task="rec-open" data-auto="rec:open id=ecg-normal">Open the recording of sinus rhythm <button class="do showme" type="button" data-rec="ecg-normal">show me</button>. The upper channel is close to lead II, and the letters above the beats are the labels cardiologists gave them (N: a normal beat).</li>
+    <li data-task="rec-zoom" data-auto="rec:view id=ecg-normal span&lt;3">Zoom in until about 2 seconds fit across the screen <button class="do showme" type="button" data-rec="ecg-normal@2,4">show me</button>. Find the P wave, the QRS complex and the T wave of a beat. At this scale the ECG is drawn on ECG paper: a small square is 0.04 s across and 0.1 mV high.</li>
+    <li data-task="rec-calipers" data-auto="rec:measure id=ecg-normal dt&gt;0.5 dt&lt;1.2">Choose the <b>Calipers</b> <button class="do showme" type="button" data-rec-tool="calipers">show me</button> and drag from the peak of one R wave to the peak of the next. The bar above the trace shows the time between the cursors (Δt) and the rate it corresponds to. (You can drag the cursors’ flags, A and B, to put them exactly on the peaks.)</li>
+    <li data-task="rec-pad" data-auto="rec:datapad id=ecg-normal n&gt;2">Add the measurement to the <b>data pad</b> with the button at the right of the bar (or press <kbd>Enter</kbd>). Measure two more R–R intervals and add them too <button class="do showme" type="button" data-rec-tool="datapad">show the data pad</button>.</li>
+    <li data-task="rec-pr" data-auto="rec:measure id=ecg-normal dt&lt;0.3">Zoom in further (about 1 s across the screen) and measure the <b>PR interval</b>, from the start of the P wave to the start of the QRS, and the <b>QT interval</b>, from the start of the QRS to the end of the T wave. Add both to the data pad, and type a note beside each in the data pad (PR, QT).</li>
+  </ol>
+</div>
+<div class="q" data-q="rec-q-rate" data-accept="num:75±1" data-placeholder="beats per minute">
+  <div class="q-text">An ECG has an R–R interval of 0.80 s. What is the heart rate, in beats per minute?</div>
+  <div class="q-model">75 beats per minute: 60 ÷ 0.80 s = 75. (A normal PR interval is 0.12–0.20 s, mostly the delay in the atrioventricular node; the QT interval is about 0.35–0.45 s, and shortens as the heart rate rises.)</div>
+</div>
+
+<h2 id="rec-arr">When the rhythm changes</h2>
+<p>The strip at the top of the chart names the rhythm, as the cardiologists who labelled these recordings did. Compare two arrhythmias with sinus rhythm.</p>
+<div class="activity">
+  <div class="act-t">Compare two arrhythmias</div>
+  <ol class="steps">
+    <li data-task="rec-ectopic" data-auto="rec:open id=ecg-ectopic">Open the <b>ventricular ectopic beats</b> <button class="do showme" type="button" data-rec="ecg-ectopic">show me</button>. The beats labelled V are premature ventricular contractions: they come early, their QRS is wide and oddly shaped, and no P wave comes before them.</li>
+    <li data-task="rec-pause" data-auto="rec:measure id=ecg-ectopic">Measure the R–R interval before an ectopic beat and the one after it. The pause after an ectopic beat is longer than the normal interval: the next beat of the sinoatrial node finds the ventricles still refractory, so it is not conducted.</li>
+    <li data-task="rec-af" data-auto="rec:open id=ecg-af">Open the <b>atrial fibrillation</b> <button class="do showme" type="button" data-rec="ecg-af">show me</button>. Compare the first 20 seconds with the stretch of sinus rhythm after the pause (the strip at the top shows where each rhythm begins).</li>
+  </ol>
+</div>
+<div class="q" data-q="rec-q-af" data-type="mcq">
+  <div class="q-text">Which features show that the first part of this recording is atrial fibrillation?</div>
+  <div class="mcq"><label data-correct data-why="Yes. The atria fibrillate instead of contracting together, so there are no P waves, and impulses reach the ventricles at random intervals: the rhythm is irregularly irregular."><input type="radio"> No P waves, a wavering baseline, and R–R intervals that vary without any pattern</label><label data-why="No: those are ventricular ectopic beats, as in the previous recording."><input type="radio"> Early, wide QRS complexes with no P wave before them, each followed by a pause</label><label data-why="No: that is a 2:1 heart block (there is a recording of it in the list: Second-degree heart block)."><input type="radio"> Regular P waves, only every other one followed by a QRS</label></div>
+</div>
+
+<h2 id="rec-rsa">Heart rate and breathing</h2>
+<p>The <b>Heart rate</b> button adds a channel of the heart rate, worked out beat by beat from the R–R intervals: each dot is one beat.</p>
+<div class="activity">
+  <div class="act-t">Watch the heart rate with each breath</div>
+  <ol class="steps">
+    <li data-task="rec-rsa" data-auto="rec:open id=rsa">Open <b>Heart rate and breathing</b> <button class="do showme" type="button" data-rec="rsa">show me</button>: an ECG and the breathing of a healthy young woman lying still.</li>
+    <li data-task="rec-hr" data-auto="rec:hr id=rsa on=true">Switch on the heart-rate channel <button class="do showme" type="button" data-rec-tool="hr">show me</button>.</li>
+    <li data-task="rec-all" data-auto="rec:view id=rsa span&gt;80">Show the whole 90 seconds <button class="do showme" type="button" data-rec="rsa@0,90">show me</button> and compare the heart rate with the breathing trace, which rises as she breathes in.</li>
+    <li data-task="rec-play" data-auto="rec:play on=true">Press <b>Play</b> <button class="do showme" type="button" data-rec-tool="play">show me</button>: the recording is replayed in real time, as it was recorded, with the pen moving across the chart. Press <b>Stop</b> (or the space bar) to stop.</li>
+  </ol>
+</div>
+<div class="q" data-q="rec-q-rsa">
+  <div class="q-text">Does her heart rate rise as she breathes in or as she breathes out? What causes this?</div>
+  <div class="q-model">It rises as she breathes in and falls as she breathes out: a respiratory sinus arrhythmia. During inspiration the activity of the vagus nerves to the sinoatrial node falls (the cardiac vagal neurones in the brainstem are inhibited with each inspiration, and the stretch of the lungs and the changing venous return add to this), so the heart speeds up; during expiration the vagal activity returns and the heart slows. It is a normal finding, largest in young, fit people, and it shrinks with age.</div>
+</div>
+
+<h2 id="rec-eeg">The brain: the EEG</h2>
+<div class="activity">
+  <div class="act-t">Find the alpha rhythm</div>
+  <ol class="steps">
+    <li data-task="rec-eeg" data-auto="rec:open id=eeg-alpha">Open the <b>EEG</b> <button class="do showme" type="button" data-rec="eeg-alpha">show me</button>. The first half was recorded with the eyes open, the second with the eyes closed: the double line marks where one part ends and the other begins. Compare O1, Oz and O2, at the back of the head, before and after it.</li>
+    <li data-task="rec-alpha" data-auto="rec:measure id=eeg-alpha">Zoom in on the eyes-closed part, with about 1 s across the screen <button class="do showme" type="button" data-rec="eeg-alpha@40,41">show me</button>, and use the calipers to measure the time taken by ten alpha waves in O1 (from the peak of one wave to the peak of the eleventh).</li>
+  </ol>
+</div>
+<div class="q" data-q="rec-q-alpha" data-accept="num:10.5±0.3" data-placeholder="Hz">
+  <div class="q-text">Ten alpha waves take 0.95 s. What is the frequency of the alpha rhythm, in hertz (waves a second)?</div>
+  <div class="q-model">10.5 Hz: one wave takes 0.95 ÷ 10 = 0.095 s, and 1 ÷ 0.095 s = 10.5 waves a second. The alpha rhythm (8–13 Hz) is strongest over the back of the head with the eyes closed and the person relaxed, and opening the eyes blocks it.</div>
+</div>
+<div class="callout tip">
+  <div class="co-t">Muscle: listen to the EMG</div>
+  <p>The list has three recordings of the electrical activity of a muscle (EMG), recorded with a needle electrode: a healthy muscle, a myopathy and a neuropathy. Compare the size and the rate of firing of their motor unit potentials at the same time scale. Switch on <b>Sound</b> and press <b>Play</b> to hear them, as clinicians do (headphones help). The recording of <b>heart sounds</b> can be heard in the same way.</p>
+</div>
+
+<h2 id="rec-r">Your measurements in R</h2>
+<p>Everything in the data pad is kept in <code>recorder/measurements.csv</code>, one row for each measurement, which R can read. A whole recording can be saved as a CSV file too, with a column of times and a column for each channel.</p>
+<div class="activity">
+  <div class="act-t">Analyse the data pad</div>
+  <ol class="steps">
+    <li data-task="rec-padview" data-auto="rec:panel name=datapad">Look at your measurements in the data pad <button class="do showme" type="button" data-rec-tool="datapad">show me</button>: each row has the recording, the channel, Δt, the rate and your note.</li>
+    <li data-task="rec-script" data-auto="rstudio:doc name=recorder-measurements.R">Open the script for the data pad in RStudio <button class="do showme" type="button" data-rec-r="measurements">show me</button> and run it line by line with <kbd>Ctrl</kbd>+<kbd>Enter</kbd> (<kbd>⌘</kbd>+<kbd>Enter</kbd> on a Mac). It works out the mean interval of each recording, and the heart rate that it gives.</li>
+    <li data-task="rec-plot" data-auto="rstudio:doc name=rsa.R">Plot a whole recording in R <button class="do showme" type="button" data-rec-r="rsa">show me</button>: this saves <code>recorder/rsa.csv</code> and the beats (<code>rsa-beats.csv</code>, with the R–R interval and heart rate of each beat), and opens a script that plots them.</li>
+  </ol>
+</div>
+
+</section>
+
+<section class="chapter" id="organbath" data-num="6" data-title="The organ bath" data-bench="bath" hidden>
   <h1>Drugs on an isolated tissue</h1>
   <div class="meta-row"><span class="pill time">≈ 25 min</span></div>
   <p class="lede">Add drugs to a piece of guinea-pig ileum in an organ bath, build concentration–response curves, see what a competitive antagonist does to them, and analyse them in R.</p>
@@ -443,7 +529,7 @@
 
 </section>
 
-<section class="chapter" id="diagrams" data-num="6" data-title="Diagrams" data-bench="flow" hidden>
+<section class="chapter" id="diagrams" data-num="7" data-title="Diagrams" data-bench="flow" hidden>
   <h1>Flow diagrams that run</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Draw the boxes-and-arrows diagrams of physiology, and run them to see how the quantities in them change with time.</p>
@@ -494,7 +580,7 @@
 
 </section>
 
-<section class="chapter" id="circuits" data-num="7" data-title="Circuits" data-bench="circuit" hidden>
+<section class="chapter" id="circuits" data-num="8" data-title="Circuits" data-bench="circuit" hidden>
   <h1>Circuits on the bench</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Build electrical circuits and run them, and use the same circuits as models of the body.</p>
@@ -555,7 +641,7 @@
 
 </section>
 
-<section class="chapter" id="simulations" data-num="8" data-title="Simulations" data-bench="sims" hidden>
+<section class="chapter" id="simulations" data-num="9" data-title="Simulations" data-bench="sims" hidden>
   <h1>Interactive simulations</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Models of the science behind the body that you can change and watch: the ions of an action potential, the light a solution absorbs, and the logarithmic scale of pH.</p>
@@ -629,7 +715,7 @@
 
 </section>
 
-<section class="chapter" id="exam" data-num="9" data-title="Exam practice" data-bench="exam" hidden>
+<section class="chapter" id="exam" data-num="10" data-title="Exam practice" data-bench="exam" hidden>
   <h1>Writing answers as in the exam</h1>
   <div class="meta-row"><span class="pill time">≈ 20 min</span></div>
   <p class="lede">Practise writing essays in the browser, as you will in the exam: a timer, a word count, the editor’s toolbar, flags, the calculator, and a Word document of your answers at the end.</p>
@@ -665,7 +751,7 @@
 
 </section>
 
-<section class="chapter" id="r" data-num="10" data-title="Data in R" data-bench="rstudio" hidden>
+<section class="chapter" id="r" data-num="11" data-title="Data in R" data-bench="rstudio" hidden>
   <h1>From the microscope to R</h1>
   <div class="meta-row"><span class="pill time">≈ 15 min</span></div>
   <p class="lede">Your measurements and counts are kept in files that R can read. Summarise and plot them in RStudio, and turn a calculation into a script.</p>

@@ -144,13 +144,13 @@
    "summary": "The pulse at a fingertip (a photoplethysmogram) with the ECG and breathing.",
    "description": "A pulse oximeter's photoplethysmogram (PPG) shows how much light the blood in a fingertip absorbs: it rises with each pulse of blood. It is shown with the ECG and with breathing, recorded from the electrical impedance across the chest (the trace is cut off at its top), in a patient in intensive care. Each pulse reaches the finger a short time after the QRS that started it, and the size of the pulses rises and falls with breathing. The small marks on the breathing trace are breaths, marked by hand.",
    "look_for": ["The time from an R wave to the foot of the pulse that follows it (the pulse arrival time)", "The breathing rate: count the breaths in a minute", "How the pulses grow and shrink with breathing"],
-   "source": {"db": "bidmc", "record": "bidmc43", "from": 165, "to": 225},
+   "source": {"db": "bidmc", "record": "bidmc43", "from": 390, "to": 450},
    "channels": [
-    {"src": "II", "name": "ECG (lead II)", "short": "II", "kind": "ecg", "units": "mV"},
+    {"src": "V", "name": "ECG (chest lead)", "short": "ECG", "kind": "ecg", "units": "mV", "about": "a chest lead of the patient's monitor"},
     {"src": "PLETH", "name": "Pulse (PPG)", "short": "PPG", "kind": "ppg", "units": "a.u.", "about": "the photoplethysmogram of a pulse oximeter on a finger, in arbitrary units"},
     {"src": "RESP", "name": "Breathing (impedance)", "short": "Resp", "kind": "resp", "units": "a.u.", "about": "the electrical impedance across the chest, which changes as the lungs fill and empty"}
    ],
-   "beats": {"detect": "II"},
+   "beats": {"detect": "ECG"},
    "db_events": {"ann": "breath", "only": ["ann1"], "channel": "Resp", "label": "", "title": "A breath, marked by hand (the first of the two people who marked them)", "colour": "#2b8a3e"},
    "view": {"t0": 0, "span": 10},
    "subject": {"age": 19, "sex": "woman", "notes": "A patient in a medical intensive care unit (her illness is not given)."},
@@ -165,13 +165,13 @@
    "look_for": ["The heart rate at the top and at the bottom of each breath", "How many breaths a minute she takes", "That the R–R interval is shorter during inspiration"],
    "source": {"db": "fantasia", "record": "f1y01", "from": 320, "to": 410},
    "channels": [
-    {"src": "ECG", "name": "ECG", "short": "ECG", "kind": "ecg", "units": "mV"},
-    {"src": "RESP", "name": "Breathing", "short": "Resp", "kind": "resp", "units": "a.u.", "about": "the breathing trace rises as she breathes in"}
+    {"src": "ECG", "name": "ECG", "short": "ECG", "kind": "ecg", "units": "mV", "center": true},
+    {"src": "RESP", "name": "Breathing", "short": "Resp", "kind": "resp", "units": "a.u.", "center": true, "about": "the breathing trace rises as she breathes in"}
    ],
    "beats": {"ann": "ecg", "channel": "ECG", "source": "database", "note": "Each beat was found automatically and then checked by eye (the beats of the Fantasia database)."},
    "view": {"t0": 0, "span": 30},
    "subject": {"age": 23, "sex": "woman", "notes": "A healthy volunteer, lying down and watching the film Fantasia to stay awake, as the database records."},
-   "changes": "A 90-second excerpt; the samples are stored as 16-bit numbers."
+   "changes": "A 90-second excerpt; the ECG and the breathing trace are moved to centre on zero (their baselines are not calibrated); the samples are stored as 16-bit numbers."
   },
   {
    "id": "exercise",
