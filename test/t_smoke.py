@@ -10,7 +10,8 @@ check(tabs == ['scope', 'anatomy', 'viewer', 'recorder', 'bath', 'flow', 'circui
 cases = [('num:9.8e5±1%', '980 000', True), ('num:1.145e6±4%', '1 145 000 cells per mL', True), ('num:400±2', '20000/50 = 400', True),
          ('num:22.5±0.5', '22,5', True), ('num:1.145e6±4%', '1.1 million', True), ('num:4', 'four chains', True), ('num:4±0.2', '4 µm', True),
          ('num:1.145e6±4%', '1.145 × 10⁶', True), ('num:89.8±0.3', '89.8%', True), ('num:4', '5', False), ('num:400±2', '400 = 20000/40', True),
-         ('num:2.5±0.1', '2.5 mL (from C1V1 = C2V2)', True), ('num:9.8e5±1%', '9,8 × 10^5', True), ('num:60..300', 'about 150 µm', True)]
+         ('num:2.5±0.1', '2.5 mL (from C1V1 = C2V2)', True), ('num:9.8e5±1%', '9,8 × 10^5', True), ('num:60..300', 'about 150 µm', True),
+         ('num:9.9e-8±0.5%', '9.9 x 10-8', True), ('num:9.9e-8±0.5%', '9.9 × 10 -8 M', True), ('num:9.9e-8±0.5%', '1 x 10-7', False)]
 got = p.js("(cs) => cs.map(([spec, text]) => MG.tutorial_numOk(spec.slice(4), text))", [[a, b] for a, b, _ in cases])
 bad = [(c[1], g) for c, g in zip(cases, got) if g != c[2]]
 check(not bad, f'numbers in answers are read as students write them (spaces, decimal commas, workings, words): {bad}')
