@@ -127,6 +127,7 @@ def summary(text):
         p = re.sub(r'\s+\)', ')', p)
         p = re.sub(r'\s*\(\s*\)', '', p)
         p = re.sub(r'\s+([,.;])', r'\1', p)
+        p = re.sub(r'\s{2,}', ' ', p).strip()  # (the spaces left where something was taken out)
         if not p:
             continue
         out = (out + ' ' + p).strip()

@@ -25,17 +25,54 @@ Attribution 4.0"** – all of them built before 29 March 2026. `fetch_sims.py` c
 "NonCommercial") in every file it downloads, and refuses anything else; the test (`test/t_sims.py`) checks the files
 on the site again. Do not replace a file with PhET's `latest` version without checking its licence.
 
-The credit PhET asks for, "as close as possible to the point of use", is shown under the library, under every
-simulation, and in each simulation's **About** box:
+The credit PhET asks for is shown, word for word, under the library, under every simulation, and in each
+simulation's **About** box (PhET: "Attribution must appear as close as possible to the point of use and be
+human-readable"; "Translations of the attribution text are permitted, other modifications are not permitted"):
 
-> Simulation by PhET Interactive Simulations, University of Colorado Boulder, licensed under CC BY 4.0
-> (https://phet.colorado.edu).
+> Simulation by PhET Interactive Simulations, University of Colorado Boulder, licensed under CC BY 4.0 (https://phet.colorado.edu).
 
-The files are not changed. (CC BY 4.0 would allow changes, with notice, but none are needed.) The PhET name and logo
-are trademarks of the University of Colorado: the logo stays in each simulation, visible and unaltered, as PhET
-requires, and the name is used only to credit PhET. Each file lists, in its code, the third-party libraries, fonts,
-pictures and sounds it contains and their licences (MIT, Apache 2.0, BSD, ISC, SIL OFL 1.1, CC BY 4.0, CC0 and public
-domain); PhET's own source code is available separately under GPL 3.0 (https://github.com/phetsims).
+The files are not changed. The PhET name and logo are trademarks of the University of Colorado: the logo stays in each
+simulation, visible and unaltered ("The PhET logo must remain visible, unobstructed, and unaltered"), and the name is
+used only to credit PhET. PhET's source code is available separately (https://github.com/phetsims).
+
+### What else the files contain
+
+Each file is a whole simulation – its code, pictures and sounds. The file's own header says "This file is licensed
+under Creative Commons Attribution 4.0 … For licenses for third-party software used by this simulation, see below",
+and below it is the simulation's own list of credits (`phet.chipper.thirdPartyLicenseEntries`). PhET's licensing page
+says nothing about third-party content in the historical simulations; it says that they "may be freely used and/or
+redistributed by third parties". What the files contain (checked on 19 October 2026):
+
+- **Code and fonts by others.** Every file lists the libraries it contains, all under open licences: MIT, Apache 2.0,
+  BSD, ISC, SIL OFL 1.1 (fonts), Font Awesome (OFL 1.1 / MIT / CC BY), CC0 and public domain.
+- **Media by others under open terms.** Ten of the files (the nine newer ones and Molarity) contain a recording of a
+  room's echo that PhET's sound library uses as reverberation (`emptyApartmentBedroom06Resampled.mp3`, from the
+  OpenAIR library, www.openairlib.net; "Public Domain Creative Commons" in PhET's credits), and Under Pressure contains
+  two textures, of grass and of cement, marked "Public Domain".
+- **PhET's own pictures and sounds.** Almost all the media are PhET's: marked "Copyright … University of Colorado
+  Boulder" with the licence "contact phethelp@colorado.edu" (PhET does not explain this value; in these credits it
+  marks media that PhET made, or had made for it). They reach this site only inside the whole, unchanged simulation,
+  which their owner, the University of Colorado, publishes under CC BY 4.0, and they are not used apart from it. The five older files list them in their own credits: **Neuron** (the PhET logo), **Under Pressure** (the
+  logo, the icons of the four pools, the 11 parts of the taps, and the screen's icon), **Molarity** (the logo, the
+  beaker, the keyboard-help icon, and 18 sounds), **Gene Expression Essentials** (the logo, the keyboard-help icon and
+  the icons of its three screens) and **Capacitor Lab: Basics** (the logo, the keyboard-help icon, the voltmeter, its
+  probes, the switch's cue arrow, the light bulb's base and a screen icon). The nine newer files list only their
+  code; their pictures and sounds are listed in PhET's source repositories, which were read at the exact commits each
+  file was built from (`phet.chipper.dependencies`), matching each listed file against what the simulation embeds:
+  apart from the echo above, every picture and sound found in them is PhET's own.
+- **One photograph that is not PhET's: in Gene Expression Essentials 1.0.34.** The *Multiple Cells* screen has a
+  **Show Real Cells** button that opens a fluorescence micrograph of *Escherichia coli* cells expressing green
+  fluorescent protein, captioned "Note that though the cells are genetically identical, they are expressing differing
+  amounts of the protein" and credited on screen "Image Copyright Dennis Kunkel Microscopy, Inc.". The file's credits
+  list it as `GENE_EXPRESSION_ESSENTIALS/ecoli.jpg`: text "Copyright 2002-2015 University of Colorado Boulder", source
+  "Dennis Kunkel Microscopy", licence "contact phethelp@colorado.edu", notes "used with permission (purchased), terms
+  are on purchase invoice". Those terms are not public, so this one photograph cannot be assumed to be under CC BY 4.0
+  like the rest of the file. It illustrates a point of the screen and is not needed to use the simulation, but it
+  cannot be taken out without changing PhET's file. The simulation is included as PhET publishes it, and its About box
+  (`aboutNote` in `sims.json`) says that the photograph is Dennis Kunkel Microscopy's and may not be covered by
+  CC BY 4.0. PhET (phethelp@colorado.edu) can say whether the photograph may be redistributed with the file; if not,
+  remove the simulation: delete `sims/gene-expression-essentials/` and its entry in `sims.json` (and the topic
+  "Genes", which only it has), then run `python3 build/sims/fetch_sims.py --index`.
 
 **Privacy.** Out of the box, a PhET simulation reports its use to PhET (`phet.colorado.edu/yotta/…`), loads Google Tag
 Manager and Google Analytics, and checks PhET's site for a newer version. The tab opens every simulation with PhET's own

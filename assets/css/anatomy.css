@@ -3,12 +3,15 @@
    toolbar, the 3D view with its labels, compass, section bar and find
    banner, and the panel about the selected structure.
    ===================================================================== */
-.an-app { display: flex; height: 100%; min-height: 0; background: #fff; position: relative; container-type: inline-size; container-name: anat; }
+.an-app { display: flex; flex-direction: column; height: 100%; min-height: 0; background: #fff; position: relative; container-type: inline-size; container-name: anat; }
+/* the toolbar across the tab; below it the list of systems, the view and the panel about the selection */
+.an-body { flex: 1; display: flex; min-height: 0; position: relative; }
 .an-app button { font: inherit; }
 .an-app [hidden] { display: none !important; }
 
 /* ---------- the systems and the structures ---------- */
 .an-panel { width: 268px; flex: none; display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); background: var(--panel-2); }
+.an-absent { color: var(--warn); background: var(--warn-soft); border-radius: 7px; margin: 4px 2px 8px; }
 .an-panel-h { display: flex; align-items: center; gap: 6px; padding: 8px 8px 2px 12px; font-size: 0.9rem; }
 .an-panel-x { display: none; }
 .an-systems { padding: 2px 6px 6px; display: flex; flex-direction: column; gap: 1px; flex: none; max-height: 46%; overflow: auto; }
@@ -51,16 +54,20 @@
 .an-row-eye { opacity: 0.55; }
 .an-row:hover .an-row-eye, .an-row.off .an-row-eye { opacity: 1; }
 
-/* ---------- the toolbar ---------- */
-.an-main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
-.an-bar { display: flex; align-items: center; gap: 3px; padding: 5px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); flex-wrap: wrap; }
+/* ---------- the toolbar: on one line; when the names of the tools don't fit, only their icons (.an-compact, set by
+   anatomy.js) ---------- */
+.an-bar { display: flex; align-items: center; gap: 3px; padding: 5px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); flex-wrap: nowrap; overflow: hidden; flex: none; }
+.an-bar > * { flex: none; }
+.an-bar.an-compact .an-tool span { display: none; }
 .an-sep { width: 1px; height: 22px; background: var(--line-2); margin: 0 3px; }
 .an-ib { border: 1px solid transparent; background: none; border-radius: 6px; padding: 5px; cursor: pointer; color: var(--ink-2); display: inline-flex; align-items: center; justify-content: center; }
 .an-ib:hover { background: #fff; border-color: var(--line-2); }
 .an-ib.on { background: var(--accent-soft); color: var(--accent-2); border-color: #bfdfe9; }
 .an-ib.sm { padding: 3px; }
 .an-ib.sm .ic { width: 15px; height: 15px; }
-.an-title { border: 0; background: none; font-weight: 700; font-size: 0.9rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: var(--ink); padding: 4px 6px; border-radius: 6px; }
+.an-bar > .an-title { flex: 0 1 auto; min-width: 120px; }
+.an-bar.an-compact > .an-title { min-width: 40px; }
+.an-title { border: 0; background: none; font-weight: 700; font-size: 0.9rem; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: var(--ink); padding: 4px 6px; border-radius: 6px; }
 .an-title:hover { background: #fff; }
 .an-tool { display: inline-flex; align-items: center; gap: 4px; border: 1px solid transparent; background: none; border-radius: 6px; padding: 4px 7px; font-size: 0.8rem; cursor: pointer; color: var(--ink-2); white-space: nowrap; }
 .an-tool:hover { background: #fff; border-color: var(--line-2); }
@@ -70,7 +77,6 @@
 .an-tool .an-caret { width: 11px; height: 11px; margin-left: -1px; }
 
 /* ---------- the view ---------- */
-.an-work { flex: 1; display: flex; min-height: 0; }
 .an-view { flex: 1; min-width: 0; position: relative; overflow: hidden; background: #eef1f4; outline: none; touch-action: none; }
 .an-view:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
 .an-canvas { position: absolute; inset: 0; }
@@ -95,9 +101,11 @@
 .an-banner.no { background: var(--bad-soft); border-color: #f0b7b2; }
 .an-banner.ok { background: var(--good-soft); border-color: #a9dcc0; }
 .an-banner .tbtn { flex: none; }
-.an-secbar { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 6; display: flex; align-items: center; gap: 8px; width: min(460px, calc(100% - 90px)); box-sizing: border-box; padding: 6px 8px 6px 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.96); border: 1px solid var(--line-2); box-shadow: var(--shadow); font-size: 0.82rem; }
-.an-sec-n { white-space: nowrap; }
-.an-sec-r { flex: 1; min-width: 60px; accent-color: var(--accent); }
+.an-secbar { position: absolute; left: 72px; right: 10px; bottom: 12px; margin: 0 auto; max-width: 480px; z-index: 6; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; box-sizing: border-box; padding: 6px 8px 6px 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.96); border: 1px solid var(--line-2); box-shadow: var(--shadow); font-size: 0.82rem; }
+.an-sec-n { white-space: nowrap; flex: 1 0 auto; }
+.an-secbar .tbtn, .an-secbar .an-ib { flex: none; }
+/* (the slider takes the rest of the line; in a narrow view, it goes onto a line of its own with the buttons) */
+.an-sec-r { flex: 1 1 140px; min-width: 120px; accent-color: var(--accent); }
 .an-app .an-chip:not([hidden]) ~ .an-secbar { bottom: 52px; }
 .an-loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: rgba(255, 255, 255, 0.95); box-shadow: var(--shadow); color: var(--ink-2); font-size: 0.86rem; z-index: 5; max-width: calc(100% - 40px); }
 .an-empty, .an-fail { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: #f6f7f9; color: var(--ink-2); z-index: 4; padding: 20px; }
@@ -131,17 +139,13 @@
 .an-look li { margin: 3px 0; }
 
 /* ---------- narrow: the list and the panel lie over the view ---------- */
-@container anat (max-width: 1150px) {
-  .an-tool span { display: none; }
-  .an-title { max-width: 200px; }
-}
-@container anat (max-width: 760px) {
+@container anat (max-width: 759px) {
   .an-panel { position: absolute; left: 0; top: 0; bottom: 0; z-index: 30; box-shadow: var(--shadow-l); width: min(300px, 88%); }
   .an-panel-x { display: inline-flex; }
   .an-systems { max-height: 40%; }
-  .an-work { flex-direction: column; }
+  .an-body { flex-direction: column; }
   .an-info { width: auto; height: 46%; border-left: 0; border-top: 1px solid var(--line); }
-  .an-title { max-width: 130px; font-size: 0.84rem; }
+  .an-title { font-size: 0.84rem; }
   .an-bar .an-sep { display: none; }
   .an-bar { gap: 1px; padding: 4px 4px; }
 }

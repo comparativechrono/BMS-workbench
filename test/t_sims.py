@@ -176,6 +176,14 @@ check(events(p, 'sim:about'), 'opening the About box is reported (sim:about)')
 p.shot('sims-about')
 p.p.keyboard.press('Escape')
 time.sleep(0.3)
+# the one picture that is not PhET's (Gene Expression Essentials: a photograph used with permission) is named in its About
+p.js("() => MG.app.sims.about('gene-expression-essentials')")
+time.sleep(0.4)
+txt = p.js("() => document.querySelector('.modal') ? document.querySelector('.modal').innerText : ''")
+check('Dennis Kunkel Microscopy' in txt and 'may not be covered by CC BY 4.0' in txt and CREDIT in txt.replace('\n', ' '),
+      'the About box of Gene Expression Essentials says that its photograph of E. coli is not PhET’s')
+p.p.keyboard.press('Escape')
+time.sleep(0.3)
 if p.js("() => document.fullscreenEnabled"):
     p.p.locator('.sm-bar .sm-ib[title^="Full screen"]').click()
     time.sleep(0.6)

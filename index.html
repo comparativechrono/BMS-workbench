@@ -262,20 +262,20 @@
 </div>
 
 <h2 id="an-around">Finding your way round</h2>
-<p>The list on the left (<b>Systems</b>) shows and hides the systems of the body; the eye beside each makes it faint, so that you can see what lies behind it. Below it, the structures of the systems shown are listed in groups, and the search box finds any structure by its English or Latin name.</p>
+<p>The <b>Systems</b> list (the first button of the toolbar opens and closes it) shows and hides the systems of the body; the eye beside each makes it faint, so that you can see what lies behind it. Below it, the structures of the systems shown are listed in groups, and the search box finds any structure by its English or Latin name, or by an everyday one such as <em>adrenal</em> or <em>windpipe</em>. When the workbench is narrow, the list and the panel about a structure take turns at the side of the view.</p>
 <div class="activity">
   <div class="act-t">The endocrine glands</div>
   <ol class="steps">
     <li data-task="an-open" data-auto="anat:system id=endocrine on=true">Show the endocrine glands <button class="do showme" type="button" data-anat="endocrine">show me</button>. The skeleton stays faint behind them, so that you can see where each gland lies.</li>
     <li data-task="an-turn" data-auto="anat:view">Turn the body round: drag it (one finger on a touch screen), and scroll or pinch to zoom. Then try the standard views in the <b>View</b> menu (or the keys <kbd>1</kbd> to <kbd>6</kbd>).</li>
-    <li data-task="an-select" data-auto="anat:select id=thyroid-gland">Click on the thyroid gland, at the front of the neck. Its name, its Latin name and the start of its Wikipedia article appear in the panel on the right (on a small screen, tap its name at the bottom of the view).</li>
+    <li data-task="an-select" data-auto="anat:select id=thyroid-gland by=click||anat:select id=thyroid-gland by=list">Click on the thyroid gland, at the front of the neck. Its name, its Latin name and the start of its Wikipedia article appear in the panel on the right (on a small screen, tap its name at the bottom of the view).</li>
     <li data-task="an-find" data-auto="anat:find ok=true target~suprarenal"><button class="do showme" type="button" data-anat-find="suprarenal-gland">Find a suprarenal gland</button> (also called the adrenal gland). If you are stuck, <b>Show me</b> makes it glow.</li>
-    <li data-task="an-pit" data-auto="anat:select base~hypophysis">Look at the pituitary gland, the <em>hypophysis</em>, under the brain <button class="do showme" type="button" data-anat="endocrine:adenohypophysis">show me</button>. It has two parts: the adenohypophysis (the anterior pituitary) and the neurohypophysis (the posterior pituitary). Click on each, and find the hypothalamus just above them.</li>
+    <li data-task="an-pit" data-auto="anat:select id=hypothalamus by=click||anat:select id=hypothalamus by=list">Look at the pituitary gland, the <em>hypophysis</em>, under the brain <button class="do showme" type="button" data-anat="endocrine:adenohypophysis">show me</button>. It has two parts, the adenohypophysis (the anterior pituitary) and the neurohypophysis (the posterior pituitary): click on each. Then click on the hypothalamus, just above them, which controls them.</li>
   </ol>
 </div>
 <div class="q" data-q="an-q-thyroid">
-  <div class="q-text">Show the endocrine glands with the respiratory system <button class="do showme" type="button" data-anat="endocrine+respiratory@anterior">show me</button>. What does the thyroid gland lie against, and where is its isthmus?</div>
-  <div class="q-model">It lies against the front and sides of the larynx and the trachea: its two lobes are on either side of them, and the isthmus that joins the lobes crosses the front of the trachea just below the cricoid cartilage (over the second to fourth rings of the trachea, at about the level of the vertebrae C5 to T1).</div>
+  <div class="q-text">Show the thyroid gland with the respiratory system <button class="do showme" type="button" data-anat="endocrine+respiratory:thyroid-gland@anterior">show me</button>, and turn it round. What does the gland lie against in this model, and how does that compare with where the thyroid gland usually lies?</div>
+  <div class="q-model">In this model the gland sits high: its lobes lie against the sides of the larynx (the thyroid and cricoid cartilages), its isthmus crosses in front of the cricoid cartilage, with a pyramidal lobe rising from it in front of the thyroid cartilage, and its lower poles barely reach the trachea – at about the level of the vertebrae C5 and C6. Usually the gland lies lower: its lobes reach from the sides of the thyroid cartilage down to about the sixth ring of the trachea, and its isthmus crosses the front of the trachea over its second and third rings (sometimes the fourth), the whole gland lying at about the level of C5 to T1. The thyroid varies from person to person in its position, its size and its shape (a pyramidal lobe is found in about half of people), and this model was made from one man.</div>
 </div>
 <div class="q" data-q="an-q-pit">
   <div class="q-text">The neurohypophysis is part of the brain, and the adenohypophysis is a gland that grew up from the roof of the mouth. How does the hypothalamus control each of them?</div>
@@ -289,7 +289,7 @@
     <li data-task="an-heart" data-auto="anat:system id=heart on=true">Show the heart and the great vessels <button class="do showme" type="button" data-anat="heart">show me</button>: the chambers and the valves, the coronary vessels, the aorta, the pulmonary arteries and veins, and the venae cavae.</li>
     <li data-task="an-iso" data-auto="anat:isolate base~left ventricle on=true">Click on the left ventricle and click <b>Isolate</b> in the panel (or press <kbd>I</kbd>): only the left ventricle is shown. Turn it round, then click <b>Show the others</b>.</li>
     <li data-task="an-find-pt" data-auto="anat:find ok=true target=pulmonary-trunk"><button class="do showme" type="button" data-anat-find="pulmonary-trunk">Find the pulmonary trunk</button>, the artery that leaves the right ventricle and divides into the two pulmonary arteries.</li>
-    <li data-task="an-fade" data-auto="anat:fade on=true">Select the aortic arch and click <b>Fade the others</b>: everything else becomes faint, so that you can follow the arch and the branches that leave it. Click <b>Unfade the others</b> when you have looked.</li>
+    <li data-task="an-fade" data-auto="anat:fade on=true">Select the aortic arch and click <b>Fade the others</b>: everything else becomes faint, so that you can see the arch in place. Turn the body round: the arch runs backwards as well as to the left, over the pulmonary arteries. Click <b>Unfade the others</b> when you have looked.</li>
   </ol>
 </div>
 <div class="q" data-q="an-q-front" data-type="mcq">
@@ -298,11 +298,11 @@
 </div>
 
 <h2 id="an-section">Cutting through the body</h2>
-<p>Medical images are sections: a CT or MRI scan shows the body in transverse (axial), coronal or sagittal slices, and a histological section is a slice too. <b>Section</b> cuts through the model, so that you can match a slice to the organs in 3D. The bar at the bottom of the view moves the cut, and <b>Flip</b> keeps the other part.</p>
+<p>Medical images are sections: a CT or MRI scan shows the body in transverse (axial), coronal or sagittal slices, and a histological section is a slice too. <b>Section</b> cuts through the model, so that you can match a slice to the organs in 3D. The bar at the bottom of the view moves the cut, and <b>Flip</b> keeps the other part. A transverse section is shown as CT and MRI images are: you look at the cut from below, from the feet, so the front of the body is at the top of the view and the body’s left is on your right.</p>
 <div class="activity">
   <div class="act-t">Sections</div>
   <ol class="steps">
-    <li data-task="an-cut" data-auto="anat:section axis=transverse">Cut through the abdomen at the level of the kidneys, and look at the cut from above <button class="do showme" type="button" data-anat="digestive+urinary+skeleton+section:transverse@0.63@superior">show me</button>.</li>
+    <li data-task="an-cut" data-auto="anat:section axis=transverse">Cut through the abdomen at the level of the kidneys <button class="do showme" type="button" data-anat="digestive+urinary+skeleton+section:transverse@0.63@inferior">show me</button>: the part above the cut is kept, and you see the cut from below, as in a CT scan.</li>
     <li data-task="an-slide" data-auto="anat:section axis=transverse at&lt;0.55">Move the cut down, towards the pelvis, with the slider (to less than halfway), and watch which organs are cut.</li>
     <li data-task="an-sag" data-auto="anat:section axis=sagittal">Make a sagittal section through the middle of the body, seen from the left <button class="do showme" type="button" data-anat="heart+respiratory+digestive+urinary+skeleton+section:sagittal@0.5@left">show me</button>: the trachea, the oesophagus, the heart and the vertebral column are cut along their length.</li>
   </ol>
@@ -317,13 +317,13 @@
   <div class="act-t">Label the glands and keep a picture</div>
   <ol class="steps">
     <li data-task="an-labels" data-auto="anat:labels on=true">Show the endocrine glands with their labels <button class="do showme" type="button" data-anat="endocrine+labels">show me</button> (the <b>Labels</b> button, or <kbd>L</kbd>): each gland is named at the side of the view. Turn the body round and watch the labels follow.</li>
-    <li data-task="an-picture" data-auto="anat:capture">Take a picture of the view with the camera button at the right of the toolbar. It is saved in your files, in the folder <code>anatomy</code>, with the labels and the credit of the models.</li>
+    <li data-task="an-picture" data-auto="anat:capture">Take a picture of the view with the camera button at the right of the toolbar. It is saved in your files, in the folder <code>anatomy</code>, with the labels and the credits of the models shown.</li>
     <li data-task="an-files" data-auto="editor:view path~/anatomy/">Find your picture in the <b>Files</b> tab <button class="do showme" type="button" data-bench="editor">show me</button> and click on it to see it.</li>
   </ol>
 </div>
 <div class="callout tip">
   <div class="co-t">Using the pictures</div>
-  <p>The models are shared under the Creative Commons Attribution-ShareAlike licence (CC BY-SA 4.0): you may use the pictures, in a report or a poster, as long as you keep the credit to Z-Anatomy and BodyParts3D that is at the bottom of each picture, and share what you make with them under the same licence. The tab’s <b>About</b> panel says where each part of the models comes from, and what is not included (the body is a man’s, and there is no ear, no skin and no inside of the kidney).</p>
+  <p>The models are shared under the Creative Commons Attribution-ShareAlike licence (CC BY-SA 4.0): you may use the pictures, in a report or a poster, as long as you keep the credits at the bottom of each picture (Z-Anatomy and BodyParts3D, and the other sources of what is shown: Brain for Blender for the brain, the University of Dundee for the cranial nerves), and share what you make with them under the same licence. The tab’s <b>About</b> panel says where each part of the models comes from, and what is not included (the body is a man’s, and there is no ear, no skin and no inside of the kidney).</p>
 </div>
 
 </section>

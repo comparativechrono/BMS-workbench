@@ -17,8 +17,13 @@
      go('respiratory+skeleton')      several systems; the skeleton, when it is named, is shown in full
      go('section:transverse@0.6')    a section: sagittal, coronal or transverse, at 0–1 of the way along the body
                                      (from the right, the back, or the feet); 'section:off' ends it. It can end with a
-                                     view: 'section:transverse@0.45@superior'. A section leaves the systems as they are.
+                                     view: 'section:transverse@0.45@inferior'. A section leaves the systems as they are;
+                                     systems named without a section end it. A sagittal section keeps the body's right
+                                     half (seen from the left), a coronal one the back half (seen from the front), a
+                                     transverse one the part above the cut, seen from below as CT and MRI images are.
      go('labels')                    labels the structures shown (with other parts: 'endocrine+labels')
+   Systems named without a structure clear the selection. The views and selections that go() makes are not the
+   student's own: it sends no anat:view, and anat:select says by: 'go'.
      find('thyroid-gland')           "Find the thyroid gland and click on it" (shows its system if it is hidden);
      find('suprarenal-gland')        either side counts; several answers: find('a|b')
    The systems: skeleton, muscles, heart, vessels, respiratory, digestive, urinary, reproductive, endocrine, brain,
@@ -27,8 +32,11 @@
    Events (MG.bus), for the steps of the practicals that tick themselves:
      anat:open     {systems}                       the body is shown for the first time
      anat:system   {id, on, faded}                 a system is shown, hidden or faded
-     anat:select   {id, name, base, side, system, systems}   a structure is selected (a click, the list, a search)
-     anat:view     {name}                          a standard view (anterior, posterior, left, right, superior, inferior)
+     anat:select   {id, name, base, side, system, systems, by}   a structure is selected; by: 'click' (on the body),
+                                                   'list' (the list or a search), 'find' (a find task) or 'go' (a button
+                                                   of the instructions)
+     anat:view     {name}                          the student chooses a standard view (the View menu or the keys 1–6):
+                                                   anterior, posterior, left, right, superior or inferior
      anat:isolate  {id, base, on}                  a structure is shown alone (or the others are shown again)
      anat:hide     {id, base}                      a structure is hidden
      anat:fade     {id, base, on}                  the others are faded round a structure
@@ -37,7 +45,9 @@
      anat:labels   {on, n}                         the labels are shown or hidden
      anat:find     {id, target, ok, clicked}       a click while asked to find a structure (id: the one asked for)
      anat:capture  {path, name}                    a picture is saved in Files
-     anat:search   {q, n}                          the list is searched
+     anat:search   {q, n}                          the list is searched (by English or Latin names, everyday names –
+                                                   adrenal, pituitary, windpipe… – plurals, and the names of groups and
+                                                   systems – larynx, heart)
    ===================================================================== */
 (function () {
   'use strict';
@@ -591,8 +601,8 @@
         if (this.hidden.has(s.id)) this.unhide([s.id]);
         else this.hide([s.id], true);
       });
-      const b = h('button.an-row-n', { type: 'button', title: s.name + (s.latin ? ' – ' + s.latin : '') },
-        h('i.an-dot', { style: { background: s.colour } }), h('span', s.name), opts.sys ? h('small', this.sys[s.systems[0]] ? this.sys[s.systems[0]].title : '') : null);
+      const b = h('button.an-row-n', { type: 'button', title: s.name + (s.latin ? ' – ' + s.latin : '') + (opts.via ? ' (in ' + opts.via + ')' : '') },
+        h('i.an-dot', { style: { background: s.colour } }), h('span', s.name), opts.sys ? h('small', opts.via || (this.sys[s.systems[0]] ? this.sys[s.systems[0]].title : '')) : null);
       b.addEventListener('click', () => this.pick(s.id));
       const row = h('div.an-row', { dataset: { id: s.id } }, b, eye);
       row.classList.toggle('sel', this.sel.includes(s.id));
@@ -607,15 +617,9 @@
       if (q) {
         const R = this.search_(q);
         if (R.absent) L.appendChild(h('p.an-none.an-absent', R.absent));
-        if (!R.name.length && !R.group.length && !R.absent) L.appendChild(h('p.an-none', 'Nothing has that name. Try part of a name, in English or in Latin.'));
-        let n = 0;
-        R.name.slice(0, 80).forEach((s) => (L.appendChild(this._row(s, { sys: true })), n++));
-        if (R.group.length && n < 80) {
-          L.appendChild(h('div.an-lsys-h', h('b', R.name.length ? 'In groups of that name' : 'In the groups of that name')));
-          R.group.slice(0, 80 - n).forEach((s) => (L.appendChild(this._row(s, { sys: true })), n++));
-        }
-        const all = R.name.length + R.group.length;
-        if (all > n) L.appendChild(h('p.an-none', `…and ${all - n} more: type more of the name.`));
+        if (!R.list.length && !R.absent) L.appendChild(h('p.an-none', 'Nothing has that name. Try part of a name, in English or in Latin.'));
+        R.list.slice(0, 80).forEach((r) => L.appendChild(this._row(r.s, { sys: true, via: r.via })));
+        if (R.list.length > 80) L.appendChild(h('p.an-none', `…and ${R.list.length - 80} more: type more of the name.`));
         return;
       }
       const on = this._onList();
@@ -661,18 +665,24 @@
         names of their groups and systems ('heart', 'larynx'); and a word on what the model does not have */
     search_(q) {
       const vs = variants(q);
-      const name = [], group = [];
+      const list = [];
       Object.values(this.S).forEach((s) => {
+        const nm = s.name.toLowerCase();
         const hay = s._hay || (s._hay = (s.name + ' ' + (s.latin || '')).toLowerCase());
-        if (vs.some((v) => hay.includes(v))) return name.push(s);
-        const grp = s._grp || (s._grp = [s.group || ''].concat(this.index.paths[s.path] || [], s.systems.map((k) => this.sys[k].title)).join(' | ').toLowerCase());
-        if (vs.some((v) => grp.includes(v))) group.push(s);
+        const groups = s._groups || (s._groups = [s.group || ''].concat(this.index.paths[s.path] || [], s.systems.map((k) => this.sys[k].title)).filter(Boolean));
+        const lg = groups.map((g) => g.toLowerCase());
+        // (first a name that starts with the words; then the members of a group of that very name – the heart, the
+        // larynx; then a name that holds them; then the members of a group or system whose name holds them)
+        let rank = -1, via = null, i;
+        if (vs.some((v) => nm.startsWith(v))) rank = 0;
+        else if ((i = lg.findIndex((g) => vs.includes(g))) >= 0) (rank = 1), (via = groups[i]);
+        else if (vs.some((v) => hay.includes(v))) rank = 2;
+        else if ((i = lg.findIndex((g) => vs.some((v) => g.includes(v)))) >= 0) (rank = 3), (via = groups[i]);
+        if (rank >= 0) list.push({ s, rank, via });
       });
-      const first = (s) => (vs.some((v) => s.name.toLowerCase().startsWith(v)) ? 0 : 1);
-      name.sort((a, b) => first(a) - first(b) || a.name.localeCompare(b.name));
-      group.sort((a, b) => a.name.localeCompare(b.name));
+      list.sort((a, b) => a.rank - b.rank || a.s.name.localeCompare(b.s.name));
       const ab = ABSENT.find(([re]) => re.test(q));
-      return { name, group, absent: ab ? ab[1] : null };
+      return { list, absent: ab ? ab[1] : null };
     }
     _searched() {
       clearTimeout(this._searchT);
@@ -839,8 +849,8 @@
       this._applyVis();
       this._scrollSel = true;
       this._renderList();
-      // (the panel about it opens by itself when the view keeps room enough beside it; else its name shows below the body)
-      // (the panel about it opens by itself after a click on the body; on a phone, its name shows below the body instead)
+      // (the panel about it opens by itself when the view keeps room enough beside it, or after a click on the body or a
+      // find (in place of the list, when only one fits); on a phone its name shows below the body instead)
       if (ids.length && !opts.quiet && this.info.hidden && this.st.info !== false && !this._narrow() && (this._maxPanels() >= 2 || opts.by === 'click' || opts.by === 'find')) this.toggleInfo(true, true);
       this._renderInfo();
       this._renderChip();

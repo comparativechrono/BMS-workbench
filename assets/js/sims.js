@@ -614,6 +614,7 @@ ${screens}
 ${credits ? `<dl class="sm-credits">${credits}</dl>` : ''}
 <h4>This copy</h4>
 <p>Version ${esc(e.version)}${date ? `, built by PhET on ${esc(date)}` : ''}: PhET’s own file, unchanged, in the version that PhET published under the <a href="${LICENCE_URL}" target="_blank" rel="noopener">Creative Commons Attribution 4.0</a> licence. (PhET’s later versions have a different licence; they are on PhET’s website.) Here it runs with PhET’s usage statistics switched off, so it sends nothing to PhET or to anyone else. The PhET name and logo are trademarks of the University of Colorado, shown only to credit PhET.</p>
+${e.aboutNote ? `<p class="sm-note">${esc(e.aboutNote)}</p>` : ''}
 <p><a href="${PHET}/en/simulations/${encodeURIComponent(e.id)}" target="_blank" rel="noopener">${esc(e.title)} on PhET’s website</a>, with its activities for teachers and students.</p>
 </div>`);
       bus.emit('sim:about', { id: e.id });

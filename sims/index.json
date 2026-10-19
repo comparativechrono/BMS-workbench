@@ -380,7 +380,8 @@
    "thumbSize": [
     480,
     315
-   ]
+   ],
+   "aboutNote": "One picture in this simulation is not PhET’s: the photograph of E. coli cells that the Show Real Cells button shows, on the Multiple Cells screen, is © Dennis Kunkel Microscopy, Inc. PhET uses it with permission, so it may not be covered by CC BY 4.0 like the rest of the simulation."
   },
   {
    "id": "color-vision",
