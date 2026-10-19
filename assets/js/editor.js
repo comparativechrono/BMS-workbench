@@ -770,7 +770,7 @@
       } else if (/\.exam\.json$/i.test(n)) {
         add('exam', 'pencil', 'Open in Exam practice', 'Exam practice', 'Open these answers in the Exam practice tab', () => MG.app.openFile(p));
       } else if (MG.app.isStructure && MG.app.isStructure(n)) {
-        add('viewer', 'cube', 'Open in the 3D viewer', '3D viewer', 'Show the molecule in the 3D viewer', () => MG.app.openFile(p));
+        add('viewer', 'cube', 'Open in Molecules', 'Molecules', 'Show the molecule in 3D in the Molecules tab', () => MG.app.openFile(p));
       } else if (/\.(png|jpe?g|webp|gif)$/i.test(n)) {
         add('scope', 'microscope', 'Open in the microscope', 'Microscope', 'Open the picture in the Microscope tab, where you can zoom in, measure, count and label it', () => MG.app.openInMicroscope(p));
       }
@@ -1002,7 +1002,7 @@
       w.innerHTML = `<div class="ed-welcome-h">${MG.icon('folder')}<h3>Your files</h3></div>
         <p class="ed-lead">This is your home folder, <code>~</code>. It holds what the tabs of the workbench save: your measurements, counts and pictures from the microscope (<code>microscope</code>), your diagrams and circuits, your essays (<code>essays</code>) and your R scripts.</p>
         <ul>
-          <li><b>Open a file</b> by clicking it on the left. Scripts and text open here in the editor, and tables, pictures, PDFs and web pages are shown in a viewer. The buttons above a file send it to the other tabs: a diagram to Diagrams, a circuit to Circuits, a picture to the Microscope, a molecule to the 3D viewer, or an R script to RStudio.</li>
+          <li><b>Open a file</b> by clicking it on the left. Scripts and text open here in the editor, and tables, pictures, PDFs and web pages are shown in a viewer. The buttons above a file send it to the other tabs: a diagram to Diagrams, a circuit to Circuits, a picture to the Microscope, a molecule to Molecules, or an R script to RStudio.</li>
           <li><b>RStudio sees the same files.</b> A file you save here is there for R (for example <code>read.csv("~/microscope/measurements.csv")</code>), and a file that R writes appears here as soon as its command has finished.</li>
           <li><b>Your files are kept in this browser</b>, on this computer, and nothing is sent to a server. Download them as a .zip file to keep a copy or to take them to another computer.</li>
           <li><b>Add files</b> from your computer with the ↑ button above the list, or drag them onto this tab. For more options, right-click a file or click its ⋯ button.</li>

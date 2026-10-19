@@ -152,12 +152,15 @@
      Tasks (tick automatically when the matching thing happens)
      ------------------------------------------------------------------ */
   const taskEls = [];
+  /* "event field=value field~text field>n field<n || another" (field names: letters, digits and _) */
   function parseSpec(spec) {
     return spec.split('||').map((one) => {
-      const parts = one.trim().split(/\s+(?=[a-zA-Z_]+[=~<>])/);
+      const parts = one.trim().split(/\s+(?=[a-zA-Z_][a-zA-Z0-9_]*[=~<>])/);
       const ev = parts.shift();
+      // (an event name with a space left in it is a condition that could not be read: say so, rather than never tick)
+      if (/\s/.test(ev)) console.warn('A step’s data-auto has a part that could not be read:', one);
       const conds = parts.map((p) => {
-        const m = /^([a-zA-Z_]+)([=~<>])(.*)$/.exec(p.trim());
+        const m = /^([a-zA-Z_][a-zA-Z0-9_]*)([=~<>])(.*)$/.exec(p.trim());
         return m ? { k: m[1], op: m[2], v: m[3] } : null;
       }).filter(Boolean);
       return { ev, conds };
@@ -337,6 +340,8 @@
     s = s.replace(/(^|[^\d.,])(-?)0,(\d)/g, (m0, a, sign, d) => a + sign + '0.' + d);
     s = s.replace(/(\d),(?=\d{3}(?:\D|$))/g, '$1').replace(/(\d) (?=\d{3}(?:[^\d.,]|$))/g, '$1');
     s = s.replace(/(\d),(\d{1,2})(?!\d)/g, '$1.$2');
+    // a power of ten written without ^ (9.9 x 10-8, as typed without superscripts)
+    s = s.replace(/((?:x|×|\*|·|⋅)\s*10)\s*([-+])\s*(\d+)/gi, '$1^$2$3');
     let m = /(-?\d*\.?\d+)\s*(?:x|×|\*|·|⋅)\s*10\s*\^\s*\(?\s*([-+]?\d+)/i.exec(s);
     if (m) return +m[1] * Math.pow(10, +m[2]);
     m = /^10\s*\^\s*\(?\s*([-+]?\d+)/.exec(s);

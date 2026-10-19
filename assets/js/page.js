@@ -77,13 +77,23 @@
       if (MG.BMSLibrary) MG.app.molLibrary = new MG.BMSLibrary(MG.app.vui);
     } catch (e) {
       console.error(e);
-      root.innerHTML = '<div class="ex-empty"><h3>The 3D viewer could not start</h3><p>This browser or computer may have 3D graphics (WebGL) switched off. Try Chrome, Edge, Firefox or Safari, and turn on “hardware acceleration” in the browser\'s settings.</p></div>';
-      const noop = () => toast('The 3D viewer is not available in this browser.', 'error');
+      root.innerHTML = '<div class="ex-empty"><h3>The Molecules tab could not start</h3><p>This browser or computer may have 3D graphics (WebGL) switched off. Try Chrome, Edge, Firefox or Safari, and turn on “hardware acceleration” in the browser\'s settings.</p></div>';
+      const noop = () => toast('The Molecules tab (3D) is not available in this browser.', 'error');
       MG.app.vui = { run: noop, log() {}, showTab() {}, showHelp() { noop(); }, tabs: {}, views: [] };
       MG.app.viewer = { structures: [], stage: { handleResize() {} } };
       if (MG.commands) MG.commands.run = async () => noop();
     }
   };
+
+  /** build a tab whose module (one script) loads its own libraries: MG.app[key] = new MG[cls](root, { fs }) */
+  async function build(pane, sel, what, src, key, cls) {
+    const root = pane.querySelector(sel);
+    loading(root, what);
+    await loadOnce(src);
+    root.innerHTML = '';
+    MG.app[key] = new MG[cls](root, { fs: MG.app.fs });
+    if (MG.app[key].ready) await MG.app[key].ready;
+  }
 
   MG.page.lazy = {
     scope: async (pane) => {
@@ -120,11 +130,16 @@
     },
     viewer: async (pane) => {
       const root = pane.querySelector('#viewerRoot');
-      loading(root, 'the 3D viewer');
+      loading(root, 'the molecules');
       await loadAll(['assets/vendor/ngl/ngl.js', 'assets/js/viewer-core.js', 'assets/js/annot.js', 'assets/js/alphafold.js', 'assets/js/commands.js', 'assets/js/session.js', 'assets/js/viewer-ui.js', 'assets/js/viewer-bms.js']);
       root.innerHTML = '';
       MG.app.createViewer(root);
     },
+    /* the newer tabs: each module loads what else it needs (its libraries) itself, before its .ready */
+    anatomy: (pane) => build(pane, '#anatRoot', 'the 3D anatomy', 'assets/js/anatomy.js', 'anatomy', 'AnatomyApp'),
+    recorder: (pane) => build(pane, '#recRoot', 'the recorder', 'assets/js/recorder.js', 'recorder', 'RecorderApp'),
+    bath: (pane) => build(pane, '#bathRoot', 'the organ bath', 'assets/js/organbath.js', 'bath', 'OrganBathApp'),
+    sims: (pane) => build(pane, '#simsRoot', 'the simulations', 'assets/js/sims.js', 'sims', 'SimsApp'),
     rstudio: (pane) => {
       MG.app.rstudio = new MG.RStudioApp(pane.querySelector('#rsRoot'), { fs: MG.app.fs });
     },
@@ -139,6 +154,10 @@
     circuit: (pane, opts) => MG.app.circuit && MG.app.circuit.shown && MG.app.circuit.shown(opts),
     exam: (pane, opts) => MG.app.exam && MG.app.exam.shown && MG.app.exam.shown(opts),
     viewer: () => MG.app.viewer && MG.app.viewer.stage && MG.app.viewer.stage.handleResize(),
+    anatomy: (pane, opts) => MG.app.anatomy && MG.app.anatomy.shown && MG.app.anatomy.shown(opts),
+    recorder: (pane, opts) => MG.app.recorder && MG.app.recorder.shown && MG.app.recorder.shown(opts),
+    bath: (pane, opts) => MG.app.bath && MG.app.bath.shown && MG.app.bath.shown(opts),
+    sims: (pane, opts) => MG.app.sims && MG.app.sims.shown && MG.app.sims.shown(opts),
     rstudio: (pane, opts) => MG.app.rstudio && MG.app.rstudio.shown(opts),
     editor: () => MG.app.editor && MG.app.editor.shown && MG.app.editor.shown()
   };
@@ -286,7 +305,8 @@
       .concat(MG.app.editor && MG.app.editor.dirtyPaths ? MG.app.editor.dirtyPaths() : [])
       .concat(MG.app.rstudio && MG.app.rstudio.dirtyPaths ? MG.app.rstudio.dirtyPaths() : [])
       .concat(MG.app.flow && MG.app.flow.dirty && MG.app.flow.dirty() ? ['diagram'] : [])
-      .concat(MG.app.circuit && MG.app.circuit.dirty && MG.app.circuit.dirty() ? ['circuit'] : []);
+      .concat(MG.app.circuit && MG.app.circuit.dirty && MG.app.circuit.dirty() ? ['circuit'] : [])
+      .concat(['anatomy', 'recorder', 'bath', 'sims'].filter((k) => MG.app[k] && MG.app[k].dirty && MG.app[k].dirty()));
     if (dirty.length) {
       e.preventDefault();
       e.returnValue = '';
@@ -306,6 +326,13 @@
      data-circuit-run                   run the open circuit
      data-exam="paper-id"               open a paper of exam practice ("" or "free": a blank essay)
      data-calc                          open the calculator
+     data-anat="spec"  data-anat-find="spec"   the Anatomy tab: show a system or structure / ask the student to find
+                                        one and click on it (the specs: anatomy.js)
+     data-rec="spec"  data-rec-tool="name"  data-rec-r="what"   the Recorder: open a recording (at a time) / pick a tool /
+                                        open its R script (recorder.js)
+     data-bath="spec"  data-bath-do="cmd"  data-bath-r="what"   the Organ bath: set up a tissue / do something to it (add
+                                        a drug, wash out…) / open its R script (organbath.js)
+     data-sim="id[:screen]"             open a simulation in the Simulations tab (sims.js)
      data-pdb="4HHB"                    load a structure in the 3D viewer
      data-viewer="load 4HHB; color chain"   run commands of the 3D viewer
      data-rs-open="path"  data-rs-run="code"   open a file in RStudio / run code in its console
@@ -335,6 +362,15 @@
     await loadOnce('assets/js/calc.js');
     MG.Calculator.open();
   };
+  MG.actions.anat = async (spec) => (await tab('anatomy', 'anatomy')).go(spec);
+  MG.actions.anatFind = async (spec) => (await tab('anatomy', 'anatomy')).find(spec);
+  MG.actions.rec = async (spec) => (await tab('recorder', 'recorder')).go(spec);
+  MG.actions.recTool = async (name) => (await tab('recorder', 'recorder')).tool(name);
+  MG.actions.recR = async (what) => (await tab('recorder', 'recorder')).toR(what);
+  MG.actions.bath = async (spec) => (await tab('bath', 'bath')).go(spec);
+  MG.actions.bathDo = async (cmd) => (await tab('bath', 'bath')).do(cmd);
+  MG.actions.bathR = async (what) => (await tab('bath', 'bath')).toR(what);
+  MG.actions.sim = async (spec) => (await tab('sims', 'sims')).open(spec);
   MG.actions.pdb = async (id) => MG.app.viewerRun('load ' + id);
   MG.actions.viewer = async (cmds) => MG.app.viewerRun(code(cmds));
   MG.actions.rsOpen = async (p) => MG.app.openInRStudio(inHome(p));
@@ -400,12 +436,12 @@
       'How this page works',
       `<ul>
 <li>The <b>instructions</b> are on the left and the <b>workbench</b> is on the right. Drag the divider between them to change their widths; the button at the top left (or <kbd>Ctrl</kbd>+<kbd>\\</kbd>) hides the instructions so that the workbench fills the window.</li>
-<li>The workbench has seven tabs. ${ic('scope')} <b>Microscope</b> is a virtual microscope with slides of human tissues: change the objective, measure, count, label and take pictures. ${ic('flow')} <b>Diagrams</b> draws flow diagrams of physiological control and can run them as a simulation. ${ic('circuit')} <b>Circuits</b> builds and runs electrical circuits, including the circuit models of physiology. ${ic('exam')} <b>Exam practice</b> is an essay editor that works like the online exam system, with a word count, a timer and a calculator. ${ic('viewer')} <b>3D viewer</b> shows proteins and other molecules in 3D. ${ic('rstudio')} <b>RStudio</b> is for analysing data in R, and ${ic('editor')} <b>Files</b> holds everything you save.</li>
-<li>When the workbench is narrow – on a phone or a tablet, or beside the instructions in a small window – the tabs show only their icons (the ones above), and the open tab keeps its name. On a phone, the workbench opens over the instructions with the <b>Workbench</b> button, and the ✕ at the right of its tabs goes back to the instructions.</li>
-<li>The tabs work together: measurements and counts from the microscope, pictures you take, and the results of simulations are saved in <b>Files</b>, where R can read them; and the buttons in the instructions open slides, diagrams, circuits and papers for you.</li>
+<li>The workbench has eleven tabs. ${ic('scope')} <b>Microscope</b> is a virtual microscope with slides of human tissues: change the objective, measure, count, label and take pictures. ${ic('anatomy')} <b>Anatomy</b> shows the human body in 3D, system by system: click a structure to see its name and what it is, isolate it, cut sections and label what is shown. ${ic('viewer')} <b>Molecules</b> shows proteins and other molecules in 3D. ${ic('recorder')} <b>Recorder</b> plays back real recordings of people – the ECG, heart sounds, blood pressure, breathing, muscle and the brain – as a chart recorder does: zoom, play, and measure intervals and rates with the calipers. ${ic('bath')} <b>Organ bath</b> is a simulated isolated tissue: add drugs, watch it contract or relax, and build concentration–response curves that R analyses. ${ic('flow')} <b>Diagrams</b> draws flow diagrams of physiological control and can run them as a simulation. ${ic('circuit')} <b>Circuits</b> builds and runs electrical circuits, including the circuit models of physiology. ${ic('sims')} <b>Simulations</b> has interactive simulations from PhET (University of Colorado Boulder): the action potential, membrane transport, gases, pH, solutions and Beer’s law, lenses and colour vision. ${ic('exam')} <b>Exam practice</b> is an essay editor that works like the online exam system, with a word count, a timer and a calculator. ${ic('rstudio')} <b>RStudio</b> is for analysing data in R, and ${ic('editor')} <b>Files</b> holds everything you save.</li>
+<li>When there isn’t room for all the tabs’ names – on a phone or a tablet, or beside the instructions in a smaller window – the tabs show only their icons (the ones above), and the open tab keeps its name. On a phone, the workbench opens over the instructions with the <b>Workbench</b> button, and the ✕ at the right of its tabs goes back to the instructions.</li>
+<li>The tabs work together: measurements and counts from the microscope, measurements from the recorder and the organ bath, pictures you take, and the results of diagrams and circuits are saved in <b>Files</b>, where R can read them; and the buttons in the instructions open slides, models, recordings, tissues, simulations, diagrams, circuits and papers for you.</li>
 <li>The steps of each activity are ticked automatically when you do them (they are marked <b>✓ spotted</b>), and you can also tick them yourself.</li>
 <li>Your ticks and answers, your essays and your files are saved in this browser, so they will still be there if you reload the page. <b>My answers</b> downloads your answers, <b>My files</b> downloads all your files as a .zip file, and each essay can be downloaded as a Word document. Some lab computers clear the browser’s storage when you log out, so download your work before you leave.</li>
-<li>The slides, the examples and R itself are downloaded from the internet as you use them; R is about 30 MB the first time RStudio starts.</li>
+<li>The slides, the 3D models, the recordings, the simulations and R itself are downloaded from the internet as you use them; R is about 30 MB the first time RStudio starts.</li>
 <li>To start again, use <b>My answers → Start again</b> to clear your ticks and answers, or <b>My files → Start afresh</b> to delete your files.</li>
 </ul>`
     );
@@ -413,6 +449,6 @@
 
   /* Start afresh: forget what the tabs remember */
   MG.page.beforeReset = async () => {
-    for (const k of ['seeded', 'rsOpen', 'rsHistory', 'rlib', 'bench', 'scope', 'flow', 'circuit', 'exam', 'calc']) store.remove(k);
+    for (const k of ['seeded', 'rsOpen', 'rsHistory', 'rlib', 'bench', 'scope', 'flow', 'circuit', 'exam', 'calc', 'anatomy', 'recorder', 'bath', 'sims']) store.remove(k);
   };
 })();

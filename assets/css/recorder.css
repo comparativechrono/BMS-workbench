@@ -1,0 +1,176 @@
+/* =====================================================================
+   The Recorder tab (recorder.js): the list of recordings, the toolbar,
+   the readout of the cursors, the chart with its time axis and overview,
+   and the side panel (about, data pad, channels).
+   ===================================================================== */
+.rc-app { display: flex; height: 100%; min-height: 0; background: #fff; position: relative; container-type: inline-size; container-name: rec; }
+.rc-app button, .rc-app select, .rc-app input { font: inherit; }
+.rc-app [hidden] { display: none !important; }
+
+/* ---------- the list of recordings ---------- */
+.rc-list { width: 262px; flex: none; display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); background: var(--panel-2); }
+.rc-list-h { display: flex; align-items: center; gap: 6px; padding: 8px 8px 4px 12px; font-size: 0.9rem; }
+.rc-search { margin: 4px 10px 6px; padding: 6px 9px; border: 1px solid var(--line-2); border-radius: 7px; background: #fff; font-size: 0.86rem; }
+.rc-listbody { flex: 1; min-height: 0; overflow: auto; padding: 0 6px 10px; }
+.rc-grp { font-size: 0.7rem; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 12px 6px 4px; }
+.rc-item { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; border: 1px solid transparent; background: none; border-radius: 8px; padding: 5px 6px; cursor: pointer; color: var(--ink); }
+.rc-item:hover { background: #fff; border-color: var(--line-2); }
+.rc-item.on { background: var(--accent-soft); border-color: #bfdfe9; }
+.rc-item-ic { width: 34px; height: 34px; flex: none; border-radius: 7px; display: grid; place-items: center; background: #fff; border: 1px solid var(--line); color: #c92a2a; }
+.rc-item.on .rc-item-ic { border-color: #bfdfe9; }
+.rc-item-t { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.rc-item-t b { font-size: 0.86rem; font-weight: 650; }
+.rc-item-t small { font-size: 0.72rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rc-list-foot { padding: 8px 10px; border-top: 1px solid var(--line); }
+.rc-list-foot .tbtn { width: 100%; justify-content: center; }
+.rc-none { color: var(--muted); font-size: 0.85rem; padding: 6px 8px; }
+.rc-list-x { display: none; }
+
+/* ---------- the toolbar ---------- */
+.rc-main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+.rc-bar { display: flex; align-items: center; gap: 4px; padding: 5px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); flex-wrap: wrap; }
+.rc-sep { width: 1px; height: 22px; background: var(--line-2); margin: 0 3px; }
+.rc-ib { border: 1px solid transparent; background: none; border-radius: 6px; padding: 5px; cursor: pointer; color: var(--ink-2); display: inline-flex; align-items: center; justify-content: center; }
+.rc-ib:hover { background: #fff; border-color: var(--line-2); }
+.rc-ib.on { background: var(--accent-soft); color: var(--accent-2); border-color: #bfdfe9; }
+.rc-ib:disabled { opacity: 0.4; cursor: default; }
+.rc-ib.sm { padding: 3px; }
+.rc-ib.sm .ic { width: 15px; height: 15px; }
+.rc-title { border: 0; background: none; font-weight: 700; font-size: 0.92rem; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: var(--ink); padding: 4px 6px; border-radius: 6px; }
+.rc-title:hover { background: #fff; }
+.rc-play { display: inline-flex; align-items: center; gap: 5px; border: 1px solid #f0b7b2; background: #fff; color: #b3261e; border-radius: 7px; padding: 4px 9px; cursor: pointer; font-weight: 650; font-size: 0.82rem; }
+.rc-play .ic { width: 15px; height: 15px; }
+.rc-play:hover { background: var(--bad-soft); }
+.rc-play.on { background: #c92a2a; border-color: #c92a2a; color: #fff; }
+.rc-sel { border: 1px solid var(--line-2); border-radius: 6px; background: #fff; padding: 3px 2px; font-size: 0.8rem; color: var(--ink-2); max-width: 132px; }
+.rc-zoom { display: inline-flex; align-items: center; gap: 1px; }
+.rc-span { min-width: 64px; max-width: 104px; }
+.rc-tools { display: inline-flex; gap: 2px; }
+.rc-tool { display: inline-flex; align-items: center; gap: 4px; border: 1px solid transparent; background: none; border-radius: 6px; padding: 4px 7px; font-size: 0.8rem; cursor: pointer; color: var(--ink-2); white-space: nowrap; }
+.rc-tool:hover { background: #fff; border-color: var(--line-2); }
+.rc-tool.on { background: var(--accent-soft); color: var(--accent-2); border-color: #bfdfe9; font-weight: 650; }
+.rc-tool .ic { width: 16px; height: 16px; }
+.rc-hrbtn.on { background: #fff4e6; color: #c2410c; border-color: #fdd8b5; }
+
+/* ---------- the readout of the cursors ---------- */
+.rc-work { flex: 1; display: flex; min-height: 0; position: relative; }
+.rc-view { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; container-type: inline-size; container-name: recview; }
+@container recview (max-width: 640px) {
+  .rc-mv.rc-more { display: none; }
+  .rc-add span { display: none; }
+}
+.rc-mbar { display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 3px 8px 3px 12px; border-bottom: 1px solid var(--line); font-size: 0.82rem; background: #fff; }
+.rc-mbar .rc-hint { flex: 1; min-width: 0; }
+.rc-mbtns { display: inline-flex; align-items: center; gap: 4px; flex: none; margin-left: auto; }
+.rc-hint { color: var(--muted); }
+.rc-mvals { display: flex; align-items: center; gap: 2px 14px; flex-wrap: wrap; min-width: 0; flex: 1 1 auto; }
+.rc-mv { display: inline-flex; align-items: baseline; gap: 5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rc-mv i { font-style: normal; color: var(--muted); font-size: 0.76rem; }
+.rc-mv b { font-weight: 700; color: var(--ink); }
+.rc-mv.rc-more b { font-weight: 600; margin-right: 6px; }
+.rc-mch { max-width: 110px; padding: 1px 3px; }
+.rc-warn { color: var(--warn); font-size: 0.76rem; }
+.rc-add { flex: none; }
+.rc-mv b.rc-hz { font-weight: 600; }
+.rc-iv { max-width: 78px; padding: 2px 1px; }
+
+/* ---------- the chart ---------- */
+.rc-chart { flex: 1; position: relative; min-height: 0; outline: none; background: #fff; }
+.rc-chart:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+.rc-scroll { position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: thin; }
+.rc-cv { display: block; touch-action: pan-y; cursor: grab; }
+.rc-cv:active { cursor: grabbing; }
+.rc-app[data-tool='calipers'] .rc-cv, .rc-app[data-tool='marker'] .rc-cv { cursor: crosshair; }
+/* (their sizes are set here as well as by recorder.js: a canvas of no set size takes 150 pixels for each 300 of width,
+   and the chart above them would be squeezed out before it could be measured) */
+.rc-axis { display: block; flex: none; width: 100%; height: 24px; border-top: 1px solid var(--line); }
+.rc-ov { display: block; flex: none; width: 100%; height: 36px; cursor: pointer; border-top: 1px solid var(--line); touch-action: none; }
+.rc-hair { position: absolute; top: 0; width: 1px; background: rgba(24, 33, 47, 0.28); pointer-events: none; }
+.rc-tip { position: absolute; z-index: 5; pointer-events: none; background: rgba(24, 33, 47, 0.9); color: #fff; font-size: 0.74rem; padding: 3px 8px; border-radius: 6px; white-space: nowrap; font-variant-numeric: tabular-nums; max-width: calc(100% - 8px); overflow: hidden; text-overflow: ellipsis; }
+.rc-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: #f6f7f9; color: var(--ink-2); z-index: 6; padding: 20px; }
+.rc-empty h3 { margin: 0 0 6px; }
+.rc-empty p { margin: 6px 0 12px; color: var(--muted); max-width: 46ch; }
+.rc-empty .spinner { margin: 8px auto; }
+.rc-banner { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 6; padding: 6px 12px; border-radius: 9px; background: #fff; border: 1px solid var(--line-2); box-shadow: var(--shadow-l); font-size: 0.86rem; }
+.rc-app.rc-playing .rc-mbar { opacity: 0.6; }
+
+/* ---------- the side panel ---------- */
+.rc-side { width: 336px; flex: none; border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; background: #fff; }
+.rc-side-h { display: flex; align-items: flex-end; gap: 4px; padding: 6px 6px 0; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+.rc-side-tabs { display: flex; gap: 1px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: thin; }
+.rc-stab { border: 1px solid transparent; border-bottom: 0; background: none; padding: 5px 7px; border-radius: 7px 7px 0 0; cursor: pointer; color: var(--muted); white-space: nowrap; }
+.rc-app .rc-stab { font-size: 0.82rem; }
+.rc-stab.on { background: #fff; border-color: var(--line); color: var(--ink); font-weight: 650; margin-bottom: -1px; }
+.rc-side-x { margin-bottom: 3px; }
+.rc-side-b { flex: 1; min-height: 0; overflow: auto; padding: 10px 14px 16px; font-size: 0.88rem; }
+.rc-side-b h3 { margin: 4px 0 6px; font-size: 1.05rem; }
+.rc-side-b h4 { margin: 14px 0 4px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.rc-side-b p { line-height: 1.45; }
+.rc-meta { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; margin: 8px 0; font-size: 0.82rem; }
+.rc-meta dt { color: var(--muted); }
+.rc-meta dd { margin: 0; }
+.rc-codes { grid-template-columns: 1.5em 1fr; }
+.rc-look { margin: 4px 0; padding-left: 18px; }
+.rc-look li { margin: 3px 0; }
+.rc-credit { font-size: 0.8rem; color: var(--ink-2); }
+.rc-note { font-size: 0.8rem; color: var(--muted); }
+.rc-cite { margin: 4px 0; padding-left: 18px; font-size: 0.76rem; color: var(--ink-2); }
+.rc-cite li { margin: 3px 0; overflow-wrap: anywhere; }
+.rc-help { color: var(--muted); font-size: 0.82rem; margin: 0 0 8px; }
+.rc-side-acts { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; }
+.rc-padadd { margin: 0 0 10px; display: inline-flex; align-items: center; gap: 6px; }
+.rc-padadd .ic { width: 15px; height: 15px; }
+.rc-padwrap { overflow-x: auto; margin: 0 -6px; }
+.rc-pad { border-collapse: collapse; width: 100%; font-size: 0.78rem; font-variant-numeric: tabular-nums; table-layout: auto; }
+.rc-pad th, .rc-pad td { padding: 3px 4px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+.rc-pad th { font-weight: 650; color: var(--muted); font-size: 0.72rem; white-space: nowrap; }
+.rc-pad .num { text-align: right; white-space: nowrap; }
+.rc-pad td small { display: block; color: var(--muted); font-size: 0.7rem; }
+.rc-rid { display: block; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rc-cm { width: 100%; min-width: 44px; max-width: 90px; box-sizing: border-box; border: 1px solid var(--line); border-radius: 5px; padding: 2px 5px; font-size: 0.76rem; }
+.rc-cm:focus { border-color: var(--accent); outline: none; }
+.rc-acts { white-space: nowrap; width: 1%; }
+.rc-pad td small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 110px; }
+.rc-rk-w { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.rc-pad td .rc-rk-w small { display: inline; max-width: 64px; }
+.rc-rk { font-size: 0.72rem; padding: 0 1px; max-width: 64px; }
+.rc-pad td.rc-na { color: var(--muted); }
+.rc-sum { margin: 8px 0; font-size: 0.82rem; line-height: 1.45; }
+.rc-sum b { font-weight: 700; }
+.rc-sum .rc-hr { font-weight: 700; color: #c2410c; }
+.rc-sum small { color: var(--muted); font-size: 0.76rem; }
+.rc-sum .rc-dot { color: var(--muted); }
+.rc-chans { list-style: none; padding: 0; margin: 6px 0; }
+.rc-chans li { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.rc-chans small { color: var(--muted); font-size: 0.74rem; margin-left: auto; font-variant-numeric: tabular-nums; }
+.rc-chk { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; min-width: 0; }
+.rc-chk i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: none; }
+.rc-exp label.check { display: flex; margin: 6px 0; }
+.rc-exp .prompt-input { width: 100%; box-sizing: border-box; margin-top: 4px; font-family: var(--mono); }
+
+/* ---------- narrower: the list and the panel lie over the chart ---------- */
+@container rec (max-width: 1180px) {
+  .rc-tool span { display: none; }
+  .rc-tool { padding: 4px 6px; }
+}
+@container rec (max-width: 860px) {
+  .rc-list { position: absolute; left: 0; top: 0; bottom: 0; z-index: 30; box-shadow: var(--shadow-l); width: min(290px, 88%); }
+  .rc-list-x { display: inline-flex; }
+  .rc-side { position: absolute; right: 0; top: 0; bottom: 0; z-index: 25; box-shadow: var(--shadow-l); width: min(340px, 92%); border-top: 1px solid var(--line); }
+  .rc-title { max-width: 150px; }
+  .rc-bar .rc-sep { display: none; }
+  .rc-play span { display: none; }
+  .rc-play { padding: 4px 7px; }
+}
+@container rec (max-width: 520px) {
+  .rc-bar { gap: 2px; padding: 4px 5px; }
+  .rc-title { max-width: 100px; font-size: 0.82rem; }
+  .rc-sel { font-size: 0.76rem; max-width: 84px; padding: 2px; }
+  .rc-span { min-width: 0; }
+  .rc-mbar { padding: 3px 6px; gap: 4px 8px; font-size: 0.78rem; }
+  .rc-mv.rc-more { display: none; }
+  .rc-add span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rc-app * { transition: none !important; }
+}

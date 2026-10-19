@@ -158,3 +158,49 @@ def pdb(entry, label=None):
 def viewer(cmds, label='show me'):
     """a button that runs commands of the 3D viewer, e.g. 'molecule cortisol; color element'"""
     return _btn('viewer', cmds, label)
+
+
+# the newer tabs (what each spec means is written at the top of the tab's module, assets/js/<module>.js)
+def anat(spec, label='show me'):
+    """a button that shows something in the Anatomy tab: a system, a structure, a view (anatomy.js)"""
+    return _btn('anat', spec, label)
+
+
+def anatfind(spec, label='find it'):
+    """a button that asks the student to find a structure in the Anatomy tab and click on it (anatomy.js)"""
+    return _btn('anat-find', spec, label)
+
+
+def rec(spec, label='show me'):
+    """a button that opens a recording in the Recorder, perhaps at a time (recorder.js)"""
+    return _btn('rec', spec, label)
+
+
+def rectool(name, label):
+    """a button that picks a tool of the Recorder (recorder.js)"""
+    return _btn('rec-tool', name, label)
+
+
+def recr(what='measurements', label=None):
+    """a button that opens the Recorder's R script for what it saved (recorder.js)"""
+    return _btn('rec-r', what, label or 'open the script in RStudio')
+
+
+def bath(spec, label='set it up'):
+    """a button that sets up a tissue in the Organ bath (organbath.js)"""
+    return _btn('bath', spec, label)
+
+
+def bathdo(cmd, label='show me'):
+    """a button that does something in the Organ bath: add a drug, wash out… (organbath.js)"""
+    return _btn('bath-do', cmd, label)
+
+
+def bathr(what='responses', label=None):
+    """a button that opens the Organ bath's R script for its results (organbath.js)"""
+    return _btn('bath-r', what, label or 'open the script in RStudio')
+
+
+def sim(spec, label='open it'):
+    """a button that opens a simulation in the Simulations tab: 'neuron', or 'ph-scale:2' for its second screen (sims.js)"""
+    return _btn('sim', spec, label)

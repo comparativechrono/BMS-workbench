@@ -1,0 +1,255 @@
+{
+ "about": "The Recorder's recordings: excerpts of open-access PhysioNet databases (all under the Open Data Commons Attribution License v1.0). make_recordings.py makes recordings/<id>.json and .bin from each entry. Times (from, to, events) are in seconds; 'src' is the name of a channel in the source record.",
+ "recordings": [
+  {
+   "id": "ecg-normal",
+   "title": "Sinus rhythm",
+   "group": "The ECG",
+   "summary": "Two leads of an ECG in sinus rhythm, with every beat labelled.",
+   "description": "A minute of an ECG recorded on a portable recorder, in sinus rhythm: each beat starts with a P wave, followed by a QRS complex and a T wave, and the beats come at a fairly steady rate. The upper channel is a modified lead II, the lower one a chest lead (V5). Each beat was labelled by cardiologists (N: a normally conducted beat).",
+   "look_for": ["The P wave, the QRS complex and the T wave of each beat", "The R–R interval between two beats, and the heart rate it gives (60 ÷ the R–R interval in seconds)", "The PR interval (from the start of the P wave to the start of the QRS) and the QT interval (from the start of the QRS to the end of the T wave)"],
+   "source": {"db": "mitdb", "record": "100", "from": 480, "to": 540},
+   "channels": [
+    {"src": "MLII", "name": "ECG (lead II)", "short": "II", "kind": "ecg", "units": "mV", "about": "a modified lead II: electrodes on the chest, near where those of lead II go on the limbs"},
+    {"src": "V5", "name": "ECG (V5)", "short": "V5", "kind": "ecg", "units": "mV", "about": "a chest lead, over the left side of the heart"}
+   ],
+   "beats": {"ann": "atr", "channel": "II", "source": "expert", "labels": true, "rhythms": true, "comments": true,
+             "note": "Each beat was labelled by two cardiologists working independently, who then settled their differences (the reference labels of the MIT-BIH database)."},
+   "view": {"t0": 0, "span": 10},
+   "subject": {"age": 69, "sex": "man", "notes": "Taking Aldomet (methyldopa) and Inderal (propranolol), as the database records."},
+   "changes": "A one-minute excerpt; the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "ecg-12lead",
+   "title": "The 12-lead ECG",
+   "group": "The ECG",
+   "summary": "A standard 12-lead ECG of a healthy 29-year-old man.",
+   "description": "Thirty seconds of a resting 12-lead ECG. The six limb leads (I, II, III, aVR, aVL and aVF) look at the heart's electrical activity in the frontal plane, and the six chest leads (V1 to V6) in the horizontal plane. The same beats look different in each lead, because each lead records the heart's electrical activity from a different direction.",
+   "look_for": ["The QRS points up in lead II and down in aVR", "How the R wave grows from V1 to V6 (the R-wave progression)", "Einthoven's law: at any moment, the voltage of lead II is the sum of those of leads I and III"],
+   "source": {"db": "ptbdb", "record": "patient182/s0308lre", "from": 5, "to": 35},
+   "resample": 500,
+   "channels": [
+    {"src": "i", "name": "Lead I", "short": "I", "kind": "ecg", "units": "mV"},
+    {"src": "ii", "name": "Lead II", "short": "II", "kind": "ecg", "units": "mV"},
+    {"src": "iii", "name": "Lead III", "short": "III", "kind": "ecg", "units": "mV"},
+    {"src": "avr", "name": "aVR", "short": "aVR", "kind": "ecg", "units": "mV"},
+    {"src": "avl", "name": "aVL", "short": "aVL", "kind": "ecg", "units": "mV"},
+    {"src": "avf", "name": "aVF", "short": "aVF", "kind": "ecg", "units": "mV"},
+    {"src": "v1", "name": "V1", "short": "V1", "kind": "ecg", "units": "mV"},
+    {"src": "v2", "name": "V2", "short": "V2", "kind": "ecg", "units": "mV"},
+    {"src": "v3", "name": "V3", "short": "V3", "kind": "ecg", "units": "mV"},
+    {"src": "v4", "name": "V4", "short": "V4", "kind": "ecg", "units": "mV"},
+    {"src": "v5", "name": "V5", "short": "V5", "kind": "ecg", "units": "mV"},
+    {"src": "v6", "name": "V6", "short": "V6", "kind": "ecg", "units": "mV"}
+   ],
+   "beats": {"detect": "II"},
+   "view": {"t0": 0, "span": 5},
+   "subject": {"age": 29, "sex": "man", "notes": "A healthy volunteer (a control of the PTB database)."},
+   "changes": "A 30-second excerpt, resampled from 1000 to 500 samples a second (which loses nothing of the ECG); the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "ecg-ectopic",
+   "title": "Ventricular ectopic beats",
+   "group": "The ECG",
+   "summary": "Premature beats that start in the ventricles, at times after every normal beat.",
+   "description": "A minute of ECG in which normally conducted beats (N) alternate, at times, with premature ventricular contractions (V): early, wide and oddly shaped QRS complexes, with no P wave before them, followed by a long pause. When every other beat is ectopic the rhythm is called ventricular bigeminy (the strip at the top names the rhythm). The beats were labelled by cardiologists.",
+   "look_for": ["The width of a normal QRS and of an ectopic one", "No P wave before an ectopic beat, and its T wave pointing the opposite way to its QRS", "The pause after an ectopic beat: compare the R–R intervals before and after it"],
+   "source": {"db": "mitdb", "record": "119", "from": 10, "to": 70},
+   "channels": [
+    {"src": "MLII", "name": "ECG (lead II)", "short": "II", "kind": "ecg", "units": "mV", "about": "a modified lead II"},
+    {"src": "V1", "name": "ECG (V1)", "short": "V1", "kind": "ecg", "units": "mV", "about": "a chest lead, to the right of the breastbone"}
+   ],
+   "beats": {"ann": "atr", "channel": "II", "source": "expert", "labels": true, "rhythms": true, "comments": true,
+             "note": "Each beat was labelled by two cardiologists working independently, who then settled their differences (the reference labels of the MIT-BIH database)."},
+   "view": {"t0": 8, "span": 10},
+   "subject": {"age": 51, "sex": "woman", "notes": "Taking Pronestyl (procainamide), as the database records; it notes that her ectopic beats all have the same shape."},
+   "changes": "A one-minute excerpt; the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "ecg-af",
+   "title": "Atrial fibrillation",
+   "group": "The ECG",
+   "summary": "Sinus rhythm, and then the atria start to fibrillate.",
+   "description": "In atrial fibrillation the atria do not contract together: there are no P waves, and impulses reach the ventricles at irregular intervals, so the R–R intervals vary without any pattern (the small, fast fibrillation waves that take the place of the P waves are often too small to see, as here). This excerpt of an ambulatory ECG begins in sinus rhythm: a small P wave before each QRS (zoom in to see it; it is clearest in ECG 2) and nearly equal R–R intervals. After about 28 seconds the atria start to fibrillate, and the ventricles beat faster and irregularly. The strip at the top names the rhythm as the database marks it (it marks atrial fibrillation, atrial flutter and junctional rhythm, and calls the rest 'other rhythms': here sinus rhythm, as the P waves and the regular beats show).",
+   "look_for": ["The R–R intervals: nearly equal in sinus rhythm, varying without any pattern once the fibrillation starts (measure a few of each)", "A small P wave before each QRS in sinus rhythm (zoom in; it is clearest in ECG 2), and none during the fibrillation", "The rate of the ventricles before and during the fibrillation (switch on the heart rate)"],
+   "source": {"db": "afdb", "record": "04048", "from": 8566, "to": 8615.5},
+   "channels": [
+    {"src": "ECG1", "name": "ECG 1", "short": "ECG1", "kind": "ecg", "units": "mV", "about": "the first lead of an ambulatory ECG recorder (the database does not say which leads were used)"},
+    {"src": "ECG2", "name": "ECG 2", "short": "ECG2", "kind": "ecg", "units": "mV", "about": "the second lead, in which the P waves are clearer"}
+   ],
+   "beats": {"detect": "ECG1", "note": "The beats were found automatically by the workbench (the R waves of ECG 1) and checked by eye, and against the database's own beat marks (which a program made, and nobody checked); they are not labelled."},
+   "rhythms": {"ann": "atr", "names": {"N": "Sinus rhythm"}},
+   "view": {"t0": 16, "span": 20},
+   "subject": {"notes": "One of 25 people with atrial fibrillation, mostly paroxysmal (it comes and goes), whose 10-hour ambulatory ECGs make up the database; their age and sex are not given."},
+   "changes": "Under a minute (49.5 seconds) of a 10-hour recording; the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "ecg-block",
+   "title": "Second-degree heart block",
+   "group": "The ECG",
+   "summary": "Every other P wave is not followed by a QRS: a 2:1 heart block.",
+   "description": "Here conduction from the atria to the ventricles fails at times. At first every P wave is followed by a QRS (these beats are also wide, from a right bundle branch block: R). Then only every other P wave is conducted (a 2:1 block): the P waves that are not conducted are marked, and the ventricles beat at half the rate of the atria. Later, every P wave is conducted again.",
+   "look_for": ["The P waves keep a regular rhythm throughout", "The P waves that are not followed by a QRS (marked 'blocked P')", "The ventricular rate during the 2:1 block, compared with the atrial rate"],
+   "source": {"db": "mitdb", "record": "231", "from": 85, "to": 160},
+   "channels": [
+    {"src": "MLII", "name": "ECG (lead II)", "short": "II", "kind": "ecg", "units": "mV", "about": "a modified lead II"},
+    {"src": "V1", "name": "ECG (V1)", "short": "V1", "kind": "ecg", "units": "mV", "about": "a chest lead, to the right of the breastbone"}
+   ],
+   "beats": {"ann": "atr", "channel": "II", "source": "expert", "labels": true, "rhythms": true, "comments": true,
+             "note": "Each beat was labelled by two cardiologists working independently, who then settled their differences (the reference labels of the MIT-BIH database)."},
+   "view": {"t0": 8, "span": 12},
+   "subject": {"age": 72, "sex": "woman", "notes": "Taking no medication, as the database records; it describes periods of 2:1 block and of Mobitz type II block, and a right bundle branch block that depends on the heart rate."},
+   "changes": "An excerpt of 75 seconds; the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "heart-sounds",
+   "title": "Heart sounds and the ECG",
+   "group": "Heart and circulation",
+   "summary": "The heart sounds (a phonocardiogram) recorded with an ECG.",
+   "description": "The heart sounds were recorded with an electronic stethoscope on the chest (a phonocardiogram, PCG) at the same time as an ECG. The first heart sound (S1) comes as the atrioventricular valves close at the start of ventricular systole, just after the QRS; the second (S2) as the aortic and pulmonary valves close at the end of systole, near the end of the T wave. The starts of the sounds were marked by hand. Switch on Sound and press Play to listen (headphones help).",
+   "look_for": ["S1 just after the QRS, and S2 near the end of the T wave", "Systole (S1 to S2) and diastole (S2 to the next S1): which is longer at rest?", "Which sound is louder at this place on the chest?"],
+   "source": {"db": "challenge-2016", "record": "training-a/a0029"},
+   "channels": [
+    {"src": "PCG", "name": "Heart sounds (PCG)", "short": "PCG", "kind": "pcg", "units": "a.u.", "audio": true, "about": "the sound picked up by an electronic stethoscope on the chest, in arbitrary units"},
+    {"src": "ECG", "name": "ECG", "short": "ECG", "kind": "ecg", "units": "a.u.", "about": "recorded at the same time; the database gives no calibration for it, so its size is in arbitrary units"}
+   ],
+   "beats": {"detect": "ECG"},
+   "heart_sounds": {"file": "annotations/hand_corrected/training-a_StateAns/a0029_StateAns.mat", "channel": "PCG", "fs": 2000},
+   "view": {"t0": 0, "span": 4},
+   "subject": {"notes": "A person of the database's normal group (age and sex not given), recorded sitting, with the stethoscope beside the breastbone."},
+   "changes": "The whole recording; the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "bp-standing",
+   "title": "Blood pressure on standing up",
+   "group": "Heart and circulation",
+   "summary": "Arterial blood pressure and the ECG as a healthy volunteer stands up.",
+   "description": "Blood pressure was measured beat by beat at a finger, with an ECG, while a healthy volunteer lay on a tilt table and then stood up. On standing, blood pools in the veins of the legs: venous return, stroke volume and arterial pressure fall within seconds. The baroreceptor reflex then speeds the heart and constricts blood vessels, and the pressure recovers. Switch on the heart-rate channel to follow the heart rate.",
+   "look_for": ["The systolic and diastolic pressures before standing up", "The fall in pressure in the first seconds after standing, and how long it takes to recover", "The heart rate before and after standing up"],
+   "source": {"db": "prcp", "record": "12744", "from": 1510, "to": 1630},
+   "channels": [
+    {"src": "ABP", "name": "Blood pressure (finger)", "short": "BP", "kind": "bp", "units": "mmHg", "about": "the arterial pressure at a finger, measured continuously by a cuff that follows it"},
+    {"src": "ECG", "name": "ECG", "short": "ECG", "kind": "ecg", "units": "mV"}
+   ],
+   "beats": {"detect": "ECG"},
+   "db_events": {"ann": "anI", "rename": {"Stand up": "Stands up"}},
+   "view": {"t0": 0, "span": 120, "hr": true},
+   "subject": {"age": 28, "sex": "man", "notes": "A healthy volunteer (180 cm tall, 100 kg), as the database records."},
+   "changes": "A two-minute excerpt around the moment of standing up; the tilt table's angle channel is left out (it does not move when the volunteer stands); the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "pulse-ppg",
+   "title": "Pulse, ECG and breathing",
+   "group": "Heart and circulation",
+   "summary": "The pulse at a fingertip (a photoplethysmogram) with the ECG and breathing.",
+   "description": "A pulse oximeter's photoplethysmogram (PPG) shows how much light the blood in a fingertip absorbs: it rises with each pulse of blood. It is shown with the ECG and with breathing, recorded from the electrical impedance across the chest (the trace is cut off at its top), in a patient in intensive care. Each pulse reaches the finger a short time after the QRS that started it, and the size of the pulses rises and falls with breathing. The small marks on the breathing trace are breaths, marked by hand.",
+   "look_for": ["The time from an R wave to the foot of the pulse that follows it (the pulse arrival time)", "The breathing rate: count the breaths in a minute", "How the pulses grow and shrink with breathing"],
+   "source": {"db": "bidmc", "record": "bidmc43", "from": 390, "to": 450},
+   "channels": [
+    {"src": "V", "name": "ECG (chest lead)", "short": "ECG", "kind": "ecg", "units": "mV", "about": "a chest lead of the patient's monitor"},
+    {"src": "PLETH", "name": "Pulse (PPG)", "short": "PPG", "kind": "ppg", "units": "a.u.", "about": "the photoplethysmogram of a pulse oximeter on a finger, in arbitrary units"},
+    {"src": "RESP", "name": "Breathing (impedance)", "short": "Resp", "kind": "resp", "units": "a.u.", "about": "the electrical impedance across the chest, which changes as the lungs fill and empty"}
+   ],
+   "beats": {"detect": "ECG"},
+   "db_events": {"ann": "breath", "only": ["ann1"], "channel": "Resp", "label": "", "title": "A breath, marked by hand (the first of the two people who marked them)", "colour": "#2b8a3e"},
+   "view": {"t0": 0, "span": 10},
+   "subject": {"age": 19, "sex": "woman", "notes": "A patient in a medical intensive care unit (her illness is not given)."},
+   "changes": "A one-minute excerpt; the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "rsa",
+   "title": "Heart rate and breathing",
+   "group": "Breathing and exercise",
+   "summary": "The heart rate rises as you breathe in and falls as you breathe out.",
+   "description": "An ECG and breathing in a healthy 23-year-old woman, lying still and awake. Switch on the heart-rate channel: the rate rises as she breathes in (the breathing trace rises) and falls as she breathes out. This respiratory sinus arrhythmia comes mostly from changes, with each breath, in the activity of the vagus nerves to the sinoatrial node.",
+   "look_for": ["The heart rate at the top and at the bottom of each breath", "How many breaths a minute she takes", "That the R–R interval is shorter during inspiration"],
+   "source": {"db": "fantasia", "record": "f1y01", "from": 320, "to": 410},
+   "channels": [
+    {"src": "ECG", "name": "ECG", "short": "ECG", "kind": "ecg", "units": "mV", "center": true},
+    {"src": "RESP", "name": "Breathing", "short": "Resp", "kind": "resp", "units": "a.u.", "center": true, "about": "the breathing trace rises as she breathes in"}
+   ],
+   "beats": {"ann": "ecg", "channel": "ECG", "source": "database", "note": "Each beat was found automatically and then checked by eye (the beats of the Fantasia database)."},
+   "view": {"t0": 0, "span": 30},
+   "subject": {"age": 23, "sex": "woman", "notes": "A healthy volunteer, lying down and watching the film Fantasia to stay awake, as the database records."},
+   "changes": "A 90-second excerpt; the ECG and the breathing trace are moved to centre on zero (their baselines are not calibrated); the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "exercise",
+   "title": "Heart rate during exercise",
+   "group": "Breathing and exercise",
+   "summary": "Ten minutes of cycling against a high resistance: the heart rate climbs.",
+   "description": "An ECG recorded from the chest while a volunteer cycled on an exercise bike against a high resistance for ten minutes. The heart-rate channel shows the rate climbing from about 85 to about 130 beats a minute as the exercise goes on. Zoom in to see that the beats keep their shape while the intervals between them shorten.",
+   "look_for": ["The heart rate at the start and at the end", "The R–R interval at the start and at the end", "Which part of the cardiac cycle shortens most as the heart rate rises: systole (QRS to the end of T) or diastole (the end of T to the next QRS)"],
+   "source": {"db": "wrist", "record": "s1_high_resistance_bike"},
+   "channels": [
+    {"src": "chest_ecg", "name": "ECG (chest)", "short": "ECG", "kind": "ecg", "units": "a.u.", "about": "two electrodes on the upper chest, one each side of the heart; the database does not give its scale in millivolts"}
+   ],
+   "beats": {"ann": "atr", "channel": "ECG", "source": "database", "note": "The R waves were marked by hand (the reference beats of the database)."},
+   "view": {"t0": 0, "span": 600, "hr": true},
+   "subject": {"notes": "A volunteer cycling against a high resistance (level 6), as the database records (age and sex not given)."},
+   "changes": "The chest ECG of the recording only (the wrist sensors are left out); the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "emg-healthy",
+   "title": "EMG: a healthy muscle",
+   "group": "Muscle (EMG)",
+   "summary": "Motor unit potentials of a healthy muscle during a gentle contraction.",
+   "description": "The electrical activity of the tibialis anterior, the muscle at the front of the shin, recorded with a needle electrode while the person gently pulled the foot up against resistance, and then relaxed. Each spike is a motor unit action potential: the summed action potentials of the muscle fibres of one motor unit, which fire together. In a healthy muscle many motor units fire, and their potentials overlap. All three EMG recordings open on the same scale (−3.5 to +3.5 mV) and the same time scale, so that the sizes of their potentials can be compared (Fit, in the menu of the channel's name, enlarges it). Switch on Sound and press Play to hear it.",
+   "look_for": ["The shape and size of single motor unit potentials", "How the activity changes as the contraction ends"],
+   "source": {"db": "emgdb", "record": "emg_healthy"},
+   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "range": [-3.5, 3.5], "about": "a concentric needle electrode in the muscle; all three EMG recordings open on this scale, −3.5 to +3.5 mV"}],
+   "view": {"t0": 0, "span": 2},
+   "subject": {"age": 44, "sex": "man", "notes": "No history of neuromuscular disease, as the database records."},
+   "changes": "The whole recording (the database recorded at 50 000 samples a second and keeps 4000); the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "emg-myopathy",
+   "title": "EMG: myopathy",
+   "group": "Muscle (EMG)",
+   "summary": "Small, short motor unit potentials in a diseased muscle.",
+   "description": "The same muscle (tibialis anterior), recorded in the same way, in a man with a myopathy: an inflammatory disease of the muscle fibres (polymyositis). Each motor unit has lost muscle fibres, so its potentials are small and short, and often have many phases; many units have to fire even for a gentle contraction. Compare it with the healthy muscle: all three EMG recordings open on the same scale (−3.5 to +3.5 mV) and the same time scale.",
+   "look_for": ["The size and length of the motor unit potentials, compared with the healthy muscle", "How crowded the recording is during the contraction"],
+   "source": {"db": "emgdb", "record": "emg_myopathy"},
+   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "range": [-3.5, 3.5], "about": "a concentric needle electrode in the muscle; all three EMG recordings open on this scale, −3.5 to +3.5 mV"}],
+   "view": {"t0": 0, "span": 2},
+   "subject": {"age": 57, "sex": "man", "notes": "A myopathy from long-standing polymyositis, treated with steroids and low-dose methotrexate, as the database records."},
+   "changes": "The whole recording (the database recorded at 50 000 samples a second and keeps 4000); the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "emg-neuropathy",
+   "title": "EMG: neuropathy",
+   "group": "Muscle (EMG)",
+   "summary": "Large motor unit potentials firing fast, after the loss of motor neurones.",
+   "description": "The same muscle (tibialis anterior), recorded in the same way, in a man whose nerve supply to it is damaged (a radiculopathy: an injured nerve root, L5). Fewer motor units are left, so each has to fire faster; and the surviving motor neurones have taken over muscle fibres that lost their nerve, so their potentials are large. Compare it with the healthy muscle: all three EMG recordings open on the same scale (−3.5 to +3.5 mV) and the same time scale.",
+   "look_for": ["The size of the motor unit potentials, compared with the healthy muscle", "The rate at which one motor unit fires: measure the interval between its potentials"],
+   "source": {"db": "emgdb", "record": "emg_neuropathy"},
+   "channels": [{"src": "EMG", "name": "EMG (tibialis anterior)", "short": "EMG", "kind": "emg", "units": "mV", "audio": true, "range": [-3.5, 3.5], "about": "a concentric needle electrode in the muscle; all three EMG recordings open on this scale, −3.5 to +3.5 mV"}],
+   "view": {"t0": 0, "span": 2},
+   "subject": {"age": 62, "sex": "man", "notes": "Chronic low back pain and a neuropathy from a right L5 radiculopathy, as the database records."},
+   "changes": "The whole recording (the database recorded at 50 000 samples a second and keeps 4000); the samples are stored as 16-bit numbers."
+  },
+  {
+   "id": "eeg-alpha",
+   "title": "EEG: eyes open and closed",
+   "group": "Brain (EEG)",
+   "summary": "Alpha waves appear over the back of the head when the eyes close.",
+   "description": "Five channels of a 64-channel EEG: Fp1 (on the forehead), Cz (on top of the head) and O1, Oz and O2 (over the occipital cortex, at the back). The first part was recorded with the eyes open, the second (a separate run of the same session) with the eyes closed. With the eyes closed, rhythmic alpha waves of about 10 a second appear at the back of the head; opening the eyes blocks them. The large slow waves in Fp1 with the eyes open are blinks: the eye is electrically charged, so moving it changes the potential near the forehead.",
+   "look_for": ["The alpha waves in O1, Oz and O2 with the eyes closed, and their absence with the eyes open", "The frequency of the alpha waves: measure the time of several waves with the calipers", "The blinks in Fp1"],
+   "source": {"db": "eegmmidb", "parts": [
+    {"record": "S004/S004R01.edf", "from": 10, "to": 40, "label": "Eyes open"},
+    {"record": "S004/S004R02.edf", "from": 10, "to": 40, "label": "Eyes closed"}
+   ]},
+   "highpass": 0.5,
+   "channels": [
+    {"src": "Fp1", "name": "Fp1 (forehead)", "short": "Fp1", "kind": "eeg", "units": "µV"},
+    {"src": "Cz", "name": "Cz (top)", "short": "Cz", "kind": "eeg", "units": "µV"},
+    {"src": "O1", "name": "O1 (back, left)", "short": "O1", "kind": "eeg", "units": "µV"},
+    {"src": "Oz", "name": "Oz (back)", "short": "Oz", "kind": "eeg", "units": "µV"},
+    {"src": "O2", "name": "O2 (back, right)", "short": "O2", "kind": "eeg", "units": "µV"}
+   ],
+   "view": {"t0": 25, "span": 10},
+   "subject": {"notes": "One of the 109 volunteers of the dataset (age and sex not given)."},
+   "changes": "Two 30-second excerpts (10–40 s of the eyes-open run and of the eyes-closed run) put one after the other; 5 of the 64 channels; filtered with a 0.5 Hz high-pass filter to take out slow drifts; the samples are stored as 16-bit numbers."
+  }
+ ]
+}

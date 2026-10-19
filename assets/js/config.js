@@ -5,7 +5,7 @@
    ===================================================================== */
 window.MG_CONFIG = {
   courseTitle: 'BMS workbench',
-  courseSubtitle: 'The microscope, diagrams and circuits, exam practice, 3D molecules and R, in your browser',
+  courseSubtitle: 'The microscope, anatomy, recordings, the organ bath, models, exam practice and R, in your browser',
 
   /* The prefix for everything the page saves in the browser (files, answers, essays and settings). Practicals made
      from this workbench that are hosted at the same address (for example, GitHub Pages sites of one account) and have
@@ -36,12 +36,16 @@ window.MG_CONFIG = {
   /* The examples of the Diagrams and Circuits tabs. */
   examplesBase: 'examples/',
 
+  /* The Recorder's recordings (recordings/index.json lists them; see build/recordings/README.md). Another web site can
+     hold them, as long as it allows requests from this page (CORS). */
+  recordingBase: 'recordings/',
+
   /* R in the browser (webR). RStudio downloads R from here (about 30 MB, kept by the browser after the first
      download), and R packages from the webR repository when install.packages() asks for them. */
   webrBase: 'https://webr.r-wasm.org/v0.6.0/',
   rRepos: ['https://repo.r-wasm.org'],
 
-  /* The 3D viewer: what the boxes suggest. */
+  /* The Molecules tab: what the boxes suggest. */
   pdbExample: '4HHB',
   afExample: 'UniProt e.g. P69905',
 

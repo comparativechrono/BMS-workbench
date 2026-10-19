@@ -77,9 +77,38 @@ class Server:
         self.proc.wait(timeout=10)
 
 
+_slot = None
+
+
+def _take_slot():
+    """at most BMS_TEST_SLOTS (2) test scripts drive browsers at once, however many are started (each script holds its
+    slot until it ends, so a script with two pages open at once cannot wait for itself)"""
+    global _slot
+    if _slot is not None:
+        return
+    import fcntl
+    n = int(os.environ.get('BMS_TEST_SLOTS', '2'))
+    os.makedirs(OUT, exist_ok=True)
+    said = False
+    while True:
+        for i in range(n):
+            f = open(os.path.join(OUT, f'.slot-{i}.lock'), 'w')
+            try:
+                fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                _slot = f
+                return
+            except OSError:
+                f.close()
+        if not said:
+            print('(waiting for another test to finish)', flush=True)
+            said = True
+        time.sleep(1)
+
+
 class Page:
     def __init__(self, isolated=True, width=1500, height=950, extra=None, service_workers='block', base=None, mobile=False):
         """mobile: a phone's browser (touch, a mobile viewport and a screen of 3 device pixels to one CSS pixel)"""
+        _take_slot()
         self.pw = sync_playwright().start()
         proxy = os.environ.get('HTTPS_PROXY') or os.environ.get('https_proxy')
         # (the site on localhost – Server – is not asked for through the proxy: Chromium's own --proxy-server leaves

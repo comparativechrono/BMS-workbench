@@ -1,5 +1,6 @@
 """The starter practical: its chapters show, its buttons work, and its steps tick themselves when the student does them
-(chapters 0–2, 6 and 7: the microscope, measuring and counting, the 3D viewer and R)."""
+(the chapters on the microscope, measuring and counting, molecules and R; the chapters of the Anatomy, Recorder, Organ
+bath and Simulations tabs are worked through by t_anatomy.py, t_recorder.py, t_organbath.py and t_sims.py)."""
 import sys, time, json
 from h import Page, check, done
 
@@ -45,7 +46,9 @@ def find_click(slide, key):
 
 # ---------------------------------------------------------------- 0 Start here
 chapter('start')
-check(p.js("() => document.querySelectorAll('.chapter').length") == 8, 'the practical has eight chapters')
+CHAPTERS = ['start', 'microscope', 'measuring', 'anatomy', 'molecules', 'recordings', 'organbath', 'diagrams', 'circuits', 'simulations', 'exam', 'r']
+got = p.js("() => [...document.querySelectorAll('.chapter')].map((c) => c.id + ':' + c.dataset.num)")
+check(got == [f'{c}:{i}' for i, c in enumerate(CHAPTERS)], f'the practical has its twelve chapters, in the order of the tabs, numbered from 0: {got}')
 check(not ticked('s-slide') and not ticked('s-files'), 'Start: no step ticks itself when the page opens on the microscope')
 click('#start button[data-bench="scope"]')
 p.wait("() => MG.app.scope && MG.app.scope.catalogue.slides.length > 0", timeout=30000)

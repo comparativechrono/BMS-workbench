@@ -1,0 +1,274 @@
+{
+ "format": "bms-recordings-1",
+ "groups": [
+  "The ECG",
+  "Heart and circulation",
+  "Breathing and exercise",
+  "Muscle (EMG)",
+  "Brain (EEG)"
+ ],
+ "recordings": [
+  {
+   "id": "ecg-normal",
+   "title": "Sinus rhythm",
+   "group": "The ECG",
+   "summary": "Two leads of an ECG in sinus rhythm, with every beat labelled.",
+   "duration": 60.0,
+   "kind": "ecg",
+   "fs": 360,
+   "channels": [
+    "II",
+    "V5"
+   ],
+   "bytes": 86400,
+   "database": "MIT-BIH Arrhythmia Database",
+   "url": "https://physionet.org/content/mitdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/mitdb/view-license/1.0.0/"
+  },
+  {
+   "id": "ecg-12lead",
+   "title": "The 12-lead ECG",
+   "group": "The ECG",
+   "summary": "A standard 12-lead ECG of a healthy 29-year-old man.",
+   "duration": 30.0,
+   "kind": "ecg",
+   "fs": 500,
+   "channels": [
+    "I",
+    "II",
+    "III",
+    "aVR",
+    "aVL",
+    "aVF",
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6"
+   ],
+   "bytes": 360000,
+   "database": "PTB Diagnostic ECG Database",
+   "url": "https://physionet.org/content/ptbdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/ptbdb/view-license/1.0.0/"
+  },
+  {
+   "id": "ecg-ectopic",
+   "title": "Ventricular ectopic beats",
+   "group": "The ECG",
+   "summary": "Premature beats that start in the ventricles, at times after every normal beat.",
+   "duration": 60.0,
+   "kind": "ecg",
+   "fs": 360,
+   "channels": [
+    "II",
+    "V1"
+   ],
+   "bytes": 86400,
+   "database": "MIT-BIH Arrhythmia Database",
+   "url": "https://physionet.org/content/mitdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/mitdb/view-license/1.0.0/"
+  },
+  {
+   "id": "ecg-af",
+   "title": "Atrial fibrillation",
+   "group": "The ECG",
+   "summary": "Sinus rhythm, and then the atria start to fibrillate.",
+   "duration": 49.5,
+   "kind": "ecg",
+   "fs": 250,
+   "channels": [
+    "ECG1",
+    "ECG2"
+   ],
+   "bytes": 49500,
+   "database": "MIT-BIH Atrial Fibrillation Database",
+   "url": "https://physionet.org/content/afdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/afdb/view-license/1.0.0/"
+  },
+  {
+   "id": "ecg-block",
+   "title": "Second-degree heart block",
+   "group": "The ECG",
+   "summary": "Every other P wave is not followed by a QRS: a 2:1 heart block.",
+   "duration": 75.0,
+   "kind": "ecg",
+   "fs": 360,
+   "channels": [
+    "II",
+    "V1"
+   ],
+   "bytes": 108000,
+   "database": "MIT-BIH Arrhythmia Database",
+   "url": "https://physionet.org/content/mitdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/mitdb/view-license/1.0.0/"
+  },
+  {
+   "id": "heart-sounds",
+   "title": "Heart sounds and the ECG",
+   "group": "Heart and circulation",
+   "summary": "The heart sounds (a phonocardiogram) recorded with an ECG.",
+   "duration": 30.72,
+   "kind": "pcg",
+   "fs": 2000,
+   "channels": [
+    "PCG",
+    "ECG"
+   ],
+   "bytes": 245760,
+   "database": "Classification of Heart Sound Recordings: the PhysioNet/Computing in Cardiology Challenge 2016",
+   "url": "https://physionet.org/content/challenge-2016/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/challenge-2016/view-license/1.0.0/"
+  },
+  {
+   "id": "bp-standing",
+   "title": "Blood pressure on standing up",
+   "group": "Heart and circulation",
+   "summary": "Arterial blood pressure and the ECG as a healthy volunteer stands up.",
+   "duration": 120.0,
+   "kind": "bp",
+   "fs": 250,
+   "channels": [
+    "BP",
+    "ECG"
+   ],
+   "bytes": 120000,
+   "database": "Physiologic Response to Changes in Posture",
+   "url": "https://physionet.org/content/prcp/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/prcp/view-license/1.0.0/"
+  },
+  {
+   "id": "pulse-ppg",
+   "title": "Pulse, ECG and breathing",
+   "group": "Heart and circulation",
+   "summary": "The pulse at a fingertip (a photoplethysmogram) with the ECG and breathing.",
+   "duration": 60.0,
+   "kind": "ppg",
+   "fs": 125,
+   "channels": [
+    "ECG",
+    "PPG",
+    "Resp"
+   ],
+   "bytes": 45000,
+   "database": "BIDMC PPG and Respiration Dataset",
+   "url": "https://physionet.org/content/bidmc/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/bidmc/view-license/1.0.0/"
+  },
+  {
+   "id": "rsa",
+   "title": "Heart rate and breathing",
+   "group": "Breathing and exercise",
+   "summary": "The heart rate rises as you breathe in and falls as you breathe out.",
+   "duration": 90.0,
+   "kind": "resp",
+   "fs": 250,
+   "channels": [
+    "ECG",
+    "Resp"
+   ],
+   "bytes": 90000,
+   "database": "Fantasia Database",
+   "url": "https://physionet.org/content/fantasia/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/fantasia/view-license/1.0.0/"
+  },
+  {
+   "id": "exercise",
+   "title": "Heart rate during exercise",
+   "group": "Breathing and exercise",
+   "summary": "Ten minutes of cycling against a high resistance: the heart rate climbs.",
+   "duration": 589.004,
+   "kind": "ecg",
+   "fs": 256,
+   "channels": [
+    "ECG"
+   ],
+   "bytes": 301570,
+   "database": "Wrist PPG During Exercise",
+   "url": "https://physionet.org/content/wrist/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/wrist/view-license/1.0.0/"
+  },
+  {
+   "id": "emg-healthy",
+   "title": "EMG: a healthy muscle",
+   "group": "Muscle (EMG)",
+   "summary": "Motor unit potentials of a healthy muscle during a gentle contraction.",
+   "duration": 12.715,
+   "kind": "emg",
+   "fs": 4000,
+   "channels": [
+    "EMG"
+   ],
+   "bytes": 101720,
+   "database": "Examples of Electromyograms",
+   "url": "https://physionet.org/content/emgdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/emgdb/view-license/1.0.0/"
+  },
+  {
+   "id": "emg-myopathy",
+   "title": "EMG: myopathy",
+   "group": "Muscle (EMG)",
+   "summary": "Small, short motor unit potentials in a diseased muscle.",
+   "duration": 27.584,
+   "kind": "emg",
+   "fs": 4000,
+   "channels": [
+    "EMG"
+   ],
+   "bytes": 220674,
+   "database": "Examples of Electromyograms",
+   "url": "https://physionet.org/content/emgdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/emgdb/view-license/1.0.0/"
+  },
+  {
+   "id": "emg-neuropathy",
+   "title": "EMG: neuropathy",
+   "group": "Muscle (EMG)",
+   "summary": "Large motor unit potentials firing fast, after the loss of motor neurones.",
+   "duration": 36.965,
+   "kind": "emg",
+   "fs": 4000,
+   "channels": [
+    "EMG"
+   ],
+   "bytes": 295716,
+   "database": "Examples of Electromyograms",
+   "url": "https://physionet.org/content/emgdb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/emgdb/view-license/1.0.0/"
+  },
+  {
+   "id": "eeg-alpha",
+   "title": "EEG: eyes open and closed",
+   "group": "Brain (EEG)",
+   "summary": "Alpha waves appear over the back of the head when the eyes close.",
+   "duration": 60.0,
+   "kind": "eeg",
+   "fs": 160.0,
+   "channels": [
+    "Fp1",
+    "Cz",
+    "O1",
+    "Oz",
+    "O2"
+   ],
+   "bytes": 96000,
+   "database": "EEG Motor Movement/Imagery Dataset",
+   "url": "https://physionet.org/content/eegmmidb/1.0.0/",
+   "licence": "Open Data Commons Attribution License v1.0",
+   "licence_url": "https://physionet.org/content/eegmmidb/view-license/1.0.0/"
+  }
+ ]
+}

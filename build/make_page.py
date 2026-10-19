@@ -96,7 +96,9 @@ b = shell.index('<!--/CHAPTERS-->')
 page = shell[:a] + '\n' + html + shell[b:]
 page = page.replace('<!--STARTERS-->', '<script>window.BMS_STARTERS = ' + json.dumps(starters, separators=(',', ':')) +
                     f';\nwindow.BMS_STARTERS_VERSION = {STARTERS_VERSION};</script>')
-open(os.path.join(SITE, 'index.html'), 'w', encoding='utf-8').write(page)
+tmp = os.path.join(SITE, f'.index.html.{os.getpid()}')
+open(tmp, 'w', encoding='utf-8').write(page)
+os.replace(tmp, os.path.join(SITE, 'index.html'))
 # every task and question needs its own name
 bad = False
 for what, pat in (('task', r'data-task="([^"]+)"'), ('question', r'data-q="([^"]+)"'), ('heading', r'<h2 id="([^"]+)"')):
