@@ -2,9 +2,11 @@
 
 A short tour of the tools of the workbench, using examples that are not taken from the course's lectures: the microscope
 (a slide of the kidney and of the liver), measuring and counting (a stage micrometer, an eyepiece graticule, renal
-corpuscles, magnification and scale bars, a haemocytometer), flow diagrams that run, circuits, exam practice, the 3D
-viewer and R. Each chapter shows how the tools link together: measurements and counts from the microscope are read by
-R, pictures go to Files, and essays are downloaded as Word documents."""
+corpuscles, magnification and scale bars, a haemocytometer), anatomy in 3D, molecules in 3D, recordings, the organ bath,
+flow diagrams that run, circuits, simulations, exam practice and R. Each chapter shows how the tools link together:
+measurements and counts from the microscope, the recorder and the organ bath are read by R, pictures go to Files, and
+essays are downloaded as Word documents. The chapters of the Anatomy, Recorder, Organ bath and Simulations tabs are kept
+in files of their own (ch_anatomy.py, ch_recorder.py, ch_organbath.py and ch_sims.py); ALL() puts them in order."""
 import importlib
 import os
 import sys
@@ -40,7 +42,7 @@ def tabs_figure():
         ('Microscope', 'A virtual microscope with slides of human tissues: objectives from 1× to 40×, an eyepiece graticule, and tools to measure, count, label and take pictures.'),
         ('Anatomy', 'The human body in 3D, system by system: turn it round, pick out structures, isolate them and cut sections through them.'),
         ('Molecules', 'Proteins and smaller molecules in 3D, with a library of molecules of physiology.'),
-        ('Recorder', 'Real recordings of people – the ECG, breathing, blood pressure, muscle and brain – to play, measure and analyse as on a chart recorder.'),
+        ('Recorder', 'Real recordings of people – the ECG, heart sounds, blood pressure, breathing, muscle and the brain – to play, measure and analyse as on a chart recorder.'),
         ('Organ bath', 'An isolated tissue in an organ bath: add drugs, watch it contract or relax, and build concentration–response curves.'),
         ('Diagrams', 'Flow diagrams of how the body controls itself – boxes, and arrows that increase (+) or decrease (−) – which you can run to see how things change with time.'),
         ('Circuits', 'Electrical circuits, and the circuit models of physiology, built and run as on a lab bench, with meters and traces.'),
