@@ -473,9 +473,9 @@
 <p>A drug is added from a <b>stock solution</b>, and the bath dilutes it. If you add a volume <i>v</i> of a stock of concentration <i>C</i><sub>stock</sub> to a bath of volume <i>V</i>, the concentration in the bath is</p>
 <p class="eq"><i>C</i><sub>bath</sub> = <i>C</i><sub>stock</sub> × <i>v</i> / (<i>V</i> + <i>v</i>)</p>
 <p>The tab works this out before you add the drug (under <b>Add a drug</b>). The concentrations of a curve are spaced evenly on a <b>log scale</b> – 10<sup>−8</sup>, 3 × 10<sup>−8</sup>, 10<sup>−7</sup> M and so on – because the response grows with the logarithm of the concentration over a wide range.</p>
-<div class="q" data-q="ob-q-dil" data-accept="num:9.9e-8±2%" data-placeholder="M">
-  <div class="q-text">You add 100 µL of a 10<sup>−5</sup> M stock of acetylcholine to a 10 mL bath. What is the concentration of acetylcholine in the bath, in M?</div>
-  <div class="q-model">9.9 × 10<sup>−8</sup> M: 10<sup>−5</sup> M × 0.1 mL / (10 mL + 0.1 mL) = 9.9 × 10<sup>−8</sup> M, which is close to 10<sup>−7</sup> M. (Leaving out the volume you added, 10<sup>−5</sup> × 0.1 / 10 = 10<sup>−7</sup> M, is only 1% out.)</div>
+<div class="q" data-q="ob-q-dil" data-accept="num:9.9e-8±0.5%||^99(\.0+)? ?nm$||^0?\.099 ?(µ|μ|u)m$" data-hint="the bath holds 10.1 mL once you have added 0.1 mL to it" data-placeholder="M">
+  <div class="q-text">You add 100 µL of a 10<sup>−5</sup> M stock of acetylcholine to a 10 mL bath. What is the concentration of acetylcholine in the bath, in M? Use the equation above, with the volume you add.</div>
+  <div class="q-model">9.9 × 10<sup>−8</sup> M (99 nM): 10<sup>−5</sup> M × 0.1 mL / (10 mL + 0.1 mL) = 9.9 × 10<sup>−8</sup> M. Leaving out the volume you added (10<sup>−5</sup> × 0.1 / 10 = 10<sup>−7</sup> M) is 1% too high: small for one dose, but the error grows with larger volumes, and a cumulative curve adds dose upon dose to a bath that is no longer 10 mL.</div>
 </div>
 
 <h2 id="ob-h-curve">A concentration–response curve</h2>

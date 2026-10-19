@@ -24,7 +24,8 @@
                           'ileum'                  the guinea-pig ileum you were working on (a fresh one if none)
                           'aorta'                  the same, for a ring of rat aorta
                           'aorta?endothelium=off'  a ring whose endothelium was rubbed off
-                          'ileum?new=1'            always a fresh tissue
+                          'ileum?new=1'            always a fresh tissue (each fresh tissue has a random seed of its own,
+                                                   kept with it: every student's tissues are different)
                           'ileum?seed=3'           a fresh tissue made from this seed (the same for everyone)
                           'ileum?volume=20'        the bath's volume, in mL (10 or 20; 10 if not given)
      .do(cmd)           commands, several separated by ';':
@@ -54,8 +55,8 @@
      bath:wash       {n, solution}
      bath:antagonist {drug, conc}                 the washing solution holds this antagonist now ('none': plain)
      bath:response   {drug, conc, logc, response, pct, kind, condition, n, id}
-                     an agonist's response was measured (when the bath is washed, or the next dose of the same drug is
-                     added): response in g; pct: as a % of the largest contraction so far (for a relaxation: the % of
+                     an agonist's response was measured (when the bath is washed, or the next drug – or the next dose
+                     of the same drug – is added): response in g; pct: as a % of the largest contraction so far (for a relaxation: the % of
                      the tone that relaxed); condition: 'control', or the antagonists in the bath ('atropine 1e-8 M');
                      n: how many responses to this drug have been measured in this condition
      bath:speed      {x}          bath:plateau {t}          bath:wait {s}          bath:measure {dt, dy}   (the cursors)
@@ -112,8 +113,10 @@
   }
   /** a concentration typed by a person: '1e-7', '10^-7', '3 × 10⁻⁷ M', '100 nM', '0.1 µM', '60 mM' → M. A bare number
       is taken as mM when mM is true (KCl). NaN if it can't be read. */
+  /** a decimal comma (0,1 or 2,5e-6) as a point; a comma between thousands (1,000) is left out */
+  const commas = (s) => (/^\d{1,3}(,\d{3})+(\D|$)/.test(s) && !/^0,/.test(s) ? s.replace(/,(?=\d{3})/g, '') : s.replace(/(\d),(\d)/g, '$1.$2'));
   function parseConc(text, mM) {
-    let s = String(text == null ? '' : text).trim().toLowerCase();
+    let s = commas(String(text == null ? '' : text).trim().toLowerCase());
     s = s.replace(/[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m) => '^' + [...m].map((ch) => UNSUP[ch]).join(''));
     s = s.replace(/[×*]/g, 'x').replace(/[µμ]/g, 'u').replace(/\s+/g, '').replace(/−/g, '-');
     s = s.replace(/^10\^/, '1x10^').replace(/molar$|mol\/l$|mol\/litre$/, 'm');
@@ -128,7 +131,7 @@
   }
   /** a volume typed by a person: '100', '100 µL', '0.1 mL' → µL (NaN if it can't be read) */
   function parseVol(text) {
-    const s = String(text == null ? '' : text).trim().toLowerCase().replace(/[µμ]/g, 'u').replace(/\s+/g, '');
+    const s = commas(String(text == null ? '' : text).trim().toLowerCase().replace(/[µμ]/g, 'u').replace(/\s+/g, ''));
     const m = /^(\d*\.?\d+)(ul|ml|l)?$/.exec(s);
     if (!m) return NaN;
     const v = parseFloat(m[1]);
@@ -168,6 +171,13 @@
     let u = 0;
     while (u === 0) u = r();
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r());
+  }
+  function randomSeed() {
+    try {
+      return crypto.getRandomValues(new Uint32Array(1))[0] % 1000000;
+    } catch (e) {
+      return Math.floor(Math.random() * 1000000);
+    }
   }
   function hash(s) {
     let x = 2166136261;
@@ -680,6 +690,9 @@
       const S = this.sim, t = S.t;
       if (ev.type === 'add') {
         const a = this.P.act[ev.d] || {};
+        // the responses being measured are read now, before this drug acts on the tissue – as an experimenter reads a
+        // response before the next addition (else a response would take in what the next drug did)
+        for (const d of Object.keys(this.open)) this._close(d, live);
         const conc = S.add(ev.d, ev.S, ev.v);
         this.peak[ev.d] = conc;
         this.lastAdd = t;
@@ -731,7 +744,6 @@
     _openRow(i, ev, conc, live) {
       const d = ev.d, a = this.P.act[d];
       const now = this.recent(this.box * DT);
-      if (this.open[d]) this._close(d, live); // the previous step of a cumulative curve
       let ser = this.series[d];
       if (!ser) {
         // a relaxation is measured from the tone just before it, as a % of the tone above the resting tension
@@ -1071,7 +1083,8 @@
       const o = {};
       if (opts.volume) o.volume = Number(opts.volume) === 20 ? 20 : 10;
       if (type === 'aorta' && opts.endothelium === false) o.endothelium = false;
-      const seed = opts.seed != null && opts.seed !== '' && Number.isFinite(Number(opts.seed)) ? Number(opts.seed) : hash(MG.user.name() + ':' + id) % 100000;
+      // (a random seed of its own, kept with the tissue, unless the instructions give one: the same for everyone)
+      const seed = opts.seed != null && opts.seed !== '' && Number.isFinite(Number(opts.seed)) ? Number(opts.seed) : randomSeed();
       const def = { id, type, opts: o, seed, events: [], steps: 0, notes: {}, excl: {} };
       this.exps.push(def);
       // (keep the twelve latest)
@@ -1193,7 +1206,7 @@
       if (!d || !E.P.act[d]) throw new Error(`The ${E.T.name.toLowerCase()} has no drug called “${arg}”.`);
       this._finishWash();
       // 'add ACh 0.1 mL 1e-5 M': a volume and a stock
-      const m = /^([\d.]+\s*(?:ml|µl|ul|μl))\s+(.+)$/i.exec(rest);
+      const m = /^([\d.,]+\s*(?:ml|µl|ul|μl))\s+(.+)$/i.exec(rest);
       if (m) {
         const v = parseVol(m[1]);
         const S = parseConc(m[2], false);
@@ -2169,7 +2182,7 @@
         const num = (/-(\d+)$/.exec(d.id) || [])[1];
         items.push(['flask', `Back to ${T.name.toLowerCase()} ${num}${d.type === 'aorta' && d.opts.endothelium === false ? ' (no endothelium)' : ''}`, () => this._switch(d.id)]);
       }
-      items.push(['download', 'Save the results (CSV)', () => this.save()], ['camera', 'Save a picture of the chart', () => this.capture()], ['info', 'About the model', () => this.about()]);
+      items.push(['download', 'Save the results (CSV)', () => this.save()], ['camera', 'Save a picture of the chart', () => this.capture()], ['help', 'How to use the organ bath', () => this.help()], ['info', 'About the model', () => this.about()]);
       MG.popmenu(anchor, items);
     }
     help() {

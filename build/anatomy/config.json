@@ -25,7 +25,6 @@
    "^White matter of telencephalon",
    "^Stria terminalis",
    "segment of liver",
-   "^\\?+$",
    "^Cochlea",
    "^Vestibule\\.",
    "semicircular",
@@ -33,13 +32,15 @@
    "-curve",
    "^Central canal'",
    "^Spinal dura",
-   "^Choroid plexus"
+   "^Choroid plexus",
+   "^\\?"
   ],
   "why": {
    "Ear.g": "the inner ear is adapted from 'Anatomy of the Inner Ear' (University of Dundee), CC BY-NC-SA 4.0: not free for commercial use, so the whole ear is left out",
    "^Renal pelvis, ^Intrarenal": "Z-Anatomy adapted a kidney by Lissie Cowley (CC BY-NC 4.0); BodyParts3D has no renal pelvis or intrarenal vessels, so these may come from it and are left out (the kidneys themselves are BodyParts3D's)",
    "^White matter of telencephalon, fibres": "Z-Anatomy names a 'White matter' model from the University of Washington without a licence: the white matter of the hemispheres and its fibre bundles are left out",
-   "others": "left out to keep the models small and clear: fasciae, meninges, peritoneum, pleura, bursae, tendon sheaths, joints, teeth, hair, regions of the body, the segments of the liver (which overlap the liver)"
+   "others": "left out to keep the models small and clear: fasciae, meninges, peritoneum, pleura, bursae, tendon sheaths, joints, teeth, hair, regions of the body, the segments of the liver (which overlap the liver)",
+   "^\\?": "names that were lost (they start with '?', such as '?x'): what they are is not known"
   }
  },
  "files": [
@@ -402,5 +403,19 @@
    ]
   ],
   "fallback": "#c8b8a8"
+ },
+ "rename": {
+  "about": "names that Z-Anatomy wrote in a way that cannot be shown as they are (export.py also writes the segments of the cerebral arteries one way: '(M2 segment)')",
+  "Inferior vein of left ventricle (//Posterior '')": "Inferior vein of left ventricle (another branch)",
+  "Lat_Fis-ant-Vertical": "Anterior vertical ramus of lateral sulcus",
+  "Lat_Fis-ant-Horizont": "Anterior horizontal ramus of lateral sulcus",
+  "Lat_Fis-post": "Posterior ramus of lateral sulcus",
+  "Sulcus interm_prim-Jensen": "Intermediate sulcus of Jensen"
+ },
+ "credit": {
+  "about": "the copyright of each model file (glTF asset.copyright): the base, and what a file adds",
+  "base": "Z-Anatomy, the libre 3D atlas of anatomy (Gauthier Kervyn and others), CC BY-SA 4.0, largely made from BodyParts3D (© The Database Center for Life Science, CC BY-SA 2.1 Japan); simplified and converted for the BMS workbench, CC BY-SA 4.0",
+  "brain": "the cerebral cortex and the deep nuclei from Brain for Blender (Anderson M. Winkler, brainder.org), CC BY-SA 3.0",
+  "nerves": "the cranial nerves after Cranial Nerves and Foramina (University of Dundee, CAHID), CC BY 4.0"
  }
 }

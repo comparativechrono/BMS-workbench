@@ -11,6 +11,11 @@ INDEX = json.load(open(os.path.join(SITE, 'sims', 'index.json'), encoding='utf-8
 SIMS = INDEX['sims']
 IDS = [s['id'] for s in SIMS]
 EV = "() => { window.__ev = []; MG.bus.on('*', (d, t) => { if (/^sim:/.test(t)) window.__ev.push([t, d]); }); }"
+# PhET's credit, word for word as https://phet.colorado.edu/en/licensing/html gives it ("other modifications are not
+# permitted"): it must be the visible text under the library, under each simulation and in its About box
+CREDIT = 'Simulation by PhET Interactive Simulations, University of Colorado Boulder, licensed under CC BY 4.0 (https://phet.colorado.edu).'
+VISIBLE = """(sel) => { const e = document.querySelector(sel); if (!e) return null; const r = e.getBoundingClientRect();
+  return { text: e.innerText.replace(/\\s+/g, ' ').trim(), shown: r.width > 0 && r.height > 0 && getComputedStyle(e).visibility !== 'hidden' }; }"""
 
 
 def events(p, kind=None):
@@ -60,6 +65,8 @@ check(n == len(SIMS), f'the library shows every simulation ({n} of {len(SIMS)})'
 p.js("() => document.querySelectorAll('.sm-card img').forEach((i) => (i.loading = 'eager'))")
 ok = until(p, "() => [...document.querySelectorAll('.sm-card img')].every((i) => i.complete && i.naturalWidth > 100)", 30)
 check(ok, 'every picture in the library loads')
+v = p.js(VISIBLE, '.sm-lib .sm-credit-t')
+check(v and v['text'] == CREDIT and v['shown'], f'under the library, PhET’s credit word for word, with its address: {v}')
 p.shot('sims-library')
 
 # search: the words of a simulation's title, description, purpose, topics or screens
@@ -105,6 +112,8 @@ for s in SIMS:
     if s['id'] in ('neuron', 'membrane-transport', 'gene-expression-essentials', 'geometric-optics'):
         p.shot(f'sims-{s["id"]}')
 check(not broken, f'every simulation starts in its frame, drawn, with its title and its screens in the toolbar: {broken}')
+v = p.js(VISIBLE, '.sm-player .sm-foot')
+check(v and v['text'] == CREDIT and v['shown'], f'under each simulation, PhET’s credit word for word, with its address: {v}')
 check(not slow, f'every simulation starts in good time: {slow}')
 check(p.js("() => MG.app.sims.cur.frame.contentWindow.crossOriginIsolated") is True, 'a simulation runs inside the cross-origin isolated page')
 opened = [d['id'] for d in events(p, 'sim:open')]
@@ -160,8 +169,9 @@ clear(p)
 p.p.locator('.sm-bar .sm-ib[title^="About"]').click()
 time.sleep(0.4)
 txt = p.js("() => document.querySelector('.modal') ? document.querySelector('.modal').innerText : ''")
-check('PhET Interactive Simulations' in txt and 'CC BY 4.0' in txt and '1.1.34' in txt and 'Noah Podolefsky' in txt and 'nothing to PhET' in txt,
-      'the About box gives the credit, the licence, the version, the authors and the privacy note')
+v = p.js(VISIBLE, '.modal .sm-credit-t')
+check(v and v['text'] == CREDIT and v['shown'], f'in the About box, PhET’s credit word for word, with its address: {v}')
+check('1.1.34' in txt and 'Noah Podolefsky' in txt and 'nothing to PhET' in txt, 'the About box gives the version, the authors and the privacy note')
 check(events(p, 'sim:about'), 'opening the About box is reported (sim:about)')
 p.shot('sims-about')
 p.p.keyboard.press('Escape')
@@ -305,8 +315,8 @@ time.sleep(0.8)
 st = p.js("""() => { const A = MG.app.sims, b = A.bar, f = A.cur.frame.getBoundingClientRect();
   return { page: document.documentElement.scrollWidth <= innerWidth, bar: b.scrollWidth <= b.clientWidth + 1, fw: f.width, fh: f.height, W: innerWidth, foot: A.foot.getBoundingClientRect().bottom <= innerHeight + 1 }; }""")
 check(st['page'] and st['bar'] and st['fw'] >= st['W'] - 2 and st['fh'] > 400 and st['foot'], f'on a phone a simulation fills the screen, under a toolbar that fits, with PhET’s credit below it ({st})')
-foot = p.js("() => { const f = MG.app.sims.foot; return { full: /University of Colorado Boulder, licensed under CC BY 4\\.0/.test(f.textContent), cut: f.scrollWidth > f.clientWidth + 1 || f.scrollHeight > f.clientHeight + 1 }; }")
-check(foot['full'] and not foot['cut'], f'on a phone PhET’s credit is shown in full ({foot})')
+foot = p.js("() => { const f = MG.app.sims.foot; return { text: f.innerText.replace(/\\s+/g, ' ').trim(), cut: f.scrollWidth > f.clientWidth + 1 || f.scrollHeight > f.clientHeight + 1, bottom: f.getBoundingClientRect().bottom <= innerHeight + 1 }; }")
+check(foot['text'] == CREDIT and not foot['cut'] and foot['bottom'], f'on a phone PhET’s credit is shown in full, word for word ({foot})')
 check(p.js("() => !MG.app.sims.turn.hidden"), 'a phone held upright is told that turning it sideways makes the simulation bigger')
 p.shot('sims-phone-neuron')
 p.p.set_viewport_size({'width': 844, 'height': 390})

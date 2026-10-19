@@ -43,7 +43,10 @@
   const BASE = 'sims/';
   const PHET = 'https://phet.colorado.edu';
   const LICENCE_URL = 'https://creativecommons.org/licenses/by/4.0/';
-  const CREDIT_HTML = `Simulation by <a href="${PHET}" target="_blank" rel="noopener">PhET Interactive Simulations</a>, University of Colorado Boulder, licensed under <a href="${LICENCE_URL}" target="_blank" rel="noopener">CC BY 4.0</a>`;
+  /* PhET's credit, word for word as its licensing page gives it (https://phet.colorado.edu/en/licensing/html: "other
+     modifications are not permitted"), with the address shown; the links change nothing in the text */
+  const CREDIT = 'Simulation by PhET Interactive Simulations, University of Colorado Boulder, licensed under CC BY 4.0 (https://phet.colorado.edu).';
+  const CREDIT_HTML = `Simulation by PhET Interactive Simulations, University of Colorado Boulder, licensed under <a href="${LICENCE_URL}" target="_blank" rel="noopener">CC BY 4.0</a> (<a href="${PHET}" target="_blank" rel="noopener">${PHET}</a>).`;
   const CREDIT_LABELS = [['leadDesign', 'Lead design'], ['softwareDevelopment', 'Software development'], ['team', 'Team'], ['contributors', 'Contributors'], ['qualityAssurance', 'Quality assurance'], ['graphicArts', 'Graphic arts'], ['soundDesign', 'Sound design'], ['thanks', 'Thanks']];
   // (PhET's texts carry marks that set the direction of the writing)
   const BIDI = /[‎‏‪-‮⁦-⁩]/g;
@@ -116,7 +119,9 @@
             h('p', 'Interactive simulations from PhET, at the University of Colorado Boulder, chosen for biomedical science. Choose one to open it here; each one has its own screens, controls and help.')),
           h('div.sm-find', this.search, this.chips),
           this.cont, this.grid, this.none,
-          h('footer.sm-credit', { html: `Simulations by <a href="${PHET}" target="_blank" rel="noopener">PhET Interactive Simulations</a>, University of Colorado Boulder, licensed under <a href="${LICENCE_URL}" target="_blank" rel="noopener">CC BY 4.0</a>. The PhET name and logo are trademarks of the University of Colorado, shown here only to credit PhET. Each simulation’s <b>About</b> gives its version and its authors.` })));
+          h('footer.sm-credit',
+            h('p.sm-credit-t', { html: CREDIT_HTML }),
+            h('p', { html: 'The PhET name and logo are trademarks of the University of Colorado, shown here only to credit PhET. Each simulation’s <b>About</b> gives its version, its authors and what else it contains.' }))));
 
       // the player
       const back = h('button.sm-back', { type: 'button', title: 'Back to the library of simulations', html: I('arrowL') + '<span>Library</span>' });
@@ -138,7 +143,7 @@
       const toLib = h('button.btn', { type: 'button' }, 'Back to the library');
       toLib.addEventListener('click', () => this.showLibrary());
       this.fail = h('div.sm-fail', { hidden: true, role: 'alert' }, h('div', h('h3', 'The simulation did not start'), this.failT, h('div.sm-fail-acts', toLib, retry)));
-      this.foot = h('div.sm-foot', { html: CREDIT_HTML + '.' });
+      this.foot = h('div.sm-foot', { html: CREDIT_HTML });
       // (a phone held upright: the simulations are made for a screen wider than it is tall)
       this.turn = h('div.sm-turn', { hidden: true, role: 'status' });
       this.stageW = h('div.sm-stage-w', this.stage, this.wait, this.fail, this.turn);
@@ -605,7 +610,7 @@
 <p><b>In biomedical science:</b> ${esc(e.why || '')}</p>
 ${screens}
 <h4>Credits</h4>
-<p>${CREDIT_HTML}.</p>
+<p class="sm-credit-t">${CREDIT_HTML}</p>
 ${credits ? `<dl class="sm-credits">${credits}</dl>` : ''}
 <h4>This copy</h4>
 <p>Version ${esc(e.version)}${date ? `, built by PhET on ${esc(date)}` : ''}: PhET’s own file, unchanged, in the version that PhET published under the <a href="${LICENCE_URL}" target="_blank" rel="noopener">Creative Commons Attribution 4.0</a> licence. (PhET’s later versions have a different licence; they are on PhET’s website.) Here it runs with PhET’s usage statistics switched off, so it sends nothing to PhET or to anyone else. The PhET name and logo are trademarks of the University of Colorado, shown only to credit PhET.</p>
@@ -615,5 +620,6 @@ ${credits ? `<dl class="sm-credits">${credits}</dl>` : ''}
     }
   }
 
+  SimsApp.CREDIT = CREDIT;
   MG.SimsApp = SimsApp;
 })();

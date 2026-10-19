@@ -38,6 +38,8 @@
 .sm-size { font-size: 0.7rem; color: var(--muted); margin-left: auto; white-space: nowrap; }
 .sm-none { color: var(--ink-2); font-size: 0.9rem; padding: 10px 2px; }
 .sm-credit { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.sm-credit p { margin: 0 0 4px; }
+.sm-credit .sm-credit-t { color: var(--ink-2); font-size: 0.82rem; }
 .sm-credit a, .sm-foot a, .sm-about a { color: var(--accent-2); }
 
 /* ---------- a simulation ---------- */

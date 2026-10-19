@@ -30,11 +30,13 @@
 
 /* ---------------- the middle: the bath on the left, the chart on the right ---------------- */
 .ob-mid { flex: 1; min-height: 0; display: grid; grid-template-columns: 272px minmax(0, 1fr); overflow: hidden; }
+/* (the form to add a drug is always in full view at the bottom: the drawing above it shrinks, and what is in the bath
+   scrolls, when there isn't room for all of them) */
 .ob-side { border-right: 1px solid var(--line); background: var(--panel-2); overflow-y: auto; display: flex; flex-direction: column; min-height: 0; }
-.ob-sidetop { display: flex; flex-direction: column; }
-.ob-bathbox { display: flex; justify-content: center; padding: 6px 8px 0; }
-.ob-svg { width: 100%; max-width: 220px; height: auto; max-height: 300px; display: block; }
-.ob-sideinfo { padding: 0 10px 6px; }
+.ob-sidetop { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 120px; overflow-y: auto; }
+.ob-bathbox { display: flex; justify-content: center; padding: 6px 8px 0; flex: 1 1 auto; min-height: 70px; }
+.ob-svg { height: 100%; width: auto; max-width: 100%; max-height: 300px; display: block; }
+.ob-sideinfo { padding: 0 10px 6px; flex: none; }
 .ob-contents { font-size: 0.78rem; line-height: 1.45; color: var(--ink-2); }
 .ob-inbath, .ob-sol { margin-top: 4px; }
 .ob-k { display: block; font-weight: 700; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -45,7 +47,7 @@
 .ob-since { min-height: 1.3em; margin-top: 4px; font-size: 0.74rem; color: var(--muted); }
 .ob-since b { color: #155f80; }
 
-.ob-form { border-top: 1px solid var(--line); padding: 8px 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.ob-form { border-top: 1px solid var(--line); padding: 8px 10px 12px; display: flex; flex-direction: column; gap: 6px; flex: none; background: var(--panel-2); }
 .ob-formh { font-weight: 700; font-size: 0.86rem; color: var(--ink); }
 .ob-field { display: flex; flex-direction: column; gap: 2px; font-size: 0.74rem; font-weight: 650; color: var(--muted); min-width: 0; }
 .ob-row2 { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 6px; }
@@ -165,8 +167,9 @@
 @container ob (max-width: 900px) {
   .ob-mid { grid-template-columns: 240px minmax(0, 1fr); }
   /* (the drawing beside what is in the bath, so that the form, below them, is in view) */
-  .ob-sidetop { flex-direction: row; align-items: flex-start; }
-  .ob-bathbox { width: 86px; flex: none; padding: 6px 0 0 6px; }
+  .ob-sidetop { flex-direction: row; align-items: flex-start; min-height: 90px; }
+  .ob-bathbox { width: 86px; flex: none; padding: 6px 0 0 6px; min-height: 0; }
+  .ob-bathbox .ob-svg { width: 100%; height: auto; max-height: none; }
   .ob-sideinfo { flex: 1; min-width: 0; padding: 4px 8px 6px 6px; }
   .ob-labels { display: none; }
   .ob-reshint { display: none; }
@@ -183,9 +186,10 @@
 @container ob (max-width: 600px) {
   .ob-mid { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(280px, 1fr) auto; overflow-y: auto; }
   .ob-chart { order: -1; min-height: 280px; border-bottom: 1px solid var(--line); }
-  .ob-side { display: grid; grid-template-columns: 108px minmax(0, 1fr); grid-template-areas: "draw form" "info info"; border-right: 0; overflow: visible; }
+  .ob-side { display: grid; grid-template-columns: 108px minmax(0, 1fr); grid-template-areas: "draw form" "info info"; border-right: 0; overflow: visible; min-height: auto; }
   .ob-sidetop { display: contents; }
-  .ob-bathbox { grid-area: draw; width: auto; padding: 8px 2px 0 6px; }
+  .ob-bathbox { grid-area: draw; width: auto; padding: 8px 2px 0 6px; min-height: 0; }
+  .ob-bathbox .ob-svg { width: 100%; height: auto; max-height: 190px; }
   .ob-sideinfo { grid-area: info; padding: 6px 10px 8px; border-top: 1px solid var(--line); }
   .ob-form { grid-area: form; border-top: 0; border-left: 1px solid var(--line); padding: 8px; }
   .ob-res { height: 190px; }
@@ -193,6 +197,9 @@
   .ob-table .ob-c-pct, .ob-table .ob-c-time { display: none; }
   .ob-table th, .ob-table td { padding: 3px 5px; }
   .ob-top { gap: 3px; padding: 5px 6px; }
+  /* (on a phone the toolbar takes two rows whatever it sheds: the camera, About and Help keep their places in the
+     second) */
+  .ob-top[class] .ob-b-cap, .ob-top[class] .ob-b-about, .ob-top[class] .ob-b-help { display: inline-flex; }
 }
 @container ob (max-width: 380px) {
   .ob-side { grid-template-columns: 92px minmax(0, 1fr); }

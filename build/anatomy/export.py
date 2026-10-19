@@ -101,19 +101,17 @@ def split_name(n):
     return (m.group(1), SIDE[m.group(2)]) if m else (n, None)
 
 
-RENAME = {
-    'Lat_Fis-ant-Vertical': 'Anterior vertical ramus of lateral sulcus',
-    'Lat_Fis-ant-Horizont': 'Anterior horizontal ramus of lateral sulcus',
-    'Lat_Fis-post': 'Posterior ramus of lateral sulcus',
-    'Sulcus interm_prim-Jensen': 'Intermediate sulcus of Jensen',
-}
+RENAME = {k: v for k, v in cfg.get('rename', {}).items() if k != 'about'}
 
 
 def clean(base):
     """the name shown: Z-Anatomy's name without its marks ('*' after the names of the Destrieux atlas, '(…)' round a
-    structure that is not always there), and a few names of the atlas written out"""
+    structure that is not always there), a few names written out (config.json, 'rename'), and the segments of the
+    cerebral arteries written one way ('(M2)', '(M2-segment)' and '(M2 segment)' → '(M2 segment)', so that the left
+    and the right are the same structure)"""
     b = RENAME.get(base.strip(), base.strip())
     b = b.replace('*', '').replace('  ', ' ').strip()
+    b = re.sub(r'\(\s*([AMP]\d)(?:\s*-?\s*segment)?\s*\)', r'(\1 segment)', b)
     if b.startswith('(') and b.endswith(')') and b.count('(') == 1:
         b = b[1:-1]
     return b[0].upper() + b[1:] if b else b
@@ -245,7 +243,7 @@ def arrays(me, M):
 
 
 # ---------------------------------------------------------------- glTF binary
-def write_glb(path, items):
+def write_glb(path, items, credit):
     """items: [{id, name, colour, pos, nrm, tri}] → one node and mesh each; materials shared by colour"""
     bin_parts = []
     offset = 0
@@ -284,7 +282,7 @@ def write_glb(path, items):
                                        'material': mat_of[c], 'mode': 4}]})
         nodes.append({'name': it['id'], 'mesh': len(meshes) - 1, 'extras': {'id': it['id']}})
     gltf = {'asset': {'version': '2.0', 'generator': 'BMS workbench build/anatomy/export.py (from Z-Anatomy, CC BY-SA 4.0)',
-                      'copyright': 'Z-Anatomy (Gauthier Kervyn) and BodyParts3D (The Database Center for Life Science), CC BY-SA 4.0'},
+                      'copyright': credit},
             'scene': 0, 'scenes': [{'nodes': list(range(len(nodes)))}], 'nodes': nodes, 'meshes': meshes,
             'materials': materials, 'accessors': accessors, 'bufferViews': views, 'buffers': [{'byteLength': offset}]}
     js = json.dumps(gltf, separators=(',', ':')).encode('utf-8')
@@ -300,7 +298,7 @@ def write_glb(path, items):
 
 # ---------------------------------------------------------------- the definitions (Z-Anatomy's texts, from Wikipedia)
 def definition(base):
-    for k in (base, clean(base), base.replace('(', '').replace(')', '').strip()):
+    for k in (base, clean(base), base.replace('(', '').replace(')', '').strip(), re.sub(r'\s*\(.*?\)\s*', ' ', base).strip()):
         t = bpy.data.texts.get(k)
         if t is not None:
             return t.as_string()
@@ -346,7 +344,8 @@ for f in FILES:
                      'centre': [round(float(x), 4) for x in centre], 'anchor': [round(float(x), 4) for x in anchor],
                      'material': o.material_slots[0].material.name if o.material_slots and o.material_slots[0].material else None,
                      'definition': definition(base)})
-    write_glb(os.path.join(OUT, f['id'] + '.glb'), items)
+    credit = cfg['credit']['base'] + ('; ' + cfg['credit'][f['id']] if f['id'] in cfg['credit'] else '')
+    write_glb(os.path.join(OUT, f['id'] + '.glb'), items, credit)
     json.dump({'file': f['id'], 'title': f['title'], 'structures': info}, open(os.path.join(OUT, f'structures-{f["id"]}.json'), 'w'),
               ensure_ascii=False, indent=0)
     log(f"{f['id']}: {len(items)} structures, {sum(len(i['tri']) for i in items)} triangles, "

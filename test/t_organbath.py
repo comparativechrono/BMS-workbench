@@ -25,6 +25,7 @@ def show_bath(p):
 p = bath_page()
 show_bath(p)
 check(not p.errors, 'the tab opens without errors: ' + '; '.join(p.errors[:3]))
+seed_a = p.js("() => MG.app.bath.exp.seed")
 check(p.js("() => !!document.querySelector('#bathRoot .ob-svg') && !!document.querySelector('#bathRoot canvas.ob-cv')"), 'the bath is drawn, and the chart')
 
 # ---------------------------------------------------------------- the arithmetic
@@ -39,6 +40,8 @@ want = [1e-7, 1e-7, 3e-7, 1e-7, 1e-7, 0.06, 1e-6]
 check(all(abs(a - b) < b * 1e-9 for a, b in zip(r['conc'], want)), f'concentrations are read as people write them: {r["conc"]}')
 check(abs(r['kcl'] - 0.06) < 1e-12, 'a bare number for KCl is mM')
 check(r['vol'] == [100, 100, 250, 1000], f'volumes are read in µL or mL: {r["vol"]}')
+rc = p.js("() => { const OB = MG.OrganBath; return [OB.parseVol('0,1 mL'), OB.parseVol('1,5'), OB.parseVol('1,000 µL'), OB.parseConc('2,5e-6'), OB.parseConc('0,1 µM'), OB.parseConc('1,5 × 10⁻⁷ M')]; }")
+check(rc[:3] == [100, 1.5, 1000] and abs(rc[3] - 2.5e-6) < 1e-15 and abs(rc[4] - 1e-7) < 1e-15 and abs(rc[5] - 1.5e-7) < 1e-15, f'decimal commas are read (0,1 mL; 2,5e-6; 0,1 µM), and 1,000 µL is a thousand: {rc}')
 check(r['fmt'] == ['9.9 × 10⁻⁸ M', '10⁻⁷ M', '3 × 10⁻⁶ M', '58.8 mM'], f'concentrations are written as 9.9 × 10⁻⁸ M: {r["fmt"]}')
 
 # the same, in the bath itself
@@ -53,6 +56,10 @@ check(abs(r[2] - 1.96078e-7) < 1e-11 and abs(r[3] - 10.2) < 1e-9, f'a cumulative
 check('10.2' in r[4] and 'ACh' in r[4], f'the side shows what is in the bath ({r[4].strip()[:60]})')
 r = p.js("""async () => { const B = MG.app.bath; await B.do('wash'); B._finishWash(); await B.do('add acetylcholine 1e-7'); return [B.exp.sim.cb.acetylcholine, B.exp.events[B.exp.events.length - 1]]; }""")
 check(abs(r[0] - 1e-7) < 1e-12, f'“add acetylcholine 1e-7” brings the bath to 10⁻⁷ M ({r[0]:.4e}: {r[1]["v"]:.1f} µL of {r[1]["S"]:g} M)')
+r = p.js("""async () => { const B = MG.app.bath; B._finishWash(); B.selDrug.value = 'acetylcholine'; B._drugChanged(); B.selStock.value = '0.00001'; B.inVol.value = '0,1 mL'; B._preview();
+  const ok = !B.addBtn.disabled; const n = B.exp.events.length; B.addFromForm(); const ev = B.exp.events[B.exp.events.length - 1];
+  await B.do('add acetylcholine 0,1 mL 1e-5 M'); return [ok, B.exp.events.length - n, ev.v, B.exp.events[B.exp.events.length - 1].v]; }""")
+check(r == [True, 2, 100, 100], f'a volume typed with a decimal comma (0,1 mL) is added, in the form and in a command: {r}')
 r = p.js("""() => { const B = MG.app.bath; B.selDrug.value = 'acetylcholine'; B._drugChanged(); B.selStock.value = '0.01'; B.inVol.value = '3000'; B._preview();
   const bad = [B.addBtn.disabled, B.preview.textContent]; B.inVol.value = '100'; B._preview(); return bad; }""")
 check(r[0] and 'overflow' in r[1], f'a volume that would overflow the bath is refused ({r[1][:60]})')
@@ -101,6 +108,30 @@ check(5 < r['took'] < 120, f'the plateau of the ileum is reached within seconds 
 check(abs((r['top'] - r['base']) / r['expect'] - 1) < 0.05, f'at the plateau, the contraction is what the model gives ({r["top"] - r["base"]:.3f} g against {r["expect"]:.3f} g)')
 check(abs(r['after'] - r['base']) < 0.08, f'washing returns the tension to the baseline ({r["base"]:.3f} → {r["after"]:.3f} g)')
 check(r['row']['final'] and abs(r['row']['resp'] - r['expect']) / r['expect'] < 0.07 and r['row']['cond'] == 'control', f'the response is measured when the bath is washed ({r["row"]})')
+
+# ---------------------------------------------------------------- a response is read before the next drug acts on the tissue
+r = p.js("""async () => { const B = MG.app.bath; await B.go('ileum?seed=3'); B._setPaused(true);
+  await B.do('add acetylcholine 3e-8; plateau'); const E = B.exp, row = E.rows[E.rows.length - 1], alone = row.ext - row.base;
+  await B.do('add histamine 1e-6; plateau; wash'); B._finishWash();
+  const a = E.rows.find((x) => x.drug === 'acetylcholine'), h = E.rows.find((x) => x.drug === 'histamine');
+  return { alone, ach: a.ext - a.base, final: a.final, hist: h ? h.ext - h.base : null, n: E.rows.length }; }""")
+check(r['final'] and abs(r['ach'] - r['alone']) < 0.05, f'acetylcholine’s response is measured when histamine is added on top of it, and keeps its size ({r["alone"]:.3f} → {r["ach"]:.3f} g; it used to be recorded as the two together)')
+check(r['n'] == 2 and r['hist'] is not None and r['hist'] > 0.3, f'histamine’s response is its own, from where acetylcholine had brought the tension ({r["hist"]:.3f} g)')
+r = p.js("""async () => { const B = MG.app.bath; await B.go('aorta?endothelium=off&seed=5'); B._setPaused(true);
+  await B.do('add phenylephrine 1e-6; plateau; add acetylcholine 1e-5; plateau'); const E = B.exp; const before = E.pct(E.rows[E.rows.length - 1]);
+  await B.do('add nitroprusside 1e-7; plateau; wash'); B._finishWash();
+  const a = E.rows.find((x) => x.drug === 'acetylcholine'), n = E.rows.find((x) => x.drug === 'nitroprusside'), pe = E.rows.find((x) => x.drug === 'phenylephrine');
+  return { before, ach: E.pct(a), snp: E.pct(n), pe: pe.ext - pe.base, peFinal: pe.final }; }""")
+check(r['ach'] < 10 and abs(r['ach'] - r['before']) < 3, f'a ring without endothelium: acetylcholine’s relaxation stays small ({r["ach"]:.0f}%) after nitroprusside relaxes the ring (it used to be recorded as 94%)')
+check(r['snp'] > 50, f'and nitroprusside’s relaxation is its own ({r["snp"]:.0f}%)')
+check(r['peFinal'] and r['pe'] > 0.5, f'phenylephrine’s contraction was read when acetylcholine was added ({r["pe"]:.2f} g)')
+
+# ---------------------------------------------------------------- every student's tissues are their own
+r = p.js("""async () => { const B = MG.app.bath; await B.go('ileum?new=1'); const a = [B.exp.seed, B.exp.P.act.drugX.truth, B.exp.P.Em];
+  await B.go('ileum?new=1'); const b = [B.exp.seed, B.exp.P.act.drugX.truth, B.exp.P.Em];
+  await B.go('ileum?seed=5'); const c = B.exp.seed; await B.go('ileum?seed=5'); const d = B.exp.seed; return [a, b, c, d]; }""")
+check(r[0][0] != r[1][0] and r[0][2] != r[1][2], f'each fresh tissue has a random seed of its own, so its own values ({r[0][0]}, {r[1][0]})')
+check(r[2] == 5 and r[3] == 5, 'a seed in the instructions (seed=5) gives everyone the same tissue')
 
 # ---------------------------------------------------------------- the clock
 r = p.js("() => { const B = MG.app.bath; B.setSpeed(20); return B.exp.t; }")
@@ -156,8 +187,12 @@ check(ticked('ob-more'), 'five responses in control tick ob-more')
 r = p.js("() => MG.app.bath.exp.rows.filter(r => r.drug === 'acetylcholine').map(r => [r.conc, r.ext - r.base])")
 resp = [x[1] for x in r]
 check(len(r) == 6 and all(b > a - 0.05 for a, b in zip(resp, resp[1:])), f'the responses grow with the concentration: {[round(x, 2) for x in resp]}')
+check(not answer('ob-q-dil', '1e-7'), 'ob-q-dil: 10⁻⁷ M (leaving out the volume added) is marked wrong')
+check(p.js("() => /10\\.1 mL/.test(document.querySelector('.q[data-q=ob-q-dil] .q-feedback').textContent)"), 'and the hint says that the bath holds 10.1 mL')
+check(answer('ob-q-dil', '99 nM'), 'ob-q-dil: 99 nM')
+check(answer('ob-q-dil', '0.099 µM'), 'ob-q-dil: 0.099 µM')
+check(answer('ob-q-dil', '9.9 x 10-8'), 'ob-q-dil: 9.9 x 10-8 (typed without superscripts)')
 check(answer('ob-q-dil', '9.9 × 10^-8 M'), 'ob-q-dil: 9.9 × 10⁻⁸ M')
-check(answer('ob-q-dil', '1e-7'), 'ob-q-dil: 10⁻⁷ M (leaving out the added volume) is accepted too')
 click('#organbath button[data-bath-do="antagonist atropine 1e-8"]')
 check(ticked('ob-atr'), 'atropine in the washing solution ticks ob-atr')
 click('#organbath button[data-bath-do="wait 600"]')
@@ -265,6 +300,18 @@ check('no endothelium' in r[0] and r[1] and r[1][0] < 10, f'without the endothel
 check(not p.errors, 'no page errors: ' + '; '.join(p.errors[:3]))
 p.close()
 
+# ---------------------------------------------------------------- 1366 × 768 beside the instructions
+p = bath_page(width=1366, height=768)
+show_bath(p)
+check(p.js("() => MG.app.bath.exp.seed") != seed_a, 'another browser starts with another tissue (another seed)')
+p.js("async () => { const B = MG.app.bath; B._setPaused(true); await B.do('add acetylcholine 1e-7; plateau; antagonist atropine 1e-8'); B._finishWash(); await B.do('wait 600; add acetylcholine 1e-6; plateau'); }")
+time.sleep(0.5)
+r = p.js("""() => { const b = document.querySelector('#bathRoot .ob-addbtn').getBoundingClientRect(), s = document.querySelector('#bathRoot .ob-side').getBoundingClientRect();
+  return [b.top, b.bottom, s.top, s.bottom, innerHeight]; }""")
+check(r[0] >= r[2] and r[1] <= min(r[3], r[4]) + 1, f'at 1366 × 768 beside the instructions, with an antagonist in use, Add to the bath is in view ({r[1]:.0f} ≤ {min(r[3], r[4]):.0f})')
+p.shot(OUT + '1366')
+p.close()
+
 # ---------------------------------------------------------------- a phone
 p = bath_page(width=390, height=844, mobile=True)
 p.p.locator('.bench-fab').click()
@@ -288,6 +335,23 @@ check(box[3] >= 220, f'the chart has room ({box[3]:.0f} px high)')
 p.p.touchscreen.tap(box[0] + box[2] * 0.4, box[1] + box[3] * 0.4)
 time.sleep(0.3)
 check(p.js("() => MG.app.bath.cursors.length") == 1, 'a tap on the chart places a cursor')
+r = p.js("() => ['.ob-b-help', '.ob-b-about'].map((c) => document.querySelector('#bathRoot ' + c).offsetWidth)")
+check(all(w > 0 for w in r), f'on a phone the Help and About buttons are there ({r})')
+p.p.locator('#bathRoot .ob-b-help').tap()
+time.sleep(0.3)
+check(p.js("() => (document.querySelector('.modal h3') || {}).textContent") == 'The organ bath', 'Help opens')
+p.p.keyboard.press('Escape')
+time.sleep(0.2)
+p.p.locator('#bathRoot .ob-b-about').tap()
+time.sleep(0.3)
+check(p.js("() => (document.querySelector('.modal h3') || {}).textContent") == 'About the organ bath', 'and so does About')
+p.p.keyboard.press('Escape')
+time.sleep(0.2)
+p.p.locator('#bathRoot .ob-b-exp').tap()
+time.sleep(0.3)
+items = p.js("() => [...document.querySelectorAll('.popmenu button')].map((b) => b.textContent)")
+check('How to use the organ bath' in items and 'About the model' in items, 'the Tissue menu has Help and About as well')
+p.p.keyboard.press('Escape')
 p.js("() => document.querySelector('#bathRoot').scrollTo(0, 0)")
 p.shot(OUT + 'phone')
 check(not p.errors, 'no page errors: ' + '; '.join(p.errors[:3]))

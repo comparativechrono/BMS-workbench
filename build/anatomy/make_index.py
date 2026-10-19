@@ -86,9 +86,22 @@ for s in structs:
 # (the hypothalamus is kept with the endocrine glands' file but belongs to the brain as well)
 
 # ---------------------------------------------------------------- definitions: the start of Z-Anatomy's Wikipedia text
+def unrename(t):
+    """Z-Anatomy renamed 'adrenal' to 'suprarenal' throughout its copies of Wikipedia, and so broke the words built on it
+    ('suprarenaline' for adrenaline): put them back"""
+    def case(m, word):
+        return word[0].upper() + word[1:] if m.group(0)[0].isupper() else word
+    t = re.sub(r'(?i)\bnorsuprarenaline\b', lambda m: case(m, 'noradrenaline'), t)
+    t = re.sub(r'(?i)\bsuprarenaline\b', lambda m: case(m, 'adrenaline'), t)
+    t = re.sub(r'(?i)\bsuprarena(?=rch|rg)', lambda m: case(m, 'adrena'), t)  # adrenarche, adrenergic
+    t = re.sub(r'(?i)\bsuprareno(?=[a-z])', lambda m: case(m, 'adreno'), t)  # adrenocorticotropic, adrenoleukodystrophy
+    return t
+
+
 def summary(text):
     if not text:
         return None, None
+    text = unrename(text)
     url = None
     m = re.findall(r'(https?://\S+)\s*$', text.strip())
     if m:
@@ -109,6 +122,7 @@ def summary(text):
         # (what is left of pronunciations and other parts that Z-Anatomy's copy left out: "The femur (, pl. femurs )")
         p = re.sub(r'/[^/()]*[ˈˌəɪʊæɒʌɜːθðʃʒŋ][^/()]*/\s*[;,]?\s*', '', p)  # pronunciations (IPA)
         p = re.sub(r'\(\s*(?:English|Latin)\s*:?\s*\)', '', p)  # "(English:)", once followed by a pronunciation
+        p = re.sub(r'\s*\((?:British|American|Commonwealth) English(?:\s*[;,]\s*both)?\)', '', p)  # "(British English; both)"
         p = re.sub(r'\(\s*[,;]\s*', '(', p)
         p = re.sub(r'\s+\)', ')', p)
         p = re.sub(r'\s*\(\s*\)', '', p)
@@ -158,6 +172,33 @@ def group_of(s):
     return path[d] if len(path) > d else (path[-1] if path else '')
 
 
+# ---------------------------------------------------------------- the sources besides Z-Anatomy and BodyParts3D
+# (the cortex and the deep nuclei of the brain were made by FreeSurfer, from Brain for Blender; the cranial nerves follow
+# the University of Dundee's model)
+BRAINDER = {'Frontal lobe', 'Parietal lobe', 'Temporal lobe', 'Occipital lobe', 'Limbic lobe', 'Insula', 'Interlobar sulci',
+            'Corpus striatum', 'Basal forebrain', 'Diencephalon', 'Telencephalon'}
+SOURCES = {
+    'zanatomy': {'short': 'Z-Anatomy (CC BY-SA 4.0)', 'name': 'Z-Anatomy – the libre 3D atlas of anatomy', 'by': 'Gauthier Kervyn and others',
+                 'licence': 'CC BY-SA 4.0', 'url': 'https://www.z-anatomy.com/'},
+    'bodyparts3d': {'short': 'BodyParts3D, © DBCLS (CC BY-SA 2.1 JP)', 'name': 'BodyParts3D', 'by': '© The Database Center for Life Science',
+                    'licence': 'CC BY-SA 2.1 Japan', 'url': 'https://dbarchive.biosciencedbc.jp/en/bodyparts3d/'},
+    'brainder': {'short': 'brain: Brain for Blender, A. M. Winkler (CC BY-SA 3.0)', 'name': 'Brain for Blender', 'by': 'Anderson M. Winkler',
+                 'licence': 'CC BY-SA 3.0', 'url': 'https://brainder.org/research/brain-for-blender/',
+                 'what': 'the cerebral cortex (the gyri and sulci) and the deep nuclei of the brain'},
+    'dundee': {'short': 'cranial nerves: University of Dundee, CAHID (CC BY 4.0)', 'name': 'Cranial Nerves and Foramina', 'by': 'University of Dundee, CAHID',
+               'licence': 'CC BY 4.0', 'what': 'the cranial nerves'},
+}
+
+
+def sources_of(s, path):
+    out = []
+    if s['file'] == 'brain' and group_of(s) in BRAINDER:
+        out.append('brainder')
+    if 'Cranial nerves' in path:
+        out.append('dundee')
+    return out
+
+
 # ---------------------------------------------------------------- write
 paths, path_ix = [], {}
 out_structs = []
@@ -176,6 +217,9 @@ for s in structs:
     if t:
         rec['ta2'] = t[0]
         rec['latin'] = t[1]
+    src = sources_of(s, path)
+    if src:
+        rec['src'] = src
     out_structs.append({k: v for k, v in rec.items() if v is not None})
 index = {
     'format': 'bms-anatomy-1',
@@ -187,12 +231,13 @@ index = {
         'links': {'Z-Anatomy': 'https://www.z-anatomy.com/', 'Z-Anatomy (GitHub)': 'https://github.com/Z-Anatomy/Models-of-human-anatomy',
                   'BodyParts3D': 'https://dbarchive.biosciencedbc.jp/en/bodyparts3d/', 'Brain for Blender': 'https://brainder.org/research/brain-for-blender/'}
     },
-    'paths': paths, 'files': files, 'systems': [{k: v for k, v in y.items() if k != 'structures'} | {'n': len(y['structures']), 'structures': y['structures']} for y in systems],
+    'sources': SOURCES, 'paths': paths, 'files': files, 'systems': [{k: v for k, v in y.items() if k != 'structures'} | {'n': len(y['structures']), 'structures': y['structures']} for y in systems],
     'structures': out_structs,
 }
 json.dump(index, open(os.path.join(OUT, 'index.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump(defs, open(os.path.join(OUT, 'definitions.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-print(len(out_structs), 'structures;', sum(1 for s in out_structs if 'latin' in s), 'with Latin names;', len(defs), 'definitions')
+print(len(out_structs), 'structures;', sum(1 for s in out_structs if 'latin' in s), 'with Latin names;', len(defs), 'definitions, for',
+      sum(1 for s in out_structs if s['base'] in defs), 'structures')
 for f in files:
     print(f"  {f['id']:13s} {f['structures']:4d} structures {f['triangles']:7d} triangles {f['bytes'] / 1e6:6.2f} MB")
 print('index.json', os.path.getsize(os.path.join(OUT, 'index.json')) // 1000, 'kB; definitions.json',

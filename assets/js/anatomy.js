@@ -58,17 +58,60 @@
     superior: { dir: [0, 1, -0.012], label: 'Superior (from above)', key: '5' },
     inferior: { dir: [0, -1, 0.012], label: 'Inferior (from below)', key: '6' }
   };
-  /* a section: the plane, and the part kept (what is beyond the plane, seen from where the student looks) */
+  /* a section: the plane, the part kept (n points into it), and the view of its cut face: a sagittal section keeps the
+     body's right half, seen from the left; a coronal one the back half, seen from the front; a transverse one the part
+     above the cut, seen from below – as CT and MRI images are shown (the body's left on the right of the picture) */
   const AXES = {
     sagittal: { n: [-1, 0, 0], k: 0, label: 'Sagittal', what: 'from the right side (0) to the left (1)', view: 'left' },
     coronal: { n: [0, 0, -1], k: 2, label: 'Coronal', what: 'from the back (0) to the front (1)', view: 'anterior' },
-    transverse: { n: [0, -1, 0], k: 1, label: 'Transverse', what: 'from the feet (0) to the head (1)', view: 'superior' }
+    transverse: { n: [0, 1, 0], k: 1, label: 'Transverse', what: 'from the feet (0) to the head (1)', view: 'inferior' }
   };
   const DEFAULT_ON = { skeleton: 'fade', heart: 1, respiratory: 1, digestive: 1, urinary: 1, endocrine: 1 };
   const FADE = 0.16;
   const slugify = (s) => String(s || '').toLowerCase().replace(/&/g, 'and').replace(/['’()*,./]/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   const lcFirst = (s) => (/^[A-Z][a-z]/.test(s) && !/^(Broca|Wernicke|Jensen|Meckel)/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
   const reduced = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* searching: everyday and older names → the model's names (those of Terminologia Anatomica) */
+  const SYNONYMS = [
+    ['anterior pituitary', 'adenohypophysis'], ['posterior pituitary', 'neurohypophysis'], ['pituitary', 'hypophysis'],
+    ['adrenal', 'suprarenal'], ['windpipe', 'trachea'], ['voice box', 'larynx'], ['gullet', 'oesophagus'], ['food pipe', 'oesophagus'],
+    ['esophagus', 'oesophagus'], ['gall bladder', 'gallbladder'], ['mitral', 'left atrioventricular'], ['bicuspid valve', 'left atrioventricular valve'],
+    ['tricuspid', 'right atrioventricular'], ['venae cavae', 'vena cava'], ['collar bone', 'clavicle'], ['collarbone', 'clavicle'],
+    ['breastbone', 'sternum'], ['breast bone', 'sternum'], ['shoulder blade', 'scapula'], ['kneecap', 'patella'], ['knee cap', 'patella'],
+    ['thigh bone', 'femur'], ['thighbone', 'femur'], ['shin bone', 'tibia'], ['shinbone', 'tibia'], ['backbone', 'vertebral column'],
+    ['spinal column', 'vertebral column'], ['spine', 'vertebral column'], ['skull', 'cranium'], ['brain stem', 'brainstem'],
+    ['appendix', 'vermiform appendix'], ['adam’s apple', 'thyroid cartilage'], ["adam's apple", 'thyroid cartilage'], ['ribcage', 'thoracic skeleton'],
+    ['rib cage', 'thoracic skeleton'], ['cerebral cortex', 'gyrus'], ['vocal cords', 'vocal'], ['epiphysis cerebri', 'pineal']
+  ];
+  /* … and the adjectives of organs, which name their parts and vessels ('laryngeal cartilages', 'renal artery') */
+  const FAMILY = [['larynx', 'laryngeal'], ['pharynx', 'pharyngeal'], ['heart', 'cardiac'], ['kidney', 'renal'], ['liver', 'hepatic'],
+    ['stomach', 'gastric'], ['lung', 'pulmonary'], ['brain', 'cerebral'], ['bladder', 'vesical'], ['hypophysis', 'hypophysial'], ['testis', 'testicular']];
+  /* what the model does not have */
+  const ABSENT = [
+    [/\b(uterus|womb|ovar(y|ies)|vagina|vulva|uterine tube|fallopian|cervix of uterus|placenta|mammary|breast)\b/i, 'The female reproductive organs are not in the model: it was made from a man’s body.'],
+    [/\b(ears?|cochlea|semicircular|tympanic membrane|ossicles?|malleus|incus|stapes)\b/i, 'The ear is not in the model: Z-Anatomy’s ear may not be shared freely.'],
+    [/\b(renal pelvis|calyx|calyces|calices|nephrons?|renal pyramids?|renal cortex|renal medulla)\b/i, 'The inside of the kidney is not in the model: Z-Anatomy’s model of it may not be shared freely.'],
+    [/\b(skin|teeth|tooth|meninges|dura mater|pleura|peritoneum|joints?|white matter)\b/i, 'That is not in the model: the skin, the teeth, the joints, the meninges, the pleura, the peritoneum and the white matter of the brain were left out.']
+  ];
+  function singular(w) {
+    if (/(ss|us|is|ae|um)$/.test(w) || w.length < 4) return w.replace(/ae$/, 'a');
+    if (w === 'testes') return 'testis';
+    if (w === 'bronchi') return 'bronchus';
+    if (w === 'atria') return 'atrium';
+    if (/ies$/.test(w)) return w.slice(0, -3) + 'y';
+    if (/(ch|sh|x)es$/.test(w)) return w.slice(0, -2);
+    return w.replace(/s$/, '');
+  }
+  /** the forms of a search to look for: as typed, in the singular, with the model's names for everyday ones */
+  function variants(q) {
+    q = String(q || '').toLowerCase().replace(/\s+/g, ' ').trim();
+    const out = new Set([q]);
+    out.add(q.split(' ').map(singular).join(' '));
+    [...out].forEach((v) => SYNONYMS.forEach(([a, b]) => v.includes(a) && out.add(v.replace(a, b))));
+    [...out].forEach((v) => FAMILY.forEach(([a, b]) => v.includes(a) && out.add(v.replace(a, b))));
+    return [...out].filter((v) => v.length >= 2);
+  }
 
   class AnatomyApp {
     constructor(root, opts = {}) {
@@ -162,8 +205,9 @@
       this.infoBody = h('div.an-info-b');
       this.info = h('aside.an-info', { 'aria-label': 'The selected structure' }, h('div.an-info-h', tabs, this._btn('x', 'Close the panel', () => this.toggleInfo(false), '.an-info-x')), this.infoBody);
 
-      this.main = h('div.an-main', this.bar, h('div.an-work', this.view, this.info));
-      r.append(this.panel, this.main);
+      // (the toolbar runs across the whole tab, so that the names of its tools fit beside the list of systems)
+      this.body = h('div.an-body', this.panel, this.view, this.info);
+      r.append(this.bar, this.body);
       this.root.addEventListener('keydown', (e) => this._key(e));
       if (window.ResizeObserver) new ResizeObserver(() => this._resized()).observe(this.view);
     }
@@ -194,7 +238,7 @@
       idx.systems.forEach((s) => (this.sys[s.id] = s));
       this.sysOrder = idx.systems.map((s) => s.id);
       idx.structures.forEach((s) => {
-        s.name = s.base + (s.side ? ` (${s.side})` : '');
+        s.name = s.base + (s.side && !new RegExp('\\b' + s.side + '\\b', 'i').test(s.base) ? ` (${s.side})` : '');
         s.slug = slugify(s.base);
         this.S[s.id] = s;
       });
@@ -206,8 +250,8 @@
       Object.keys(on).forEach((k) => this.sys[k] && (this.on[k] = on[k]));
       (this.st.hidden || []).forEach((id) => this.S[id] && this.hidden.add(id));
       const W0 = this.root.clientWidth || 1000;
-      this.togglePanel(this.st.panel == null ? W0 >= 900 : this.st.panel && W0 >= 760, true);
-      this.toggleInfo(this.st.info == null ? W0 >= 1100 : this.st.info && W0 >= 760, true);
+      this.togglePanel(W0 >= 760 && this.st.panel !== false, true);
+      this.toggleInfo(this._maxPanels() >= 2 && this.st.info !== false && !!this.st.info, true);
       this.showInfo(this.st.side || 'info', true);
       this._renderSystems();
       this._renderList();
@@ -353,7 +397,7 @@
             const id = (m.userData && m.userData.id) || String(m.name || '').replace(/_\d+$/, '');
             const s = this.S[id];
             if (!s) return;
-            m.material = new T.MeshStandardMaterial({ color: new T.Color(s.colour), roughness: 0.62, metalness: 0, side: T.FrontSide });
+            m.material = this._material(s.colour);
             m.userData.sid = id;
             m.matrixAutoUpdate = false;
             m.updateMatrix();
@@ -376,6 +420,17 @@
           throw e;
         });
       return F.promise;
+    }
+    /** a structure's material: both sides drawn (many of Z-Anatomy's models – the chambers of the heart, the vessels
+        – are open surfaces, and a section shows the inside of every organ), the inner side in a darker shade */
+    _material(colour) {
+      const T = this.T;
+      const mat = new T.MeshStandardMaterial({ color: new T.Color(colour), roughness: 0.62, metalness: 0, side: T.DoubleSide });
+      mat.onBeforeCompile = (sh) => {
+        sh.fragmentShader = sh.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n\tif ( ! gl_FrontFacing ) diffuseColor.rgb *= 0.5;');
+      };
+      mat.customProgramCacheKey = () => 'anat-inner-darker';
+      return mat;
     }
     _progress() {
       if (this._progT) return;
@@ -427,7 +482,8 @@
         n++;
         const mat = m.material;
         const faded = this._isFaded(s) && !sel.has(s.id) && !hint.has(s.id);
-        const want = { transparent: faded, opacity: faded ? FADE : 1, depthWrite: !faded, side: cut ? T.DoubleSide : T.FrontSide, clip: cut };
+        // (a faint structure shows only its outer side, so that it stays faint)
+        const want = { transparent: faded, opacity: faded ? FADE : 1, depthWrite: !faded, side: faded ? T.FrontSide : T.DoubleSide, clip: cut };
         if (mat.transparent !== want.transparent || mat.side !== want.side || !!mat.clippingPlanes !== want.clip) {
           mat.transparent = want.transparent;
           mat.side = want.side;
@@ -547,11 +603,17 @@
       L.innerHTML = '';
       const q = this.query.toLowerCase();
       if (q) {
-        const hits = Object.values(this.S).filter((s) => s.name.toLowerCase().includes(q) || (s.latin && s.latin.toLowerCase().includes(q)));
-        hits.sort((a, b) => (a.name.toLowerCase().startsWith(q) ? 0 : 1) - (b.name.toLowerCase().startsWith(q) ? 0 : 1) || a.name.localeCompare(b.name));
-        if (!hits.length) L.appendChild(h('p.an-none', 'Nothing has that name. Try part of a name, in English or in Latin.'));
-        hits.slice(0, 80).forEach((s) => L.appendChild(this._row(s, { sys: true })));
-        if (hits.length > 80) L.appendChild(h('p.an-none', `…and ${hits.length - 80} more: type more of the name.`));
+        const R = this.search_(q);
+        if (R.absent) L.appendChild(h('p.an-none.an-absent', R.absent));
+        if (!R.name.length && !R.group.length && !R.absent) L.appendChild(h('p.an-none', 'Nothing has that name. Try part of a name, in English or in Latin.'));
+        let n = 0;
+        R.name.slice(0, 80).forEach((s) => (L.appendChild(this._row(s, { sys: true })), n++));
+        if (R.group.length && n < 80) {
+          L.appendChild(h('div.an-lsys-h', h('b', R.name.length ? 'In groups of that name' : 'In the groups of that name')));
+          R.group.slice(0, 80 - n).forEach((s) => (L.appendChild(this._row(s, { sys: true })), n++));
+        }
+        const all = R.name.length + R.group.length;
+        if (all > n) L.appendChild(h('p.an-none', `…and ${all - n} more: type more of the name.`));
         return;
       }
       const on = this._onList();
@@ -593,6 +655,23 @@
         r.scrollIntoView({ block: 'nearest' });
       }
     }
+    /** the structures a search finds: by their names (English or Latin, everyday names and plurals too), then by the
+        names of their groups and systems ('heart', 'larynx'); and a word on what the model does not have */
+    search_(q) {
+      const vs = variants(q);
+      const name = [], group = [];
+      Object.values(this.S).forEach((s) => {
+        const hay = s._hay || (s._hay = (s.name + ' ' + (s.latin || '')).toLowerCase());
+        if (vs.some((v) => hay.includes(v))) return name.push(s);
+        const grp = s._grp || (s._grp = [s.group || ''].concat(this.index.paths[s.path] || [], s.systems.map((k) => this.sys[k].title)).join(' | ').toLowerCase());
+        if (vs.some((v) => grp.includes(v))) group.push(s);
+      });
+      const first = (s) => (vs.some((v) => s.name.toLowerCase().startsWith(v)) ? 0 : 1);
+      name.sort((a, b) => first(a) - first(b) || a.name.localeCompare(b.name));
+      group.sort((a, b) => a.name.localeCompare(b.name));
+      const ab = ABSENT.find(([re]) => re.test(q));
+      return { name, group, absent: ab ? ab[1] : null };
+    }
     _searched() {
       clearTimeout(this._searchT);
       const q = this.query;
@@ -602,8 +681,16 @@
         bus.emit('anat:search', { q, n });
       }, 700);
     }
+    /** how many of the side panels can be open at once and leave the view at least half the width of the tab: both
+        when the tab is wide, one at a time on a laptop beside the instructions, and on a phone (where they lie over
+        the view) one at a time too */
+    _maxPanels() {
+      const W = this.root.clientWidth || 1000;
+      return W >= 1180 ? 2 : 1;
+    }
     togglePanel(open, quiet) {
       if (open == null) open = this.panel.hidden;
+      if (open && !this.info.hidden && this._maxPanels() < 2) this.toggleInfo(false, true);
       this.panel.hidden = !open;
       this.panelBtn.classList.toggle('on', open);
       this.panelBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -611,10 +698,11 @@
         this.st.panel = open;
         this._save();
       }
-      setTimeout(() => this._resized(), 0);
+      this._resized();
     }
     toggleInfo(open, quiet) {
       if (open == null) open = this.info.hidden;
+      if (open && !this.panel.hidden && this._maxPanels() < 2) this.togglePanel(false, true);
       this.info.hidden = !open;
       this.infoBtn.classList.toggle('on', open);
       if (!quiet) {
@@ -623,7 +711,7 @@
       }
       if (open) this._renderInfo();
       this._renderChip();
-      setTimeout(() => this._resized(), 0);
+      this._resized();
     }
     showInfo(id, quiet) {
       this.infoSide = id === 'about' ? 'about' : 'info';
@@ -678,7 +766,7 @@
       act('hide', 'Hide', 'Hide it (H)', () => this.hide(ids, true));
       if (!both && s.side) {
         const other = Object.values(this.S).find((x) => x.slug === s.slug && x.id !== s.id && x.side);
-        if (other) act('showall', 'Both sides', 'Select it on both sides', () => this.select([s.id, other.id], { say: true }));
+        if (other) act('showall', 'Both sides', 'Select it on both sides', () => this.select([s.id, other.id], { say: true, by: 'list' }));
       }
       B.append(acts);
       const d = h('div.an-def', h('p.an-note', 'Loading the definition…'));
@@ -731,8 +819,8 @@
       if (!s.systems.some((k) => this.on[k])) await this.setSystem(s.systems[0], 1);
       if (this.hidden.has(id)) this.unhide([id], true);
       if (this.isolated && !this.isolated.has(id)) this.isolate(null, false, true);
-      this.select([id], { say: true, frame: !this._isOnScreen(id) });
       if (this._narrow()) this.togglePanel(false, true);
+      this.select([id], { say: true, by: 'list', frame: !this._isOnScreen(id) });
     }
     select(ids, opts = {}) {
       ids = (ids || []).filter((id) => this.S[id]);
@@ -744,13 +832,14 @@
       this._scrollSel = true;
       this._renderList();
       // (the panel about it opens by itself when the view keeps room enough beside it; else its name shows below the body)
-      if (ids.length && !opts.quiet && this.info.hidden && this.view.clientWidth - 318 >= 400 && this.st.info !== false) this.toggleInfo(true, true);
+      // (the panel about it opens by itself after a click on the body; on a phone, its name shows below the body instead)
+      if (ids.length && !opts.quiet && this.info.hidden && this.st.info !== false && !this._narrow() && (this._maxPanels() >= 2 || opts.by === 'click' || opts.by === 'find')) this.toggleInfo(true, true);
       this._renderInfo();
       this._renderChip();
       this.render();
       if (ids.length && opts.say) {
         const s = this.S[ids[0]];
-        bus.emit('anat:select', { id: s.id, name: ids.length > 1 ? s.base : s.name, base: s.base, side: ids.length > 1 ? 'both' : s.side || '', system: s.systems[0], systems: s.systems.join(',') });
+        bus.emit('anat:select', { id: s.id, name: ids.length > 1 ? s.base : s.name, base: s.base, side: ids.length > 1 ? 'both' : s.side || '', system: s.systems[0], systems: s.systems.join(','), by: opts.by || 'go' });
       }
       if (ids.length && opts.frame) return this.frame(ids, opts.view);
       return Promise.resolve();
@@ -847,7 +936,7 @@
         return;
       }
       if (this.sel.length === 1 && this.sel[0] === id) return;
-      this.select([id], { say: true });
+      this.select([id], { say: true, by: 'click' });
     }
     _hover() {
       this._hoverT = null;
@@ -1011,7 +1100,7 @@
       return box;
     }
     /** fit structures (or what is shown) in the view, from the current direction or a standard view */
-    frame(ids, view) {
+    frame(ids, view, opts = {}) {
       if (!this.camera) return Promise.resolve();
       ids = ids && ids.length ? ids : this.sel.length ? this.sel : null;
       const dir = view && VIEWS[view] ? VIEWS[view].dir : this._viewDir();
@@ -1024,7 +1113,7 @@
         box.expandByScalar(Math.max(0, (0.16 - m) / 2) + m * 0.18);
       }
       const f = this._fit(box, dir);
-      return this._moveCamera(f.pos, f.target);
+      return this._moveCamera(f.pos, f.target, opts.instant);
     }
     setView(name, say) {
       if (!VIEWS[name]) return Promise.resolve();
@@ -1078,10 +1167,13 @@
       this.drawn = (this.drawn || 0) + 1;
     }
     _resized() {
+      this._fitBar();
+      if (!this.info.hidden && !this.panel.hidden && this._maxPanels() < 2) this.togglePanel(false, true);
       if (!this.renderer) return;
       const W = this.view.clientWidth, H = this.view.clientHeight;
       if (!W || !H) return;
       if (this._W === W && this._H === H) return;
+      const was = this._W;
       this._W = W;
       this._H = H;
       this.renderer.setSize(W, H, false);
@@ -1090,7 +1182,16 @@
       this.camera.aspect = W / H;
       this.camera.updateProjectionMatrix();
       this.svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      // (a panel that opens or closes moves the middle of the view: what is selected stays in it)
+      if (was && this.sel.length && !this._camAnim && !this._isOnScreen(this.sel[0])) this.frame(this.sel, null, { instant: true });
       this._draw();
+    }
+    /** the toolbar on one line: the names of the tools when they fit, else only their icons (.an-compact) */
+    _fitBar() {
+      const b = this.bar;
+      if (!b || !b.clientWidth) return;
+      b.classList.remove('an-compact');
+      if (b.scrollWidth > b.clientWidth + 1) b.classList.add('an-compact');
     }
     shown(opts = {}) {
       setTimeout(() => {
@@ -1254,9 +1355,9 @@
       const c = lo + (hi - lo) * at;
       const n = new this.T.Vector3().fromArray(A.n);
       if (flip) n.negate();
-      // (the plane keeps the points where n·p + constant ≥ 0: with n = −axis, those below c)
+      // (the plane keeps the points where n·p + constant ≥ 0, those on the side n points to)
       this.plane.normal.copy(n);
-      this.plane.constant = flip ? -c : c;
+      this.plane.constant = -n.getComponent(A.k) * c;
       this.secBar.hidden = false;
       this.secName.textContent = A.label + ' section';
       this.secRange.value = String(Math.round(at * 1000));
@@ -1369,14 +1470,14 @@
       if (section) this.setSection(section.axis, section.at, { say: true, flip: false });
       else if (systems.length && this.section) this.setSection('off');
       if (labels) this.setLabels(true, true);
-      if (sel) {
-        await this.select(sel, { say: true, frame: true, view: view || 'anterior' });
-        if (view) bus.emit('anat:view', { name: view });
-      } else if (systems.length || view) {
-        const v = view && VIEWS[view] ? view : 'anterior';
-        this._lastView = v;
-        await this._frameShown(v);
-        if (view && VIEWS[view]) bus.emit('anat:view', { name: view });
+      if (sel) await this.select(sel, { say: true, by: 'go', frame: true, view: view || 'anterior' });
+      else {
+        if (systems.length && this.sel.length) this.select([], { quiet: true });
+        if (systems.length || view) {
+          const v = view && VIEWS[view] ? view : 'anterior';
+          this._lastView = v;
+          await this._frameShown(v);
+        }
       }
       this._draw();
     }
@@ -1429,7 +1530,7 @@
       if (T.targets.includes(id)) {
         this.findTask = null;
         this.hint = null;
-        this.select([id], { say: true });
+        this.select([id], { say: true, by: 'find' });
         this._banner(`✓ Yes – that’s the <b>${esc(lcFirst(this.S[id].name))}</b>.`, 'ok');
         clearTimeout(this._bannerT);
         this._bannerT = setTimeout(() => this._hideBanner(), 4000);
@@ -1490,7 +1591,17 @@
       const R = this.renderer.domElement;
       const pr = this.renderer.getPixelRatio();
       const W = R.width, H = R.height;
-      const strip = Math.round(34 * pr);
+      // (the credit of the models shown, on as many lines as it needs below the title)
+      const credit = this.creditText();
+      const meas = document.createElement('canvas').getContext('2d');
+      meas.font = `${11 * pr}px system-ui, sans-serif`;
+      const lines = [];
+      credit.split(' · ').forEach((part, i) => {
+        const t = (i ? ' · ' : '') + part;
+        if (lines.length && meas.measureText(lines[lines.length - 1] + t).width <= W - 20 * pr) lines[lines.length - 1] += t;
+        else lines.push(i ? part : t);
+      });
+      const strip = Math.round((28 + 15 * lines.length) * pr);
       const out = document.createElement('canvas');
       out.width = W;
       out.height = H + strip;
@@ -1528,11 +1639,11 @@
       const sel = this.S[this.sel[0]];
       const what = sel ? (this.sel.length > 1 ? sel.base : sel.name) : this.titleEl.textContent;
       const view = this._viewName();
-      g.fillText(`${what}${view ? ' – ' + view + ' view' : ''}${this.section ? ' – ' + this.section.axis + ' section' : ''}`, 10 * pr, H + strip / 2);
-      g.textAlign = 'right';
+      g.fillText(`${what}${view ? ' – ' + view + ' view' : ''}${this.section ? ' – ' + this.section.axis + ' section' : ''}`, 10 * pr, H + 15 * pr);
       g.font = `${11 * pr}px system-ui, sans-serif`;
       g.fillStyle = '#c9d1e6';
-      g.fillText('Z-Anatomy & BodyParts3D, CC BY-SA 4.0', W - 10 * pr, H + strip / 2);
+      lines.forEach((l, i) => g.fillText(l, 10 * pr, H + (33 + 15 * i) * pr));
+      this.lastCredit = credit;
       const blob = await new Promise((ok) => out.toBlob(ok, 'image/png'));
       if (!blob) {
         toast('The picture could not be made in this browser.', 'error');
@@ -1546,6 +1657,17 @@
       const path = await MG.app.saveToFiles(name, blob, { folder: '~/anatomy', ask: false });
       if (path) bus.emit('anat:capture', { path, name });
       return path;
+    }
+    /** the sources of the structures shown: Z-Anatomy and BodyParts3D always, and Brain for Blender and the University of
+        Dundee when their parts are shown */
+    creditKeys() {
+      const keys = ['zanatomy', 'bodyparts3d'];
+      Object.values(this.S).forEach((s) => s.src && this._isShown(s) && s.src.forEach((k) => keys.includes(k) || keys.push(k)));
+      return keys;
+    }
+    creditText() {
+      const src = (this.index && this.index.sources) || {};
+      return 'Models: ' + this.creditKeys().map((k) => (src[k] ? src[k].short : k)).join(' · ');
     }
     _viewName() {
       const d = this._viewDir();
