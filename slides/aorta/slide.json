@@ -1,0 +1,185 @@
+{
+ "title": "Aorta",
+ "system": "Cardiovascular",
+ "description": "The wall of an elastic artery, from the intima on one side to the adventitia on the other.",
+ "look_for": [
+  "Tunica intima (in this specimen the endothelium has come away)",
+  "Tunica media: many wavy elastic laminae with smooth muscle cells between them",
+  "Tunica adventitia: looser connective tissue with small vessels (vasa vasorum)"
+ ],
+ "labels": [
+  {
+   "key": "intima",
+   "text": "Tunica intima (its endothelium has come away here)",
+   "find": "the tunica intima",
+   "x": 5300,
+   "y": 4950,
+   "poly": [
+    [
+     5460,
+     4600
+    ],
+    [
+     5400,
+     4750
+    ],
+    [
+     5250,
+     5250
+    ],
+    [
+     5050,
+     5750
+    ],
+    [
+     4970,
+     5750
+    ],
+    [
+     5170,
+     5250
+    ],
+    [
+     5320,
+     4750
+    ],
+    [
+     5380,
+     4600
+    ]
+   ]
+  },
+  {
+   "key": "media",
+   "text": "Tunica media: elastic laminae with smooth muscle between them",
+   "find": "the tunica media",
+   "x": 4100,
+   "y": 4200,
+   "r": 500
+  },
+  {
+   "key": "media",
+   "text": "Tunica media: elastic laminae with smooth muscle between them",
+   "find": "the tunica media",
+   "x": 3000,
+   "y": 7000,
+   "r": 400
+  },
+  {
+   "key": "adventitia",
+   "text": "Tunica adventitia",
+   "find": "the tunica adventitia",
+   "x": 900,
+   "y": 6800,
+   "r": 150
+  },
+  {
+   "key": "adventitia",
+   "text": "Tunica adventitia",
+   "find": "the tunica adventitia",
+   "x": 1900,
+   "y": 4400,
+   "r": 100
+  },
+  {
+   "key": "vasa-vasorum",
+   "text": "Vasa vasorum (small vessels that supply the wall)",
+   "find": "a vessel of the vasa vasorum",
+   "x": 480,
+   "y": 7155,
+   "r": 45
+  },
+  {
+   "key": "vasa-vasorum",
+   "text": "Vasa vasorum (small vessels that supply the wall)",
+   "find": "a vessel of the vasa vasorum",
+   "x": 800,
+   "y": 7390,
+   "r": 40
+  }
+ ],
+ "id": "aorta",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-OHPK-0425",
+  "tissue_site": "Artery - Aorta",
+  "pathology_note": "fairly well preserved, although endothelium is denuded",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2402999151.1584077835.1720389950319.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 19425,
+   "y": 9106,
+   "width": 6071,
+   "height": 8094
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-OHPK-0425), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 6071,
+ "height": 8094,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1025,
+ "packBytes": 8957312,
+ "levels": [
+  {
+   "level": 8,
+   "width": 190,
+   "height": 253,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 380,
+   "height": 506,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 759,
+   "height": 1012,
+   "cols": 3,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1518,
+   "height": 2024,
+   "cols": 6,
+   "rows": 8,
+   "first": 17
+  },
+  {
+   "level": 12,
+   "width": 3036,
+   "height": 4047,
+   "cols": 12,
+   "rows": 16,
+   "first": 65
+  },
+  {
+   "level": 13,
+   "width": 6071,
+   "height": 8094,
+   "cols": 24,
+   "rows": 32,
+   "first": 257
+  }
+ ]
+}

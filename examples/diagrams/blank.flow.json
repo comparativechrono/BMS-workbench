@@ -1,0 +1,14 @@
+{
+ "format": "bms-flow-1",
+ "title": "Blank diagram",
+ "description": "An empty diagram to start from.",
+ "group": "Start",
+ "order": 0,
+ "nodes": [],
+ "edges": [],
+ "sim": {
+  "duration": 60,
+  "timeUnit": "min",
+  "clampZero": true
+ }
+}

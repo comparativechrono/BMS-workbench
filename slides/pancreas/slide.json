@@ -1,0 +1,185 @@
+{
+ "title": "Pancreas",
+ "system": "Endocrine",
+ "description": "Lobules of exocrine acini with pale islets of Langerhans among them, separated by septa that carry ducts, blood vessels and fat.",
+ "look_for": [
+  "Acini: groups of pyramidal cells, purple at the base and pink (zymogen granules) at the top",
+  "Islets of Langerhans: paler, rounded groups of endocrine cells with many capillaries",
+  "Intralobular and interlobular ducts",
+  "Connective tissue septa between the lobules, with arteries, veins and fat cells"
+ ],
+ "labels": [
+  {
+   "key": "islet",
+   "text": "Islet of Langerhans",
+   "find": "an islet of Langerhans",
+   "x": 1600,
+   "y": 2780,
+   "r": 170
+  },
+  {
+   "key": "islet",
+   "text": "Islet of Langerhans",
+   "find": "an islet of Langerhans",
+   "x": 4290,
+   "y": 1190,
+   "r": 130
+  },
+  {
+   "key": "islet",
+   "text": "Islet of Langerhans",
+   "find": "an islet of Langerhans",
+   "x": 250,
+   "y": 830,
+   "r": 110
+  },
+  {
+   "key": "islet",
+   "text": "Islet of Langerhans",
+   "find": "an islet of Langerhans",
+   "x": 3600,
+   "y": 6900,
+   "r": 120
+  },
+  {
+   "key": "acini",
+   "text": "Acini (exocrine pancreas)",
+   "find": "acini of the exocrine pancreas",
+   "x": 2400,
+   "y": 2400,
+   "r": 90
+  },
+  {
+   "key": "acini",
+   "text": "Acini (exocrine pancreas)",
+   "find": "acini of the exocrine pancreas",
+   "x": 6200,
+   "y": 1600,
+   "r": 120
+  },
+  {
+   "key": "duct",
+   "text": "Interlobular duct",
+   "find": "an interlobular duct",
+   "x": 2380,
+   "y": 1670,
+   "r": 55
+  },
+  {
+   "key": "septum",
+   "text": "Interlobular septum (connective tissue)",
+   "find": "a septum between lobules",
+   "x": 2860,
+   "y": 1500,
+   "r": 50
+  },
+  {
+   "key": "artery",
+   "text": "Artery",
+   "find": "an artery",
+   "x": 5300,
+   "y": 5160,
+   "r": 110
+  },
+  {
+   "key": "vein",
+   "text": "Vein",
+   "find": "a vein",
+   "x": 5760,
+   "y": 5960,
+   "r": 170
+  },
+  {
+   "key": "fat",
+   "text": "Fat cells (adipose tissue)",
+   "find": "fat cells",
+   "x": 6000,
+   "y": 4840,
+   "r": 150
+  }
+ ],
+ "id": "pancreas",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-OHPM-1025",
+  "tissue_site": "Pancreas",
+  "pathology_note": "90% parenchyma, 10% fat. Remarkably well-preserved; numerous islets of Langherhans noted.",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2095334698.749599182.1720082285866.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 9106,
+   "y": 6475,
+   "width": 8094,
+   "height": 7082
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-OHPM-1025), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 8094,
+ "height": 7082,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1197,
+ "packBytes": 14651514,
+ "levels": [
+  {
+   "level": 8,
+   "width": 253,
+   "height": 222,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 506,
+   "height": 443,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 1012,
+   "height": 886,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 2024,
+   "height": 1771,
+   "cols": 8,
+   "rows": 7,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 4047,
+   "height": 3541,
+   "cols": 16,
+   "rows": 14,
+   "first": 77
+  },
+  {
+   "level": 13,
+   "width": 8094,
+   "height": 7082,
+   "cols": 32,
+   "rows": 28,
+   "first": 301
+  }
+ ]
+}

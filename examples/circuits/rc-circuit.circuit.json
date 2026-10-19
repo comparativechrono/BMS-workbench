@@ -1,0 +1,141 @@
+{
+ "format": "bms-circuit-1",
+ "title": "Charging and discharging a capacitor",
+ "group": "Basics",
+ "order": 4,
+ "mode": "electrical",
+ "description": "Press <b>Run</b>, then click the <b>Charge</b> switch to close it: the capacitor charges through R1, quickly at first and then more and more slowly. After one time constant, τ = <i>RC</i> = 10 kΩ × 100 µF = 1 s, it has reached 63% of the battery’s 5 V. Then open <b>Charge</b> and close <b>Discharge</b>: the capacitor empties through R2 with the same time constant. Try a larger capacitor, or a larger resistor.",
+ "elements": [
+  {
+   "id": "V1",
+   "type": "battery",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 2,
+   "value": 5,
+   "labelPos": "left"
+  },
+  {
+   "id": "W1",
+   "type": "wire",
+   "x1": 0,
+   "y1": 2,
+   "x2": 3,
+   "y2": 2
+  },
+  {
+   "id": "S1",
+   "type": "switch",
+   "x1": 3,
+   "y1": 2,
+   "x2": 7,
+   "y2": 2,
+   "closed": false,
+   "label": "Charge"
+  },
+  {
+   "id": "W2",
+   "type": "wire",
+   "x1": 7,
+   "y1": 2,
+   "x2": 9,
+   "y2": 2
+  },
+  {
+   "id": "R1",
+   "type": "resistor",
+   "x1": 9,
+   "y1": 2,
+   "x2": 15,
+   "y2": 2,
+   "value": 10000
+  },
+  {
+   "id": "W3",
+   "type": "wire",
+   "x1": 15,
+   "y1": 2,
+   "x2": 18,
+   "y2": 2
+  },
+  {
+   "id": "C1",
+   "type": "capacitor",
+   "x1": 18,
+   "y1": 2,
+   "x2": 18,
+   "y2": 10,
+   "value": 0.0001,
+   "v0": 0
+  },
+  {
+   "id": "W4",
+   "type": "wire",
+   "x1": 18,
+   "y1": 10,
+   "x2": 0,
+   "y2": 10
+  },
+  {
+   "id": "W5",
+   "type": "wire",
+   "x1": 18,
+   "y1": 2,
+   "x2": 28,
+   "y2": 2
+  },
+  {
+   "id": "S2",
+   "type": "switch",
+   "x1": 28,
+   "y1": 2,
+   "x2": 28,
+   "y2": 6,
+   "closed": false,
+   "label": "Discharge"
+  },
+  {
+   "id": "R2",
+   "type": "resistor",
+   "x1": 28,
+   "y1": 6,
+   "x2": 28,
+   "y2": 10,
+   "value": 10000
+  },
+  {
+   "id": "W6",
+   "type": "wire",
+   "x1": 28,
+   "y1": 10,
+   "x2": 18,
+   "y2": 10
+  },
+  {
+   "id": "GND1",
+   "type": "ground",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 11
+  }
+ ],
+ "traces": [
+  {
+   "kind": "v",
+   "id": "C1"
+  },
+  {
+   "kind": "i",
+   "id": "R1"
+  },
+  {
+   "kind": "i",
+   "id": "R2"
+  }
+ ],
+ "settings": {
+  "window": "10"
+ }
+}

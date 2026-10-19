@@ -1,0 +1,157 @@
+/* =====================================================================
+   The Microscope tab (scope.js): the slide box, the toolbar, the view
+   with its scale bar, eyepiece and drawings, and the side panel.
+   ===================================================================== */
+.ms-app { display: flex; height: 100%; min-height: 0; background: #fff; position: relative; container-type: inline-size; container-name: scope; }
+.ms-app button { font: inherit; }
+
+/* ---------- the slide box ---------- */
+.ms-box { width: 252px; flex: none; display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); background: var(--panel-2); }
+.ms-box-h { display: flex; align-items: center; gap: 6px; padding: 8px 8px 4px 12px; font-size: 0.9rem; }
+.ms-search { margin: 4px 10px 6px; padding: 6px 9px; border: 1px solid var(--line-2); border-radius: 7px; background: #fff; font-size: 0.86rem; }
+.ms-boxlist { flex: 1; min-height: 0; overflow: auto; padding: 0 6px 10px; }
+.ms-sys { font-size: 0.7rem; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 12px 6px 4px; }
+.ms-slide { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; border: 1px solid transparent; background: none; border-radius: 8px; padding: 4px 6px; cursor: pointer; color: var(--ink); }
+.ms-slide:hover { background: #fff; border-color: var(--line-2); }
+.ms-slide.on { background: var(--accent-soft); border-color: #bfdfe9; }
+.ms-slide img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; background: #eee; flex: none; border: 1px solid var(--line); }
+.ms-slide-t { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.ms-slide-t b { font-size: 0.86rem; font-weight: 650; }
+.ms-slide-t small { font-size: 0.72rem; color: var(--muted); }
+.ms-box-foot { padding: 8px 10px; border-top: 1px solid var(--line); }
+.ms-box-foot .tbtn { width: 100%; justify-content: center; }
+.ms-none { color: var(--muted); font-size: 0.85rem; padding: 6px 8px; }
+.ms-box-x { display: none; }
+
+/* ---------- the toolbar ---------- */
+.ms-main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+.ms-bar { display: flex; align-items: center; gap: 4px; padding: 5px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); flex-wrap: wrap; }
+.ms-sep { width: 1px; height: 22px; background: var(--line-2); margin: 0 3px; }
+.ms-ib { border: 1px solid transparent; background: none; border-radius: 6px; padding: 5px; cursor: pointer; color: var(--ink-2); display: inline-flex; align-items: center; justify-content: center; }
+.ms-ib:hover { background: #fff; border-color: var(--line-2); }
+.ms-ib.on { background: var(--accent-soft); color: var(--accent-2); border-color: #bfdfe9; }
+.ms-ib.sm { padding: 3px; }
+.ms-ib.sm .ic { width: 15px; height: 15px; }
+.ms-title { border: 0; background: none; font-weight: 700; font-size: 0.92rem; max-width: 230px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: var(--ink); padding: 4px 6px; border-radius: 6px; }
+.ms-title:hover { background: #fff; }
+.ms-objs { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; background: #fff; }
+.ms-obj { border: 0; border-right: 1px solid var(--line); background: none; padding: 4px 8px; min-width: 38px; font-size: 0.82rem; font-weight: 650; cursor: pointer; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.ms-obj:last-child { border-right: 0; }
+.ms-obj:hover { background: var(--panel-3); }
+.ms-obj.on { background: var(--accent); color: #fff; }
+.ms-tools { display: inline-flex; gap: 2px; }
+.ms-tool { display: inline-flex; align-items: center; gap: 4px; border: 1px solid transparent; background: none; border-radius: 6px; padding: 4px 7px; font-size: 0.8rem; cursor: pointer; color: var(--ink-2); }
+.ms-tool:hover { background: #fff; border-color: var(--line-2); }
+.ms-tool.on { background: var(--accent-soft); color: var(--accent-2); border-color: #bfdfe9; font-weight: 650; }
+.ms-tool .ic { width: 16px; height: 16px; }
+
+/* ---------- the view ---------- */
+.ms-work { flex: 1; display: flex; min-height: 0; }
+.ms-view { flex: 1; min-width: 0; position: relative; overflow: hidden; background: #f4f4f4; outline: none; }
+.ms-view:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+.ms-osd { position: absolute; inset: 0; }
+.ms-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.ms-app[data-tool='measure'] .ms-osd, .ms-app[data-tool='area'] .ms-osd { cursor: crosshair; }
+.ms-app[data-tool='count'] .ms-osd { cursor: cell; }
+.ms-app[data-tool='label'] .ms-osd { cursor: copy; }
+.ms-scale { position: absolute; left: 12px; bottom: 12px; background: rgba(255, 255, 255, 0.86); border-radius: 6px; padding: 4px 8px 6px; font-size: 0.78rem; font-weight: 700; color: #111; pointer-events: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+.ms-scale i { display: block; height: 5px; background: #111; margin-top: 2px; }
+.ms-scale span { display: block; }
+.ms-readout { position: absolute; right: 12px; bottom: 12px; background: rgba(255, 255, 255, 0.86); border-radius: 6px; padding: 3px 9px; font-size: 0.78rem; color: #222; pointer-events: none; font-variant-numeric: tabular-nums; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+.ms-readout:empty { display: none; }
+.ms-banner { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; max-width: calc(100% - 40px); padding: 7px 10px 7px 14px; border-radius: 10px; font-size: 0.88rem; box-shadow: var(--shadow-l); z-index: 6; background: #fff; border: 1px solid var(--line-2); }
+.ms-banner.find { background: #fff8e6; border-color: #f1d08a; }
+.ms-banner.no { background: var(--bad-soft); border-color: #f0b7b2; }
+.ms-banner.ok { background: var(--good-soft); border-color: #a9dcc0; }
+.ms-banner.info { background: var(--accent-soft); border-color: #bfdfe9; }
+.ms-banner .tbtn { flex: none; }
+.ms-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: #f6f7f9; color: var(--ink-2); z-index: 5; padding: 20px; }
+.ms-empty h3 { margin: 0 0 6px; }
+.ms-empty p { margin: 6px 0; color: var(--muted); max-width: 46ch; }
+.ms-empty .spinner { margin: 0 auto 8px; }
+.ms-osd .navigator { border: 2px solid #fff !important; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); background: #fff !important; border-radius: 4px; }
+
+/* the eyepiece: a round field of view with a graticule */
+.ms-eye { position: absolute; inset: 0; pointer-events: none; --eye-r: 200px; background: radial-gradient(circle at 50% 50%, transparent calc(var(--eye-r) - 1px), rgba(0, 0, 0, 0.55) var(--eye-r), #050505 calc(var(--eye-r) + 6px)); z-index: 3; }
+.ms-grat { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ms-grat .g { stroke: #0b2f7a; stroke-width: 1.2; fill: none; paint-order: stroke; }
+.ms-grat text { fill: #0b2f7a; font: 650 10px system-ui, sans-serif; text-anchor: middle; paint-order: stroke; stroke: rgba(255, 255, 255, 0.85); stroke-width: 3px; }
+.ms-app.ms-eyepiece .ms-readout, .ms-app.ms-eyepiece .ms-scale { z-index: 4; }
+
+/* what is drawn on the slide (the same rules are put into pictures: see SVG_CSS in scope.js) */
+.ms-line-bg { stroke: rgba(0, 0, 0, 0.55); stroke-width: 5; fill: none; stroke-linecap: round; }
+.ms-line { stroke: #ffd43b; stroke-width: 2.2; fill: none; stroke-linecap: round; }
+.ms-live .ms-line { stroke: #fff3bf; stroke-dasharray: 6 4; }
+.ms-tagg rect { fill: rgba(20, 20, 30, 0.82); }
+.ms-tagg text { fill: #fff; font: 600 12px system-ui, sans-serif; text-anchor: middle; }
+.ms-area { fill: rgba(255, 212, 59, 0.18); stroke: #ffd43b; stroke-width: 2; }
+.ms-area.ms-live { stroke-dasharray: 6 4; }
+.ms-vertex { fill: #ffd43b; stroke: #111; stroke-width: 1; }
+.ms-vertex.first { fill: #fff; }
+.ms-region { fill: rgba(59, 130, 246, 0.08); stroke: rgba(59, 130, 246, 0.55); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.ms-tlabel circle, .ms-mylabel circle { stroke: #fff; stroke-width: 2; }
+.ms-tlabel circle { fill: #1c7ed6; }
+.ms-mylabel circle { fill: #e8590c; }
+.ms-tlabel path, .ms-mylabel path { stroke: #fff; stroke-width: 2; }
+.ms-tlabel rect { fill: rgba(16, 40, 80, 0.85); }
+.ms-mylabel rect { fill: rgba(120, 40, 0, 0.85); }
+.ms-tlabel text, .ms-mylabel text { fill: #fff; font: 600 12px system-ui, sans-serif; }
+.ms-mark circle { stroke: #fff; stroke-width: 1.5; }
+
+/* ---------- the side panel ---------- */
+.ms-side { width: 300px; flex: none; border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; background: #fff; }
+.ms-side-h { display: flex; align-items: flex-end; gap: 4px; padding: 6px 6px 0 6px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+.ms-side-tabs { display: flex; gap: 2px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.ms-stab { border: 1px solid transparent; border-bottom: 0; background: none; padding: 5px 9px; font-size: 0.8rem; border-radius: 7px 7px 0 0; cursor: pointer; color: var(--muted); white-space: nowrap; }
+.ms-stab.on { background: #fff; border-color: var(--line); color: var(--ink); font-weight: 650; margin-bottom: -1px; }
+.ms-side-x { margin-bottom: 3px; }
+.ms-side-b { flex: 1; min-height: 0; overflow: auto; padding: 10px 14px 16px; font-size: 0.88rem; }
+.ms-side-b h3 { margin: 4px 0 6px; font-size: 1.05rem; }
+.ms-side-b h4 { margin: 14px 0 4px; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.ms-meta { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; margin: 8px 0; font-size: 0.82rem; }
+.ms-meta dt { color: var(--muted); }
+.ms-meta dd { margin: 0; }
+.ms-look { margin: 4px 0; padding-left: 18px; }
+.ms-look li { margin: 3px 0; }
+.ms-credit { font-size: 0.8rem; color: var(--ink-2); }
+.ms-note { font-size: 0.8rem; color: var(--muted); }
+.ms-help { color: var(--muted); font-size: 0.82rem; margin: 0 0 8px; }
+.ms-list { margin: 6px 0; padding-left: 22px; }
+.ms-list li { display: flex; align-items: center; gap: 4px; margin: 3px 0; }
+.ms-list li::marker { color: var(--muted); font-size: 0.8em; }
+.ms-v { font-weight: 650; font-variant-numeric: tabular-nums; min-width: 76px; }
+.ms-lab { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 5px; padding: 2px 6px; font-size: 0.82rem; }
+.ms-lab:focus { border-color: var(--accent); outline: none; }
+.ms-sum { font-weight: 650; margin: 8px 0; }
+.ms-next { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 0.82rem; color: var(--ink-2); }
+.ms-next span { white-space: nowrap; }
+.ms-side-acts { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.ms-cats { list-style: none; padding: 0; margin: 4px 0; }
+.ms-cats li { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+.ms-cat { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+.ms-cat i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25); }
+.ms-n { min-width: 2.5em; text-align: right; font-variant-numeric: tabular-nums; }
+.ms-labels { list-style: none; padding: 0; margin: 4px 0; }
+.ms-labels li { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin: 2px 0; }
+.ms-picks { display: flex; flex-direction: column; gap: 6px; max-height: 50vh; overflow: auto; }
+.ms-picks .tbtn { justify-content: flex-start; }
+
+/* ---------- narrow: the slide box and the panel lie over the view ---------- */
+@container scope (max-width: 1100px) {
+  .ms-tool span { display: none; }
+  .ms-tool.on span { display: inline; }
+}
+@container scope (max-width: 760px) {
+  .ms-box { position: absolute; left: 0; top: 0; bottom: 0; z-index: 30; box-shadow: var(--shadow-l); width: min(280px, 86%); }
+  .ms-box-x { display: inline-flex; }
+  .ms-work { flex-direction: column; }
+  .ms-side { width: auto; height: 42%; border-left: 0; border-top: 1px solid var(--line); }
+  .ms-title { max-width: 150px; }
+  .ms-tool.on span { display: none; }
+  .ms-obj { min-width: 32px; padding: 4px 5px; }
+  .ms-bar .ms-sep { display: none; }
+}
+@container scope (max-width: 420px) {
+  .ms-title { max-width: 96px; font-size: 0.82rem; }
+  .ms-readout { font-size: 0.7rem; }
+}

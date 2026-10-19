@@ -1,0 +1,140 @@
+{
+ "format": "bms-flow-1",
+ "title": "An endocrine axis (template)",
+ "description": "A template for a hypothalamic–pituitary–endocrine axis, with generic names: a releasing hormone from the hypothalamus stimulates a trophic hormone from the anterior pituitary, which stimulates a target gland. The target gland’s hormone feeds back on both (long-loop negative feedback), and the trophic hormone feeds back on the hypothalamus (short loop). Rename the boxes for a real axis, and try knocking out the target gland.",
+ "group": "Hormones",
+ "order": 6,
+ "nodes": [
+  {
+   "id": "stim",
+   "text": "Stimulus (e.g. stress, cold, time of day)",
+   "role": "stimulus",
+   "shape": "flag",
+   "color": "orange",
+   "x": 170,
+   "y": 70,
+   "w": 230,
+   "h": 52,
+   "kind": "step",
+   "start": 2,
+   "size": 1,
+   "plot": true
+  },
+  {
+   "id": "rh",
+   "text": "Releasing hormone (hypothalamus)",
+   "role": "quantity",
+   "shape": "round",
+   "color": "purple",
+   "x": 170,
+   "y": 210,
+   "w": 210,
+   "h": 58,
+   "rest": 1,
+   "unit": "",
+   "tau": 0.2,
+   "plot": true
+  },
+  {
+   "id": "th",
+   "text": "Trophic hormone (anterior pituitary)",
+   "role": "quantity",
+   "shape": "round",
+   "color": "pink",
+   "x": 170,
+   "y": 360,
+   "w": 210,
+   "h": 58,
+   "rest": 1,
+   "unit": "",
+   "tau": 0.4,
+   "plot": true
+  },
+  {
+   "id": "tg",
+   "text": "Target-gland hormone",
+   "role": "quantity",
+   "shape": "round",
+   "color": "teal",
+   "x": 170,
+   "y": 510,
+   "w": 210,
+   "h": 58,
+   "rest": 1,
+   "unit": "",
+   "tau": 1.5,
+   "plot": true
+  },
+  {
+   "id": "eff",
+   "text": "Effects on target tissues",
+   "role": "label",
+   "shape": "label",
+   "color": "white",
+   "x": 470,
+   "y": 510,
+   "w": 190,
+   "h": 40
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "stim",
+   "to": "rh",
+   "sign": "+"
+  },
+  {
+   "id": "e2",
+   "from": "rh",
+   "to": "th",
+   "sign": "+"
+  },
+  {
+   "id": "e3",
+   "from": "th",
+   "to": "tg",
+   "sign": "+"
+  },
+  {
+   "id": "e4",
+   "from": "tg",
+   "to": "rh",
+   "sign": "-",
+   "gain": 0.6,
+   "dashed": true,
+   "bend": -260,
+   "label": "long loop"
+  },
+  {
+   "id": "e5",
+   "from": "tg",
+   "to": "th",
+   "sign": "-",
+   "gain": 0.4,
+   "dashed": true,
+   "bend": -130
+  },
+  {
+   "id": "e6",
+   "from": "th",
+   "to": "rh",
+   "sign": "-",
+   "gain": 0.2,
+   "dashed": true,
+   "bend": 110,
+   "label": "short loop"
+  },
+  {
+   "id": "e7",
+   "from": "tg",
+   "to": "eff",
+   "sign": "0"
+  }
+ ],
+ "sim": {
+  "duration": 24,
+  "timeUnit": "h",
+  "clampZero": true
+ }
+}

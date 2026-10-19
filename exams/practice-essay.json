@@ -1,0 +1,41 @@
+{
+ "id": "practice-essay",
+ "title": "Practice essay (45 minutes)",
+ "description": "One essay of up to 1000 words, written to time, as in an exam. Your answer is submitted when the time is up.",
+ "order": 2,
+ "minutes": 45,
+ "autoSubmit": true,
+ "spellcheck": false,
+ "showWordCount": true,
+ "instructions": "<p>Write one essay. You have 45 minutes, including the time to plan your answer.</p><ul><li>Plan before you write: a few minutes spent on an outline (headings, or a list that you delete later) gives a clearer essay.</li><li>Use paragraphs. Headings, a table or a labelled drawing can help, but they are not required.</li><li>The limit is 1000 words; you cannot type more than that. The word count is under the answer box.</li><li>The spelling checker is off, as in most exams. You can switch it on in the menu ☰.</li><li>When the time is up, your answer is submitted as it is.</li></ul>",
+ "resources": [
+  {
+   "type": "calculator"
+  },
+  {
+   "type": "slide",
+   "label": "Muscular artery",
+   "spec": "muscular-artery"
+  },
+  {
+   "type": "slide",
+   "label": "Aorta",
+   "spec": "aorta"
+  }
+ ],
+ "questions": [
+  {
+   "id": "vessels",
+   "type": "essay",
+   "title": "Blood vessels",
+   "marks": 25,
+   "lines": 22,
+   "words": {
+    "max": 1000,
+    "hard": true
+   },
+   "text": "<p>Compare the structure of arteries, capillaries and veins, and explain how the structure of each type of vessel suits its role in the circulation.</p>",
+   "guidance": "<p><b>What the examiners look for.</b> The question asks for a comparison and for explanation: a good essay is organised around the functions of the vessels, not a list of facts about each one.</p><ul><li><b>The general plan of the wall:</b> tunica intima (endothelium on a basement membrane), tunica media (smooth muscle and elastic tissue) and tunica adventitia (connective tissue); how the proportions differ between vessels.</li><li><b>Elastic (conducting) arteries</b> such as the aorta: many elastic laminae in the media stretch during systole and recoil during diastole, damping the pressure swings and keeping blood flowing between heartbeats.</li><li><b>Muscular (distributing) arteries and arterioles:</b> a thick layer of smooth muscle; arterioles are the main resistance vessels, and changing their radius controls blood pressure and the distribution of flow to the organs (resistance depends steeply on radius).</li><li><b>Capillaries:</b> a single layer of endothelial cells on a basement membrane gives the short diffusion distance needed for exchange; their enormous number gives a large total cross-sectional area, so blood flows slowly through them; continuous, fenestrated and sinusoidal capillaries suit different tissues.</li><li><b>Veins:</b> thin walls and a large lumen at low pressure; they hold most of the blood volume (capacitance vessels); valves and the skeletal-muscle pump keep blood moving back to the heart.</li><li><b>Links between structure and pressure:</b> for example, the tension in a wall rises with pressure and radius (Laplace’s law), which helps to explain why a capillary can have a very thin wall.</li></ul><p><b>A guide to the marks:</b> accurate structure of each type of vessel (8); explanation of how structure suits function (10); comparison rather than separate descriptions (3); organisation and clarity, within the word limit (4).</p>"
+  }
+ ]
+}

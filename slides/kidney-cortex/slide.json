@@ -1,0 +1,242 @@
+{
+ "title": "Kidney (cortex)",
+ "system": "Urinary",
+ "description": "The renal cortex: renal corpuscles among proximal and distal convoluted tubules.",
+ "look_for": [
+  "Renal corpuscles: a glomerulus (a tuft of capillaries) inside Bowman’s capsule, with the urinary (Bowman’s) space around it",
+  "Proximal convoluted tubules: the most numerous, with pink cells and a fuzzy brush border",
+  "Distal convoluted tubules: fewer, with smaller, paler cells and a clearer lumen",
+  "Medullary rays: bundles of straight tubules running through the cortex",
+  "Small blood vessels and the peritubular capillaries between the tubules"
+ ],
+ "labels": [
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 5140,
+   "y": 1520,
+   "r": 110
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 6080,
+   "y": 2320,
+   "r": 150
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 6360,
+   "y": 1090,
+   "r": 80
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 4060,
+   "y": 4690,
+   "r": 110
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 2340,
+   "y": 5440,
+   "r": 110
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 2110,
+   "y": 5900,
+   "r": 110
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 3400,
+   "y": 6030,
+   "r": 110
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 3690,
+   "y": 5890,
+   "r": 90
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 2130,
+   "y": 6580,
+   "r": 80
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 1650,
+   "y": 8120,
+   "r": 100
+  },
+  {
+   "key": "bowmans-space",
+   "text": "Bowman’s (urinary) space",
+   "find": "Bowman’s space",
+   "x": 6265,
+   "y": 2400,
+   "r": 20
+  },
+  {
+   "key": "bowmans-space",
+   "text": "Bowman’s (urinary) space",
+   "find": "Bowman’s space",
+   "x": 4040,
+   "y": 4455,
+   "r": 28
+  },
+  {
+   "key": "pct",
+   "text": "Proximal convoluted tubule",
+   "find": "a proximal convoluted tubule",
+   "x": 5630,
+   "y": 2150,
+   "r": 40
+  },
+  {
+   "key": "pct",
+   "text": "Proximal convoluted tubule",
+   "find": "a proximal convoluted tubule",
+   "x": 3050,
+   "y": 5970,
+   "r": 35
+  },
+  {
+   "key": "medullary-ray",
+   "text": "Medullary ray (straight tubules)",
+   "find": "a medullary ray",
+   "x": 4900,
+   "y": 2700,
+   "r": 200
+  },
+  {
+   "key": "medullary-ray",
+   "text": "Medullary ray (straight tubules)",
+   "find": "a medullary ray",
+   "x": 1200,
+   "y": 8400,
+   "r": 150
+  },
+  {
+   "key": "vessel",
+   "text": "Small blood vessel",
+   "find": "a small blood vessel",
+   "x": 2940,
+   "y": 5740,
+   "r": 30
+  }
+ ],
+ "id": "kidney-cortex",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-1497J-0825",
+  "tissue_site": "Kidney - Cortex",
+  "pathology_note": "6 pieces, tubules unusually well preserved. Glomeruli present",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2027429933.700131894.1720014381101.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 22258,
+   "y": 2023,
+   "width": 7285,
+   "height": 9308
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-1497J-0825), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 7285,
+ "height": 9308,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 14,
+ "tileType": "image/webp",
+ "tiles": 1467,
+ "packBytes": 10092034,
+ "levels": [
+  {
+   "level": 8,
+   "width": 114,
+   "height": 146,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 228,
+   "height": 291,
+   "cols": 1,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 456,
+   "height": 582,
+   "cols": 2,
+   "rows": 3,
+   "first": 3
+  },
+  {
+   "level": 11,
+   "width": 911,
+   "height": 1164,
+   "cols": 4,
+   "rows": 5,
+   "first": 9
+  },
+  {
+   "level": 12,
+   "width": 1822,
+   "height": 2327,
+   "cols": 8,
+   "rows": 10,
+   "first": 29
+  },
+  {
+   "level": 13,
+   "width": 3643,
+   "height": 4654,
+   "cols": 15,
+   "rows": 19,
+   "first": 109
+  },
+  {
+   "level": 14,
+   "width": 7285,
+   "height": 9308,
+   "cols": 29,
+   "rows": 37,
+   "first": 394
+  }
+ ]
+}

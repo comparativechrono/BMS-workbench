@@ -1,0 +1,103 @@
+{
+ "format": "bms-circuit-1",
+ "title": "The membrane as an RC circuit",
+ "group": "Membranes",
+ "order": 5,
+ "mode": "electrical",
+ "description": "A small cell. Its membrane is a capacitor (100 pF) in parallel with a leak: a resistance of 100 MΩ in series with a battery at the leak’s reversal potential, −70 mV. Pulses of current (100 pA) are injected into the cell. The membrane potential does not jump: it rises towards −60 mV (Δ<i>V</i> = <i>IR</i> = 10 mV) with the time constant τ = <i>RC</i> = 10 ms, and falls back the same way. Find τ on the plot (the time to reach 63% of the change), then halve the capacitance and look again.",
+ "elements": [
+  {
+   "id": "I1",
+   "type": "acisource",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 2,
+   "wave": "pulse",
+   "amp": 1e-10,
+   "freq": 2.5,
+   "duty": 0.25,
+   "offset": 0,
+   "delay": 0.05,
+   "label": "Injected current",
+   "labelPos": "left"
+  },
+  {
+   "id": "W1",
+   "type": "wire",
+   "x1": 0,
+   "y1": 2,
+   "x2": 30,
+   "y2": 2
+  },
+  {
+   "id": "Cm",
+   "type": "capacitor",
+   "x1": 8,
+   "y1": 2,
+   "x2": 8,
+   "y2": 10,
+   "value": 1e-10,
+   "v0": -0.07,
+   "label": "Membrane capacitance"
+  },
+  {
+   "id": "Rm",
+   "type": "resistor",
+   "x1": 19,
+   "y1": 2,
+   "x2": 19,
+   "y2": 6,
+   "value": 100000000.0,
+   "label": "Leak resistance"
+  },
+  {
+   "id": "EL",
+   "type": "battery",
+   "x1": 19,
+   "y1": 10,
+   "x2": 19,
+   "y2": 6,
+   "value": -0.07,
+   "label": "Leak potential"
+  },
+  {
+   "id": "W2",
+   "type": "wire",
+   "x1": 0,
+   "y1": 10,
+   "x2": 30,
+   "y2": 10
+  },
+  {
+   "id": "VM1",
+   "type": "voltmeter",
+   "x1": 30,
+   "y1": 10,
+   "x2": 30,
+   "y2": 2,
+   "label": "Membrane potential"
+  },
+  {
+   "id": "GND1",
+   "type": "ground",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 11
+  }
+ ],
+ "traces": [
+  {
+   "kind": "v",
+   "id": "VM1"
+  },
+  {
+   "kind": "i",
+   "id": "I1"
+  }
+ ],
+ "settings": {
+  "window": "auto"
+ }
+}

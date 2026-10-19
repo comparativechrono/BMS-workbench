@@ -1,0 +1,169 @@
+{
+ "title": "Minor salivary gland",
+ "system": "Digestive",
+ "description": "Small salivary glands: mucous acini with pale cells, serous cells and ducts.",
+ "look_for": [
+  "Mucous acini: pale, foamy cells with flattened nuclei at their bases",
+  "Serous cells: smaller, purple, granular cells",
+  "Ducts lined by cuboidal cells",
+  "Connective tissue between the lobules"
+ ],
+ "labels": [
+  {
+   "key": "mucous-acinus",
+   "text": "Mucous acinus (pale, foamy cells)",
+   "find": "a mucous acinus",
+   "x": 5250,
+   "y": 1430,
+   "r": 50
+  },
+  {
+   "key": "mucous-acinus",
+   "text": "Mucous acinus (pale, foamy cells)",
+   "find": "a mucous acinus",
+   "x": 4180,
+   "y": 1700,
+   "r": 30
+  },
+  {
+   "key": "serous-acinus",
+   "text": "Serous acinus (purple, granular cells)",
+   "find": "a serous acinus",
+   "x": 5150,
+   "y": 1760,
+   "r": 35
+  },
+  {
+   "key": "serous-acinus",
+   "text": "Serous acinus (purple, granular cells)",
+   "find": "a serous acinus",
+   "x": 5150,
+   "y": 1860,
+   "r": 35
+  },
+  {
+   "key": "duct",
+   "text": "Duct (lined by cuboidal cells)",
+   "find": "a duct",
+   "x": 4000,
+   "y": 1450,
+   "r": 110
+  },
+  {
+   "key": "duct",
+   "text": "Duct (lined by cuboidal cells)",
+   "find": "a duct",
+   "x": 2700,
+   "y": 1345,
+   "r": 120
+  },
+  {
+   "key": "duct",
+   "text": "Duct (lined by cuboidal cells)",
+   "find": "a duct",
+   "x": 2180,
+   "y": 1840,
+   "r": 40
+  },
+  {
+   "key": "connective-tissue",
+   "text": "Connective tissue between the lobules",
+   "find": "the connective tissue between lobules",
+   "x": 3200,
+   "y": 810,
+   "r": 30
+  },
+  {
+   "key": "capsule",
+   "text": "Capsule (dense connective tissue)",
+   "find": "the capsule",
+   "x": 3700,
+   "y": 2360,
+   "r": 30
+  }
+ ],
+ "id": "salivary-gland",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-11P82-0925",
+  "tissue_site": "Minor Salivary Gland",
+  "pathology_note": "3 pieces, well preserived sero-mucinous glands are 100% of specimen; excellent.",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2507252901.1409658375.1720494204069.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 3238,
+   "y": 4654,
+   "width": 5868,
+   "height": 2833
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-11P82-0925), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 5868,
+ "height": 2833,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 387,
+ "packBytes": 3397760,
+ "levels": [
+  {
+   "level": 8,
+   "width": 184,
+   "height": 89,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 367,
+   "height": 178,
+   "cols": 2,
+   "rows": 1,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 734,
+   "height": 355,
+   "cols": 3,
+   "rows": 2,
+   "first": 3
+  },
+  {
+   "level": 11,
+   "width": 1467,
+   "height": 709,
+   "cols": 6,
+   "rows": 3,
+   "first": 9
+  },
+  {
+   "level": 12,
+   "width": 2934,
+   "height": 1417,
+   "cols": 12,
+   "rows": 6,
+   "first": 27
+  },
+  {
+   "level": 13,
+   "width": 5868,
+   "height": 2833,
+   "cols": 24,
+   "rows": 12,
+   "first": 99
+  }
+ ]
+}

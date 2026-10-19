@@ -1,0 +1,105 @@
+{
+ "id": "calculations",
+ "title": "Calculations",
+ "description": "Eight calculations of the lab and of physiology: magnification, dilutions, cell counts, flow and resistance, time constants and the Nernst equation.",
+ "order": 3,
+ "minutes": 40,
+ "autoSubmit": false,
+ "spellcheck": false,
+ "instructions": "<p>Eight questions, each answered with a number. Type the number only: the units are shown next to the box.</p><ul><li>You can type powers of ten as <code>1.5 × 10^6</code>, <code>1.5x10^6</code> or <code>1.5e6</code>, and negative numbers with a minus sign.</li><li>The calculator is at the top of the page. You can move it by its title bar, and it remembers its last answer (<b>Ans</b>).</li><li>Answers are checked when you have submitted: the review shows the worked answer to each question.</li></ul>",
+ "resources": [
+  {
+   "type": "calculator"
+  }
+ ],
+ "questions": [
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "graticule",
+   "title": "Calibrating an eyepiece graticule",
+   "units": "µm",
+   "answer": 24,
+   "tolerance": 0.5,
+   "text": "<p>An eyepiece graticule is calibrated with a stage micrometer at one objective: <b>25</b> eyepiece units line up exactly with <b>100 µm</b> on the stage micrometer.</p><p>With the same objective, a cell is <b>6</b> eyepiece units across. How wide is the cell, in µm?</p>",
+   "guidance": "<p>One eyepiece unit = 100 µm ÷ 25 = 4 µm at this objective.</p><p>The cell is 6 × 4 µm = <b>24 µm</b> across.</p><p>The calibration has to be done again for each objective, because the stage micrometer looks larger at a higher magnification while the graticule (in the eyepiece) does not.</p>"
+  },
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "mito",
+   "title": "Real size from the magnification",
+   "units": "µm",
+   "answer": 2,
+   "tolerance": 0.05,
+   "text": "<p>An electron micrograph was taken at a magnification of <b>×25 000</b>. A mitochondrion is <b>50 mm</b> long in the micrograph.</p><p>What is its real length, in µm?</p>",
+   "guidance": "<p>Real size = size in the image ÷ magnification = 50 mm ÷ 25 000 = 0.002 mm.</p><p>0.002 mm × 1000 µm/mm = <b>2 µm</b>.</p>"
+  },
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "c1v1",
+   "title": "Making a dilution",
+   "units": "mL",
+   "answer": 3.75,
+   "tolerance": 0.02,
+   "text": "<p>You need <b>50 mL</b> of <b>0.15 M</b> NaCl, and you have a stock solution of <b>2.0 M</b> NaCl.</p><p>What volume of the stock solution do you need, in mL? (You make it up to 50 mL with water.)</p>",
+   "guidance": "<p>C<sub>1</sub>V<sub>1</sub> = C<sub>2</sub>V<sub>2</sub>, so V<sub>1</sub> = C<sub>2</sub>V<sub>2</sub> ÷ C<sub>1</sub> = (0.15 M × 50 mL) ÷ 2.0 M = <b>3.75 mL</b>.</p><p>Check: the stock is 2.0 ÷ 0.15 ≈ 13.3 times more concentrated than you need, and 50 mL ÷ 13.3 ≈ 3.75 mL.</p>"
+  },
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "dilution",
+   "title": "Concentration after a dilution",
+   "units": "µg/mL",
+   "answer": 100,
+   "tolerance": 1,
+   "text": "<p>You add <b>20 µL</b> of a protein solution at <b>5 mg/mL</b> to <b>980 µL</b> of buffer, and mix.</p><p>What is the concentration of the protein in the mixture, in µg/mL?</p>",
+   "guidance": "<p>The final volume is 20 µL + 980 µL = 1000 µL, so the solution is diluted 1000 ÷ 20 = 50 times.</p><p>5 mg/mL ÷ 50 = 0.1 mg/mL = <b>100 µg/mL</b>.</p><p>(Or with C<sub>1</sub>V<sub>1</sub> = C<sub>2</sub>V<sub>2</sub>: C<sub>2</sub> = 5 mg/mL × 20 µL ÷ 1000 µL = 0.1 mg/mL.)</p>"
+  },
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "haemocytometer",
+   "title": "Counting cells with a haemocytometer",
+   "units": "cells/mL",
+   "answer": 1000000,
+   "tolerancePct": 1,
+   "text": "<p>A cell suspension is mixed with an equal volume of trypan blue, and loaded into a haemocytometer. Each large square is 1 mm × 1 mm, and the chamber is 0.1 mm deep.</p><p>The unstained cells in the four large corner squares are counted: <b>52</b>, <b>47</b>, <b>55</b> and <b>46</b>.</p><p>What is the concentration of live cells in the original suspension, in cells per mL? (You can type a power of ten as 1.5 × 10^6, 1.5x10^6 or 1.5e6.)</p>",
+   "guidance": "<p>The mean count is (52 + 47 + 55 + 46) ÷ 4 = 200 ÷ 4 = 50 cells per large square.</p><p>One large square holds 1 mm × 1 mm × 0.1 mm = 0.1 mm³ = 1 × 10<sup>−4</sup> mL, so the diluted suspension has 50 ÷ 10<sup>−4</sup> = 5 × 10<sup>5</sup> cells/mL.</p><p>Mixing with an equal volume of trypan blue diluted the cells 2 times, so the original suspension has 5 × 10<sup>5</sup> × 2 = <b>1.0 × 10<sup>6</sup> cells/mL</b>.</p>"
+  },
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "flow",
+   "title": "Resistances in series and in parallel",
+   "units": "mL/min",
+   "answer": 18,
+   "tolerance": 0.1,
+   "text": "<p>Blood flows through an artery (resistance <b>2</b> mmHg·min/mL), then through two capillary beds that are side by side, in parallel (resistances <b>6</b> and <b>3</b> mmHg·min/mL), and then through a vein (resistance <b>1</b> mmHg·min/mL).</p><p>The pressure difference from the start of the artery to the end of the vein is <b>90 mmHg</b>. What is the total blood flow, in mL/min?</p>",
+   "guidance": "<p>Flow, pressure and resistance are related as current, voltage and resistance are in Ohm’s law: Q = ΔP ÷ R (Darcy’s law).</p><p>The two capillary beds in parallel: 1/R = 1/6 + 1/3 = 1/6 + 2/6 = 3/6, so R = 2 mmHg·min/mL. (Resistances in parallel give less resistance than either one alone.)</p><p>In series, resistances add: R<sub>total</sub> = 2 + 2 + 1 = 5 mmHg·min/mL.</p><p>Q = 90 mmHg ÷ 5 mmHg·min/mL = <b>18 mL/min</b>.</p>"
+  },
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "tau",
+   "title": "The time constant of a membrane",
+   "units": "ms",
+   "answer": 10,
+   "tolerance": 0.1,
+   "text": "<p>A cell membrane has a resistance of <b>50 MΩ</b> and a capacitance of <b>200 pF</b>.</p><p>What is the membrane time constant (τ = RC), in milliseconds?</p>",
+   "guidance": "<p>τ = RC = (50 × 10<sup>6</sup> Ω) × (200 × 10<sup>−12</sup> F) = 10 000 × 10<sup>−6</sup> s = 1 × 10<sup>−2</sup> s = <b>10 ms</b>.</p><p>After one time constant, the membrane potential has gone 63% of the way to its new value after a step of current.</p>"
+  },
+  {
+   "type": "numeric",
+   "marks": 2,
+   "id": "nernst",
+   "title": "An equilibrium potential",
+   "units": "mV",
+   "answer": -89,
+   "tolerance": 1,
+   "text": "<p>The concentration of K<sup>+</sup> is <b>140 mM</b> inside a cell and <b>5 mM</b> outside.</p><p>Use the Nernst equation to work out the equilibrium potential for K<sup>+</sup> at <b>37 °C</b>, in mV. (R = 8.314 J K<sup>−1</sup> mol<sup>−1</sup>, F = 96 485 C mol<sup>−1</sup>, 0 °C = 273 K.)</p>",
+   "guidance": "<p>E = (RT ÷ zF) × ln([K<sup>+</sup>]<sub>out</sub> ÷ [K<sup>+</sup>]<sub>in</sub>), with T = 310 K and z = +1.</p><p>RT ÷ F = (8.314 × 310) ÷ 96 485 = 0.0267 V = 26.7 mV.</p><p>ln(5 ÷ 140) = ln(0.0357) = −3.33.</p><p>E = 26.7 mV × −3.33 = <b>−89 mV</b> (inside negative). Answers from −88 to −90 mV are accepted.</p><p>The shortcut at 37 °C is E = 61.5 mV × log<sub>10</sub>([K<sup>+</sup>]<sub>out</sub> ÷ [K<sup>+</sup>]<sub>in</sub>) for an ion with one charge.</p>"
+  }
+ ]
+}

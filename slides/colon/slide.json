@@ -1,0 +1,170 @@
+{
+ "title": "Colon (transverse)",
+ "system": "Digestive",
+ "description": "The wall of the large intestine: straight crypts full of goblet cells, no villi, and the muscle coat.",
+ "look_for": [
+  "Straight, tube-like crypts with many goblet cells, and no villi",
+  "Lamina propria between the crypts, and the thin muscularis mucosae under them",
+  "Submucosa with blood vessels, and a lymphoid follicle",
+  "Muscularis externa: thick bundles of smooth muscle",
+  "Fat outside the muscle coat"
+ ],
+ "labels": [
+  {
+   "key": "crypt",
+   "text": "Crypt (straight, full of goblet cells)",
+   "find": "a crypt",
+   "x": 1500,
+   "y": 2420,
+   "r": 40
+  },
+  {
+   "key": "crypt",
+   "text": "Crypt (straight, full of goblet cells)",
+   "find": "a crypt",
+   "x": 1420,
+   "y": 4670,
+   "r": 40
+  },
+  {
+   "key": "goblet-cells",
+   "text": "Goblet cells",
+   "find": "goblet cells",
+   "x": 1490,
+   "y": 2530,
+   "r": 25
+  },
+  {
+   "key": "lamina-propria",
+   "text": "Lamina propria between the crypts",
+   "find": "the lamina propria",
+   "x": 1500,
+   "y": 2630,
+   "r": 20
+  },
+  {
+   "key": "muscularis-mucosae",
+   "text": "Muscularis mucosae",
+   "find": "the muscularis mucosae",
+   "x": 1650,
+   "y": 2700,
+   "r": 20
+  },
+  {
+   "key": "submucosa",
+   "text": "Submucosa",
+   "find": "the submucosa",
+   "x": 1900,
+   "y": 2800,
+   "r": 60
+  },
+  {
+   "key": "lymphoid-follicle",
+   "text": "Lymphoid follicle",
+   "find": "a lymphoid follicle",
+   "x": 6180,
+   "y": 340,
+   "r": 200
+  },
+  {
+   "key": "muscularis-externa",
+   "text": "Muscularis externa (smooth muscle)",
+   "find": "the muscularis externa",
+   "x": 4000,
+   "y": 5000,
+   "r": 400
+  },
+  {
+   "key": "fat",
+   "text": "Fat outside the muscle coat",
+   "find": "the fat outside the muscle coat",
+   "x": 6000,
+   "y": 3400,
+   "r": 200
+  }
+ ],
+ "id": "colon",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-SE5C-1525",
+  "tissue_site": "Colon - Transverse",
+  "pathology_note": "6 pieces up to 7x4 mm; mucosa ~0.4 mm; very good mucosal preservation in all 6 pieces",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2373520214.39135398.1720360471382.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 23877,
+   "y": 7285,
+   "width": 7284,
+   "height": 8093
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-SE5C-1525), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 7284,
+ "height": 8093,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1253,
+ "packBytes": 14513732,
+ "levels": [
+  {
+   "level": 8,
+   "width": 228,
+   "height": 253,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 456,
+   "height": 506,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 911,
+   "height": 1012,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1821,
+   "height": 2024,
+   "cols": 8,
+   "rows": 8,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 3642,
+   "height": 4047,
+   "cols": 15,
+   "rows": 16,
+   "first": 85
+  },
+  {
+   "level": 13,
+   "width": 7284,
+   "height": 8093,
+   "cols": 29,
+   "rows": 32,
+   "first": 325
+  }
+ ]
+}

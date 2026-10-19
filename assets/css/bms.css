@@ -1,0 +1,38 @@
+/* =====================================================================
+   The BMS workbench's own colours (the top bar) and what its tabs share.
+   ===================================================================== */
+:root {
+  --top-bg: #3b1c42;
+  --top-line: #26112b;
+  --top-ink: #f6eef8;
+  --top-mute: #d3bfdb;
+  --top-btn: #4c2655;
+  --top-btn-line: #63366e;
+  --top-btn-hover: #5a2d64;
+}
+.progress { background: #5a3263; }
+.progress > i { background: linear-gradient(90deg, #f29ac0, #b9a3f0); }
+.user-prompt { background: var(--top-bg); }
+.linkbtn { border: 0; background: none; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
+.toast .linkbtn { color: inherit; font-weight: 650; }
+
+/* the 3D viewer's library (viewer-bms.js) */
+.lib-h { margin: 14px 0 6px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px; }
+.lib-grid.small { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+.lib-item { text-align: left; border: 1px solid var(--line); border-radius: 8px; background: #fff; padding: 7px 10px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; font: inherit; color: var(--ink); }
+.lib-item:hover { border-color: var(--accent); background: var(--accent-soft); }
+.lib-item b { font-size: 0.88rem; }
+.lib-item code { font-size: 0.72rem; margin-left: 4px; }
+.lib-item span { font-size: 0.78rem; color: var(--muted); line-height: 1.35; }
+
+/* the instructions: an equation on a line of its own, and a worked sum */
+.tut .eq { margin: 0.8em 0; padding: 8px 14px; background: var(--panel-2); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.98rem; }
+.tut .eq i { font-family: Georgia, 'Times New Roman', serif; }
+
+/* the smallest phones (360 px): the top bar's buttons still fit */
+@media (max-width: 400px) {
+  .topbar { gap: 6px; padding-left: 8px; padding-right: 8px; }
+  .topbar .btn { padding-left: 8px; padding-right: 8px; }
+  .progress { width: 44px; }
+}

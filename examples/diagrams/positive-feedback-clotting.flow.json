@@ -1,0 +1,107 @@
+{
+ "format": "bms-flow-1",
+ "title": "Positive feedback: blood clotting",
+ "description": "An injury starts the clotting cascade. Thrombin activates platelets and clotting factors, which make still more thrombin: positive feedback, so a small start becomes a runaway chain reaction that quickly makes a clot. In the body the loop is ended by things outside it, such as anticoagulants. Try blocking one arrow of the loop.",
+ "group": "Feedback",
+ "order": 2,
+ "nodes": [
+  {
+   "id": "inj",
+   "text": "Injury to a blood vessel",
+   "role": "stimulus",
+   "shape": "flag",
+   "color": "orange",
+   "x": 100,
+   "y": 100,
+   "w": 170,
+   "h": 52,
+   "kind": "pulse",
+   "start": 2,
+   "length": 1,
+   "size": 1,
+   "plot": true
+  },
+  {
+   "id": "thr",
+   "text": "Thrombin",
+   "role": "quantity",
+   "shape": "round",
+   "color": "red",
+   "x": 340,
+   "y": 100,
+   "w": 150,
+   "h": 56,
+   "rest": 1,
+   "unit": "",
+   "tau": 1,
+   "plot": true
+  },
+  {
+   "id": "plt",
+   "text": "Activated platelets and clotting factors",
+   "role": "quantity",
+   "shape": "round",
+   "color": "pink",
+   "x": 340,
+   "y": 260,
+   "w": 220,
+   "h": 60,
+   "rest": 1,
+   "unit": "",
+   "tau": 1.5,
+   "plot": true
+  },
+  {
+   "id": "clot",
+   "text": "Fibrin clot",
+   "role": "quantity",
+   "shape": "round",
+   "color": "purple",
+   "x": 570,
+   "y": 100,
+   "w": 140,
+   "h": 56,
+   "rest": 0,
+   "unit": "",
+   "tau": 2,
+   "plot": true
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "inj",
+   "to": "thr",
+   "sign": "+",
+   "gain": 2
+  },
+  {
+   "id": "e2",
+   "from": "thr",
+   "to": "plt",
+   "sign": "+",
+   "gain": 2,
+   "bend": -60
+  },
+  {
+   "id": "e3",
+   "from": "plt",
+   "to": "thr",
+   "sign": "+",
+   "gain": 1,
+   "bend": -60
+  },
+  {
+   "id": "e4",
+   "from": "thr",
+   "to": "clot",
+   "sign": "+",
+   "gain": 1
+  }
+ ],
+ "sim": {
+  "duration": 20,
+  "timeUnit": "min",
+  "clampZero": true
+ }
+}

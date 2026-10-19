@@ -1,0 +1,181 @@
+/* =====================================================================
+   The Circuits tab (circuit.js): the toolbar, the parts on the left, the
+   drawing, the panel of properties on the right and the plot below.
+   ===================================================================== */
+.ck { display: flex; flex-direction: column; height: 100%; min-height: 0; background: #fff; container-type: inline-size; container-name: ck; position: relative; }
+.ck-top { display: flex; align-items: center; gap: 4px; padding: 6px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); flex-wrap: wrap; flex: none; }
+.ck-top .tbtn.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-2); }
+.ck-top .tbtn.run { border-color: #9fd3b6; color: #136a3e; font-weight: 650; }
+.ck-top .tbtn.run.on { background: #e5f5ec; border-color: #2e9b62; }
+.ck-sep { width: 1px; height: 22px; background: var(--line-2); margin: 0 3px; flex: none; }
+.ck-speedbox { display: inline-flex; align-items: center; gap: 4px; font-size: 0.76rem; color: var(--muted); }
+.ck-speed { width: 64px; accent-color: var(--accent); }
+.ck-speedlbl { min-width: 2.6em; font-variant-numeric: tabular-nums; }
+.ck-time { font-family: var(--mono); font-size: 0.76rem; color: var(--ink-2); padding: 0 4px; min-width: 6.4em; white-space: nowrap; }
+.ck-seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 7px; overflow: hidden; flex: none; }
+.ck-seg button { border: 0; background: #fff; padding: 3px 9px; font-size: 0.78rem; font-weight: 600; color: var(--muted); cursor: pointer; }
+.ck-seg button + button { border-left: 1px solid var(--line-2); }
+.ck-seg button.on { background: var(--accent); color: #fff; }
+
+.ck-mid { flex: 1; min-height: 0; display: grid; grid-template-columns: 140px minmax(0, 1fr) 244px; position: relative; overflow: hidden; }
+.ck-pal { overflow-y: auto; border-right: 1px solid var(--line); background: var(--panel-2); padding: 6px 5px; display: flex; flex-direction: column; gap: 2px; }
+.ck-palbtn { display: flex; align-items: center; gap: 5px; border: 1px solid transparent; background: none; border-radius: 7px; padding: 4px 4px; cursor: pointer; text-align: left; font-size: 0.78rem; color: var(--ink-2); line-height: 1.2; touch-action: none; }
+.ck-palbtn svg { flex: none; overflow: visible; }
+.ck-palbtn:hover { background: #fff; border-color: var(--line-2); }
+.ck-palbtn.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-2); }
+.ck-palbtn .ck-lead, .ck-palbtn .ck-body, .ck-palbtn .ck-plate, .ck-palbtn .ck-sym, .ck-palbtn .ck-lever, .ck-palbtn .ck-gnd { stroke: currentColor; }
+.ck-palbtn .ck-body { fill: #fff; }
+.ck-palbtn .ck-pm, .ck-palbtn .ck-letter { fill: currentColor; }
+
+.ck-stage { position: relative; overflow: hidden; min-width: 0; min-height: 0; outline: none; background-color: #fbfcfd;
+  background-image: radial-gradient(circle, #cfd6e0 1.1px, transparent 1.3px); }
+.ck-stage.ck-fine { background-image: none; }
+.ck-stage:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+.ck-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; user-select: none; -webkit-user-select: none; }
+.ck[data-tool="wire"] .ck-svg, .ck[data-tool="place"] .ck-svg, .ck[data-tool="probe"] .ck-svg { cursor: crosshair; }
+
+/* the parts */
+.ck-w { stroke: #3b4658; stroke-width: 2.4; stroke-linecap: round; }
+.ck-lead { stroke: #3b4658; stroke-width: 2.4; stroke-linecap: round; fill: none; }
+.ck-body { stroke: #1f2937; stroke-width: 2; fill: #fff; }
+.ck-body.ck-nofill { fill: none; }
+.ck-body.ck-solid { fill: #1f2937; }
+.ck-body.ck-meter { fill: #f6faff; }
+.ck-plate { stroke: #1f2937; stroke-width: 2.6; stroke-linecap: butt; }
+.ck-plate.thick { stroke-width: 5; }
+.ck-sym { stroke: #1f2937; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ck-sym.thin { stroke-width: 1.4; }
+.ck-pm { font: 700 13px var(--font); fill: #1f2937; }
+.ck-letter { font: 700 15px var(--font); fill: #1f2937; text-anchor: middle; }
+.ck-gnd { stroke: #1f2937; stroke-width: 2.4; stroke-linecap: round; }
+.ck-pin { fill: #1f2937; }
+.ck-lever { stroke: #1f2937; stroke-width: 2.6; stroke-linecap: round; }
+.ck-switch .ck-lever { transition: d 0.12s; }
+.ck-hit { fill: transparent; }
+.ck-hl { stroke: transparent; stroke-width: 16; stroke-linecap: round; }
+.ck-el.hover .ck-hl { stroke: rgba(11, 107, 138, 0.1); }
+.ck-el.sel .ck-hl { stroke: rgba(11, 107, 138, 0.22); }
+.ck-el.bad .ck-hl { stroke: rgba(214, 64, 47, 0.3); }
+.ck-junc { fill: #1f2937; }
+.ck-loose { fill: #fff; stroke: #c2410c; stroke-width: 1.6; }
+.ck-handle { fill: #fff; stroke: var(--accent); stroke-width: 2; cursor: move; }
+.ck-lbl { font-weight: 600; font-family: var(--font); fill: #2a3444; paint-order: stroke; stroke: rgba(251, 252, 253, 0.94); stroke-width: 3.5px; stroke-linejoin: round; pointer-events: none; }
+.ck-lbl .ck-lval { font-weight: 450; fill: #4b5567; }
+.ck-lbl.meter .ck-lval { font-weight: 700; fill: #0a5a74; }
+.ck[data-mode="physiology"] .ck-lbl.meter .ck-lval { fill: #9b2042; }
+
+/* the current: moving dots along every part (a dash of length 0 with round ends is a dot) */
+.ck-fl { stroke: #f2b705; stroke-width: 4.6; stroke-linecap: round; stroke-dasharray: 0.01 15; fill: none; pointer-events: none; }
+.ck[data-mode="physiology"] .ck-fl { stroke: #e8505b; }
+.ck-flow.off .ck-fl, .ck-flow.still .ck-fl { visibility: hidden; }
+
+/* drawing new parts, selecting, plotting */
+.ck-ghost { opacity: 0.55; pointer-events: none; }
+.ck-ghostwire { stroke: var(--accent); stroke-width: 2.4; stroke-dasharray: 5 4; stroke-linecap: round; }
+.ck-ghostpt { fill: var(--accent); }
+.ck-box { fill: rgba(11, 107, 138, 0.08); stroke: var(--accent); stroke-width: 1; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+.ck-probe { pointer-events: none; }
+
+.ck-zoombox { position: absolute; right: 8px; bottom: 8px; z-index: 4; display: flex; flex-direction: column; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; box-shadow: var(--shadow); overflow: hidden; }
+.ck-zoombox button { border: 0; background: #fff; width: 30px; height: 28px; display: grid; place-items: center; cursor: pointer; color: var(--ink-2); padding: 0; }
+.ck-zoombox button + button { border-top: 1px solid var(--line); }
+.ck-zoombox button:hover { background: var(--accent-soft); color: var(--accent-2); }
+.ck-zoombox .ic { width: 15px; height: 15px; }
+.ck-hint { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); max-width: 360px; text-align: center; color: var(--muted); font-size: 0.9rem; background: rgba(255, 255, 255, 0.9); padding: 12px 16px; border-radius: 10px; border: 1px dashed var(--line-2); }
+.ck-tip { position: absolute; z-index: 5; background: #1f2937; color: #fff; font-size: 0.78rem; line-height: 1.45; padding: 6px 9px; border-radius: 7px; pointer-events: none; max-width: 300px; box-shadow: var(--shadow-l); }
+.ck-tip b { color: #fff; }
+.ck-status { position: absolute; left: 8px; right: 48px; bottom: 8px; display: flex; flex-direction: column; gap: 5px; pointer-events: none; z-index: 4; }
+.ck-msg { pointer-events: auto; font-size: 0.8rem; line-height: 1.4; padding: 6px 10px; border-radius: 8px; border: 1px solid; max-width: 640px; box-shadow: var(--shadow); }
+.ck-msg.error { background: var(--bad-soft); border-color: #f1b8b3; color: #7a1712; }
+.ck-msg.warn { background: var(--warn-soft); border-color: #f0dca3; color: #6a4500; }
+.ck-msg.info { background: var(--accent-soft); border-color: #bfdfe9; color: var(--accent-2); }
+.ck-msg.tool { background: #fff; border-color: var(--line-2); color: var(--ink-2); }
+
+/* the panel of properties */
+.ck-insp { border-left: 1px solid var(--line); overflow-y: auto; padding: 10px 12px 16px; font-size: 0.84rem; background: #fff; }
+.ck-insp h4 { margin: 0 0 8px; font-size: 0.95rem; padding-right: 26px; }
+.ck-id { font-family: var(--mono); font-size: 0.8rem; background: var(--panel-3); border-radius: 5px; padding: 1px 6px; margin-right: 2px; }
+.ck-inspx { position: absolute; right: 8px; top: 8px; display: none; }
+.ck-insptoggle { display: none; }
+.ck-field { display: flex; flex-direction: column; gap: 3px; margin: 0 0 9px; font-weight: 600; color: var(--ink-2); font-size: 0.8rem; }
+.ck-field > span:first-child { font-weight: 600; }
+.ck-inrow { display: flex; align-items: center; gap: 6px; }
+.ck-in { border: 1px solid var(--line-2); border-radius: 6px; padding: 4px 7px; font: inherit; font-weight: 400; font-size: 0.86rem; background: #fff; color: var(--ink); min-width: 0; width: 100%; }
+.ck-in.small { width: auto; font-size: 0.78rem; padding: 2px 4px; }
+.ck-inrow .ck-in { width: 7.5em; font-family: var(--mono); }
+.ck-inrow.wide .ck-in { width: auto; flex: 1; font-family: inherit; }
+.ck-inrow.wide select.ck-in { flex: none; }
+.ck-in.bad { border-color: var(--bad); background: var(--bad-soft); }
+.ck-unit { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+.ck-err { color: var(--bad); font-size: 0.74rem; font-weight: 500; min-height: 0; }
+.ck-note { color: var(--muted); font-size: 0.78rem; line-height: 1.45; margin: 6px 0 10px; }
+.ck-desc { color: var(--ink-2); font-size: 0.82rem; line-height: 1.5; margin: 0 0 8px; }
+.ck-reading { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; line-height: 1.55; margin: 8px 0; font-size: 0.8rem; }
+.ck-reading:empty { display: none; }
+.ck-btnrow { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.ck-analogybox { margin: 10px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; background: var(--panel-2); }
+.ck-analogybox summary { font-weight: 700; cursor: pointer; font-size: 0.8rem; color: var(--ink-2); }
+.ck-analogy { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.74rem; }
+.ck-analogy th, .ck-analogy td { text-align: left; padding: 3px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.ck-analogy th { color: var(--muted); }
+.ck-analogy th.on { color: var(--accent-2); }
+
+/* the plot */
+.ck-plot { flex: none; height: 210px; border-top: 1px solid var(--line); display: flex; flex-direction: column; background: #fff; }
+.ck.plot-closed .ck-plot { height: auto; }
+.ck.plot-closed .ck-plotbody { display: none; }
+.ck.plot-closed .ck-plottog .ic { transform: rotate(-90deg); }
+.ck-plothead { display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); min-height: 34px; }
+.ck-plothead > .tbtn, .ck-plothead > select { flex: none; }
+.ck-plottog { border: 0; background: none; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-size: 0.82rem; color: var(--ink-2); padding: 2px 4px; }
+.ck-plottog .ic { width: 15px; height: 15px; transition: transform 0.15s; }
+.ck-chips { display: flex; gap: 4px; min-width: 0; flex: 1; overflow-x: auto; scrollbar-width: thin; padding: 1px 0; }
+.ck-chip { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line-2); background: #fff; border-radius: 99px; padding: 1px 4px 1px 8px; font-size: 0.74rem; max-width: 240px; flex: none; }
+.ck-chip > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ck-chip i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.ck-chipx { border: 0; background: none; cursor: pointer; color: var(--muted); font-size: 0.95rem; line-height: 1; padding: 0 3px; border-radius: 50%; }
+.ck-chipx:hover { background: var(--panel-3); color: var(--ink); }
+.ck-plotbody { position: relative; flex: 1; min-height: 0; }
+.ck-plotcv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ck-plotempty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--muted); font-size: 0.84rem; padding: 10px 24px; }
+
+.ck-filelist { display: flex; flex-direction: column; gap: 4px; max-height: 55vh; overflow: auto; }
+.ck-fileitem { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: #fff; border-radius: 7px; padding: 7px 10px; cursor: pointer; text-align: left; font-family: var(--mono); font-size: 0.84rem; }
+.ck-fileitem:hover { border-color: var(--accent); background: var(--accent-soft); }
+.ck-dragging, .ck-dragging * { cursor: copy !important; }
+
+/* the toolbar sheds names and buttons, a step at a time, until it fits in one row (circuit.js adds fit1, fit2 …) */
+.ck-top.fit1 .tbtn.tool span { display: none; }
+.ck-top.fit2 { gap: 3px; }
+.ck-top.fit2 .ck-speedlbl, .ck-top.fit2 .tbtn.stepbtn { display: none; }
+/* (Turn, Swap ends and Delete are also in the panel of a selected part, and on its right-click menu) */
+.ck-top.fit3 .edit { display: none; }
+.ck-top.fit4 .savebtn span { display: none; }
+.ck-top.fit4 .ck-sep { margin: 0 2px; }
+.ck-top.fit4 .ck-speed { width: 52px; }
+.ck-top.fit4 .ck-seg button { padding: 3px 7px; }
+.ck-top.fit5 .tbtn.lbl:not(.run) span { display: none; }
+.ck-top.fit6 .helpbtn { display: none; } /* (Help is also in the Circuit menu) */
+.ck-top.fit7 .ck-speedbox { display: none; }
+@container ck (max-width: 760px) {
+  .ck-plothead .tbtn span { display: none; }
+}
+/* narrower: the panel of properties opens over the drawing; the parts go in a strip along the top */
+@container ck (max-width: 1039px) {
+  .ck-mid { grid-template-columns: 140px minmax(0, 1fr); }
+  .ck-insp { position: absolute; right: 0; top: 0; bottom: 0; width: min(300px, 86%); z-index: 6; box-shadow: var(--shadow-l); transform: translateX(105%); transition: transform 0.2s ease; }
+  .ck.insp-open .ck-insp { transform: none; }
+  .ck-inspx { display: inline-flex; }
+  .ck-insptoggle { display: inline-flex; position: absolute; right: 8px; top: 8px; z-index: 5; border: 1px solid var(--line-2); background: #fff; border-radius: 8px; padding: 5px; cursor: pointer; color: var(--ink-2); box-shadow: var(--shadow); }
+  .ck.insp-open .ck-insptoggle { display: none; }
+}
+@container ck (max-width: 640px) {
+  .ck-mid { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .ck-pal { flex-direction: row; overflow-x: auto; overflow-y: hidden; border-right: 0; border-bottom: 1px solid var(--line); padding: 4px; scrollbar-width: thin; }
+  .ck-palbtn { flex-direction: column; gap: 1px; font-size: 0.66rem; text-align: center; min-width: 64px; max-width: 76px; padding: 3px 2px; flex: none; }
+  .ck-palbtn span { white-space: normal; line-height: 1.1; }
+  .ck-plot { height: 170px; }
+  .ck-speedbox, .ck-top .helpbtn { display: none; }
+  .ck-seg button { padding: 3px 6px; font-size: 0.72rem; }
+  .ck-insptoggle { top: 78px; }
+}

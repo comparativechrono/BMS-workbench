@@ -1,0 +1,88 @@
+{
+ "format": "bms-circuit-1",
+ "title": "A voltage divider",
+ "group": "Basics",
+ "order": 3,
+ "mode": "electrical",
+ "description": "Two resistors in series share the battery’s voltage in proportion to their resistances: the voltage across R2 is <i>V</i> × R2 / (R1 + R2). With 10 V, R1 = 10 kΩ and R2 = 5 kΩ the voltmeter should read 3.33 V. Change R2 and predict the new reading before you look.",
+ "elements": [
+  {
+   "id": "V1",
+   "type": "battery",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 2,
+   "value": 10,
+   "labelPos": "left"
+  },
+  {
+   "id": "W1",
+   "type": "wire",
+   "x1": 0,
+   "y1": 2,
+   "x2": 8,
+   "y2": 2
+  },
+  {
+   "id": "R1",
+   "type": "resistor",
+   "x1": 8,
+   "y1": 2,
+   "x2": 8,
+   "y2": 6,
+   "value": 10000
+  },
+  {
+   "id": "R2",
+   "type": "resistor",
+   "x1": 8,
+   "y1": 6,
+   "x2": 8,
+   "y2": 10,
+   "value": 5000
+  },
+  {
+   "id": "W2",
+   "type": "wire",
+   "x1": 8,
+   "y1": 10,
+   "x2": 0,
+   "y2": 10
+  },
+  {
+   "id": "W3",
+   "type": "wire",
+   "x1": 8,
+   "y1": 6,
+   "x2": 16,
+   "y2": 6
+  },
+  {
+   "id": "W4",
+   "type": "wire",
+   "x1": 8,
+   "y1": 10,
+   "x2": 16,
+   "y2": 10
+  },
+  {
+   "id": "VM1",
+   "type": "voltmeter",
+   "x1": 16,
+   "y1": 10,
+   "x2": 16,
+   "y2": 6
+  },
+  {
+   "id": "GND1",
+   "type": "ground",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 11
+  }
+ ],
+ "traces": [],
+ "settings": {}
+}

@@ -1,0 +1,74 @@
+{
+ "id": "tour",
+ "title": "Getting to know exam practice",
+ "description": "A short paper to try everything out: an information page, a short essay, a calculation and a multiple-choice question.",
+ "order": 1,
+ "minutes": 20,
+ "autoSubmit": false,
+ "spellcheck": false,
+ "showWordCount": true,
+ "instructions": "<p>This paper is a tour of the way online exams work. Nothing is marked by a person: try every button.</p><ul><li>The time starts when you press <b>Start</b>. The time left is shown at the top left, under your candidate number.</li><li>Your answers are saved as you type. There is no Save button.</li><li>Move between the questions with the arrows at the bottom right, or with the numbered tiles along the bottom.</li><li>When you have finished, go to the submission page (the ✔ tile) and press <b>Submit now</b>.</li></ul>",
+ "resources": [
+  {
+   "type": "calculator"
+  },
+  {
+   "type": "slide",
+   "label": "Lung",
+   "spec": "lung"
+  },
+  {
+   "type": "slide",
+   "label": "Small intestine",
+   "spec": "small-intestine"
+  }
+ ],
+ "questions": [
+  {
+   "id": "about",
+   "type": "info",
+   "title": "How this paper works",
+   "text": "<p>An online exam shows one question at a time. Look around the screen:</p><ul><li><b>At the top:</b> your candidate number, the time remaining, whether your answers are saved, the resources you may use (here a calculator and two slides) and the options menu <b>☰</b>. The menu changes the text size and the contrast, hides the time, switches the spelling checker on or off, and takes you to the submission page.</li><li><b>Along the bottom:</b> a tile for each question. A bar along the top of a tile means the question has an answer; a little flag means you have flagged it to come back to. The <b>i</b> tile is this page. The ✔ tile on the right is the submission page: it turns purple when every question has an answer.</li><li><b>In an essay:</b> the toolbar has bold, italic and underline, sub- and superscripts, lists, tables, special characters (Ω), formulas (Σ), drawings and backup copies of your answer. <kbd>Alt</kbd>+<kbd>F10</kbd> takes you to the toolbar from the keyboard. The word count is under the box.</li></ul><p>Press the arrow at the bottom right to go to the first question.</p>"
+  },
+  {
+   "id": "tissue",
+   "type": "short",
+   "title": "A tissue under the microscope",
+   "marks": 10,
+   "lines": 12,
+   "split": true,
+   "words": {
+    "max": 300,
+    "hard": true
+   },
+   "text": "<p>Open <b>one</b> of the two slides in the resources at the top of the page (the lung or the small intestine). It opens in the Microscope tab: look at it at low and at high power, then come back to <b>Exam practice</b>.</p><p>Describe what you see, and explain how the structure of the tissue suits its function.</p><p>You may add a labelled sketch with the drawing tool (the pencil in the toolbar).</p><p><i>At most 300 words: you cannot type more than that.</i></p>",
+   "guidance": "<p>A good answer names the tissue, describes it from low to high power, and links each feature to the function.</p><p><b>Lung:</b> a very large number of thin-walled air spaces (alveoli) give a huge surface area; the wall between air and blood is very thin (type I pneumocytes, a thin basement membrane and capillary endothelium), so diffusion distances are short; a dense network of capillaries keeps the concentration gradients steep; type II pneumocytes make surfactant; bronchioles and blood vessels can be seen between the alveoli; elastic fibres help the lungs to recoil.</p><p><b>Small intestine:</b> the mucosa is folded into finger-like villi (and the cells have microvilli), which give a large surface area for absorption; a single layer of columnar epithelium (enterocytes) gives a short distance to the blood capillaries and lacteals in the core of each villus; goblet cells make mucus; crypts between the villi hold the dividing cells that replace the epithelium; smooth muscle in the muscularis externa mixes and moves the contents (peristalsis).</p><p>Marks for: correct identification (1); accurate description of the main layers or features (4); links between structure and function (4); clear writing within the word limit (1). A labelled drawing can earn the description marks.</p>"
+  },
+  {
+   "id": "scale-bar",
+   "type": "numeric",
+   "title": "Real size from a scale bar",
+   "marks": 2,
+   "units": "µm",
+   "answer": 7.5,
+   "tolerance": 0.1,
+   "text": "<p>On a printed micrograph of a blood smear, the scale bar represents <b>50 µm</b> and is <b>20 mm</b> long. A red blood cell on the same micrograph measures <b>3.0 mm</b> across.</p><p>What is the real diameter of the red blood cell, in micrometres (µm)?</p>",
+   "guidance": "<p>The magnification is the size on the picture divided by the real size: 20 mm = 20 000 µm, so the magnification is 20 000 µm ÷ 50 µm = ×400.</p><p>Real size = size on the picture ÷ magnification = 3.0 mm ÷ 400 = 3000 µm ÷ 400 = <b>7.5 µm</b>.</p><p>Change everything into the same units before you divide.</p>"
+  },
+  {
+   "id": "formula",
+   "type": "mcq",
+   "title": "Magnification",
+   "marks": 1,
+   "text": "<p>Which of these gives the real size of something seen in a micrograph?</p>",
+   "options": [
+    "Real size = size in the micrograph × magnification",
+    "Real size = size in the micrograph ÷ magnification",
+    "Real size = magnification ÷ size in the micrograph",
+    "Real size = size in the micrograph − magnification"
+   ],
+   "correct": 1,
+   "guidance": "<p>Magnification = size in the image ÷ real size, so real size = size in the image ÷ magnification. A magnification of ×400 makes things 400 times larger, so you divide by 400 to get back to the real size.</p>"
+  }
+ ]
+}

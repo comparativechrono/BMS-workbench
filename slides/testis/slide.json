@@ -1,0 +1,153 @@
+{
+ "title": "Testis",
+ "system": "Reproductive",
+ "description": "Seminiferous tubules cut in many planes, with spermatogenesis, and the interstitial tissue between them, which holds blood vessels and groups of Leydig cells.",
+ "look_for": [
+  "Seminiferous tubules cut across and lengthways",
+  "Spermatogonia at the edge of each tubule; spermatocytes, spermatids and spermatozoa towards the lumen",
+  "Sertoli cells, with pale nuclei near the base of the tubule",
+  "Leydig (interstitial) cells in groups between the tubules: pink cytoplasm and round nuclei"
+ ],
+ "labels": [
+  {
+   "key": "seminiferous-tubule",
+   "text": "Seminiferous tubule",
+   "find": "a seminiferous tubule",
+   "x": 2060,
+   "y": 2000,
+   "r": 200
+  },
+  {
+   "key": "seminiferous-tubule",
+   "text": "Seminiferous tubule",
+   "find": "a seminiferous tubule",
+   "x": 2570,
+   "y": 1820,
+   "r": 170
+  },
+  {
+   "key": "lumen",
+   "text": "Lumen, with spermatids and spermatozoa",
+   "find": "the lumen of a seminiferous tubule",
+   "x": 2540,
+   "y": 1880,
+   "r": 50
+  },
+  {
+   "key": "germinal-epithelium",
+   "text": "Spermatogenic cells (spermatogonia at the edge, spermatocytes inside them)",
+   "find": "the spermatogenic cells",
+   "x": 1880,
+   "y": 2040,
+   "r": 30
+  },
+  {
+   "key": "leydig-cells",
+   "text": "Leydig (interstitial) cells",
+   "find": "Leydig cells",
+   "x": 5250,
+   "y": 1575,
+   "r": 40
+  },
+  {
+   "key": "leydig-cells",
+   "text": "Leydig (interstitial) cells",
+   "find": "Leydig cells",
+   "x": 740,
+   "y": 3800,
+   "r": 50
+  },
+  {
+   "key": "vessel",
+   "text": "Blood vessel in the interstitium",
+   "find": "a blood vessel between the tubules",
+   "x": 4320,
+   "y": 2445,
+   "r": 25
+  }
+ ],
+ "id": "testis",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-XAJ8-1325",
+  "tissue_site": "Testis",
+  "pathology_note": "2 pieces  ~7x6mm, spermatogenesis is present; remarkably well preserved",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2019570396.1048542696.1720006521564.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 4047,
+   "y": 8094,
+   "width": 6475,
+   "height": 6070
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-XAJ8-1325), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 6475,
+ "height": 6070,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 839,
+ "packBytes": 9900934,
+ "levels": [
+  {
+   "level": 8,
+   "width": 203,
+   "height": 190,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 405,
+   "height": 380,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 810,
+   "height": 759,
+   "cols": 4,
+   "rows": 3,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1619,
+   "height": 1518,
+   "cols": 7,
+   "rows": 6,
+   "first": 17
+  },
+  {
+   "level": 12,
+   "width": 3238,
+   "height": 3035,
+   "cols": 13,
+   "rows": 12,
+   "first": 59
+  },
+  {
+   "level": 13,
+   "width": 6475,
+   "height": 6070,
+   "cols": 26,
+   "rows": 24,
+   "first": 215
+  }
+ ]
+}

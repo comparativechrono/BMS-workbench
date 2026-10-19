@@ -1,0 +1,160 @@
+{
+ "title": "Spleen",
+ "system": "Lymphoid",
+ "description": "White pulp (lymphoid tissue around central arterioles) and red pulp (full of blood), with trabeculae.",
+ "look_for": [
+  "White pulp: lymphoid follicles and sheaths of lymphocytes around central arterioles",
+  "Red pulp: splenic cords and venous sinuses full of red blood cells",
+  "Trabeculae: strands of connective tissue carrying trabecular vessels"
+ ],
+ "labels": [
+  {
+   "key": "white-pulp",
+   "text": "White pulp (lymphoid tissue)",
+   "find": "white pulp",
+   "x": 4250,
+   "y": 3100,
+   "r": 150
+  },
+  {
+   "key": "white-pulp",
+   "text": "White pulp (lymphoid tissue)",
+   "find": "white pulp",
+   "x": 4480,
+   "y": 2340,
+   "r": 180
+  },
+  {
+   "key": "white-pulp",
+   "text": "White pulp (lymphoid tissue)",
+   "find": "white pulp",
+   "x": 3600,
+   "y": 4750,
+   "r": 250
+  },
+  {
+   "key": "central-arteriole",
+   "text": "Central arteriole",
+   "find": "a central arteriole",
+   "x": 4580,
+   "y": 3170,
+   "r": 90
+  },
+  {
+   "key": "red-pulp",
+   "text": "Red pulp",
+   "find": "red pulp",
+   "x": 1500,
+   "y": 2300,
+   "r": 150
+  },
+  {
+   "key": "red-pulp",
+   "text": "Red pulp",
+   "find": "red pulp",
+   "x": 5600,
+   "y": 4300,
+   "r": 200
+  },
+  {
+   "key": "trabecula",
+   "text": "Trabecula (connective tissue)",
+   "find": "a trabecula",
+   "x": 3770,
+   "y": 3950,
+   "r": 100
+  },
+  {
+   "key": "trabecula",
+   "text": "Trabecula, with a large trabecular vessel",
+   "find": "a trabecula",
+   "x": 2400,
+   "y": 3500,
+   "r": 80
+  }
+ ],
+ "id": "spleen",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-WHWD-0125",
+  "tissue_site": "Spleen",
+  "pathology_note": "2 pieces, 7x6.5 & 8x7mm; balanced red and white pulp",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.1975842304.626290115.1719962793472.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 8903,
+   "y": 18616,
+   "width": 6475,
+   "height": 6070
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-WHWD-0125), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 6475,
+ "height": 6070,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 839,
+ "packBytes": 15158008,
+ "levels": [
+  {
+   "level": 8,
+   "width": 203,
+   "height": 190,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 405,
+   "height": 380,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 810,
+   "height": 759,
+   "cols": 4,
+   "rows": 3,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1619,
+   "height": 1518,
+   "cols": 7,
+   "rows": 6,
+   "first": 17
+  },
+  {
+   "level": 12,
+   "width": 3238,
+   "height": 3035,
+   "cols": 13,
+   "rows": 12,
+   "first": 59
+  },
+  {
+   "level": 13,
+   "width": 6475,
+   "height": 6070,
+   "cols": 26,
+   "rows": 24,
+   "first": 215
+  }
+ ]
+}

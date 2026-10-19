@@ -1,0 +1,145 @@
+{
+ "title": "Heart (left ventricle)",
+ "system": "Cardiovascular",
+ "description": "Cardiac muscle cut in different planes: branching cells with central nuclei, connective tissue and many capillaries.",
+ "look_for": [
+  "Cardiac muscle cells with one or two central nuclei",
+  "Branching fibres, and intercalated discs (dark lines across the fibres) at high power",
+  "Cross-striations, best seen at 40x",
+  "Connective tissue (endomysium) with many capillaries between the fibres"
+ ],
+ "labels": [
+  {
+   "key": "longitudinal",
+   "text": "Cardiac muscle cut lengthways",
+   "find": "cardiac muscle cells cut lengthways",
+   "x": 4450,
+   "y": 2950,
+   "r": 120
+  },
+  {
+   "key": "longitudinal",
+   "text": "Cardiac muscle cut lengthways",
+   "find": "cardiac muscle cells cut lengthways",
+   "x": 3600,
+   "y": 4600,
+   "r": 200
+  },
+  {
+   "key": "transverse",
+   "text": "Cardiac muscle cut across",
+   "find": "cardiac muscle cells cut across",
+   "x": 550,
+   "y": 5250,
+   "r": 150
+  },
+  {
+   "key": "transverse",
+   "text": "Cardiac muscle cut across",
+   "find": "cardiac muscle cells cut across",
+   "x": 1000,
+   "y": 3500,
+   "r": 200
+  },
+  {
+   "key": "connective",
+   "text": "Connective tissue between bundles of muscle fibres",
+   "find": "connective tissue between the bundles of muscle",
+   "x": 1260,
+   "y": 1350,
+   "r": 45
+  },
+  {
+   "key": "arteriole",
+   "text": "Arteriole",
+   "find": "an arteriole",
+   "x": 1185,
+   "y": 1430,
+   "r": 28
+  }
+ ],
+ "id": "heart",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-13O61-0525",
+  "tissue_site": "Heart - Left Ventricle",
+  "pathology_note": "2 pieces; well preserved, no lesions or signs of ischemia",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2253377056.1708489532.1720240328224.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 4047,
+   "y": 7285,
+   "width": 7284,
+   "height": 6879
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-13O61-0525), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 7284,
+ "height": 6879,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1099,
+ "packBytes": 13877474,
+ "levels": [
+  {
+   "level": 8,
+   "width": 228,
+   "height": 215,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 456,
+   "height": 430,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 911,
+   "height": 860,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1821,
+   "height": 1720,
+   "cols": 8,
+   "rows": 7,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 3642,
+   "height": 3440,
+   "cols": 15,
+   "rows": 14,
+   "first": 77
+  },
+  {
+   "level": 13,
+   "width": 7284,
+   "height": 6879,
+   "cols": 29,
+   "rows": 28,
+   "first": 287
+  }
+ ]
+}

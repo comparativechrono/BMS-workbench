@@ -1,0 +1,116 @@
+{
+ "format": "bms-flow-1",
+ "title": "Blood glucose: insulin and glucagon",
+ "description": "Glucose absorbed after a meal raises blood glucose. The β cells of the pancreas respond with more insulin, which lowers glucose; the α cells make less glucagon, which would raise it. Two negative feedback loops work together. Try knocking out insulin (as in type 1 diabetes).",
+ "group": "Hormones",
+ "order": 5,
+ "nodes": [
+  {
+   "id": "meal",
+   "text": "Glucose from a meal",
+   "role": "stimulus",
+   "shape": "flag",
+   "color": "orange",
+   "x": 100,
+   "y": 200,
+   "w": 160,
+   "h": 52,
+   "kind": "pulse",
+   "start": 30,
+   "length": 60,
+   "size": 6,
+   "unit": "mmol/L",
+   "plot": true
+  },
+  {
+   "id": "glu",
+   "text": "Blood glucose",
+   "role": "quantity",
+   "shape": "round",
+   "color": "blue",
+   "x": 330,
+   "y": 200,
+   "w": 160,
+   "h": 56,
+   "rest": 5,
+   "unit": "mmol/L",
+   "tau": 20,
+   "plot": true
+  },
+  {
+   "id": "ins",
+   "text": "Insulin (β cells)",
+   "role": "quantity",
+   "shape": "round",
+   "color": "green",
+   "x": 570,
+   "y": 100,
+   "w": 160,
+   "h": 56,
+   "rest": 10,
+   "unit": "mU/L",
+   "tau": 5,
+   "plot": true
+  },
+  {
+   "id": "gcg",
+   "text": "Glucagon (α cells)",
+   "role": "quantity",
+   "shape": "round",
+   "color": "yellow",
+   "x": 570,
+   "y": 300,
+   "w": 170,
+   "h": 56,
+   "rest": 50,
+   "unit": "pg/mL",
+   "tau": 5,
+   "plot": true
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "meal",
+   "to": "glu",
+   "sign": "+"
+  },
+  {
+   "id": "e2",
+   "from": "glu",
+   "to": "ins",
+   "sign": "+",
+   "gain": 10,
+   "bend": -30
+  },
+  {
+   "id": "e3",
+   "from": "ins",
+   "to": "glu",
+   "sign": "-",
+   "gain": 0.15,
+   "bend": -30
+  },
+  {
+   "id": "e4",
+   "from": "glu",
+   "to": "gcg",
+   "sign": "-",
+   "gain": 10,
+   "bend": 30
+  },
+  {
+   "id": "e5",
+   "from": "gcg",
+   "to": "glu",
+   "sign": "+",
+   "gain": 0.02,
+   "bend": 30
+  }
+ ],
+ "sim": {
+  "duration": 300,
+  "timeUnit": "min",
+  "clampZero": true
+ }
+}

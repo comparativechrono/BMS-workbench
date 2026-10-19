@@ -1,0 +1,185 @@
+/* =====================================================================
+   The Diagrams tab (flow.js): the toolbar, the drawing, the panel of the
+   simulation under it, and the settings of what is selected on the right.
+   In a narrow workbench the settings go under the drawing, and fold away.
+   ===================================================================== */
+#flowRoot { height: 100%; min-height: 0; }
+.fl { display: flex; flex-direction: column; height: 100%; min-height: 0; background: #fff; container-type: inline-size; container-name: flow; }
+
+/* ---------------- the toolbar ---------------- */
+.fl-bar { display: flex; align-items: center; gap: 4px; padding: 5px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); flex-wrap: wrap; flex: none; }
+.fl-bar .tbtn { padding: 4px 8px; }
+.fl-bar .tbtn .ic { width: 16px; height: 16px; }
+.fl-bar .tbtn.caret::after { content: '▾'; font-size: 0.7em; color: var(--muted); }
+.fl-sep { width: 1px; height: 22px; background: var(--line-2); margin: 0 3px; flex: none; }
+.fl-title { border: 0; background: none; font-weight: 700; font-size: 0.9rem; color: var(--ink); cursor: pointer; padding: 3px 7px; border-radius: 6px; max-width: 300px; display: inline-flex; gap: 3px; align-items: center; min-width: 0; }
+.fl-title span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fl-title i { color: var(--act); font-style: normal; font-weight: 900; font-size: 1.1em; line-height: 1; }
+.fl-title:hover { background: #fff; box-shadow: inset 0 0 0 1px var(--line-2); }
+.fl-title:focus-visible { outline: 2px solid var(--accent); }
+.fl-seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 7px; overflow: hidden; background: #fff; flex: none; }
+.fl-sign { border: 0; background: none; padding: 3px 8px 3px 6px; display: inline-flex; align-items: center; gap: 2px; cursor: pointer; font-weight: 800; color: var(--ink-2); font-size: 0.9rem; line-height: 1.2; }
+.fl-sign + .fl-sign { border-left: 1px solid var(--line-2); }
+.fl-sign .ic { width: 22px; height: 16px; }
+.fl-sign[data-sign='+'] .ic, .fl-seg-wide .fl-sign:nth-child(1) .ic { color: #2e7d32; }
+.fl-sign[data-sign='-'] .ic, .fl-seg-wide .fl-sign:nth-child(2) .ic { color: #c62828; }
+.fl-sign:hover { background: var(--panel-3); }
+.fl-sign.on { background: var(--accent-soft); color: var(--accent-2); box-shadow: inset 0 -2px 0 var(--accent); }
+.fl-sign:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.fl-runbtn { padding: 0.32em 0.8em; }
+.fl-runbtn .ic { width: 14px; height: 14px; }
+/* when the toolbar would wrap, flow.js (_fitBar) takes its labels away a level at a time */
+.fl-bar.f1 .fl-title { max-width: 210px; }
+.fl-bar.f2 .tbtn.fl-l2 span, .fl-bar.f3 .tbtn.fl-l3 span { display: none; }
+.fl-bar.f4 { gap: 3px; }
+.fl-bar.f4 .fl-title { max-width: 150px; }
+.fl-bar.f5 .fl-sign span, .fl-bar.f5 .fl-runbtn span { display: none; }
+.fl-bar.f6 .fl-sep { display: none; }
+.fl-bar.f6 .fl-title { max-width: 110px; }
+.fl-bar.f6 .tbtn { padding: 4px 5px; }
+.fl-bar.f6 .fl-sign { padding: 3px 5px 3px 4px; }
+
+/* ---------------- the drawing ---------------- */
+.fl-body { flex: 1; min-height: 0; display: flex; }
+.fl-stage { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+.fl-canvas { flex: 1; min-height: 140px; position: relative; overflow: hidden; background: #fbfcfd; }
+.fl-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: default; outline: none; -webkit-user-select: none; user-select: none; }
+.fl-svg.panning { cursor: grabbing; }
+.fl-svg.kbd:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+.fl-node { cursor: move; }
+.fl-node .fl-conn { fill: #fff; stroke: var(--accent); stroke-width: 1.6; opacity: 0; cursor: crosshair; transition: opacity 0.12s; }
+.fl-node:hover .fl-conn, .fl-node.sel .fl-conn { opacity: 1; }
+.fl-node .fl-conn:hover { fill: var(--accent); }
+@media (hover: none) { .fl-node.sel .fl-conn { opacity: 1; r: 8px; } }
+.fl-node.target > :first-child { stroke: var(--accent); stroke-width: 3.5; }
+.fl-node.knocked > :first-child, .fl-node.knocked > text:not(.fl-val) { opacity: 0.55; }
+.fl-labelbox { pointer-events: all; }
+.fl-edge { cursor: pointer; }
+.fl-edge .fl-line { transition: stroke-width 0.1s; }
+.fl-edge:hover .fl-line { stroke-width: 3; }
+.fl-edge.sel .fl-line { stroke-width: 3.4; filter: drop-shadow(0 0 2px rgba(11, 107, 138, 0.7)); }
+.fl-selbox { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 5 4; pointer-events: none; }
+.fl-resize { fill: #fff; stroke: var(--accent); stroke-width: 1.5; cursor: nwse-resize; }
+.fl-bend { fill: #fff; stroke: var(--accent); stroke-width: 2; cursor: move; }
+.fl-temp { stroke-width: 2; stroke-dasharray: 6 4; fill: none; pointer-events: none; }
+.fl-boxsel { fill: rgba(11, 107, 138, 0.08); stroke: var(--accent); stroke-dasharray: 4 3; pointer-events: none; }
+.fl-legend { position: absolute; left: 8px; top: 8px; display: flex; flex-direction: column; gap: 1px; background: rgba(255, 255, 255, 0.93); border: 1px solid var(--line); border-radius: 8px; padding: 5px 9px; font-size: 0.72rem; color: var(--ink-2); pointer-events: none; }
+.fl-legend span { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.fl-zoom { position: absolute; right: 8px; bottom: 8px; display: flex; gap: 2px; background: #fff; border: 1px solid var(--line-2); border-radius: 8px; padding: 2px; box-shadow: var(--shadow); }
+.fl-zbtn { border: 0; background: none; border-radius: 6px; padding: 4px; cursor: pointer; color: var(--ink-2); display: inline-flex; align-items: center; justify-content: center; }
+.fl-zbtn:hover { background: var(--panel-3); }
+.fl-zbtn.on { background: var(--accent-soft); color: var(--accent-2); }
+.fl-zbtn .ic { width: 16px; height: 16px; }
+.fl-zpct { font-size: 0.74rem; min-width: 42px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.fl-hint { position: absolute; left: 10px; bottom: 10px; right: 230px; font-size: 0.76rem; color: var(--muted); pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fl-empty { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); width: min(340px, 80%); text-align: center; color: var(--muted); font-size: 0.88rem; pointer-events: none; line-height: 1.55; }
+.fl-empty b:first-child { display: block; color: var(--ink-2); font-size: 0.95rem; margin-bottom: 4px; }
+.fl-edit { position: absolute; z-index: 5; border: 2px solid var(--accent); border-radius: 8px; padding: 4px 6px; font: 600 13px var(--font); text-align: center; resize: none; box-shadow: var(--shadow-l); background: #fff; color: var(--ink); line-height: 1.3; }
+
+/* ---------------- the simulation ---------------- */
+.fl-run { flex: none; border-top: 1px solid var(--line); background: var(--panel-2); display: flex; flex-direction: column; min-height: 0; }
+.fl-runbar { display: flex; align-items: center; gap: 8px; padding: 5px 8px; flex-wrap: wrap; }
+.fl-runbar .btn .ic { width: 14px; height: 14px; }
+.fl-lab { display: inline-flex; align-items: center; gap: 4px; font-size: 0.78rem; color: var(--muted); font-weight: 650; }
+.fl-num { width: 72px; border: 1px solid var(--line-2); border-radius: 6px; padding: 3px 6px; background: #fff; font-size: 0.84rem; }
+.fl-sel { border: 1px solid var(--line-2); border-radius: 6px; padding: 3px 4px; background: #fff; font-size: 0.82rem; }
+.fl-runmsg { flex: 1; min-width: 200px; font-size: 0.8rem; color: var(--ink-2); line-height: 1.35; }
+.fl-runmsg.warn { color: var(--bad); }
+.fl-collapse .ic { transition: transform 0.15s; }
+.fl-run.closed .fl-collapse .ic { transform: rotate(180deg); }
+.fl-runbody { display: flex; gap: 8px; padding: 0 8px 8px; height: 230px; min-height: 0; }
+.fl-run.closed .fl-runbody { display: none; }
+.fl-plot { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.fl-chart { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+.fl-chart-empty { padding: 26px 16px; color: var(--muted); font-size: 0.84rem; text-align: center; }
+.fl-graph { display: block; }
+.fl-scrubrow { display: flex; align-items: center; gap: 8px; padding: 2px 8px; border-top: 1px solid var(--line); flex: none; }
+.fl-scrub { flex: 1; min-width: 0; accent-color: #e0662a; }
+.fl-tlabel { font-size: 0.76rem; color: var(--muted); min-width: 92px; text-align: right; font-variant-numeric: tabular-nums; }
+.fl-results { width: 330px; flex: none; overflow: auto; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+.fl-tab { border-collapse: collapse; width: 100%; font-size: 0.76rem; }
+.fl-tab th, .fl-tab td { padding: 4px 6px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.fl-tab thead th { color: var(--muted); font-weight: 650; background: var(--panel-2); position: sticky; top: 0; }
+.fl-tab tbody th { text-align: left; font-weight: 650; color: var(--ink-2); max-width: 104px; overflow: hidden; text-overflow: ellipsis; }
+.fl-tab tbody th small { display: block; font-weight: 500; color: var(--muted); font-size: 0.92em; overflow: hidden; text-overflow: ellipsis; }
+.fl-results .fl-chart-empty { margin: 0; }
+/* a narrow drawing: the graphs and the numbers take turns (the buttons Graphs | Numbers in the bar of the run) */
+.fl-stage { container-type: inline-size; container-name: flstage; }
+.fl-run .fl-view { display: none; }
+.fl-vbtn { border: 0; background: none; padding: 3px 9px; font-size: 0.78rem; font-weight: 650; color: var(--ink-2); cursor: pointer; line-height: 1.3; }
+.fl-vbtn + .fl-vbtn { border-left: 1px solid var(--line-2); }
+.fl-vbtn:hover { background: var(--panel-3); }
+.fl-vbtn.on { background: var(--accent-soft); color: var(--accent-2); box-shadow: inset 0 -2px 0 var(--accent); }
+.fl-vbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+@container flstage (max-width: 760px) {
+  .fl-run .fl-view { display: inline-flex; order: 1; margin-left: auto; }
+  .fl-runmsg { order: 2; }
+  .fl-runbar .fl-csv, .fl-runbar .fl-collapse { order: 3; }
+  .fl-run.closed .fl-view { display: none; }
+  .fl-runbody .fl-results { display: none; }
+  .fl-runbody.numbers .fl-results { display: block; flex: 1; width: auto; }
+  .fl-runbody.numbers .fl-plot { display: none; }
+  .fl-runbody.numbers .fl-tab tbody th { max-width: 220px; }
+}
+
+/* ---------------- the settings of what is selected ---------------- */
+.fl-side { width: 280px; flex: none; border-left: 1px solid var(--line); background: var(--panel-2); display: flex; flex-direction: column; min-height: 0; }
+.fl-sidehead { display: flex; align-items: center; gap: 6px; width: 100%; border: 0; border-bottom: 1px solid var(--line); background: var(--panel-2); padding: 8px 12px; font-weight: 700; font-size: 0.84rem; color: var(--ink); text-align: left; cursor: default; flex: none; }
+.fl-sidehead span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fl-sidehead .ic { display: none; width: 16px; height: 16px; color: var(--muted); transition: transform 0.15s; }
+.fl-sidebody { flex: 1; min-height: 0; overflow: auto; padding: 10px 12px 18px; }
+.fl-f { display: flex; flex-direction: column; gap: 3px; margin: 0 0 10px; min-width: 0; }
+.fl-fl { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.fl-in { border: 1px solid var(--line-2); border-radius: 6px; padding: 5px 7px; background: #fff; width: 100%; font-size: 0.86rem; min-width: 0; }
+.fl-in:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+.fl-ta { resize: vertical; min-height: 44px; font-family: var(--font); line-height: 1.35; }
+.fl-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fl-hintf { color: var(--muted); font-size: 0.74rem; line-height: 1.4; display: block; }
+.fl-note { font-size: 0.8rem; color: var(--ink-2); margin: 0 0 10px; line-height: 1.45; }
+.fl-check { display: flex; align-items: center; gap: 7px; font-size: 0.84rem; margin: 3px 0 8px; cursor: pointer; color: var(--ink-2); }
+.fl-check input { margin: 0; flex: none; }
+.fl-blk span { color: #8e2219; }
+.fl-intv { border: 1px solid #e0d2f1; background: #faf6ff; border-radius: 8px; padding: 8px 10px 6px; margin: 6px 0 12px; }
+.fl-intv .fl-check { margin: 4px 0; }
+.fl-intv .fl-f { margin-top: 6px; }
+.fl-gap { margin: 14px 0 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+.fl-sw { display: flex; flex-wrap: wrap; gap: 5px; }
+.fl-swb { width: 22px; height: 22px; border-radius: 6px; border: 2px solid; cursor: pointer; padding: 0; }
+.fl-swb.on { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent); }
+.fl-swb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.fl-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.fl-tips { padding-left: 1.1em; margin: 0; font-size: 0.8rem; color: var(--ink-2); line-height: 1.45; }
+.fl-tips li { margin: 4px 0; }
+.fl-seg-wide { display: flex; flex-direction: column; width: 100%; }
+.fl-seg-wide .fl-sign { justify-content: flex-start; padding: 5px 8px; font-weight: 650; font-size: 0.84rem; gap: 6px; }
+.fl-seg-wide .fl-sign + .fl-sign { border-left: 0; border-top: 1px solid var(--line-2); }
+
+/* ---------------- dialogs ---------------- */
+.fl-dlg-h { margin: 14px 0 6px; font-size: 0.88rem; }
+.modal-b .fl-dlg-h:first-child { margin-top: 0; }
+.fl-dlg-list { display: flex; flex-direction: column; gap: 4px; }
+.fl-dlg-item { display: flex; gap: 8px; align-items: flex-start; border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 7px 10px; text-align: left; cursor: pointer; }
+.fl-dlg-item:hover { border-color: var(--accent); background: var(--accent-soft); }
+.fl-dlg-item .ic { width: 16px; height: 16px; color: var(--muted); margin-top: 2px; }
+.fl-dlg-item small { display: block; color: var(--muted); margin-top: 2px; font-size: 0.78rem; line-height: 1.35; }
+
+/* ---------------- a narrow workbench: the settings fold away under the drawing ---------------- */
+@container flow (max-width: 780px) {
+  .fl-bar { padding: 4px 6px; }
+  .fl-body { flex-direction: column; }
+  .fl-side { width: auto; border-left: 0; border-top: 1px solid var(--line); max-height: 45%; }
+  .fl-sidehead { cursor: pointer; }
+  .fl-sidehead .ic { display: inline-block; transform: rotate(180deg); }
+  .fl-side.open .fl-sidehead .ic { transform: none; }
+  .fl-side:not(.open) .fl-sidebody { display: none; }
+  .fl-runbody { height: 190px; }
+  .fl-legend, .fl-hint { display: none; }
+  .fl-runmsg { min-width: 100%; order: 9; }
+  .fl.side-open .fl-runbody { display: none; }
+}
+@container flow (max-width: 420px) {
+  .fl-lab span { display: none; }
+  .fl-sep { display: none; }
+  .fl-bar .tbtn span, .fl-bar .fl-sign span, .fl-bar .fl-runbtn span { display: none; }
+  .fl-title { max-width: 150px; }
+}

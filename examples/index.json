@@ -1,0 +1,119 @@
+{
+ "format": "bms-examples-1",
+ "diagrams": [
+  {
+   "id": "blank",
+   "file": "diagrams/blank.flow.json",
+   "title": "Blank diagram",
+   "description": "An empty diagram to start from.",
+   "group": "Start",
+   "order": 0
+  },
+  {
+   "id": "negative-feedback-temperature",
+   "file": "diagrams/negative-feedback-temperature.flow.json",
+   "title": "Negative feedback: body temperature",
+   "description": "Cold surroundings make the body lose heat. The hypothalamus compares core temperature with its set point and turns up heat production and turns down heat loss, so that temperature falls only a little. Try blocking the arrows from the comparator to see what the temperature would do without control.",
+   "group": "Feedback",
+   "order": 1
+  },
+  {
+   "id": "positive-feedback-clotting",
+   "file": "diagrams/positive-feedback-clotting.flow.json",
+   "title": "Positive feedback: blood clotting",
+   "description": "An injury starts the clotting cascade. Thrombin activates platelets and clotting factors, which make still more thrombin: positive feedback, so a small start becomes a runaway chain reaction that quickly makes a clot. In the body the loop is ended by things outside it, such as anticoagulants. Try blocking one arrow of the loop.",
+   "group": "Feedback",
+   "order": 2
+  },
+  {
+   "id": "feed-forward-temperature",
+   "file": "diagrams/feed-forward-temperature.flow.json",
+   "title": "Feed-forward: cold receptors in the skin",
+   "description": "The same temperature control, with feed-forward: cold receptors in the skin sense the cold surroundings and turn up heat production before the core temperature has fallen. Compare the dip in core temperature with the negative feedback example, and block the feed-forward arrow to see the difference.",
+   "group": "Feedback",
+   "order": 3
+  },
+  {
+   "id": "delay-oscillation",
+   "file": "diagrams/delay-oscillation.flow.json",
+   "title": "Negative feedback with a delay",
+   "description": "A negative feedback loop whose sensor reports late: the effector keeps correcting for an error that has already gone, so the regulated variable overshoots and oscillates. Make the delay shorter (or the strength smaller) and the oscillation dies away quickly; make it longer and it grows.",
+   "group": "Feedback",
+   "order": 4
+  },
+  {
+   "id": "blood-glucose",
+   "file": "diagrams/blood-glucose.flow.json",
+   "title": "Blood glucose: insulin and glucagon",
+   "description": "Glucose absorbed after a meal raises blood glucose. The β cells of the pancreas respond with more insulin, which lowers glucose; the α cells make less glucagon, which would raise it. Two negative feedback loops work together. Try knocking out insulin (as in type 1 diabetes).",
+   "group": "Hormones",
+   "order": 5
+  },
+  {
+   "id": "endocrine-axis",
+   "file": "diagrams/endocrine-axis.flow.json",
+   "title": "An endocrine axis (template)",
+   "description": "A template for a hypothalamic–pituitary–endocrine axis, with generic names: a releasing hormone from the hypothalamus stimulates a trophic hormone from the anterior pituitary, which stimulates a target gland. The target gland’s hormone feeds back on both (long-loop negative feedback), and the trophic hormone feeds back on the hypothalamus (short loop). Rename the boxes for a real axis, and try knocking out the target gland.",
+   "group": "Hormones",
+   "order": 6
+  }
+ ],
+ "circuits": [
+  {
+   "id": "ohms-law",
+   "file": "circuits/ohms-law.circuit.json",
+   "title": "Ohm’s law",
+   "description": "A 9 V battery drives a current through a 1 kΩ resistor. The ammeter (in series) shows the current and the voltmeter (in parallel) the voltage across the resistor: check that <i>I</i> = <i>V</i> / <i>R</i>. Change the resistance or the battery’s voltage (click it, then type a new value on the right) and watch the readings change.",
+   "group": "Basics",
+   "order": 1
+  },
+  {
+   "id": "series-parallel",
+   "file": "circuits/series-parallel.circuit.json",
+   "title": "Resistances in series and in parallel",
+   "description": "A model of blood vessels. A pressure source of 100 mmHg drives blood through an artery (in series) and then through two vascular beds side by side (in parallel). The flowmeters show how the flow divides: more flow takes the path of lower resistance. Total resistance = <i>R</i><sub>artery</sub> + 1 / (1/<i>R</i><sub>A</sub> + 1/<i>R</i><sub>B</sub>), and flow = difference in pressure / resistance (Darcy’s law, the same form as Ohm’s law). Try narrowing bed A (raise its resistance) and see where the flow goes.",
+   "group": "Physiology",
+   "order": 2
+  },
+  {
+   "id": "voltage-divider",
+   "file": "circuits/voltage-divider.circuit.json",
+   "title": "A voltage divider",
+   "description": "Two resistors in series share the battery’s voltage in proportion to their resistances: the voltage across R2 is <i>V</i> × R2 / (R1 + R2). With 10 V, R1 = 10 kΩ and R2 = 5 kΩ the voltmeter should read 3.33 V. Change R2 and predict the new reading before you look.",
+   "group": "Basics",
+   "order": 3
+  },
+  {
+   "id": "rc-circuit",
+   "file": "circuits/rc-circuit.circuit.json",
+   "title": "Charging and discharging a capacitor",
+   "description": "Press <b>Run</b>, then click the <b>Charge</b> switch to close it: the capacitor charges through R1, quickly at first and then more and more slowly. After one time constant, τ = <i>RC</i> = 10 kΩ × 100 µF = 1 s, it has reached 63% of the battery’s 5 V. Then open <b>Charge</b> and close <b>Discharge</b>: the capacitor empties through R2 with the same time constant. Try a larger capacitor, or a larger resistor.",
+   "group": "Basics",
+   "order": 4
+  },
+  {
+   "id": "membrane-rc",
+   "file": "circuits/membrane-rc.circuit.json",
+   "title": "The membrane as an RC circuit",
+   "description": "A small cell. Its membrane is a capacitor (100 pF) in parallel with a leak: a resistance of 100 MΩ in series with a battery at the leak’s reversal potential, −70 mV. Pulses of current (100 pA) are injected into the cell. The membrane potential does not jump: it rises towards −60 mV (Δ<i>V</i> = <i>IR</i> = 10 mV) with the time constant τ = <i>RC</i> = 10 ms, and falls back the same way. Find τ on the plot (the time to reach 63% of the change), then halve the capacitance and look again.",
+   "group": "Membranes",
+   "order": 5
+  },
+  {
+   "id": "resting-potential",
+   "file": "circuits/resting-potential.circuit.json",
+   "title": "The resting membrane potential",
+   "description": "The parallel-conductance model of a membrane. Each kind of ion channel is a conductance (drawn as a resistor: conductance = 1 / resistance) in series with a battery at that ion’s equilibrium (Nernst) potential: K⁺ at −90 mV and Na⁺ at +60 mV. At rest the membrane settles at the average of these potentials, weighted by the conductances: <i>V</i> = (<i>g</i><sub>K</sub><i>E</i><sub>K</sub> + <i>g</i><sub>Na</sub><i>E</i><sub>Na</sub>) / (<i>g</i><sub>K</sub> + <i>g</i><sub>Na</sub>), about −70 mV here – close to <i>E</i><sub>K</sub>, because the K⁺ conductance is much larger. Run it, then close the switch to open many more Na⁺ channels and watch the membrane potential swing towards <i>E</i><sub>Na</sub>.",
+   "group": "Membranes",
+   "order": 6
+  },
+  {
+   "id": "windkessel",
+   "file": "circuits/windkessel.circuit.json",
+   "title": "The Windkessel model of the circulation",
+   "description": "The two-element Windkessel model. The heart pumps blood into the aorta in pulses (a flow source, 75 beats a minute, about 70 mL a beat); the aortic valve lets it through one way only. The elastic arteries store blood as they stretch (a compliance, 1 mL/mmHg) and the arterioles resist its flow out to the tissues (the peripheral resistance, 1.1 mmHg·s/mL). Run it: the aortic pressure swings between about 75 mmHg (diastolic) and 125 mmHg (systolic), and the flow to the tissues stays steady even though the heart pumps in bursts. Make the arteries stiffer (lower the compliance) and watch the pulse pressure grow.",
+   "group": "Physiology",
+   "order": 7
+  }
+ ]
+}

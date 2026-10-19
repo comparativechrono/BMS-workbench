@@ -1,0 +1,3163 @@
+[
+ {
+  "id": "adrenal-gland",
+  "sample": "GTEX-PLZ6-0225",
+  "crop_mm": [
+   12.34,
+   3.32,
+   16.34,
+   7.72
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2464958737.1572428111.1720451909905.4.0",
+   "crdc_series_uuid": "a0762daf-6484-406c-8932-a8ead8e8be75",
+   "crdc_instance_uuid": "f43715bf-d2f1-427a-a853-caad9cd096b3",
+   "width": 35855,
+   "height": 21598,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Adrenal Gland",
+  "gtex_note": "2, ~3x7mm adrenal cortex and medulla, well preserved. 3x0.6mm attached nerve in one",
+  "title": "Adrenal gland",
+  "system": "Endocrine",
+  "description": "A section across the adrenal gland, showing the capsule, the three zones of the cortex and the medulla with its veins.",
+  "look_for": [
+   "Capsule: a thin layer of dense connective tissue on the outside, with fat beyond it",
+   "Zona glomerulosa: small, rounded clusters of cells just under the capsule",
+   "Zona fasciculata: long, straight cords of large, pale (lipid-filled) cells – the widest zone",
+   "Zona reticularis: a network of smaller, darker cells next to the medulla",
+   "Medulla: larger, purple-blue chromaffin cells around large, thin-walled veins"
+  ],
+  "labels": [
+   {
+    "key": "capsule",
+    "text": "Capsule",
+    "find": "the capsule",
+    "x": 900,
+    "y": 3980,
+    "r": 70
+   },
+   {
+    "key": "capsule",
+    "text": "Capsule",
+    "find": "the capsule",
+    "x": 1500,
+    "y": 3350,
+    "r": 70
+   },
+   {
+    "key": "capsule",
+    "text": "Capsule",
+    "find": "the capsule",
+    "x": 5240,
+    "y": 1440,
+    "r": 80
+   },
+   {
+    "key": "zona-glomerulosa",
+    "text": "Zona glomerulosa",
+    "find": "the zona glomerulosa",
+    "x": 1380,
+    "y": 3640,
+    "r": 110
+   },
+   {
+    "key": "zona-glomerulosa",
+    "text": "Zona glomerulosa",
+    "find": "the zona glomerulosa",
+    "x": 1240,
+    "y": 3900,
+    "r": 100
+   },
+   {
+    "key": "zona-glomerulosa",
+    "text": "Zona glomerulosa",
+    "find": "the zona glomerulosa",
+    "x": 5500,
+    "y": 1700,
+    "r": 110
+   },
+   {
+    "key": "zona-fasciculata",
+    "text": "Zona fasciculata",
+    "find": "the zona fasciculata",
+    "x": 2400,
+    "y": 4400,
+    "r": 350
+   },
+   {
+    "key": "zona-fasciculata",
+    "text": "Zona fasciculata",
+    "find": "the zona fasciculata",
+    "x": 4000,
+    "y": 2400,
+    "r": 350
+   },
+   {
+    "key": "zona-fasciculata",
+    "text": "Zona fasciculata",
+    "find": "the zona fasciculata",
+    "x": 1200,
+    "y": 6400,
+    "r": 300
+   },
+   {
+    "key": "zona-reticularis",
+    "text": "Zona reticularis",
+    "find": "the zona reticularis",
+    "x": 4100,
+    "y": 6800,
+    "r": 150
+   },
+   {
+    "key": "zona-reticularis",
+    "text": "Zona reticularis",
+    "find": "the zona reticularis",
+    "x": 3500,
+    "y": 4700,
+    "r": 120
+   },
+   {
+    "key": "medulla",
+    "text": "Medulla",
+    "find": "the medulla",
+    "x": 4600,
+    "y": 5600,
+    "r": 400
+   },
+   {
+    "key": "medulla",
+    "text": "Medulla",
+    "find": "the medulla",
+    "x": 5600,
+    "y": 4600,
+    "r": 250
+   },
+   {
+    "key": "central-vein",
+    "text": "Central vein",
+    "find": "the central vein of the medulla",
+    "x": 3200,
+    "y": 6200,
+    "r": 220
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel outside the capsule",
+    "x": 5100,
+    "y": 380,
+    "r": 150
+   }
+  ]
+ },
+ {
+  "id": "pituitary-gland",
+  "sample": "GTEX-16XZZ-3125",
+  "crop_mm": [
+   3.0,
+   1.4,
+   7.0,
+   5.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2077363746.1617266094.1720064314914.4.0",
+   "crdc_series_uuid": "fe8915b0-d2b0-434f-be2a-e54a3c54cb6b",
+   "crdc_instance_uuid": "d7e5bb44-ebd3-457f-9e4c-27bf20eb3ed9",
+   "width": 19919,
+   "height": 13097,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Pituitary",
+  "gtex_note": "2 pieces; anterior and posterior parts are separated and in equal proportions",
+  "title": "Pituitary gland",
+  "system": "Endocrine",
+  "description": "The anterior pituitary (adenohypophysis, left) and the posterior pituitary (neurohypophysis, right), which in this specimen were cut as two pieces side by side.",
+  "look_for": [
+   "Anterior pituitary: cords and clusters of endocrine cells around capillaries",
+   "In the anterior pituitary, cells whose cytoplasm stains pink (acidophils), purple-blue (basophils) or hardly at all (chromophobes)",
+   "Posterior pituitary: pale, fibrous-looking tissue made of unmyelinated axons from the hypothalamus",
+   "Scattered nuclei of pituicytes (glial cells) among the axons of the posterior pituitary",
+   "Capillaries in both parts"
+  ],
+  "labels": [
+   {
+    "key": "anterior",
+    "text": "Anterior pituitary (adenohypophysis)",
+    "find": "the anterior pituitary",
+    "x": 1500,
+    "y": 4000,
+    "r": 600
+   },
+   {
+    "key": "anterior",
+    "text": "Anterior pituitary (adenohypophysis)",
+    "find": "the anterior pituitary",
+    "x": 2600,
+    "y": 5800,
+    "r": 500
+   },
+   {
+    "key": "posterior",
+    "text": "Posterior pituitary (neurohypophysis)",
+    "find": "the posterior pituitary",
+    "x": 6000,
+    "y": 3700,
+    "r": 500
+   },
+   {
+    "key": "posterior",
+    "text": "Posterior pituitary (neurohypophysis)",
+    "find": "the posterior pituitary",
+    "x": 7000,
+    "y": 5200,
+    "r": 400
+   },
+   {
+    "key": "cells",
+    "text": "A cluster of endocrine cells",
+    "find": "a cluster of endocrine cells",
+    "x": 3840,
+    "y": 4440,
+    "r": 50
+   },
+   {
+    "key": "cells",
+    "text": "A cluster of endocrine cells",
+    "find": "a cluster of endocrine cells",
+    "x": 2150,
+    "y": 3820,
+    "r": 40
+   },
+   {
+    "key": "sinusoid",
+    "text": "Sinusoid (a wide capillary)",
+    "find": "a sinusoid (a wide capillary)",
+    "x": 1930,
+    "y": 3450,
+    "r": 60
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel in the posterior pituitary",
+    "find": "a blood vessel in the posterior pituitary",
+    "x": 6250,
+    "y": 3270,
+    "r": 30
+   },
+   {
+    "key": "capsule",
+    "text": "Capsule (connective tissue)",
+    "find": "the capsule",
+    "x": 4440,
+    "y": 4800,
+    "r": 60
+   },
+   {
+    "key": "capsule",
+    "text": "Capsule (connective tissue)",
+    "find": "the capsule",
+    "x": 2600,
+    "y": 600,
+    "r": 150
+   }
+  ]
+ },
+ {
+  "id": "thyroid-gland",
+  "sample": "GTEX-1OFPY-1525",
+  "crop_mm": [
+   13.2,
+   1.8,
+   16.8,
+   5.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2204036642.694453995.1720190987810.4.0",
+   "crdc_series_uuid": "d6612ea6-a140-4060-8a7b-82017cc20e73",
+   "crdc_instance_uuid": "61146e35-404f-421d-b358-c54ebb4bf605",
+   "width": 47807,
+   "height": 25501,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Thyroid",
+  "gtex_note": "2 pieces; well preserved; no lesions",
+  "title": "Thyroid gland",
+  "system": "Endocrine",
+  "description": "Follicles of many sizes, each a ring of follicular cells around pink colloid.",
+  "look_for": [
+   "Follicles lined by a single layer of follicular cells (flat to cuboidal)",
+   "Colloid (stored thyroglobulin) filling the follicles",
+   "Capillaries and thin connective tissue between the follicles",
+   "Parafollicular (C) cells: occasional pale cells beside the follicles (hard to pick out with this stain)"
+  ],
+  "labels": [
+   {
+    "key": "follicle",
+    "text": "Follicle (filled with colloid)",
+    "find": "a follicle",
+    "x": 4300,
+    "y": 2140,
+    "r": 140
+   },
+   {
+    "key": "follicle",
+    "text": "Follicle (filled with colloid)",
+    "find": "a follicle",
+    "x": 3880,
+    "y": 1740,
+    "r": 100
+   },
+   {
+    "key": "follicle",
+    "text": "Follicle (filled with colloid)",
+    "find": "a follicle",
+    "x": 3840,
+    "y": 4640,
+    "r": 300
+   },
+   {
+    "key": "follicle",
+    "text": "Follicle (filled with colloid)",
+    "find": "a follicle",
+    "x": 1920,
+    "y": 2640,
+    "r": 200
+   },
+   {
+    "key": "colloid",
+    "text": "Colloid",
+    "find": "colloid",
+    "x": 6560,
+    "y": 3200,
+    "r": 250
+   },
+   {
+    "key": "colloid",
+    "text": "Colloid",
+    "find": "colloid",
+    "x": 3720,
+    "y": 2140,
+    "r": 80
+   },
+   {
+    "key": "follicular-cells",
+    "text": "Follicular cells (the wall of a follicle)",
+    "find": "the follicular cells in the wall of a follicle",
+    "x": 4040,
+    "y": 2060,
+    "r": 14
+   },
+   {
+    "key": "connective",
+    "text": "Connective tissue between the follicles",
+    "find": "connective tissue between the follicles",
+    "x": 4000,
+    "y": 1400,
+    "r": 40
+   },
+   {
+    "key": "connective",
+    "text": "Connective tissue between the follicles",
+    "find": "connective tissue between the follicles",
+    "x": 4100,
+    "y": 600,
+    "r": 120
+   }
+  ]
+ },
+ {
+  "id": "pancreas",
+  "sample": "GTEX-OHPM-1025",
+  "crop_mm": [
+   4.5,
+   3.2,
+   8.5,
+   6.7
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2095334698.749599182.1720082285866.4.0",
+   "crdc_series_uuid": "9e123bc7-1dba-45e3-a6ca-49cb8ffee022",
+   "crdc_instance_uuid": "84c2d536-27fa-4672-b2ad-65e244661ee8",
+   "width": 29879,
+   "height": 22959,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Pancreas",
+  "gtex_note": "90% parenchyma, 10% fat. Remarkably well-preserved; numerous islets of Langherhans noted.",
+  "title": "Pancreas",
+  "system": "Endocrine",
+  "description": "Lobules of exocrine acini with pale islets of Langerhans among them, separated by septa that carry ducts, blood vessels and fat.",
+  "look_for": [
+   "Acini: groups of pyramidal cells, purple at the base and pink (zymogen granules) at the top",
+   "Islets of Langerhans: paler, rounded groups of endocrine cells with many capillaries",
+   "Intralobular and interlobular ducts",
+   "Connective tissue septa between the lobules, with arteries, veins and fat cells"
+  ],
+  "labels": [
+   {
+    "key": "islet",
+    "text": "Islet of Langerhans",
+    "find": "an islet of Langerhans",
+    "x": 1600,
+    "y": 2780,
+    "r": 170
+   },
+   {
+    "key": "islet",
+    "text": "Islet of Langerhans",
+    "find": "an islet of Langerhans",
+    "x": 4290,
+    "y": 1190,
+    "r": 130
+   },
+   {
+    "key": "islet",
+    "text": "Islet of Langerhans",
+    "find": "an islet of Langerhans",
+    "x": 250,
+    "y": 830,
+    "r": 110
+   },
+   {
+    "key": "islet",
+    "text": "Islet of Langerhans",
+    "find": "an islet of Langerhans",
+    "x": 3600,
+    "y": 6900,
+    "r": 120
+   },
+   {
+    "key": "acini",
+    "text": "Acini (exocrine pancreas)",
+    "find": "acini of the exocrine pancreas",
+    "x": 2400,
+    "y": 2400,
+    "r": 90
+   },
+   {
+    "key": "acini",
+    "text": "Acini (exocrine pancreas)",
+    "find": "acini of the exocrine pancreas",
+    "x": 6200,
+    "y": 1600,
+    "r": 120
+   },
+   {
+    "key": "duct",
+    "text": "Interlobular duct",
+    "find": "an interlobular duct",
+    "x": 2380,
+    "y": 1670,
+    "r": 55
+   },
+   {
+    "key": "septum",
+    "text": "Interlobular septum (connective tissue)",
+    "find": "a septum between lobules",
+    "x": 2860,
+    "y": 1500,
+    "r": 50
+   },
+   {
+    "key": "artery",
+    "text": "Artery",
+    "find": "an artery",
+    "x": 5300,
+    "y": 5160,
+    "r": 110
+   },
+   {
+    "key": "vein",
+    "text": "Vein",
+    "find": "a vein",
+    "x": 5760,
+    "y": 5960,
+    "r": 170
+   },
+   {
+    "key": "fat",
+    "text": "Fat cells (adipose tissue)",
+    "find": "fat cells",
+    "x": 6000,
+    "y": 4840,
+    "r": 150
+   }
+  ]
+ },
+ {
+  "id": "kidney-cortex",
+  "sample": "GTEX-1497J-0825",
+  "crop_mm": [
+   11.0,
+   1.0,
+   14.6,
+   5.6
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2027429933.700131894.1720014381101.4.0",
+   "crdc_series_uuid": "107c183c-8d52-4b43-a7a6-aab422241a2a",
+   "crdc_instance_uuid": "a8e4a261-878b-462f-9b18-516011938aeb",
+   "width": 49799,
+   "height": 37482,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Kidney - Cortex",
+  "gtex_note": "6 pieces, tubules unusually well preserved. Glomeruli present",
+  "title": "Kidney (cortex)",
+  "system": "Urinary",
+  "description": "The renal cortex: renal corpuscles among proximal and distal convoluted tubules.",
+  "look_for": [
+   "Renal corpuscles: a glomerulus (a tuft of capillaries) inside Bowman’s capsule, with the urinary (Bowman’s) space around it",
+   "Proximal convoluted tubules: the most numerous, with pink cells and a fuzzy brush border",
+   "Distal convoluted tubules: fewer, with smaller, paler cells and a clearer lumen",
+   "Medullary rays: bundles of straight tubules running through the cortex",
+   "Small blood vessels and the peritubular capillaries between the tubules"
+  ],
+  "labels": [
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 5140,
+    "y": 1520,
+    "r": 110
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 6080,
+    "y": 2320,
+    "r": 150
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 6360,
+    "y": 1090,
+    "r": 80
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 4060,
+    "y": 4690,
+    "r": 110
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 2340,
+    "y": 5440,
+    "r": 110
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 2110,
+    "y": 5900,
+    "r": 110
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 3400,
+    "y": 6030,
+    "r": 110
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 3690,
+    "y": 5890,
+    "r": 90
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 2130,
+    "y": 6580,
+    "r": 80
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 1650,
+    "y": 8120,
+    "r": 100
+   },
+   {
+    "key": "bowmans-space",
+    "text": "Bowman’s (urinary) space",
+    "find": "Bowman’s space",
+    "x": 6265,
+    "y": 2400,
+    "r": 20
+   },
+   {
+    "key": "bowmans-space",
+    "text": "Bowman’s (urinary) space",
+    "find": "Bowman’s space",
+    "x": 4040,
+    "y": 4455,
+    "r": 28
+   },
+   {
+    "key": "pct",
+    "text": "Proximal convoluted tubule",
+    "find": "a proximal convoluted tubule",
+    "x": 5630,
+    "y": 2150,
+    "r": 40
+   },
+   {
+    "key": "pct",
+    "text": "Proximal convoluted tubule",
+    "find": "a proximal convoluted tubule",
+    "x": 3050,
+    "y": 5970,
+    "r": 35
+   },
+   {
+    "key": "medullary-ray",
+    "text": "Medullary ray (straight tubules)",
+    "find": "a medullary ray",
+    "x": 4900,
+    "y": 2700,
+    "r": 200
+   },
+   {
+    "key": "medullary-ray",
+    "text": "Medullary ray (straight tubules)",
+    "find": "a medullary ray",
+    "x": 1200,
+    "y": 8400,
+    "r": 150
+   },
+   {
+    "key": "vessel",
+    "text": "Small blood vessel",
+    "find": "a small blood vessel",
+    "x": 2940,
+    "y": 5740,
+    "r": 30
+   }
+  ]
+ },
+ {
+  "id": "liver",
+  "sample": "GTEX-RWSA-1425",
+  "crop_mm": [
+   2.4,
+   1.8,
+   5.9,
+   4.8
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2236310798.1689622911.1720223261966.4.0",
+   "crdc_series_uuid": "1dc81fe4-45fe-4ea5-bdde-a4690a38dc5a",
+   "crdc_instance_uuid": "22d606cb-01cf-4b7f-99c8-59bbb5d37d82",
+   "width": 43823,
+   "height": 30408,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Liver",
+  "gtex_note": "2 aliquots,  ~7x6mm.  Fairly well preserved, minimal fat",
+  "title": "Liver",
+  "system": "Digestive",
+  "description": "Plates of hepatocytes radiating from central veins, with portal tracts at the corners of the lobules.",
+  "look_for": [
+   "Hepatocytes: large polygonal cells in plates, with one or two round nuclei",
+   "Sinusoids: the pale spaces between the plates of hepatocytes",
+   "Central veins (terminal hepatic venules): thin-walled veins with no bile duct beside them",
+   "A portal tract: a branch of the portal vein and small bile ducts in connective tissue (the branch of the hepatic artery is small and hard to pick out here)"
+  ],
+  "labels": [
+   {
+    "key": "central-vein",
+    "text": "Central vein",
+    "find": "a central vein",
+    "x": 650,
+    "y": 3570,
+    "r": 40
+   },
+   {
+    "key": "central-vein",
+    "text": "Central vein",
+    "find": "a central vein",
+    "x": 3765,
+    "y": 1320,
+    "r": 40
+   },
+   {
+    "key": "portal-tract",
+    "text": "Portal tract",
+    "find": "a portal tract",
+    "x": 4130,
+    "y": 3300,
+    "r": 130
+   },
+   {
+    "key": "portal-vein",
+    "text": "Branch of the portal vein",
+    "find": "a branch of the portal vein",
+    "x": 4210,
+    "y": 3330,
+    "r": 60
+   },
+   {
+    "key": "bile-duct",
+    "text": "Bile duct",
+    "find": "a bile duct",
+    "x": 4080,
+    "y": 3480,
+    "r": 25
+   },
+   {
+    "key": "bile-duct",
+    "text": "Bile duct",
+    "find": "a bile duct",
+    "x": 4540,
+    "y": 2850,
+    "r": 22
+   },
+   {
+    "key": "hepatocytes",
+    "text": "Plates of hepatocytes, with sinusoids between them",
+    "find": "hepatocytes",
+    "x": 4800,
+    "y": 3700,
+    "r": 80
+   },
+   {
+    "key": "hepatocytes",
+    "text": "Plates of hepatocytes, with sinusoids between them",
+    "find": "hepatocytes",
+    "x": 2000,
+    "y": 2000,
+    "r": 100
+   }
+  ]
+ },
+ {
+  "id": "lung",
+  "sample": "GTEX-WFG7-0525",
+  "crop_mm": [
+   16.2,
+   5.6,
+   20.4,
+   9.4
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2346939307.675476119.1720333890475.4.0",
+   "crdc_series_uuid": "c9d3107b-8fd9-4854-9f1a-be424a589115",
+   "crdc_instance_uuid": "a48cfc32-d5ae-4d2b-946e-a315dadc5d47",
+   "width": 51791,
+   "height": 33918,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Lung",
+  "gtex_note": "2 pieces  ~7x6mm Unusally well preserved, well visualized and preserved bronchial structures noted, encircled",
+  "title": "Lung",
+  "system": "Respiratory",
+  "description": "Lung tissue with a large bronchiole and the branch of the pulmonary artery that runs beside it, among alveoli (some of them collapsed, as is common after death).",
+  "look_for": [
+   "Alveoli and their thin walls (interalveolar septa), which carry capillaries; some alveoli here have collapsed",
+   "A bronchiole: an airway with a folded epithelium and smooth muscle, but no cartilage",
+   "The branch of the pulmonary artery that runs beside the airway"
+  ],
+  "labels": [
+   {
+    "key": "bronchiole",
+    "text": "Bronchiole (an airway with no cartilage)",
+    "find": "the bronchiole",
+    "x": 4350,
+    "y": 3600,
+    "r": 380
+   },
+   {
+    "key": "airway-epithelium",
+    "text": "Folded epithelium of the bronchiole",
+    "find": "the epithelium lining the airway",
+    "x": 4050,
+    "y": 4150,
+    "r": 60
+   },
+   {
+    "key": "airway-muscle",
+    "text": "Smooth muscle in the wall of the bronchiole",
+    "find": "the smooth muscle in the wall of the airway",
+    "x": 3520,
+    "y": 3390,
+    "r": 40
+   },
+   {
+    "key": "pulmonary-artery",
+    "text": "Branch of the pulmonary artery (beside the airway)",
+    "find": "the branch of the pulmonary artery",
+    "x": 6000,
+    "y": 4300,
+    "r": 200
+   },
+   {
+    "key": "pulmonary-artery",
+    "text": "Branch of the pulmonary artery (beside the airway)",
+    "find": "the branch of the pulmonary artery",
+    "x": 5850,
+    "y": 5300,
+    "r": 180
+   },
+   {
+    "key": "alveoli",
+    "text": "Alveoli",
+    "find": "alveoli",
+    "x": 1100,
+    "y": 1250,
+    "r": 100
+   },
+   {
+    "key": "alveoli",
+    "text": "Alveoli",
+    "find": "alveoli",
+    "x": 7250,
+    "y": 5950,
+    "r": 60
+   },
+   {
+    "key": "vessel",
+    "text": "Small blood vessel",
+    "find": "a small blood vessel",
+    "x": 1630,
+    "y": 650,
+    "r": 25
+   }
+  ]
+ },
+ {
+  "id": "heart",
+  "sample": "GTEX-13O61-0525",
+  "crop_mm": [
+   2.0,
+   3.6,
+   5.6,
+   7.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2253377056.1708489532.1720240328224.4.0",
+   "crdc_series_uuid": "598803a1-0242-417e-9294-458d5992c3d0",
+   "crdc_instance_uuid": "1cd9345c-1e53-46a9-98c5-7dd1963a3a57",
+   "width": 35855,
+   "height": 20359,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Heart - Left Ventricle",
+  "gtex_note": "2 pieces; well preserved, no lesions or signs of ischemia",
+  "title": "Heart (left ventricle)",
+  "system": "Cardiovascular",
+  "description": "Cardiac muscle cut in different planes: branching cells with central nuclei, connective tissue and many capillaries.",
+  "look_for": [
+   "Cardiac muscle cells with one or two central nuclei",
+   "Branching fibres, and intercalated discs (dark lines across the fibres) at high power",
+   "Cross-striations, best seen at 40x",
+   "Connective tissue (endomysium) with many capillaries between the fibres"
+  ],
+  "labels": [
+   {
+    "key": "longitudinal",
+    "text": "Cardiac muscle cut lengthways",
+    "find": "cardiac muscle cells cut lengthways",
+    "x": 4450,
+    "y": 2950,
+    "r": 120
+   },
+   {
+    "key": "longitudinal",
+    "text": "Cardiac muscle cut lengthways",
+    "find": "cardiac muscle cells cut lengthways",
+    "x": 3600,
+    "y": 4600,
+    "r": 200
+   },
+   {
+    "key": "transverse",
+    "text": "Cardiac muscle cut across",
+    "find": "cardiac muscle cells cut across",
+    "x": 550,
+    "y": 5250,
+    "r": 150
+   },
+   {
+    "key": "transverse",
+    "text": "Cardiac muscle cut across",
+    "find": "cardiac muscle cells cut across",
+    "x": 1000,
+    "y": 3500,
+    "r": 200
+   },
+   {
+    "key": "connective",
+    "text": "Connective tissue between bundles of muscle fibres",
+    "find": "connective tissue between the bundles of muscle",
+    "x": 1260,
+    "y": 1350,
+    "r": 45
+   },
+   {
+    "key": "arteriole",
+    "text": "Arteriole",
+    "find": "an arteriole",
+    "x": 1185,
+    "y": 1430,
+    "r": 28
+   }
+  ]
+ },
+ {
+  "id": "skeletal-muscle",
+  "sample": "GTEX-WFON-2325",
+  "crop_mm": [
+   4.0,
+   7.0,
+   8.0,
+   10.5
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2282852887.175926588.1720269804055.4.0",
+   "crdc_series_uuid": "c32581f8-a2fc-4cb5-ab3f-88f1da9eefcd",
+   "crdc_instance_uuid": "ed4cf62b-131a-4c3c-9a00-f3b32107834a",
+   "width": 47807,
+   "height": 37000,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Muscle - Skeletal",
+  "gtex_note": "2 pieces,  ~12x7mm.  Minimal interstitial fat, excellent specimens.",
+  "title": "Skeletal muscle",
+  "system": "Muscle",
+  "description": "Fascicles of skeletal muscle fibres: long, unbranched cells with many nuclei at their edges.",
+  "look_for": [
+   "Fascicles separated by connective tissue (perimysium)",
+   "Nuclei at the edge of each fibre (peripheral nuclei)",
+   "Cross-striations at high power, in fibres cut lengthways",
+   "Fibres cut across: polygonal profiles with nuclei at their edges"
+  ],
+  "labels": [
+   {
+    "key": "longitudinal",
+    "text": "Fibres cut lengthways (nuclei at their edges)",
+    "find": "skeletal muscle fibres cut lengthways",
+    "x": 2300,
+    "y": 1000,
+    "r": 150
+   },
+   {
+    "key": "transverse",
+    "text": "Fibres cut across",
+    "find": "skeletal muscle fibres cut across",
+    "x": 1300,
+    "y": 6300,
+    "r": 300
+   },
+   {
+    "key": "transverse",
+    "text": "Fibres cut across",
+    "find": "skeletal muscle fibres cut across",
+    "x": 1820,
+    "y": 5890,
+    "r": 35
+   },
+   {
+    "key": "nucleus",
+    "text": "Nucleus at the edge of a fibre",
+    "find": "a nucleus at the edge of a muscle fibre",
+    "x": 2390,
+    "y": 1015,
+    "r": 10
+   },
+   {
+    "key": "perimysium",
+    "text": "Perimysium (connective tissue between fascicles)",
+    "find": "the perimysium between two fascicles",
+    "x": 2950,
+    "y": 4150,
+    "r": 60
+   },
+   {
+    "key": "perimysium",
+    "text": "Perimysium (connective tissue between fascicles)",
+    "find": "the perimysium between two fascicles",
+    "x": 4600,
+    "y": 2400,
+    "r": 50
+   },
+   {
+    "key": "artery",
+    "text": "Small artery in the perimysium",
+    "find": "a small artery",
+    "x": 2560,
+    "y": 4480,
+    "r": 55
+   },
+   {
+    "key": "artery",
+    "text": "Small artery in the perimysium",
+    "find": "a small artery",
+    "x": 3070,
+    "y": 4500,
+    "r": 55
+   },
+   {
+    "key": "fascicle",
+    "text": "A fascicle (bundle of fibres)",
+    "find": "a fascicle",
+    "x": 3700,
+    "y": 5600,
+    "r": 400
+   }
+  ]
+ },
+ {
+  "id": "smooth-muscle",
+  "sample": "GTEX-131XF-0925",
+  "crop_mm": [
+   10.5,
+   4.0,
+   14.5,
+   8.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2446088869.157316603.1720433040037.4.0",
+   "crdc_series_uuid": "f737e9e2-3104-4fe0-a255-c440099e8eb6",
+   "crdc_instance_uuid": "41bbffda-da9e-42e3-b2f4-64ae8740f97c",
+   "width": 55775,
+   "height": 42166,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Esophagus - Muscularis",
+  "gtex_note": "6 pieces; well preserved, well dissected",
+  "title": "Smooth muscle (oesophagus)",
+  "system": "Muscle",
+  "description": "The muscle coat (muscularis externa) of the oesophagus: bundles of smooth muscle cut lengthways and across.",
+  "look_for": [
+   "Smooth muscle cells: spindle-shaped, with one central, elongated nucleus",
+   "Cells cut across: small round profiles, only some of which contain a nucleus",
+   "Two layers whose bundles run in different directions (one cut lengthways, the other across)",
+   "Between the layers: connective tissue, blood vessels and a ganglion of the myenteric (Auerbach’s) plexus"
+  ],
+  "labels": [
+   {
+    "key": "longitudinal",
+    "text": "Smooth muscle cut lengthways",
+    "find": "smooth muscle cut lengthways",
+    "x": 5000,
+    "y": 4600,
+    "r": 120
+   },
+   {
+    "key": "longitudinal",
+    "text": "Smooth muscle cut lengthways",
+    "find": "smooth muscle cut lengthways",
+    "x": 2500,
+    "y": 3200,
+    "r": 250
+   },
+   {
+    "key": "transverse",
+    "text": "Smooth muscle cut across",
+    "find": "smooth muscle cut across",
+    "x": 6400,
+    "y": 5300,
+    "r": 100
+   },
+   {
+    "key": "transverse",
+    "text": "Smooth muscle cut across",
+    "find": "smooth muscle cut across",
+    "x": 1000,
+    "y": 7000,
+    "r": 300
+   },
+   {
+    "key": "ganglion",
+    "text": "Myenteric (Auerbach’s) plexus: a ganglion with nerve cell bodies",
+    "find": "a ganglion of the myenteric plexus",
+    "x": 3300,
+    "y": 5930,
+    "r": 90
+   },
+   {
+    "key": "connective",
+    "text": "Connective tissue between the two layers of muscle",
+    "find": "the connective tissue between the two layers of muscle",
+    "x": 4700,
+    "y": 5050,
+    "r": 80
+   },
+   {
+    "key": "vessel",
+    "text": "Small blood vessel",
+    "find": "a small blood vessel",
+    "x": 5710,
+    "y": 4680,
+    "r": 40
+   }
+  ]
+ },
+ {
+  "id": "aorta",
+  "sample": "GTEX-OHPK-0425",
+  "crop_mm": [
+   9.6,
+   4.5,
+   12.6,
+   8.5
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2402999151.1584077835.1720389950319.4.0",
+   "crdc_series_uuid": "d0a77434-37c0-443f-b13a-94a524ecd49b",
+   "crdc_instance_uuid": "c926152e-5f9a-4a88-b34f-09500eed1ac1",
+   "width": 41831,
+   "height": 29263,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Artery - Aorta",
+  "gtex_note": "fairly well preserved, although endothelium is denuded",
+  "title": "Aorta",
+  "system": "Cardiovascular",
+  "description": "The wall of an elastic artery, from the intima on one side to the adventitia on the other.",
+  "look_for": [
+   "Tunica intima (in this specimen the endothelium has come away)",
+   "Tunica media: many wavy elastic laminae with smooth muscle cells between them",
+   "Tunica adventitia: looser connective tissue with small vessels (vasa vasorum)"
+  ],
+  "labels": [
+   {
+    "key": "intima",
+    "text": "Tunica intima (its endothelium has come away here)",
+    "find": "the tunica intima",
+    "x": 5300,
+    "y": 4950,
+    "poly": [
+     [
+      5460,
+      4600
+     ],
+     [
+      5400,
+      4750
+     ],
+     [
+      5250,
+      5250
+     ],
+     [
+      5050,
+      5750
+     ],
+     [
+      4970,
+      5750
+     ],
+     [
+      5170,
+      5250
+     ],
+     [
+      5320,
+      4750
+     ],
+     [
+      5380,
+      4600
+     ]
+    ]
+   },
+   {
+    "key": "media",
+    "text": "Tunica media: elastic laminae with smooth muscle between them",
+    "find": "the tunica media",
+    "x": 4100,
+    "y": 4200,
+    "r": 500
+   },
+   {
+    "key": "media",
+    "text": "Tunica media: elastic laminae with smooth muscle between them",
+    "find": "the tunica media",
+    "x": 3000,
+    "y": 7000,
+    "r": 400
+   },
+   {
+    "key": "adventitia",
+    "text": "Tunica adventitia",
+    "find": "the tunica adventitia",
+    "x": 900,
+    "y": 6800,
+    "r": 150
+   },
+   {
+    "key": "adventitia",
+    "text": "Tunica adventitia",
+    "find": "the tunica adventitia",
+    "x": 1900,
+    "y": 4400,
+    "r": 100
+   },
+   {
+    "key": "vasa-vasorum",
+    "text": "Vasa vasorum (small vessels that supply the wall)",
+    "find": "a vessel of the vasa vasorum",
+    "x": 480,
+    "y": 7155,
+    "r": 45
+   },
+   {
+    "key": "vasa-vasorum",
+    "text": "Vasa vasorum (small vessels that supply the wall)",
+    "find": "a vessel of the vasa vasorum",
+    "x": 800,
+    "y": 7390,
+    "r": 40
+   }
+  ]
+ },
+ {
+  "id": "muscular-artery",
+  "sample": "GTEX-RU72-1225",
+  "crop_mm": [
+   0.4,
+   0.5,
+   2.9,
+   2.6
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.1968174751.1859227256.1719955125919.4.0",
+   "crdc_series_uuid": "7540f289-73af-49db-9361-f4bed25596ae",
+   "crdc_instance_uuid": "13f95ff2-db52-46fc-9f06-f1712433347f",
+   "width": 17927,
+   "height": 11456,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Artery - Tibial",
+  "gtex_note": "2 aliquots,  ~2.5mm d.  Excellent clean specimens",
+  "title": "Muscular artery (tibial)",
+  "system": "Cardiovascular",
+  "description": "A medium-sized muscular artery cut across.",
+  "look_for": [
+   "The lumen and the endothelium that lines it",
+   "Internal elastic lamina: a wavy, glassy line under the endothelium",
+   "Tunica media: layers of smooth muscle running round the vessel",
+   "Tunica adventitia: connective tissue around the outside"
+  ],
+  "labels": [
+   {
+    "key": "lumen",
+    "text": "Lumen",
+    "find": "the lumen",
+    "x": 2180,
+    "y": 2650,
+    "r": 90
+   },
+   {
+    "key": "intima",
+    "text": "Tunica intima (endothelium and a thin layer under it)",
+    "find": "the tunica intima",
+    "x": 1870,
+    "y": 3178,
+    "r": 16
+   },
+   {
+    "key": "internal-elastic-lamina",
+    "text": "Internal elastic lamina (wavy and glassy)",
+    "find": "the internal elastic lamina",
+    "x": 1840,
+    "y": 3225,
+    "poly": [
+     [
+      1660,
+      3288
+     ],
+     [
+      1700,
+      3243
+     ],
+     [
+      1725,
+      3203
+     ],
+     [
+      1755,
+      3193
+     ],
+     [
+      1780,
+      3233
+     ],
+     [
+      1810,
+      3250
+     ],
+     [
+      1840,
+      3213
+     ],
+     [
+      1880,
+      3210
+     ],
+     [
+      1910,
+      3228
+     ],
+     [
+      1935,
+      3278
+     ],
+     [
+      1960,
+      3306
+     ],
+     [
+      2000,
+      3310
+     ],
+     [
+      2040,
+      3298
+     ],
+     [
+      2040,
+      3322
+     ],
+     [
+      2000,
+      3334
+     ],
+     [
+      1960,
+      3330
+     ],
+     [
+      1935,
+      3302
+     ],
+     [
+      1910,
+      3252
+     ],
+     [
+      1880,
+      3234
+     ],
+     [
+      1840,
+      3237
+     ],
+     [
+      1810,
+      3274
+     ],
+     [
+      1780,
+      3257
+     ],
+     [
+      1755,
+      3217
+     ],
+     [
+      1725,
+      3227
+     ],
+     [
+      1700,
+      3267
+     ],
+     [
+      1660,
+      3312
+     ]
+    ]
+   },
+   {
+    "key": "media",
+    "text": "Tunica media: layers of smooth muscle",
+    "find": "the tunica media",
+    "x": 1800,
+    "y": 3550,
+    "r": 120
+   },
+   {
+    "key": "adventitia",
+    "text": "Tunica adventitia",
+    "find": "the tunica adventitia",
+    "x": 1800,
+    "y": 3880,
+    "r": 60
+   },
+   {
+    "key": "fat",
+    "text": "Fat cells next to the artery",
+    "find": "fat cells",
+    "x": 400,
+    "y": 3300,
+    "r": 80
+   }
+  ]
+ },
+ {
+  "id": "coronary-artery",
+  "sample": "GTEX-O5YU-0725",
+  "crop_mm": [
+   0.2,
+   0.0,
+   5.6,
+   4.4
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2216153662.2057295888.1720203104830.4.0",
+   "crdc_series_uuid": "ce60014f-ec9f-4ca4-ad0e-3aec378b50b5",
+   "crdc_instance_uuid": "164354ba-1a94-4104-98d3-7642b828a82e",
+   "width": 13943,
+   "height": 9498,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Artery - Coronary",
+  "gtex_note": "eccentric plaque, wide lumen",
+  "title": "Coronary artery (atherosclerosis)",
+  "system": "Cardiovascular",
+  "description": "A coronary artery cut across, with atherosclerosis: the intima is thickened all the way round, and much more on one side, where a plaque with inflammatory cells and foam cells has formed. The lumen is still wide.",
+  "look_for": [
+   "The lumen, which is still wide in this vessel",
+   "The plaque: a thickened intima on one side of the wall, with inflammatory cells and foam cells near the lumen",
+   "Compare the thinner wall on the opposite side (its intima is a little thickened too)",
+   "Tunica media (smooth muscle) beneath the intima, and the adventitia outside it",
+   "Fat (adipose tissue) around the artery"
+  ],
+  "labels": [
+   {
+    "key": "lumen",
+    "text": "Lumen",
+    "find": "the lumen",
+    "x": 5000,
+    "y": 4000,
+    "r": 600
+   },
+   {
+    "key": "plaque",
+    "text": "Plaque: the intima, much thickened on this side",
+    "find": "the plaque",
+    "x": 7000,
+    "y": 6600,
+    "r": 220
+   },
+   {
+    "key": "plaque",
+    "text": "Plaque: the intima, much thickened on this side",
+    "find": "the plaque",
+    "x": 8700,
+    "y": 6300,
+    "r": 200
+   },
+   {
+    "key": "foam-cells",
+    "text": "Inflammatory cells and foam cells in the plaque",
+    "find": "the inflammatory cells and foam cells in the plaque",
+    "x": 7700,
+    "y": 6230,
+    "r": 100
+   },
+   {
+    "key": "foam-cells",
+    "text": "Inflammatory cells and foam cells in the plaque",
+    "find": "the inflammatory cells and foam cells in the plaque",
+    "x": 6950,
+    "y": 6250,
+    "r": 70
+   },
+   {
+    "key": "intima",
+    "text": "Intima on the thinner side (thickened a little)",
+    "find": "the intima on the thinner side of the wall",
+    "x": 5000,
+    "y": 1900,
+    "r": 100
+   },
+   {
+    "key": "media",
+    "text": "Tunica media (smooth muscle)",
+    "find": "the tunica media",
+    "x": 5000,
+    "y": 1420,
+    "r": 70
+   },
+   {
+    "key": "adventitia",
+    "text": "Tunica adventitia",
+    "find": "the tunica adventitia",
+    "x": 5000,
+    "y": 1150,
+    "r": 50
+   },
+   {
+    "key": "fat",
+    "text": "Fat around the artery",
+    "find": "the fat around the artery",
+    "x": 3500,
+    "y": 600,
+    "r": 200
+   }
+  ]
+ },
+ {
+  "id": "peripheral-nerve",
+  "sample": "GTEX-TKQ1-1325",
+  "crop_mm": [
+   12.0,
+   5.3,
+   15.6,
+   8.6
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2183331457.2131308660.1720170282625.4.0",
+   "crdc_series_uuid": "e6574682-8ab7-40dc-9ad9-52f3d3e20127",
+   "crdc_instance_uuid": "d777e8b0-0d12-4edb-a790-5ab1d4e02bf8",
+   "width": 35855,
+   "height": 21855,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Nerve - Tibial",
+  "gtex_note": "2 pieces,  ~4.5-5mm d.  Excellent clean specimens, minimal fat.",
+  "title": "Peripheral nerve (tibial)",
+  "system": "Nervous",
+  "description": "A large nerve cut across, with many fascicles of nerve fibres, each wrapped in perineurium.",
+  "look_for": [
+   "Epineurium: the connective tissue around and between the fascicles, with blood vessels",
+   "Perineurium: the thin, layered sheath around each fascicle",
+   "Nerve fibres cut across inside each fascicle, with the endoneurium between them",
+   "Nuclei of Schwann cells among the fibres"
+  ],
+  "labels": [
+   {
+    "key": "fascicle",
+    "text": "Fascicle (a bundle of nerve fibres)",
+    "find": "a fascicle",
+    "x": 3200,
+    "y": 4800,
+    "r": 500
+   },
+   {
+    "key": "fascicle",
+    "text": "Fascicle (a bundle of nerve fibres)",
+    "find": "a fascicle",
+    "x": 4800,
+    "y": 2400,
+    "r": 400
+   },
+   {
+    "key": "fibres",
+    "text": "Myelinated nerve fibres cut across",
+    "find": "myelinated nerve fibres cut across",
+    "x": 3600,
+    "y": 3300,
+    "r": 80
+   },
+   {
+    "key": "perineurium",
+    "text": "Perineurium (the sheath around a fascicle)",
+    "find": "the perineurium",
+    "x": 3982,
+    "y": 3160,
+    "poly": [
+     [
+      3916,
+      3000
+     ],
+     [
+      3948,
+      3080
+     ],
+     [
+      3968,
+      3160
+     ],
+     [
+      3979,
+      3240
+     ],
+     [
+      3983,
+      3320
+     ],
+     [
+      4011,
+      3320
+     ],
+     [
+      4007,
+      3240
+     ],
+     [
+      3996,
+      3160
+     ],
+     [
+      3976,
+      3080
+     ],
+     [
+      3944,
+      3000
+     ]
+    ]
+   },
+   {
+    "key": "epineurium",
+    "text": "Epineurium (connective tissue between and around the fascicles)",
+    "find": "the epineurium",
+    "x": 4150,
+    "y": 3200,
+    "r": 60
+   },
+   {
+    "key": "epineurium",
+    "text": "Epineurium (connective tissue between and around the fascicles)",
+    "find": "the epineurium",
+    "x": 900,
+    "y": 400,
+    "r": 150
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel in the epineurium",
+    "find": "a blood vessel",
+    "x": 4200,
+    "y": 1450,
+    "r": 50
+   }
+  ]
+ },
+ {
+  "id": "skin",
+  "sample": "GTEX-1I6K7-1925",
+  "crop_mm": [
+   18.0,
+   4.8,
+   22.0,
+   8.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2484888779.1861368278.1720471839947.4.0",
+   "crdc_series_uuid": "46053e11-4c03-4084-9782-109c0d671487",
+   "crdc_instance_uuid": "b076c78f-db85-4511-829d-eaf3a86ccb15",
+   "width": 49799,
+   "height": 36325,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Skin - Not Sun Exposed (Suprapubic)",
+  "gtex_note": "6 pieces; well dissected; numerous hair follicles (up to 9 per piece)",
+  "title": "Skin",
+  "system": "Skin",
+  "description": "Hairy skin: epidermis, dermis, hair follicles cut lengthways and across, sebaceous glands and sweat glands, with fat at the edge.",
+  "look_for": [
+   "Epidermis: keratinised stratified squamous epithelium, with a thin layer of keratin on the surface",
+   "The wavy junction between epidermis and dermis (rete ridges and dermal papillae)",
+   "Dermis: dense irregular connective tissue (collagen)",
+   "Hair follicles (cut lengthways and across) with their hair shafts, and sebaceous glands beside them",
+   "Sweat glands: clusters of coiled tubules"
+  ],
+  "labels": [
+   {
+    "key": "epidermis",
+    "text": "Epidermis (keratinised stratified squamous epithelium)",
+    "find": "the epidermis",
+    "x": 6500,
+    "y": 4300,
+    "r": 40
+   },
+   {
+    "key": "epidermis",
+    "text": "Epidermis (keratinised stratified squamous epithelium)",
+    "find": "the epidermis",
+    "x": 6180,
+    "y": 4740,
+    "r": 40
+   },
+   {
+    "key": "keratin",
+    "text": "Keratin (stratum corneum)",
+    "find": "the layer of keratin on the surface",
+    "x": 6668,
+    "y": 4080,
+    "r": 10
+   },
+   {
+    "key": "dermis",
+    "text": "Dermis (dense irregular connective tissue)",
+    "find": "the dermis",
+    "x": 5900,
+    "y": 1200,
+    "r": 300
+   },
+   {
+    "key": "hair-follicle",
+    "text": "Hair follicle (cut across)",
+    "find": "a hair follicle",
+    "x": 4400,
+    "y": 2600,
+    "r": 120
+   },
+   {
+    "key": "hair-follicle",
+    "text": "Hair follicle (cut lengthways)",
+    "find": "a hair follicle",
+    "x": 1200,
+    "y": 3250,
+    "r": 150
+   },
+   {
+    "key": "hair-shaft",
+    "text": "Hair shaft",
+    "find": "a hair shaft",
+    "x": 2800,
+    "y": 3320,
+    "r": 30
+   },
+   {
+    "key": "sebaceous-gland",
+    "text": "Sebaceous gland",
+    "find": "a sebaceous gland",
+    "x": 5150,
+    "y": 1950,
+    "r": 150
+   },
+   {
+    "key": "sebaceous-gland",
+    "text": "Sebaceous gland",
+    "find": "a sebaceous gland",
+    "x": 4280,
+    "y": 2160,
+    "r": 70
+   },
+   {
+    "key": "sweat-gland",
+    "text": "Sweat gland (coiled tubules cut in many places)",
+    "find": "a sweat gland",
+    "x": 4700,
+    "y": 1150,
+    "r": 120
+   },
+   {
+    "key": "fat",
+    "text": "Fat (subcutaneous adipose tissue)",
+    "find": "fat cells",
+    "x": 1200,
+    "y": 2000,
+    "r": 200
+   }
+  ]
+ },
+ {
+  "id": "oesophagus",
+  "sample": "GTEX-S4Q7-0625",
+  "crop_mm": [
+   11.4,
+   4.6,
+   15.4,
+   9.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2422676339.878048696.1720409627507.4.0",
+   "crdc_series_uuid": "e31ccc16-62f8-47dc-ae17-5305852a192a",
+   "crdc_instance_uuid": "29bddb4b-4a01-48ec-86f4-f6a583dabd63",
+   "width": 47807,
+   "height": 37749,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Esophagus - Mucosa",
+  "gtex_note": "6 pieces,  ~7x2mm.  Squamous mucosa well preserved,  ~15-20% of thickness. Submucosal mucus glands encircled",
+  "title": "Oesophagus (mucosa)",
+  "system": "Digestive",
+  "description": "The lining of the oesophagus: stratified squamous epithelium, lamina propria, muscularis mucosae and submucosa.",
+  "look_for": [
+   "Non-keratinised stratified squamous epithelium",
+   "Lamina propria, which pushes up into the epithelium as papillae",
+   "Muscularis mucosae: bundles of smooth muscle",
+   "Submucosa with blood vessels, and a group of mucous glands"
+  ],
+  "labels": [
+   {
+    "key": "epithelium",
+    "text": "Non-keratinised stratified squamous epithelium",
+    "find": "the stratified squamous epithelium",
+    "x": 5000,
+    "y": 4600,
+    "r": 150
+   },
+   {
+    "key": "epithelium",
+    "text": "Non-keratinised stratified squamous epithelium",
+    "find": "the stratified squamous epithelium",
+    "x": 2000,
+    "y": 8150,
+    "r": 100
+   },
+   {
+    "key": "lamina-propria",
+    "text": "Lamina propria",
+    "find": "the lamina propria",
+    "x": 4450,
+    "y": 4200,
+    "r": 40
+   },
+   {
+    "key": "muscularis-mucosae",
+    "text": "Muscularis mucosae (bundles of smooth muscle)",
+    "find": "the muscularis mucosae",
+    "x": 3800,
+    "y": 4600,
+    "r": 120
+   },
+   {
+    "key": "submucosa",
+    "text": "Submucosa",
+    "find": "the submucosa",
+    "x": 2800,
+    "y": 4000,
+    "r": 150
+   },
+   {
+    "key": "glands",
+    "text": "Submucosal (oesophageal) mucous glands",
+    "find": "the mucous glands in the submucosa",
+    "x": 1700,
+    "y": 5500,
+    "r": 250
+   },
+   {
+    "key": "artery",
+    "text": "Artery in the submucosa",
+    "find": "an artery in the submucosa",
+    "x": 2080,
+    "y": 4900,
+    "r": 60
+   }
+  ]
+ },
+ {
+  "id": "stomach",
+  "sample": "GTEX-Y8E4-1526",
+  "crop_mm": [
+   3.2,
+   4.2,
+   7.0,
+   8.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2142888337.2127844539.1720129839505.4.0",
+   "crdc_series_uuid": "bf71bd89-4029-4181-8e95-d3c30d6b43fd",
+   "crdc_instance_uuid": "495d52db-5322-4991-8518-28a67df5370a",
+   "width": 19919,
+   "height": 23766,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Stomach",
+  "gtex_note": "1 piece 9x4 mm.  full oxyntic mucosa with mild surface desquamation.",
+  "title": "Stomach (body)",
+  "system": "Digestive",
+  "description": "The full thickness of the stomach wall: gastric (oxyntic) mucosa, submucosa and muscularis externa.",
+  "look_for": [
+   "Gastric pits (foveolae) lined by pale surface mucous cells (the surface is partly worn away in this specimen)",
+   "Gastric glands with parietal cells (pink, round) and chief cells (purple, granular, deeper in the glands)",
+   "Muscularis mucosae",
+   "Submucosa with blood vessels",
+   "Muscularis externa: thick bundles of smooth muscle"
+  ],
+  "labels": [
+   {
+    "key": "gastric-glands",
+    "text": "Gastric (oxyntic) glands",
+    "find": "the gastric glands",
+    "x": 5500,
+    "y": 4400,
+    "r": 120
+   },
+   {
+    "key": "parietal-cell",
+    "text": "Parietal cell (pink, round)",
+    "find": "a parietal cell",
+    "x": 5480,
+    "y": 4222,
+    "r": 18
+   },
+   {
+    "key": "parietal-cell",
+    "text": "Parietal cell (pink, round)",
+    "find": "a parietal cell",
+    "x": 5430,
+    "y": 4330,
+    "r": 18
+   },
+   {
+    "key": "parietal-cell",
+    "text": "Parietal cell (pink, round)",
+    "find": "a parietal cell",
+    "x": 5320,
+    "y": 4320,
+    "r": 18
+   },
+   {
+    "key": "chief-cells",
+    "text": "Chief cells (purple, granular), near the base of a gland",
+    "find": "chief cells",
+    "x": 5250,
+    "y": 4870,
+    "r": 20
+   },
+   {
+    "key": "surface-mucous-cells",
+    "text": "Surface mucous cells lining a gastric pit",
+    "find": "the surface mucous cells",
+    "x": 6060,
+    "y": 4740,
+    "r": 40
+   },
+   {
+    "key": "muscularis-mucosae",
+    "text": "Muscularis mucosae",
+    "find": "the muscularis mucosae",
+    "x": 4950,
+    "y": 4050,
+    "r": 60
+   },
+   {
+    "key": "submucosa",
+    "text": "Submucosa",
+    "find": "the submucosa",
+    "x": 4300,
+    "y": 3900,
+    "r": 200
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel in the submucosa",
+    "find": "a blood vessel in the submucosa",
+    "x": 1900,
+    "y": 6200,
+    "r": 80
+   },
+   {
+    "key": "muscularis-externa",
+    "text": "Muscularis externa (bundles of smooth muscle)",
+    "find": "the muscularis externa",
+    "x": 4150,
+    "y": 2250,
+    "r": 180
+   },
+   {
+    "key": "muscularis-externa",
+    "text": "Muscularis externa (bundles of smooth muscle)",
+    "find": "the muscularis externa",
+    "x": 1000,
+    "y": 4500,
+    "r": 150
+   }
+  ]
+ },
+ {
+  "id": "small-intestine",
+  "sample": "GTEX-111YS-1425",
+  "crop_mm": [
+   19.6,
+   4.0,
+   24.6,
+   7.9
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2324249950.2022161546.1720311201118.4.0",
+   "crdc_series_uuid": "b7d523a6-0dd7-4416-b24c-835332c37d4f",
+   "crdc_instance_uuid": "4658dec3-26d6-4f3e-a108-52a031b2b436",
+   "width": 55775,
+   "height": 39762,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Small Intestine - Terminal Ileum",
+  "gtex_note": "6 pieces of well preserved mucosa with several lymphoid nodules in the 3 largest pieces (marked)",
+  "title": "Small intestine (ileum)",
+  "system": "Digestive",
+  "description": "Villi and crypts of the ileum, with lymphoid follicles in the mucosa.",
+  "look_for": [
+   "Villi covered by columnar enterocytes with a brush border",
+   "Goblet cells (pale, mucus-filled) among the enterocytes",
+   "Crypts of Lieberkühn at the bases of the villi",
+   "Lamina propria in the cores of the villi and between the crypts",
+   "Lymphoid follicles (Peyer’s patches)",
+   "Submucosa with blood vessels"
+  ],
+  "labels": [
+   {
+    "key": "villus",
+    "text": "Villus",
+    "find": "a villus",
+    "x": 8230,
+    "y": 1350,
+    "r": 45
+   },
+   {
+    "key": "villus",
+    "text": "Villus",
+    "find": "a villus",
+    "x": 7990,
+    "y": 1300,
+    "r": 40
+   },
+   {
+    "key": "enterocytes",
+    "text": "Enterocytes: tall columnar cells with a brush border",
+    "find": "the enterocytes covering a villus",
+    "x": 8165,
+    "y": 1450,
+    "r": 18
+   },
+   {
+    "key": "goblet-cell",
+    "text": "Goblet cell",
+    "find": "a goblet cell",
+    "x": 6440,
+    "y": 1735,
+    "r": 14
+   },
+   {
+    "key": "goblet-cell",
+    "text": "Goblet cell",
+    "find": "a goblet cell",
+    "x": 6420,
+    "y": 1615,
+    "r": 14
+   },
+   {
+    "key": "goblet-cell",
+    "text": "Goblet cell",
+    "find": "a goblet cell",
+    "x": 6255,
+    "y": 1665,
+    "r": 12
+   },
+   {
+    "key": "crypt",
+    "text": "Crypt of Lieberkühn",
+    "find": "a crypt of Lieberkühn",
+    "x": 6990,
+    "y": 2090,
+    "r": 40
+   },
+   {
+    "key": "crypt",
+    "text": "Crypt of Lieberkühn",
+    "find": "a crypt of Lieberkühn",
+    "x": 7140,
+    "y": 2090,
+    "r": 40
+   },
+   {
+    "key": "lamina-propria",
+    "text": "Lamina propria",
+    "find": "the lamina propria",
+    "x": 7030,
+    "y": 2270,
+    "r": 30
+   },
+   {
+    "key": "lymphoid-follicle",
+    "text": "Lymphoid follicle (part of a Peyer’s patch)",
+    "find": "a lymphoid follicle",
+    "x": 7760,
+    "y": 2000,
+    "r": 200
+   },
+   {
+    "key": "lymphoid-follicle",
+    "text": "Lymphoid follicle (part of a Peyer’s patch)",
+    "find": "a lymphoid follicle",
+    "x": 4250,
+    "y": 3800,
+    "r": 180
+   },
+   {
+    "key": "submucosa",
+    "text": "Submucosa",
+    "find": "the submucosa",
+    "x": 5400,
+    "y": 4000,
+    "r": 200
+   },
+   {
+    "key": "submucosa",
+    "text": "Submucosa",
+    "find": "the submucosa",
+    "x": 7400,
+    "y": 2650,
+    "r": 60
+   }
+  ]
+ },
+ {
+  "id": "colon",
+  "sample": "GTEX-SE5C-1525",
+  "crop_mm": [
+   11.8,
+   3.6,
+   15.4,
+   7.6
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2373520214.39135398.1720360471382.4.0",
+   "crdc_series_uuid": "ceb94f6d-523b-4504-b8f2-a8b7a749ec81",
+   "crdc_instance_uuid": "fb99ca8c-a150-4bb2-9f6b-1065a1ae62ac",
+   "width": 49799,
+   "height": 35336,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Colon - Transverse",
+  "gtex_note": "6 pieces up to 7x4 mm; mucosa ~0.4 mm; very good mucosal preservation in all 6 pieces",
+  "title": "Colon (transverse)",
+  "system": "Digestive",
+  "description": "The wall of the large intestine: straight crypts full of goblet cells, no villi, and the muscle coat.",
+  "look_for": [
+   "Straight, tube-like crypts with many goblet cells, and no villi",
+   "Lamina propria between the crypts, and the thin muscularis mucosae under them",
+   "Submucosa with blood vessels, and a lymphoid follicle",
+   "Muscularis externa: thick bundles of smooth muscle",
+   "Fat outside the muscle coat"
+  ],
+  "labels": [
+   {
+    "key": "crypt",
+    "text": "Crypt (straight, full of goblet cells)",
+    "find": "a crypt",
+    "x": 1500,
+    "y": 2420,
+    "r": 40
+   },
+   {
+    "key": "crypt",
+    "text": "Crypt (straight, full of goblet cells)",
+    "find": "a crypt",
+    "x": 1420,
+    "y": 4670,
+    "r": 40
+   },
+   {
+    "key": "goblet-cells",
+    "text": "Goblet cells",
+    "find": "goblet cells",
+    "x": 1490,
+    "y": 2530,
+    "r": 25
+   },
+   {
+    "key": "lamina-propria",
+    "text": "Lamina propria between the crypts",
+    "find": "the lamina propria",
+    "x": 1500,
+    "y": 2630,
+    "r": 20
+   },
+   {
+    "key": "muscularis-mucosae",
+    "text": "Muscularis mucosae",
+    "find": "the muscularis mucosae",
+    "x": 1650,
+    "y": 2700,
+    "r": 20
+   },
+   {
+    "key": "submucosa",
+    "text": "Submucosa",
+    "find": "the submucosa",
+    "x": 1900,
+    "y": 2800,
+    "r": 60
+   },
+   {
+    "key": "lymphoid-follicle",
+    "text": "Lymphoid follicle",
+    "find": "a lymphoid follicle",
+    "x": 6180,
+    "y": 340,
+    "r": 200
+   },
+   {
+    "key": "muscularis-externa",
+    "text": "Muscularis externa (smooth muscle)",
+    "find": "the muscularis externa",
+    "x": 4000,
+    "y": 5000,
+    "r": 400
+   },
+   {
+    "key": "fat",
+    "text": "Fat outside the muscle coat",
+    "find": "the fat outside the muscle coat",
+    "x": 6000,
+    "y": 3400,
+    "r": 200
+   }
+  ]
+ },
+ {
+  "id": "spleen",
+  "sample": "GTEX-WHWD-0125",
+  "crop_mm": [
+   4.4,
+   9.2,
+   7.6,
+   12.2
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.1975842304.626290115.1719962793472.4.0",
+   "crdc_series_uuid": "9e427f48-6e9f-4e67-a4f8-62d128f32dfd",
+   "crdc_instance_uuid": "d16b1e0d-ab03-4749-b6c9-0b1b26a9114c",
+   "width": 37847,
+   "height": 31843,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Spleen",
+  "gtex_note": "2 pieces, 7x6.5 & 8x7mm; balanced red and white pulp",
+  "title": "Spleen",
+  "system": "Lymphoid",
+  "description": "White pulp (lymphoid tissue around central arterioles) and red pulp (full of blood), with trabeculae.",
+  "look_for": [
+   "White pulp: lymphoid follicles and sheaths of lymphocytes around central arterioles",
+   "Red pulp: splenic cords and venous sinuses full of red blood cells",
+   "Trabeculae: strands of connective tissue carrying trabecular vessels"
+  ],
+  "labels": [
+   {
+    "key": "white-pulp",
+    "text": "White pulp (lymphoid tissue)",
+    "find": "white pulp",
+    "x": 4250,
+    "y": 3100,
+    "r": 150
+   },
+   {
+    "key": "white-pulp",
+    "text": "White pulp (lymphoid tissue)",
+    "find": "white pulp",
+    "x": 4480,
+    "y": 2340,
+    "r": 180
+   },
+   {
+    "key": "white-pulp",
+    "text": "White pulp (lymphoid tissue)",
+    "find": "white pulp",
+    "x": 3600,
+    "y": 4750,
+    "r": 250
+   },
+   {
+    "key": "central-arteriole",
+    "text": "Central arteriole",
+    "find": "a central arteriole",
+    "x": 4580,
+    "y": 3170,
+    "r": 90
+   },
+   {
+    "key": "red-pulp",
+    "text": "Red pulp",
+    "find": "red pulp",
+    "x": 1500,
+    "y": 2300,
+    "r": 150
+   },
+   {
+    "key": "red-pulp",
+    "text": "Red pulp",
+    "find": "red pulp",
+    "x": 5600,
+    "y": 4300,
+    "r": 200
+   },
+   {
+    "key": "trabecula",
+    "text": "Trabecula (connective tissue)",
+    "find": "a trabecula",
+    "x": 3770,
+    "y": 3950,
+    "r": 100
+   },
+   {
+    "key": "trabecula",
+    "text": "Trabecula, with a large trabecular vessel",
+    "find": "a trabecula",
+    "x": 2400,
+    "y": 3500,
+    "r": 80
+   }
+  ]
+ },
+ {
+  "id": "testis",
+  "sample": "GTEX-XAJ8-1325",
+  "crop_mm": [
+   2.0,
+   4.0,
+   5.2,
+   7.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2019570396.1048542696.1720006521564.4.0",
+   "crdc_series_uuid": "04cbf400-345f-47fc-bf6b-7603f6fc01ac",
+   "crdc_instance_uuid": "5857191a-d624-4c91-9485-ef4d2ef71e48",
+   "width": 39839,
+   "height": 21169,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Testis",
+  "gtex_note": "2 pieces  ~7x6mm, spermatogenesis is present; remarkably well preserved",
+  "title": "Testis",
+  "system": "Reproductive",
+  "description": "Seminiferous tubules cut in many planes, with spermatogenesis, and the interstitial tissue between them, which holds blood vessels and groups of Leydig cells.",
+  "look_for": [
+   "Seminiferous tubules cut across and lengthways",
+   "Spermatogonia at the edge of each tubule; spermatocytes, spermatids and spermatozoa towards the lumen",
+   "Sertoli cells, with pale nuclei near the base of the tubule",
+   "Leydig (interstitial) cells in groups between the tubules: pink cytoplasm and round nuclei"
+  ],
+  "labels": [
+   {
+    "key": "seminiferous-tubule",
+    "text": "Seminiferous tubule",
+    "find": "a seminiferous tubule",
+    "x": 2060,
+    "y": 2000,
+    "r": 200
+   },
+   {
+    "key": "seminiferous-tubule",
+    "text": "Seminiferous tubule",
+    "find": "a seminiferous tubule",
+    "x": 2570,
+    "y": 1820,
+    "r": 170
+   },
+   {
+    "key": "lumen",
+    "text": "Lumen, with spermatids and spermatozoa",
+    "find": "the lumen of a seminiferous tubule",
+    "x": 2540,
+    "y": 1880,
+    "r": 50
+   },
+   {
+    "key": "germinal-epithelium",
+    "text": "Spermatogenic cells (spermatogonia at the edge, spermatocytes inside them)",
+    "find": "the spermatogenic cells",
+    "x": 1880,
+    "y": 2040,
+    "r": 30
+   },
+   {
+    "key": "leydig-cells",
+    "text": "Leydig (interstitial) cells",
+    "find": "Leydig cells",
+    "x": 5250,
+    "y": 1575,
+    "r": 40
+   },
+   {
+    "key": "leydig-cells",
+    "text": "Leydig (interstitial) cells",
+    "find": "Leydig cells",
+    "x": 740,
+    "y": 3800,
+    "r": 50
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel in the interstitium",
+    "find": "a blood vessel between the tubules",
+    "x": 4320,
+    "y": 2445,
+    "r": 25
+   }
+  ]
+ },
+ {
+  "id": "ovary",
+  "sample": "GTEX-PWCY-1325",
+  "crop_mm": [
+   12.6,
+   8.2,
+   17.4,
+   11.6
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2303376761.1423223971.1720290327929.4.0",
+   "crdc_series_uuid": "43e83c21-c4d9-43ec-b39b-10c623671153",
+   "crdc_instance_uuid": "220ee7dc-5bc5-4935-af35-b51a37d27b36",
+   "width": 45815,
+   "height": 29239,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Ovary",
+  "gtex_note": "2 pieces, 10x4 mm; numerous ova and follicles in various stages of normal function",
+  "title": "Ovary",
+  "system": "Reproductive",
+  "description": "Part of an ovary taken up by one large antral follicle: a fluid-filled antrum lined by granulosa cells, with the theca and the ovarian stroma around it.",
+  "look_for": [
+   "The antrum, filled with follicular fluid (which looks like a pale pink net)",
+   "Granulosa cells: a layer a few cells thick lining the antrum",
+   "The theca: spindle-shaped cells and small vessels around the granulosa",
+   "Ovarian stroma: densely packed spindle-shaped cells, with blood vessels"
+  ],
+  "labels": [
+   {
+    "key": "antrum",
+    "text": "Antrum of a large antral follicle (follicular fluid)",
+    "find": "the antrum of the follicle",
+    "x": 4400,
+    "y": 3500,
+    "r": 1000
+   },
+   {
+    "key": "granulosa",
+    "text": "Granulosa cells lining the antrum",
+    "find": "the granulosa cells",
+    "x": 3800,
+    "y": 6150,
+    "r": 25
+   },
+   {
+    "key": "theca",
+    "text": "Theca (layers of spindle-shaped cells around the granulosa)",
+    "find": "the theca",
+    "x": 3800,
+    "y": 6380,
+    "r": 40
+   },
+   {
+    "key": "stroma",
+    "text": "Ovarian stroma",
+    "find": "the ovarian stroma",
+    "x": 8600,
+    "y": 1300,
+    "r": 120
+   },
+   {
+    "key": "stroma",
+    "text": "Ovarian stroma",
+    "find": "the ovarian stroma",
+    "x": 800,
+    "y": 6400,
+    "r": 120
+   },
+   {
+    "key": "vessel",
+    "text": "Small artery in the stroma",
+    "find": "a small artery in the stroma",
+    "x": 7770,
+    "y": 6040,
+    "r": 30
+   }
+  ]
+ },
+ {
+  "id": "uterus",
+  "sample": "GTEX-11EM3-1925",
+  "crop_mm": [
+   16.0,
+   1.4,
+   19.6,
+   4.6
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2245825945.1283928552.1720232777113.4.0",
+   "crdc_series_uuid": "e2600a06-82d0-469b-a893-9e0466b59964",
+   "crdc_instance_uuid": "1ab2fa4b-de0c-4e23-b522-fa59177b2357",
+   "width": 45815,
+   "height": 31470,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Uterus",
+  "gtex_note": "2 pieces, one piece is essentially all myometrium, second is 20% endometrium/80% myometrium",
+  "title": "Uterus",
+  "system": "Reproductive",
+  "description": "Endometrium (glands and stroma) above the thick smooth muscle of the myometrium.",
+  "look_for": [
+   "Endometrial glands in a cellular stroma",
+   "The junction between endometrium and myometrium",
+   "Myometrium: interlacing bundles of smooth muscle",
+   "Blood vessels in the myometrium"
+  ],
+  "labels": [
+   {
+    "key": "surface-epithelium",
+    "text": "Surface epithelium (simple columnar)",
+    "find": "the surface epithelium of the endometrium",
+    "x": 2400,
+    "y": 172,
+    "r": 12
+   },
+   {
+    "key": "gland",
+    "text": "Endometrial gland",
+    "find": "an endometrial gland",
+    "x": 2250,
+    "y": 1570,
+    "r": 110
+   },
+   {
+    "key": "gland",
+    "text": "Endometrial gland",
+    "find": "an endometrial gland",
+    "x": 2690,
+    "y": 1420,
+    "r": 60
+   },
+   {
+    "key": "stroma",
+    "text": "Endometrial stroma (densely packed cells)",
+    "find": "the endometrial stroma",
+    "x": 1960,
+    "y": 1300,
+    "r": 50
+   },
+   {
+    "key": "junction",
+    "text": "Junction between endometrium and myometrium",
+    "find": "the junction between the endometrium and the myometrium",
+    "x": 1000,
+    "y": 2990,
+    "r": 50
+   },
+   {
+    "key": "myometrium",
+    "text": "Myometrium: interlacing bundles of smooth muscle",
+    "find": "the myometrium",
+    "x": 3600,
+    "y": 5200,
+    "r": 300
+   },
+   {
+    "key": "myometrium",
+    "text": "Myometrium: interlacing bundles of smooth muscle",
+    "find": "the myometrium",
+    "x": 6000,
+    "y": 5600,
+    "r": 300
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel (an artery) in the myometrium",
+    "find": "a blood vessel in the myometrium",
+    "x": 1400,
+    "y": 4740,
+    "r": 100
+   }
+  ]
+ },
+ {
+  "id": "cerebellum",
+  "sample": "GTEX-1399T-3125",
+  "crop_mm": [
+   10.8,
+   2.0,
+   14.2,
+   5.0
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2229354940.1465119629.1720216306108.4.0",
+   "crdc_series_uuid": "298ca3b6-9698-43f0-93c6-2c66c02e7c98",
+   "crdc_instance_uuid": "db8a4110-b72c-4f11-93f2-5f881b79803a",
+   "width": 33863,
+   "height": 17227,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Brain - Cerebellum",
+  "gtex_note": "2 pieces; Purkinje cells well visualized",
+  "title": "Cerebellum",
+  "system": "Nervous",
+  "description": "Cerebellar folia: the molecular layer, the Purkinje cells and the granular layer around white matter.",
+  "look_for": [
+   "Molecular layer: pale, with few cells",
+   "Purkinje cell layer: a single row of large neurons",
+   "Granular layer: densely packed small neurons (granule cells)",
+   "White matter in the core of each folium"
+  ],
+  "labels": [
+   {
+    "key": "molecular-layer",
+    "text": "Molecular layer",
+    "find": "the molecular layer",
+    "x": 5450,
+    "y": 2700,
+    "r": 250
+   },
+   {
+    "key": "molecular-layer",
+    "text": "Molecular layer",
+    "find": "the molecular layer",
+    "x": 4700,
+    "y": 4400,
+    "r": 150
+   },
+   {
+    "key": "purkinje-cell",
+    "text": "Purkinje cell",
+    "find": "a Purkinje cell",
+    "x": 4315,
+    "y": 4345,
+    "r": 25
+   },
+   {
+    "key": "purkinje-cell",
+    "text": "Purkinje cell",
+    "find": "a Purkinje cell",
+    "x": 4350,
+    "y": 4435,
+    "r": 22
+   },
+   {
+    "key": "purkinje-cell",
+    "text": "Purkinje cell",
+    "find": "a Purkinje cell",
+    "x": 1245,
+    "y": 4360,
+    "r": 25
+   },
+   {
+    "key": "granular-layer",
+    "text": "Granular layer (granule cells)",
+    "find": "the granular layer",
+    "x": 1600,
+    "y": 4000,
+    "r": 150
+   },
+   {
+    "key": "granular-layer",
+    "text": "Granular layer (granule cells)",
+    "find": "the granular layer",
+    "x": 4300,
+    "y": 1200,
+    "r": 200
+   },
+   {
+    "key": "white-matter",
+    "text": "White matter",
+    "find": "the white matter",
+    "x": 3050,
+    "y": 3050,
+    "r": 200
+   }
+  ]
+ },
+ {
+  "id": "urinary-bladder",
+  "sample": "GTEX-OOBK-1925",
+  "crop_mm": [
+   12.2,
+   4.8,
+   16.2,
+   8.6
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2078753920.1213783174.1720065705088.4.0",
+   "crdc_series_uuid": "e10f07a3-5ea7-42b1-a127-eb907557fbca",
+   "crdc_instance_uuid": "515f6c34-f9c7-4ded-a03f-64b9dfd56cd2",
+   "width": 49799,
+   "height": 34758,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Bladder",
+  "gtex_note": "1.  10 x 4mm pieces (3); urothelium remarkably well preserved, up to 6-70 microns thick",
+  "title": "Urinary bladder",
+  "system": "Urinary",
+  "description": "The bladder wall: urothelium (transitional epithelium), lamina propria and bundles of detrusor smooth muscle.",
+  "look_for": [
+   "Urothelium: several layers of cells, with large umbrella cells at the surface",
+   "Lamina propria: loose connective tissue with blood vessels",
+   "Detrusor muscle: large bundles of smooth muscle running in different directions"
+  ],
+  "labels": [
+   {
+    "key": "urothelium",
+    "text": "Urothelium (transitional epithelium)",
+    "find": "the urothelium",
+    "x": 6900,
+    "y": 1050,
+    "r": 40
+   },
+   {
+    "key": "urothelium",
+    "text": "Urothelium (transitional epithelium)",
+    "find": "the urothelium",
+    "x": 6400,
+    "y": 720,
+    "r": 50
+   },
+   {
+    "key": "umbrella-cell",
+    "text": "Surface (umbrella) cell",
+    "find": "an umbrella cell at the surface",
+    "x": 7010,
+    "y": 985,
+    "r": 15
+   },
+   {
+    "key": "lamina-propria",
+    "text": "Lamina propria",
+    "find": "the lamina propria",
+    "x": 6600,
+    "y": 1250,
+    "r": 60
+   },
+   {
+    "key": "detrusor",
+    "text": "Detrusor muscle: bundles of smooth muscle",
+    "find": "the detrusor muscle",
+    "x": 3800,
+    "y": 4800,
+    "r": 250
+   },
+   {
+    "key": "detrusor",
+    "text": "Detrusor muscle: bundles of smooth muscle",
+    "find": "the detrusor muscle",
+    "x": 1700,
+    "y": 2600,
+    "r": 200
+   },
+   {
+    "key": "artery",
+    "text": "Small artery",
+    "find": "a small artery",
+    "x": 6600,
+    "y": 4050,
+    "r": 50
+   },
+   {
+    "key": "vein",
+    "text": "Vein (full of red blood cells)",
+    "find": "a vein",
+    "x": 6760,
+    "y": 3890,
+    "r": 70
+   },
+   {
+    "key": "vein",
+    "text": "Vein",
+    "find": "a vein",
+    "x": 6740,
+    "y": 4380,
+    "r": 60
+   }
+  ]
+ },
+ {
+  "id": "salivary-gland",
+  "sample": "GTEX-11P82-0925",
+  "crop_mm": [
+   1.6,
+   2.3,
+   4.5,
+   3.7
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2507252901.1409658375.1720494204069.4.0",
+   "crdc_series_uuid": "7025f1de-134d-4bac-8ab6-80c8fbfe8eab",
+   "crdc_instance_uuid": "d4b2ccc7-bc9b-477b-8a37-9eec43c37959",
+   "width": 27887,
+   "height": 15857,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Minor Salivary Gland",
+  "gtex_note": "3 pieces, well preserived sero-mucinous glands are 100% of specimen; excellent.",
+  "title": "Minor salivary gland",
+  "system": "Digestive",
+  "description": "Small salivary glands: mucous acini with pale cells, serous cells and ducts.",
+  "look_for": [
+   "Mucous acini: pale, foamy cells with flattened nuclei at their bases",
+   "Serous cells: smaller, purple, granular cells",
+   "Ducts lined by cuboidal cells",
+   "Connective tissue between the lobules"
+  ],
+  "labels": [
+   {
+    "key": "mucous-acinus",
+    "text": "Mucous acinus (pale, foamy cells)",
+    "find": "a mucous acinus",
+    "x": 5250,
+    "y": 1430,
+    "r": 50
+   },
+   {
+    "key": "mucous-acinus",
+    "text": "Mucous acinus (pale, foamy cells)",
+    "find": "a mucous acinus",
+    "x": 4180,
+    "y": 1700,
+    "r": 30
+   },
+   {
+    "key": "serous-acinus",
+    "text": "Serous acinus (purple, granular cells)",
+    "find": "a serous acinus",
+    "x": 5150,
+    "y": 1760,
+    "r": 35
+   },
+   {
+    "key": "serous-acinus",
+    "text": "Serous acinus (purple, granular cells)",
+    "find": "a serous acinus",
+    "x": 5150,
+    "y": 1860,
+    "r": 35
+   },
+   {
+    "key": "duct",
+    "text": "Duct (lined by cuboidal cells)",
+    "find": "a duct",
+    "x": 4000,
+    "y": 1450,
+    "r": 110
+   },
+   {
+    "key": "duct",
+    "text": "Duct (lined by cuboidal cells)",
+    "find": "a duct",
+    "x": 2700,
+    "y": 1345,
+    "r": 120
+   },
+   {
+    "key": "duct",
+    "text": "Duct (lined by cuboidal cells)",
+    "find": "a duct",
+    "x": 2180,
+    "y": 1840,
+    "r": 40
+   },
+   {
+    "key": "connective-tissue",
+    "text": "Connective tissue between the lobules",
+    "find": "the connective tissue between lobules",
+    "x": 3200,
+    "y": 810,
+    "r": 30
+   },
+   {
+    "key": "capsule",
+    "text": "Capsule (dense connective tissue)",
+    "find": "the capsule",
+    "x": 3700,
+    "y": 2360,
+    "r": 30
+   }
+  ]
+ },
+ {
+  "id": "fallopian-tube",
+  "sample": "GTEX-S341-0825",
+  "crop_mm": [
+   1.4,
+   1.5,
+   4.8,
+   4.7
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2214101637.1625827376.1720201052805.4.0",
+   "crdc_series_uuid": "5603b8fe-1d38-4483-9943-22e5bec77c74",
+   "crdc_instance_uuid": "4facf408-48d9-4875-a70c-f5249429a926",
+   "width": 29879,
+   "height": 19731,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Fallopian Tube",
+  "gtex_note": "2 aliquots, ~  4.5mm d.  Mucosa extremely well preserved",
+  "title": "Fallopian (uterine) tube",
+  "system": "Reproductive",
+  "description": "The tube cut across: a highly folded mucosa in the lumen, with smooth muscle around it.",
+  "look_for": [
+   "Mucosal folds (plicae) projecting into the lumen",
+   "Simple columnar epithelium covering the folds (it is made of ciliated cells and secretory \"peg\" cells, although the cilia are too fine to make out in this scan)",
+   "Lamina propria in the core of each fold",
+   "Smooth muscle layers around the mucosa"
+  ],
+  "labels": [
+   {
+    "key": "plica",
+    "text": "Mucosal fold (plica)",
+    "find": "a mucosal fold (plica)",
+    "x": 3580,
+    "y": 3560,
+    "r": 60
+   },
+   {
+    "key": "plica",
+    "text": "Mucosal fold (plica)",
+    "find": "a mucosal fold (plica)",
+    "x": 1600,
+    "y": 4170,
+    "r": 50
+   },
+   {
+    "key": "lumen",
+    "text": "Lumen",
+    "find": "the lumen",
+    "x": 3600,
+    "y": 3820,
+    "r": 50
+   },
+   {
+    "key": "epithelium",
+    "text": "Simple columnar epithelium (ciliated and secretory cells)",
+    "find": "the epithelium covering a fold",
+    "x": 4100,
+    "y": 3375,
+    "r": 18
+   },
+   {
+    "key": "lamina-propria",
+    "text": "Lamina propria (the core of a fold)",
+    "find": "the lamina propria in the core of a fold",
+    "x": 4150,
+    "y": 3640,
+    "r": 30
+   },
+   {
+    "key": "muscularis",
+    "text": "Muscularis (smooth muscle)",
+    "find": "the smooth muscle around the mucosa",
+    "x": 3400,
+    "y": 700,
+    "r": 100
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel (a vein full of red blood cells)",
+    "find": "a blood vessel",
+    "x": 6480,
+    "y": 1740,
+    "r": 150
+   },
+   {
+    "key": "vessel",
+    "text": "Blood vessel (a vein full of red blood cells)",
+    "find": "a blood vessel",
+    "x": 6480,
+    "y": 2200,
+    "r": 100
+   }
+  ]
+ },
+ {
+  "id": "breast",
+  "sample": "GTEX-1IE54-0625",
+  "crop_mm": [
+   11.4,
+   3.2,
+   15.0,
+   6.4
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2287925531.2058104694.1720274876699.4.0",
+   "crdc_series_uuid": "6ec6ba69-dca9-421c-9914-c1fa0a1e05be",
+   "crdc_instance_uuid": "16acfb81-30aa-44cb-84a8-56d4a83fdf7e",
+   "width": 35855,
+   "height": 21600,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Breast - Mammary Tissue",
+  "gtex_note": "2 pieces; 10-20% fat with dense fibrocollagenous stroma with embedded benign ducts and lobules",
+  "title": "Breast",
+  "system": "Reproductive",
+  "description": "Mammary tissue: lobules and ducts in dense connective tissue and fat.",
+  "look_for": [
+   "Lobules of small glands (terminal duct lobular units)",
+   "Ducts with two layers of cells: luminal epithelial cells and myoepithelial cells",
+   "Loose connective tissue inside the lobules, dense connective tissue between them",
+   "Fat cells (adipocytes)"
+  ],
+  "labels": [
+   {
+    "key": "lobule",
+    "text": "Lobule (terminal duct lobular unit)",
+    "find": "a lobule",
+    "x": 3300,
+    "y": 1800,
+    "r": 400
+   },
+   {
+    "key": "lobule",
+    "text": "Lobule (terminal duct lobular unit)",
+    "find": "a lobule",
+    "x": 6520,
+    "y": 5500,
+    "r": 200
+   },
+   {
+    "key": "acinus",
+    "text": "Acinus (one of the small glands of a lobule)",
+    "find": "an acinus in a lobule",
+    "x": 3400,
+    "y": 1405,
+    "r": 40
+   },
+   {
+    "key": "acinus",
+    "text": "Acinus (one of the small glands of a lobule)",
+    "find": "an acinus in a lobule",
+    "x": 6505,
+    "y": 5460,
+    "r": 40
+   },
+   {
+    "key": "duct",
+    "text": "Duct",
+    "find": "the duct",
+    "x": 560,
+    "y": 2750,
+    "r": 70
+   },
+   {
+    "key": "duct-epithelium",
+    "text": "Two layers of cells lining the duct (luminal and myoepithelial)",
+    "find": "the two layers of cells lining the duct",
+    "x": 662,
+    "y": 2750,
+    "r": 15
+   },
+   {
+    "key": "intralobular-stroma",
+    "text": "Looser, more cellular connective tissue inside a lobule",
+    "find": "the connective tissue inside a lobule",
+    "x": 6625,
+    "y": 5560,
+    "r": 20
+   },
+   {
+    "key": "interlobular-stroma",
+    "text": "Dense connective tissue between the lobules",
+    "find": "the dense connective tissue between the lobules",
+    "x": 4280,
+    "y": 1720,
+    "r": 60
+   },
+   {
+    "key": "interlobular-stroma",
+    "text": "Dense connective tissue between the lobules",
+    "find": "the dense connective tissue between the lobules",
+    "x": 1500,
+    "y": 1500,
+    "r": 200
+   },
+   {
+    "key": "fat",
+    "text": "Fat cells (adipocytes)",
+    "find": "fat cells",
+    "x": 6250,
+    "y": 4300,
+    "r": 120
+   }
+  ]
+ },
+ {
+  "id": "prostate",
+  "sample": "GTEX-ZZ64-0925",
+  "crop_mm": [
+   17.3,
+   3.9,
+   21.7,
+   7.4
+  ],
+  "idc": {
+   "series_uid": "1.3.6.1.4.1.5962.99.1.2307671721.2012103773.1720294622889.4.0",
+   "crdc_series_uuid": "003c4ad8-22cc-40bf-ae77-ec4ce59bcaea",
+   "crdc_instance_uuid": "2e6384ac-7d62-449d-a5ff-f3c6a7fcbab9",
+   "width": 49799,
+   "height": 36578,
+   "mpp": 0.4942
+  },
+  "gtex_site": "Prostate",
+  "gtex_note": "6 pieces; exceptional glandular preservation",
+  "title": "Prostate",
+  "system": "Reproductive",
+  "description": "Glands with folded epithelium in a fibromuscular stroma.",
+  "look_for": [
+   "Glands of different sizes, many with folds of epithelium projecting into the lumen, and some dilated",
+   "Tall columnar secretory cells with pale cytoplasm lining the glands",
+   "Fibromuscular stroma: smooth muscle and connective tissue between the glands"
+  ],
+  "labels": [
+   {
+    "key": "gland",
+    "text": "Gland (with folds of epithelium projecting into its lumen)",
+    "find": "a gland",
+    "x": 7300,
+    "y": 2400,
+    "r": 170
+   },
+   {
+    "key": "gland",
+    "text": "Gland",
+    "find": "a gland",
+    "x": 5440,
+    "y": 3240,
+    "r": 100
+   },
+   {
+    "key": "gland",
+    "text": "A dilated gland",
+    "find": "a gland",
+    "x": 1650,
+    "y": 4600,
+    "r": 250
+   },
+   {
+    "key": "epithelium",
+    "text": "Glandular epithelium: tall columnar cells with pale cytoplasm",
+    "find": "the epithelium lining a gland",
+    "x": 5330,
+    "y": 3200,
+    "r": 25
+   },
+   {
+    "key": "lumen",
+    "text": "Lumen of a gland",
+    "find": "the lumen of a gland",
+    "x": 5450,
+    "y": 3230,
+    "r": 30
+   },
+   {
+    "key": "stroma",
+    "text": "Fibromuscular stroma (smooth muscle and connective tissue)",
+    "find": "the fibromuscular stroma",
+    "x": 5780,
+    "y": 2920,
+    "r": 50
+   },
+   {
+    "key": "stroma",
+    "text": "Fibromuscular stroma (smooth muscle and connective tissue)",
+    "find": "the fibromuscular stroma",
+    "x": 6950,
+    "y": 3930,
+    "r": 80
+   }
+  ]
+ }
+]

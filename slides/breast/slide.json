@@ -1,0 +1,177 @@
+{
+ "title": "Breast",
+ "system": "Reproductive",
+ "description": "Mammary tissue: lobules and ducts in dense connective tissue and fat.",
+ "look_for": [
+  "Lobules of small glands (terminal duct lobular units)",
+  "Ducts with two layers of cells: luminal epithelial cells and myoepithelial cells",
+  "Loose connective tissue inside the lobules, dense connective tissue between them",
+  "Fat cells (adipocytes)"
+ ],
+ "labels": [
+  {
+   "key": "lobule",
+   "text": "Lobule (terminal duct lobular unit)",
+   "find": "a lobule",
+   "x": 3300,
+   "y": 1800,
+   "r": 400
+  },
+  {
+   "key": "lobule",
+   "text": "Lobule (terminal duct lobular unit)",
+   "find": "a lobule",
+   "x": 6520,
+   "y": 5500,
+   "r": 200
+  },
+  {
+   "key": "acinus",
+   "text": "Acinus (one of the small glands of a lobule)",
+   "find": "an acinus in a lobule",
+   "x": 3400,
+   "y": 1405,
+   "r": 40
+  },
+  {
+   "key": "acinus",
+   "text": "Acinus (one of the small glands of a lobule)",
+   "find": "an acinus in a lobule",
+   "x": 6505,
+   "y": 5460,
+   "r": 40
+  },
+  {
+   "key": "duct",
+   "text": "Duct",
+   "find": "the duct",
+   "x": 560,
+   "y": 2750,
+   "r": 70
+  },
+  {
+   "key": "duct-epithelium",
+   "text": "Two layers of cells lining the duct (luminal and myoepithelial)",
+   "find": "the two layers of cells lining the duct",
+   "x": 662,
+   "y": 2750,
+   "r": 15
+  },
+  {
+   "key": "intralobular-stroma",
+   "text": "Looser, more cellular connective tissue inside a lobule",
+   "find": "the connective tissue inside a lobule",
+   "x": 6625,
+   "y": 5560,
+   "r": 20
+  },
+  {
+   "key": "interlobular-stroma",
+   "text": "Dense connective tissue between the lobules",
+   "find": "the dense connective tissue between the lobules",
+   "x": 4280,
+   "y": 1720,
+   "r": 60
+  },
+  {
+   "key": "interlobular-stroma",
+   "text": "Dense connective tissue between the lobules",
+   "find": "the dense connective tissue between the lobules",
+   "x": 1500,
+   "y": 1500,
+   "r": 200
+  },
+  {
+   "key": "fat",
+   "text": "Fat cells (adipocytes)",
+   "find": "fat cells",
+   "x": 6250,
+   "y": 4300,
+   "r": 120
+  }
+ ],
+ "id": "breast",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-1IE54-0625",
+  "tissue_site": "Breast - Mammary Tissue",
+  "pathology_note": "2 pieces; 10-20% fat with dense fibrocollagenous stroma with embedded benign ducts and lobules",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2287925531.2058104694.1720274876699.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 23068,
+   "y": 6475,
+   "width": 7284,
+   "height": 6475
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-1IE54-0625), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 7284,
+ "height": 6475,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1026,
+ "packBytes": 9463960,
+ "levels": [
+  {
+   "level": 8,
+   "width": 228,
+   "height": 203,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 456,
+   "height": 405,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 911,
+   "height": 810,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1821,
+   "height": 1619,
+   "cols": 8,
+   "rows": 7,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 3642,
+   "height": 3238,
+   "cols": 15,
+   "rows": 13,
+   "first": 77
+  },
+  {
+   "level": 13,
+   "width": 7284,
+   "height": 6475,
+   "cols": 29,
+   "rows": 26,
+   "first": 272
+  }
+ ]
+}

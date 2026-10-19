@@ -1,0 +1,211 @@
+{
+ "title": "Small intestine (ileum)",
+ "system": "Digestive",
+ "description": "Villi and crypts of the ileum, with lymphoid follicles in the mucosa.",
+ "look_for": [
+  "Villi covered by columnar enterocytes with a brush border",
+  "Goblet cells (pale, mucus-filled) among the enterocytes",
+  "Crypts of Lieberkühn at the bases of the villi",
+  "Lamina propria in the cores of the villi and between the crypts",
+  "Lymphoid follicles (Peyer’s patches)",
+  "Submucosa with blood vessels"
+ ],
+ "labels": [
+  {
+   "key": "villus",
+   "text": "Villus",
+   "find": "a villus",
+   "x": 8230,
+   "y": 1350,
+   "r": 45
+  },
+  {
+   "key": "villus",
+   "text": "Villus",
+   "find": "a villus",
+   "x": 7990,
+   "y": 1300,
+   "r": 40
+  },
+  {
+   "key": "enterocytes",
+   "text": "Enterocytes: tall columnar cells with a brush border",
+   "find": "the enterocytes covering a villus",
+   "x": 8165,
+   "y": 1450,
+   "r": 18
+  },
+  {
+   "key": "goblet-cell",
+   "text": "Goblet cell",
+   "find": "a goblet cell",
+   "x": 6440,
+   "y": 1735,
+   "r": 14
+  },
+  {
+   "key": "goblet-cell",
+   "text": "Goblet cell",
+   "find": "a goblet cell",
+   "x": 6420,
+   "y": 1615,
+   "r": 14
+  },
+  {
+   "key": "goblet-cell",
+   "text": "Goblet cell",
+   "find": "a goblet cell",
+   "x": 6255,
+   "y": 1665,
+   "r": 12
+  },
+  {
+   "key": "crypt",
+   "text": "Crypt of Lieberkühn",
+   "find": "a crypt of Lieberkühn",
+   "x": 6990,
+   "y": 2090,
+   "r": 40
+  },
+  {
+   "key": "crypt",
+   "text": "Crypt of Lieberkühn",
+   "find": "a crypt of Lieberkühn",
+   "x": 7140,
+   "y": 2090,
+   "r": 40
+  },
+  {
+   "key": "lamina-propria",
+   "text": "Lamina propria",
+   "find": "the lamina propria",
+   "x": 7030,
+   "y": 2270,
+   "r": 30
+  },
+  {
+   "key": "lymphoid-follicle",
+   "text": "Lymphoid follicle (part of a Peyer’s patch)",
+   "find": "a lymphoid follicle",
+   "x": 7760,
+   "y": 2000,
+   "r": 200
+  },
+  {
+   "key": "lymphoid-follicle",
+   "text": "Lymphoid follicle (part of a Peyer’s patch)",
+   "find": "a lymphoid follicle",
+   "x": 4250,
+   "y": 3800,
+   "r": 180
+  },
+  {
+   "key": "submucosa",
+   "text": "Submucosa",
+   "find": "the submucosa",
+   "x": 5400,
+   "y": 4000,
+   "r": 200
+  },
+  {
+   "key": "submucosa",
+   "text": "Submucosa",
+   "find": "the submucosa",
+   "x": 7400,
+   "y": 2650,
+   "r": 60
+  }
+ ],
+ "id": "small-intestine",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-111YS-1425",
+  "tissue_site": "Small Intestine - Terminal Ileum",
+  "pathology_note": "6 pieces of well preserved mucosa with several lymphoid nodules in the 3 largest pieces (marked)",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2324249950.2022161546.1720311201118.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 39660,
+   "y": 8094,
+   "width": 10117,
+   "height": 7891
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-111YS-1425), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 10117,
+ "height": 7891,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 14,
+ "tileType": "image/webp",
+ "tiles": 1709,
+ "packBytes": 11095370,
+ "levels": [
+  {
+   "level": 8,
+   "width": 159,
+   "height": 124,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 317,
+   "height": 247,
+   "cols": 2,
+   "rows": 1,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 633,
+   "height": 494,
+   "cols": 3,
+   "rows": 2,
+   "first": 3
+  },
+  {
+   "level": 11,
+   "width": 1265,
+   "height": 987,
+   "cols": 5,
+   "rows": 4,
+   "first": 9
+  },
+  {
+   "level": 12,
+   "width": 2530,
+   "height": 1973,
+   "cols": 10,
+   "rows": 8,
+   "first": 29
+  },
+  {
+   "level": 13,
+   "width": 5059,
+   "height": 3946,
+   "cols": 20,
+   "rows": 16,
+   "first": 109
+  },
+  {
+   "level": 14,
+   "width": 10117,
+   "height": 7891,
+   "cols": 40,
+   "rows": 32,
+   "first": 429
+  }
+ ]
+}

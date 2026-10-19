@@ -1,0 +1,153 @@
+{
+ "title": "Ovary",
+ "system": "Reproductive",
+ "description": "Part of an ovary taken up by one large antral follicle: a fluid-filled antrum lined by granulosa cells, with the theca and the ovarian stroma around it.",
+ "look_for": [
+  "The antrum, filled with follicular fluid (which looks like a pale pink net)",
+  "Granulosa cells: a layer a few cells thick lining the antrum",
+  "The theca: spindle-shaped cells and small vessels around the granulosa",
+  "Ovarian stroma: densely packed spindle-shaped cells, with blood vessels"
+ ],
+ "labels": [
+  {
+   "key": "antrum",
+   "text": "Antrum of a large antral follicle (follicular fluid)",
+   "find": "the antrum of the follicle",
+   "x": 4400,
+   "y": 3500,
+   "r": 1000
+  },
+  {
+   "key": "granulosa",
+   "text": "Granulosa cells lining the antrum",
+   "find": "the granulosa cells",
+   "x": 3800,
+   "y": 6150,
+   "r": 25
+  },
+  {
+   "key": "theca",
+   "text": "Theca (layers of spindle-shaped cells around the granulosa)",
+   "find": "the theca",
+   "x": 3800,
+   "y": 6380,
+   "r": 40
+  },
+  {
+   "key": "stroma",
+   "text": "Ovarian stroma",
+   "find": "the ovarian stroma",
+   "x": 8600,
+   "y": 1300,
+   "r": 120
+  },
+  {
+   "key": "stroma",
+   "text": "Ovarian stroma",
+   "find": "the ovarian stroma",
+   "x": 800,
+   "y": 6400,
+   "r": 120
+  },
+  {
+   "key": "vessel",
+   "text": "Small artery in the stroma",
+   "find": "a small artery in the stroma",
+   "x": 7770,
+   "y": 6040,
+   "r": 30
+  }
+ ],
+ "id": "ovary",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-PWCY-1325",
+  "tissue_site": "Ovary",
+  "pathology_note": "2 pieces, 10x4 mm; numerous ova and follicles in various stages of normal function",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2303376761.1423223971.1720290327929.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 25496,
+   "y": 16592,
+   "width": 9712,
+   "height": 6880
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-PWCY-1325), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 9712,
+ "height": 6880,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 14,
+ "tileType": "image/webp",
+ "tiles": 1471,
+ "packBytes": 14753570,
+ "levels": [
+  {
+   "level": 8,
+   "width": 152,
+   "height": 108,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 304,
+   "height": 215,
+   "cols": 2,
+   "rows": 1,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 607,
+   "height": 430,
+   "cols": 3,
+   "rows": 2,
+   "first": 3
+  },
+  {
+   "level": 11,
+   "width": 1214,
+   "height": 860,
+   "cols": 5,
+   "rows": 4,
+   "first": 9
+  },
+  {
+   "level": 12,
+   "width": 2428,
+   "height": 1720,
+   "cols": 10,
+   "rows": 7,
+   "first": 29
+  },
+  {
+   "level": 13,
+   "width": 4856,
+   "height": 3440,
+   "cols": 20,
+   "rows": 14,
+   "first": 99
+  },
+  {
+   "level": 14,
+   "width": 9712,
+   "height": 6880,
+   "cols": 39,
+   "rows": 28,
+   "first": 379
+  }
+ ]
+}

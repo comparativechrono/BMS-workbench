@@ -1,0 +1,162 @@
+{
+ "format": "bms-flow-1",
+ "title": "Negative feedback: body temperature",
+ "description": "Cold surroundings make the body lose heat. The hypothalamus compares core temperature with its set point and turns up heat production and turns down heat loss, so that temperature falls only a little. Try blocking the arrows from the comparator to see what the temperature would do without control.",
+ "group": "Feedback",
+ "order": 1,
+ "nodes": [
+  {
+   "id": "cold",
+   "text": "Cold surroundings",
+   "role": "stimulus",
+   "shape": "flag",
+   "color": "orange",
+   "x": 90,
+   "y": 200,
+   "w": 140,
+   "h": 52,
+   "kind": "step",
+   "start": 10,
+   "size": 2,
+   "unit": "°C colder",
+   "plot": true
+  },
+  {
+   "id": "temp",
+   "text": "Core body temperature",
+   "role": "quantity",
+   "shape": "round",
+   "color": "blue",
+   "x": 320,
+   "y": 200,
+   "w": 170,
+   "h": 60,
+   "rest": 37,
+   "unit": "°C",
+   "tau": 5,
+   "plot": true
+  },
+  {
+   "id": "cmp",
+   "text": "Σ",
+   "role": "comparator",
+   "shape": "circle",
+   "color": "white",
+   "x": 560,
+   "y": 200,
+   "w": 56,
+   "h": 56
+  },
+  {
+   "id": "sp",
+   "text": "Set point",
+   "role": "setpoint",
+   "shape": "rect",
+   "color": "grey",
+   "x": 560,
+   "y": 80,
+   "w": 110,
+   "h": 48,
+   "rest": 37,
+   "unit": "°C",
+   "plot": false
+  },
+  {
+   "id": "note1",
+   "text": "Hypothalamus: compares body temperature with its set point",
+   "role": "label",
+   "shape": "label",
+   "color": "white",
+   "x": 730,
+   "y": 200,
+   "w": 180,
+   "h": 52
+  },
+  {
+   "id": "heat",
+   "text": "Heat production (shivering)",
+   "role": "quantity",
+   "shape": "round",
+   "color": "red",
+   "x": 440,
+   "y": 440,
+   "w": 190,
+   "h": 56,
+   "rest": 100,
+   "unit": "%",
+   "tau": 1,
+   "plot": true
+  },
+  {
+   "id": "loss",
+   "text": "Heat loss (sweating, skin blood flow)",
+   "role": "quantity",
+   "shape": "round",
+   "color": "teal",
+   "x": 440,
+   "y": 320,
+   "w": 180,
+   "h": 56,
+   "rest": 100,
+   "unit": "%",
+   "tau": 1,
+   "plot": true
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "cold",
+   "to": "temp",
+   "sign": "-"
+  },
+  {
+   "id": "e2",
+   "from": "temp",
+   "to": "cmp",
+   "sign": "-"
+  },
+  {
+   "id": "e3",
+   "from": "sp",
+   "to": "cmp",
+   "sign": "+"
+  },
+  {
+   "id": "e4",
+   "from": "cmp",
+   "to": "heat",
+   "sign": "+",
+   "gain": 20,
+   "label": "nerves",
+   "bend": -170
+  },
+  {
+   "id": "e5",
+   "from": "heat",
+   "to": "temp",
+   "sign": "+",
+   "gain": 0.2,
+   "bend": -170
+  },
+  {
+   "id": "e6",
+   "from": "cmp",
+   "to": "loss",
+   "sign": "-",
+   "gain": 5
+  },
+  {
+   "id": "e7",
+   "from": "loss",
+   "to": "temp",
+   "sign": "-",
+   "gain": 0.2
+  }
+ ],
+ "sim": {
+  "duration": 60,
+  "timeUnit": "min",
+  "clampZero": true
+ }
+}

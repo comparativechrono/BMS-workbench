@@ -1,0 +1,250 @@
+{
+ "title": "Muscular artery (tibial)",
+ "system": "Cardiovascular",
+ "description": "A medium-sized muscular artery cut across.",
+ "look_for": [
+  "The lumen and the endothelium that lines it",
+  "Internal elastic lamina: a wavy, glassy line under the endothelium",
+  "Tunica media: layers of smooth muscle running round the vessel",
+  "Tunica adventitia: connective tissue around the outside"
+ ],
+ "labels": [
+  {
+   "key": "lumen",
+   "text": "Lumen",
+   "find": "the lumen",
+   "x": 2180,
+   "y": 2650,
+   "r": 90
+  },
+  {
+   "key": "intima",
+   "text": "Tunica intima (endothelium and a thin layer under it)",
+   "find": "the tunica intima",
+   "x": 1870,
+   "y": 3178,
+   "r": 16
+  },
+  {
+   "key": "internal-elastic-lamina",
+   "text": "Internal elastic lamina (wavy and glassy)",
+   "find": "the internal elastic lamina",
+   "x": 1840,
+   "y": 3225,
+   "poly": [
+    [
+     1660,
+     3288
+    ],
+    [
+     1700,
+     3243
+    ],
+    [
+     1725,
+     3203
+    ],
+    [
+     1755,
+     3193
+    ],
+    [
+     1780,
+     3233
+    ],
+    [
+     1810,
+     3250
+    ],
+    [
+     1840,
+     3213
+    ],
+    [
+     1880,
+     3210
+    ],
+    [
+     1910,
+     3228
+    ],
+    [
+     1935,
+     3278
+    ],
+    [
+     1960,
+     3306
+    ],
+    [
+     2000,
+     3310
+    ],
+    [
+     2040,
+     3298
+    ],
+    [
+     2040,
+     3322
+    ],
+    [
+     2000,
+     3334
+    ],
+    [
+     1960,
+     3330
+    ],
+    [
+     1935,
+     3302
+    ],
+    [
+     1910,
+     3252
+    ],
+    [
+     1880,
+     3234
+    ],
+    [
+     1840,
+     3237
+    ],
+    [
+     1810,
+     3274
+    ],
+    [
+     1780,
+     3257
+    ],
+    [
+     1755,
+     3217
+    ],
+    [
+     1725,
+     3227
+    ],
+    [
+     1700,
+     3267
+    ],
+    [
+     1660,
+     3312
+    ]
+   ]
+  },
+  {
+   "key": "media",
+   "text": "Tunica media: layers of smooth muscle",
+   "find": "the tunica media",
+   "x": 1800,
+   "y": 3550,
+   "r": 120
+  },
+  {
+   "key": "adventitia",
+   "text": "Tunica adventitia",
+   "find": "the tunica adventitia",
+   "x": 1800,
+   "y": 3880,
+   "r": 60
+  },
+  {
+   "key": "fat",
+   "text": "Fat cells next to the artery",
+   "find": "fat cells",
+   "x": 400,
+   "y": 3300,
+   "r": 80
+  }
+ ],
+ "id": "muscular-artery",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-RU72-1225",
+  "tissue_site": "Artery - Tibial",
+  "pathology_note": "2 aliquots,  ~2.5mm d.  Excellent clean specimens",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.1968174751.1859227256.1719955125919.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 809,
+   "y": 1012,
+   "width": 5059,
+   "height": 4249
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-RU72-1225), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 5059,
+ "height": 4249,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 469,
+ "packBytes": 2500758,
+ "levels": [
+  {
+   "level": 8,
+   "width": 159,
+   "height": 133,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 317,
+   "height": 266,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 633,
+   "height": 532,
+   "cols": 3,
+   "rows": 3,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1265,
+   "height": 1063,
+   "cols": 5,
+   "rows": 5,
+   "first": 14
+  },
+  {
+   "level": 12,
+   "width": 2530,
+   "height": 2125,
+   "cols": 10,
+   "rows": 9,
+   "first": 39
+  },
+  {
+   "level": 13,
+   "width": 5059,
+   "height": 4249,
+   "cols": 20,
+   "rows": 17,
+   "first": 129
+  }
+ ]
+}

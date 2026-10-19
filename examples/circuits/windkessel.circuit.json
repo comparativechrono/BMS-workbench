@@ -1,0 +1,115 @@
+{
+ "format": "bms-circuit-1",
+ "title": "The Windkessel model of the circulation",
+ "group": "Physiology",
+ "order": 7,
+ "mode": "physiology",
+ "description": "The two-element Windkessel model. The heart pumps blood into the aorta in pulses (a flow source, 75 beats a minute, about 70 mL a beat); the aortic valve lets it through one way only. The elastic arteries store blood as they stretch (a compliance, 1 mL/mmHg) and the arterioles resist its flow out to the tissues (the peripheral resistance, 1.1 mmHg·s/mL). Run it: the aortic pressure swings between about 75 mmHg (diastolic) and 125 mmHg (systolic), and the flow to the tissues stays steady even though the heart pumps in bursts. Make the arteries stiffer (lower the compliance) and watch the pulse pressure grow.",
+ "elements": [
+  {
+   "id": "I1",
+   "type": "acisource",
+   "x1": 0,
+   "y1": 12,
+   "x2": 0,
+   "y2": 2,
+   "wave": "halfsine",
+   "amp": 400,
+   "freq": 1.25,
+   "duty": 0.35,
+   "offset": 0,
+   "label": "Heart",
+   "labelPos": "left"
+  },
+  {
+   "id": "D1",
+   "type": "diode",
+   "x1": 0,
+   "y1": 2,
+   "x2": 6,
+   "y2": 2,
+   "model": "ideal",
+   "label": "Aortic valve"
+  },
+  {
+   "id": "W1",
+   "type": "wire",
+   "x1": 6,
+   "y1": 2,
+   "x2": 30,
+   "y2": 2
+  },
+  {
+   "id": "C1",
+   "type": "capacitor",
+   "x1": 9,
+   "y1": 2,
+   "x2": 9,
+   "y2": 12,
+   "value": 1.0,
+   "v0": 80,
+   "label": "Arteries (compliance)"
+  },
+  {
+   "id": "AM1",
+   "type": "ammeter",
+   "x1": 20,
+   "y1": 2,
+   "x2": 20,
+   "y2": 6,
+   "label": "Flow to the tissues"
+  },
+  {
+   "id": "R1",
+   "type": "resistor",
+   "x1": 20,
+   "y1": 6,
+   "x2": 20,
+   "y2": 12,
+   "value": 1.1,
+   "label": "Peripheral resistance"
+  },
+  {
+   "id": "W2",
+   "type": "wire",
+   "x1": 0,
+   "y1": 12,
+   "x2": 30,
+   "y2": 12
+  },
+  {
+   "id": "VM1",
+   "type": "voltmeter",
+   "x1": 30,
+   "y1": 12,
+   "x2": 30,
+   "y2": 2,
+   "label": "Aortic pressure"
+  },
+  {
+   "id": "GND1",
+   "type": "ground",
+   "x1": 0,
+   "y1": 12,
+   "x2": 0,
+   "y2": 13
+  }
+ ],
+ "traces": [
+  {
+   "kind": "v",
+   "id": "VM1"
+  },
+  {
+   "kind": "i",
+   "id": "I1"
+  },
+  {
+   "kind": "i",
+   "id": "AM1"
+  }
+ ],
+ "settings": {
+  "window": "auto"
+ }
+}

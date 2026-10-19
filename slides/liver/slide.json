@@ -1,0 +1,161 @@
+{
+ "title": "Liver",
+ "system": "Digestive",
+ "description": "Plates of hepatocytes radiating from central veins, with portal tracts at the corners of the lobules.",
+ "look_for": [
+  "Hepatocytes: large polygonal cells in plates, with one or two round nuclei",
+  "Sinusoids: the pale spaces between the plates of hepatocytes",
+  "Central veins (terminal hepatic venules): thin-walled veins with no bile duct beside them",
+  "A portal tract: a branch of the portal vein and small bile ducts in connective tissue (the branch of the hepatic artery is small and hard to pick out here)"
+ ],
+ "labels": [
+  {
+   "key": "central-vein",
+   "text": "Central vein",
+   "find": "a central vein",
+   "x": 650,
+   "y": 3570,
+   "r": 40
+  },
+  {
+   "key": "central-vein",
+   "text": "Central vein",
+   "find": "a central vein",
+   "x": 3765,
+   "y": 1320,
+   "r": 40
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 4130,
+   "y": 3300,
+   "r": 130
+  },
+  {
+   "key": "portal-vein",
+   "text": "Branch of the portal vein",
+   "find": "a branch of the portal vein",
+   "x": 4210,
+   "y": 3330,
+   "r": 60
+  },
+  {
+   "key": "bile-duct",
+   "text": "Bile duct",
+   "find": "a bile duct",
+   "x": 4080,
+   "y": 3480,
+   "r": 25
+  },
+  {
+   "key": "bile-duct",
+   "text": "Bile duct",
+   "find": "a bile duct",
+   "x": 4540,
+   "y": 2850,
+   "r": 22
+  },
+  {
+   "key": "hepatocytes",
+   "text": "Plates of hepatocytes, with sinusoids between them",
+   "find": "hepatocytes",
+   "x": 4800,
+   "y": 3700,
+   "r": 80
+  },
+  {
+   "key": "hepatocytes",
+   "text": "Plates of hepatocytes, with sinusoids between them",
+   "find": "hepatocytes",
+   "x": 2000,
+   "y": 2000,
+   "r": 100
+  }
+ ],
+ "id": "liver",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-RWSA-1425",
+  "tissue_site": "Liver",
+  "pathology_note": "2 aliquots,  ~7x6mm.  Fairly well preserved, minimal fat",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2236310798.1689622911.1720223261966.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 4856,
+   "y": 3642,
+   "width": 7082,
+   "height": 6071
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-RWSA-1425), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 7082,
+ "height": 6071,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 899,
+ "packBytes": 14782316,
+ "levels": [
+  {
+   "level": 8,
+   "width": 222,
+   "height": 190,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 443,
+   "height": 380,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 886,
+   "height": 759,
+   "cols": 4,
+   "rows": 3,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1771,
+   "height": 1518,
+   "cols": 7,
+   "rows": 6,
+   "first": 17
+  },
+  {
+   "level": 12,
+   "width": 3541,
+   "height": 3036,
+   "cols": 14,
+   "rows": 12,
+   "first": 59
+  },
+  {
+   "level": 13,
+   "width": 7082,
+   "height": 6071,
+   "cols": 28,
+   "rows": 24,
+   "first": 227
+  }
+ ]
+}

@@ -1,0 +1,178 @@
+{
+ "title": "Pituitary gland",
+ "system": "Endocrine",
+ "description": "The anterior pituitary (adenohypophysis, left) and the posterior pituitary (neurohypophysis, right), which in this specimen were cut as two pieces side by side.",
+ "look_for": [
+  "Anterior pituitary: cords and clusters of endocrine cells around capillaries",
+  "In the anterior pituitary, cells whose cytoplasm stains pink (acidophils), purple-blue (basophils) or hardly at all (chromophobes)",
+  "Posterior pituitary: pale, fibrous-looking tissue made of unmyelinated axons from the hypothalamus",
+  "Scattered nuclei of pituicytes (glial cells) among the axons of the posterior pituitary",
+  "Capillaries in both parts"
+ ],
+ "labels": [
+  {
+   "key": "anterior",
+   "text": "Anterior pituitary (adenohypophysis)",
+   "find": "the anterior pituitary",
+   "x": 1500,
+   "y": 4000,
+   "r": 600
+  },
+  {
+   "key": "anterior",
+   "text": "Anterior pituitary (adenohypophysis)",
+   "find": "the anterior pituitary",
+   "x": 2600,
+   "y": 5800,
+   "r": 500
+  },
+  {
+   "key": "posterior",
+   "text": "Posterior pituitary (neurohypophysis)",
+   "find": "the posterior pituitary",
+   "x": 6000,
+   "y": 3700,
+   "r": 500
+  },
+  {
+   "key": "posterior",
+   "text": "Posterior pituitary (neurohypophysis)",
+   "find": "the posterior pituitary",
+   "x": 7000,
+   "y": 5200,
+   "r": 400
+  },
+  {
+   "key": "cells",
+   "text": "A cluster of endocrine cells",
+   "find": "a cluster of endocrine cells",
+   "x": 3840,
+   "y": 4440,
+   "r": 50
+  },
+  {
+   "key": "cells",
+   "text": "A cluster of endocrine cells",
+   "find": "a cluster of endocrine cells",
+   "x": 2150,
+   "y": 3820,
+   "r": 40
+  },
+  {
+   "key": "sinusoid",
+   "text": "Sinusoid (a wide capillary)",
+   "find": "a sinusoid (a wide capillary)",
+   "x": 1930,
+   "y": 3450,
+   "r": 60
+  },
+  {
+   "key": "vessel",
+   "text": "Blood vessel in the posterior pituitary",
+   "find": "a blood vessel in the posterior pituitary",
+   "x": 6250,
+   "y": 3270,
+   "r": 30
+  },
+  {
+   "key": "capsule",
+   "text": "Capsule (connective tissue)",
+   "find": "the capsule",
+   "x": 4440,
+   "y": 4800,
+   "r": 60
+  },
+  {
+   "key": "capsule",
+   "text": "Capsule (connective tissue)",
+   "find": "the capsule",
+   "x": 2600,
+   "y": 600,
+   "r": 150
+  }
+ ],
+ "id": "pituitary-gland",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-16XZZ-3125",
+  "tissue_site": "Pituitary",
+  "pathology_note": "2 pieces; anterior and posterior parts are separated and in equal proportions",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2077363746.1617266094.1720064314914.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 6070,
+   "y": 2833,
+   "width": 8094,
+   "height": 7284
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-16XZZ-3125), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 8094,
+ "height": 7284,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1253,
+ "packBytes": 18062684,
+ "levels": [
+  {
+   "level": 8,
+   "width": 253,
+   "height": 228,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 506,
+   "height": 456,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 1012,
+   "height": 911,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 2024,
+   "height": 1821,
+   "cols": 8,
+   "rows": 8,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 4047,
+   "height": 3642,
+   "cols": 16,
+   "rows": 15,
+   "first": 85
+  },
+  {
+   "level": 13,
+   "width": 8094,
+   "height": 7284,
+   "cols": 32,
+   "rows": 29,
+   "first": 325
+  }
+ ]
+}

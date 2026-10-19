@@ -1,0 +1,194 @@
+{
+ "title": "Peripheral nerve (tibial)",
+ "system": "Nervous",
+ "description": "A large nerve cut across, with many fascicles of nerve fibres, each wrapped in perineurium.",
+ "look_for": [
+  "Epineurium: the connective tissue around and between the fascicles, with blood vessels",
+  "Perineurium: the thin, layered sheath around each fascicle",
+  "Nerve fibres cut across inside each fascicle, with the endoneurium between them",
+  "Nuclei of Schwann cells among the fibres"
+ ],
+ "labels": [
+  {
+   "key": "fascicle",
+   "text": "Fascicle (a bundle of nerve fibres)",
+   "find": "a fascicle",
+   "x": 3200,
+   "y": 4800,
+   "r": 500
+  },
+  {
+   "key": "fascicle",
+   "text": "Fascicle (a bundle of nerve fibres)",
+   "find": "a fascicle",
+   "x": 4800,
+   "y": 2400,
+   "r": 400
+  },
+  {
+   "key": "fibres",
+   "text": "Myelinated nerve fibres cut across",
+   "find": "myelinated nerve fibres cut across",
+   "x": 3600,
+   "y": 3300,
+   "r": 80
+  },
+  {
+   "key": "perineurium",
+   "text": "Perineurium (the sheath around a fascicle)",
+   "find": "the perineurium",
+   "x": 3982,
+   "y": 3160,
+   "poly": [
+    [
+     3916,
+     3000
+    ],
+    [
+     3948,
+     3080
+    ],
+    [
+     3968,
+     3160
+    ],
+    [
+     3979,
+     3240
+    ],
+    [
+     3983,
+     3320
+    ],
+    [
+     4011,
+     3320
+    ],
+    [
+     4007,
+     3240
+    ],
+    [
+     3996,
+     3160
+    ],
+    [
+     3976,
+     3080
+    ],
+    [
+     3944,
+     3000
+    ]
+   ]
+  },
+  {
+   "key": "epineurium",
+   "text": "Epineurium (connective tissue between and around the fascicles)",
+   "find": "the epineurium",
+   "x": 4150,
+   "y": 3200,
+   "r": 60
+  },
+  {
+   "key": "epineurium",
+   "text": "Epineurium (connective tissue between and around the fascicles)",
+   "find": "the epineurium",
+   "x": 900,
+   "y": 400,
+   "r": 150
+  },
+  {
+   "key": "vessel",
+   "text": "Blood vessel in the epineurium",
+   "find": "a blood vessel",
+   "x": 4200,
+   "y": 1450,
+   "r": 50
+  }
+ ],
+ "id": "peripheral-nerve",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-TKQ1-1325",
+  "tissue_site": "Nerve - Tibial",
+  "pathology_note": "2 pieces,  ~4.5-5mm d.  Excellent clean specimens, minimal fat.",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2183331457.2131308660.1720170282625.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 24282,
+   "y": 10724,
+   "width": 7284,
+   "height": 6678
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-TKQ1-1325), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 7284,
+ "height": 6678,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1070,
+ "packBytes": 15075744,
+ "levels": [
+  {
+   "level": 8,
+   "width": 228,
+   "height": 209,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 456,
+   "height": 418,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 911,
+   "height": 835,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1821,
+   "height": 1670,
+   "cols": 8,
+   "rows": 7,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 3642,
+   "height": 3339,
+   "cols": 15,
+   "rows": 14,
+   "first": 77
+  },
+  {
+   "level": 13,
+   "width": 7284,
+   "height": 6678,
+   "cols": 29,
+   "rows": 27,
+   "first": 287
+  }
+ ]
+}

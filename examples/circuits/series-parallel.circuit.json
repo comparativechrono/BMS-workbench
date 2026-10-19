@@ -1,0 +1,153 @@
+{
+ "format": "bms-circuit-1",
+ "title": "Resistances in series and in parallel",
+ "group": "Physiology",
+ "order": 2,
+ "mode": "physiology",
+ "description": "A model of blood vessels. A pressure source of 100 mmHg drives blood through an artery (in series) and then through two vascular beds side by side (in parallel). The flowmeters show how the flow divides: more flow takes the path of lower resistance. Total resistance = <i>R</i><sub>artery</sub> + 1 / (1/<i>R</i><sub>A</sub> + 1/<i>R</i><sub>B</sub>), and flow = difference in pressure / resistance (Darcy’s law, the same form as Ohm’s law). Try narrowing bed A (raise its resistance) and see where the flow goes.",
+ "elements": [
+  {
+   "id": "V1",
+   "type": "battery",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 2,
+   "value": 100,
+   "label": "Heart (pump)",
+   "labelPos": "left"
+  },
+  {
+   "id": "W1",
+   "type": "wire",
+   "x1": 0,
+   "y1": 2,
+   "x2": 4,
+   "y2": 2
+  },
+  {
+   "id": "AM1",
+   "type": "ammeter",
+   "x1": 4,
+   "y1": 2,
+   "x2": 9,
+   "y2": 2,
+   "label": "Total flow"
+  },
+  {
+   "id": "R1",
+   "type": "resistor",
+   "x1": 9,
+   "y1": 2,
+   "x2": 15,
+   "y2": 2,
+   "value": 0.2,
+   "label": "Artery"
+  },
+  {
+   "id": "W2",
+   "type": "wire",
+   "x1": 15,
+   "y1": 2,
+   "x2": 19,
+   "y2": 2
+  },
+  {
+   "id": "AM2",
+   "type": "ammeter",
+   "x1": 19,
+   "y1": 2,
+   "x2": 19,
+   "y2": 5,
+   "label": "Flow A"
+  },
+  {
+   "id": "R2",
+   "type": "resistor",
+   "x1": 19,
+   "y1": 5,
+   "x2": 19,
+   "y2": 10,
+   "value": 2,
+   "label": "Bed A"
+  },
+  {
+   "id": "W3",
+   "type": "wire",
+   "x1": 19,
+   "y1": 2,
+   "x2": 30,
+   "y2": 2
+  },
+  {
+   "id": "AM3",
+   "type": "ammeter",
+   "x1": 30,
+   "y1": 2,
+   "x2": 30,
+   "y2": 5,
+   "label": "Flow B"
+  },
+  {
+   "id": "R3",
+   "type": "resistor",
+   "x1": 30,
+   "y1": 5,
+   "x2": 30,
+   "y2": 10,
+   "value": 4,
+   "label": "Bed B"
+  },
+  {
+   "id": "W4",
+   "type": "wire",
+   "x1": 30,
+   "y1": 10,
+   "x2": 19,
+   "y2": 10
+  },
+  {
+   "id": "W5",
+   "type": "wire",
+   "x1": 19,
+   "y1": 10,
+   "x2": 0,
+   "y2": 10
+  },
+  {
+   "id": "W6",
+   "type": "wire",
+   "x1": 30,
+   "y1": 2,
+   "x2": 41,
+   "y2": 2
+  },
+  {
+   "id": "W7",
+   "type": "wire",
+   "x1": 30,
+   "y1": 10,
+   "x2": 41,
+   "y2": 10
+  },
+  {
+   "id": "VM1",
+   "type": "voltmeter",
+   "x1": 41,
+   "y1": 10,
+   "x2": 41,
+   "y2": 2,
+   "label": "Pressure across the beds"
+  },
+  {
+   "id": "GND1",
+   "type": "ground",
+   "x1": 0,
+   "y1": 10,
+   "x2": 0,
+   "y2": 11
+  }
+ ],
+ "traces": [],
+ "settings": {}
+}

@@ -1,0 +1,129 @@
+{
+ "format": "bms-flow-1",
+ "title": "Negative feedback with a delay",
+ "description": "A negative feedback loop whose sensor reports late: the effector keeps correcting for an error that has already gone, so the regulated variable overshoots and oscillates. Make the delay shorter (or the strength smaller) and the oscillation dies away quickly; make it longer and it grows.",
+ "group": "Feedback",
+ "order": 4,
+ "nodes": [
+  {
+   "id": "dist",
+   "text": "Disturbance",
+   "role": "stimulus",
+   "shape": "flag",
+   "color": "orange",
+   "x": 90,
+   "y": 120,
+   "w": 130,
+   "h": 50,
+   "kind": "step",
+   "start": 5,
+   "size": 1,
+   "plot": true
+  },
+  {
+   "id": "rv",
+   "text": "Regulated variable",
+   "role": "quantity",
+   "shape": "round",
+   "color": "blue",
+   "x": 310,
+   "y": 120,
+   "w": 170,
+   "h": 56,
+   "rest": 10,
+   "unit": "",
+   "tau": 1,
+   "plot": true
+  },
+  {
+   "id": "cmp",
+   "text": "Σ",
+   "role": "comparator",
+   "shape": "circle",
+   "color": "white",
+   "x": 530,
+   "y": 120,
+   "w": 56,
+   "h": 56
+  },
+  {
+   "id": "sp",
+   "text": "Set point",
+   "role": "setpoint",
+   "shape": "rect",
+   "color": "grey",
+   "x": 690,
+   "y": 120,
+   "w": 110,
+   "h": 48,
+   "rest": 10,
+   "plot": false
+  },
+  {
+   "id": "eff",
+   "text": "Effector",
+   "role": "quantity",
+   "shape": "round",
+   "color": "red",
+   "x": 420,
+   "y": 260,
+   "w": 150,
+   "h": 56,
+   "rest": 10,
+   "unit": "",
+   "tau": 1,
+   "plot": true
+  },
+  {
+   "id": "note",
+   "text": "The sensor’s signal arrives 2 min late",
+   "role": "label",
+   "shape": "label",
+   "color": "white",
+   "x": 420,
+   "y": 40,
+   "w": 260,
+   "h": 34
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "dist",
+   "to": "rv",
+   "sign": "-"
+  },
+  {
+   "id": "e2",
+   "from": "rv",
+   "to": "cmp",
+   "sign": "-",
+   "delay": 2,
+   "label": "sensor"
+  },
+  {
+   "id": "e3",
+   "from": "sp",
+   "to": "cmp",
+   "sign": "+"
+  },
+  {
+   "id": "e4",
+   "from": "cmp",
+   "to": "eff",
+   "sign": "+",
+   "gain": 1.6
+  },
+  {
+   "id": "e5",
+   "from": "eff",
+   "to": "rv",
+   "sign": "+"
+  }
+ ],
+ "sim": {
+  "duration": 60,
+  "timeUnit": "min",
+  "clampZero": true
+ }
+}

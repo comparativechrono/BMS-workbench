@@ -1,0 +1,186 @@
+{
+ "title": "Skin",
+ "system": "Skin",
+ "description": "Hairy skin: epidermis, dermis, hair follicles cut lengthways and across, sebaceous glands and sweat glands, with fat at the edge.",
+ "look_for": [
+  "Epidermis: keratinised stratified squamous epithelium, with a thin layer of keratin on the surface",
+  "The wavy junction between epidermis and dermis (rete ridges and dermal papillae)",
+  "Dermis: dense irregular connective tissue (collagen)",
+  "Hair follicles (cut lengthways and across) with their hair shafts, and sebaceous glands beside them",
+  "Sweat glands: clusters of coiled tubules"
+ ],
+ "labels": [
+  {
+   "key": "epidermis",
+   "text": "Epidermis (keratinised stratified squamous epithelium)",
+   "find": "the epidermis",
+   "x": 6500,
+   "y": 4300,
+   "r": 40
+  },
+  {
+   "key": "epidermis",
+   "text": "Epidermis (keratinised stratified squamous epithelium)",
+   "find": "the epidermis",
+   "x": 6180,
+   "y": 4740,
+   "r": 40
+  },
+  {
+   "key": "keratin",
+   "text": "Keratin (stratum corneum)",
+   "find": "the layer of keratin on the surface",
+   "x": 6668,
+   "y": 4080,
+   "r": 10
+  },
+  {
+   "key": "dermis",
+   "text": "Dermis (dense irregular connective tissue)",
+   "find": "the dermis",
+   "x": 5900,
+   "y": 1200,
+   "r": 300
+  },
+  {
+   "key": "hair-follicle",
+   "text": "Hair follicle (cut across)",
+   "find": "a hair follicle",
+   "x": 4400,
+   "y": 2600,
+   "r": 120
+  },
+  {
+   "key": "hair-follicle",
+   "text": "Hair follicle (cut lengthways)",
+   "find": "a hair follicle",
+   "x": 1200,
+   "y": 3250,
+   "r": 150
+  },
+  {
+   "key": "hair-shaft",
+   "text": "Hair shaft",
+   "find": "a hair shaft",
+   "x": 2800,
+   "y": 3320,
+   "r": 30
+  },
+  {
+   "key": "sebaceous-gland",
+   "text": "Sebaceous gland",
+   "find": "a sebaceous gland",
+   "x": 5150,
+   "y": 1950,
+   "r": 150
+  },
+  {
+   "key": "sebaceous-gland",
+   "text": "Sebaceous gland",
+   "find": "a sebaceous gland",
+   "x": 4280,
+   "y": 2160,
+   "r": 70
+  },
+  {
+   "key": "sweat-gland",
+   "text": "Sweat gland (coiled tubules cut in many places)",
+   "find": "a sweat gland",
+   "x": 4700,
+   "y": 1150,
+   "r": 120
+  },
+  {
+   "key": "fat",
+   "text": "Fat (subcutaneous adipose tissue)",
+   "find": "fat cells",
+   "x": 1200,
+   "y": 2000,
+   "r": 200
+  }
+ ],
+ "id": "skin",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-1I6K7-1925",
+  "tissue_site": "Skin - Not Sun Exposed (Suprapubic)",
+  "pathology_note": "6 pieces; well dissected; numerous hair follicles (up to 9 per piece)",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2484888779.1861368278.1720471839947.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 36423,
+   "y": 9713,
+   "width": 8093,
+   "height": 6475
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-1I6K7-1925), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 8093,
+ "height": 6475,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 1117,
+ "packBytes": 9871820,
+ "levels": [
+  {
+   "level": 8,
+   "width": 253,
+   "height": 203,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 506,
+   "height": 405,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 1012,
+   "height": 810,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 2024,
+   "height": 1619,
+   "cols": 8,
+   "rows": 7,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 4047,
+   "height": 3238,
+   "cols": 16,
+   "rows": 13,
+   "first": 77
+  },
+  {
+   "level": 13,
+   "width": 8093,
+   "height": 6475,
+   "cols": 32,
+   "rows": 26,
+   "first": 285
+  }
+ ]
+}

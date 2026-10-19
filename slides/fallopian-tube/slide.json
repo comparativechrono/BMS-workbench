@@ -1,0 +1,161 @@
+{
+ "title": "Fallopian (uterine) tube",
+ "system": "Reproductive",
+ "description": "The tube cut across: a highly folded mucosa in the lumen, with smooth muscle around it.",
+ "look_for": [
+  "Mucosal folds (plicae) projecting into the lumen",
+  "Simple columnar epithelium covering the folds (it is made of ciliated cells and secretory \"peg\" cells, although the cilia are too fine to make out in this scan)",
+  "Lamina propria in the core of each fold",
+  "Smooth muscle layers around the mucosa"
+ ],
+ "labels": [
+  {
+   "key": "plica",
+   "text": "Mucosal fold (plica)",
+   "find": "a mucosal fold (plica)",
+   "x": 3580,
+   "y": 3560,
+   "r": 60
+  },
+  {
+   "key": "plica",
+   "text": "Mucosal fold (plica)",
+   "find": "a mucosal fold (plica)",
+   "x": 1600,
+   "y": 4170,
+   "r": 50
+  },
+  {
+   "key": "lumen",
+   "text": "Lumen",
+   "find": "the lumen",
+   "x": 3600,
+   "y": 3820,
+   "r": 50
+  },
+  {
+   "key": "epithelium",
+   "text": "Simple columnar epithelium (ciliated and secretory cells)",
+   "find": "the epithelium covering a fold",
+   "x": 4100,
+   "y": 3375,
+   "r": 18
+  },
+  {
+   "key": "lamina-propria",
+   "text": "Lamina propria (the core of a fold)",
+   "find": "the lamina propria in the core of a fold",
+   "x": 4150,
+   "y": 3640,
+   "r": 30
+  },
+  {
+   "key": "muscularis",
+   "text": "Muscularis (smooth muscle)",
+   "find": "the smooth muscle around the mucosa",
+   "x": 3400,
+   "y": 700,
+   "r": 100
+  },
+  {
+   "key": "vessel",
+   "text": "Blood vessel (a vein full of red blood cells)",
+   "find": "a blood vessel",
+   "x": 6480,
+   "y": 1740,
+   "r": 150
+  },
+  {
+   "key": "vessel",
+   "text": "Blood vessel (a vein full of red blood cells)",
+   "find": "a blood vessel",
+   "x": 6480,
+   "y": 2200,
+   "r": 100
+  }
+ ],
+ "id": "fallopian-tube",
+ "stain": "H&E (haematoxylin and eosin)",
+ "species": "Human",
+ "mpp": 0.4942,
+ "scan": "20x (Aperio scanner)",
+ "source": {
+  "name": "GTEx (Genotype-Tissue Expression) project",
+  "sample": "GTEX-S341-0825",
+  "tissue_site": "Fallopian Tube",
+  "pathology_note": "2 aliquots, ~  4.5mm d.  Mucosa extremely well preserved",
+  "via": "NCI Imaging Data Commons (IDC), collection gtex",
+  "series_uid": "1.3.6.1.4.1.5962.99.1.2214101637.1625827376.1720201052805.4.0",
+  "url": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=gtex",
+  "region": {
+   "x": 2833,
+   "y": 3035,
+   "width": 6880,
+   "height": 6475
+  },
+  "changes": "A region of the slide was cut out and re-encoded as a WebP image pyramid; nothing else was changed.",
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "credit": "Image: the GTEx Consortium (sample GTEX-S341-0825), via the NCI Imaging Data Commons. CC BY 4.0."
+ },
+ "format": "bms-slide-1",
+ "width": 6880,
+ "height": 6475,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 980,
+ "packBytes": 14151860,
+ "levels": [
+  {
+   "level": 8,
+   "width": 215,
+   "height": 203,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 430,
+   "height": 405,
+   "cols": 2,
+   "rows": 2,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 860,
+   "height": 810,
+   "cols": 4,
+   "rows": 4,
+   "first": 5
+  },
+  {
+   "level": 11,
+   "width": 1720,
+   "height": 1619,
+   "cols": 7,
+   "rows": 7,
+   "first": 21
+  },
+  {
+   "level": 12,
+   "width": 3440,
+   "height": 3238,
+   "cols": 14,
+   "rows": 13,
+   "first": 70
+  },
+  {
+   "level": 13,
+   "width": 6880,
+   "height": 6475,
+   "cols": 28,
+   "rows": 26,
+   "first": 252
+  }
+ ]
+}

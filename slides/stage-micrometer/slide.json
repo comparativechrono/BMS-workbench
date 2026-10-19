@@ -1,0 +1,100 @@
+{
+ "id": "stage-micrometer",
+ "title": "Stage micrometer",
+ "system": "Measuring",
+ "order": 1,
+ "description": "A stage micrometer: a scale 1 mm long, divided into 100 divisions of 0.01 mm (10 µm). Use it to calibrate the eyepiece graticule at each objective.",
+ "look_for": [
+  "The scale: 100 divisions, with longer lines every 5 and every 10 divisions",
+  "At each objective, line up the eyepiece graticule (eyepiece view) with the scale and count how many micrometres one division of the graticule covers"
+ ],
+ "stain": "none (a drawing of an etched glass scale)",
+ "species": "–",
+ "mpp": 0.25,
+ "scan": "drawn for the workbench",
+ "labels": [
+  {
+   "key": "zero",
+   "text": "0",
+   "find": "the start of the scale (0)",
+   "x": 1000,
+   "y": 1020,
+   "r": 100
+  },
+  {
+   "key": "one-mm",
+   "text": "1 mm (100 divisions)",
+   "find": "the end of the scale (1 mm)",
+   "x": 5000,
+   "y": 1020,
+   "r": 100
+  }
+ ],
+ "source": {
+  "name": "Drawn for the BMS workbench (build/slides/synthetic.py)",
+  "licence": "CC0 1.0",
+  "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "credit": "A drawing made for the BMS workbench (not a photograph). CC0.",
+  "changes": ""
+ },
+ "format": "bms-slide-1",
+ "width": 6000,
+ "height": 2080,
+ "tileSize": 254,
+ "overlap": 1,
+ "minLevel": 8,
+ "maxLevel": 13,
+ "tileType": "image/webp",
+ "tiles": 303,
+ "packBytes": 127302,
+ "levels": [
+  {
+   "level": 8,
+   "width": 188,
+   "height": 65,
+   "cols": 1,
+   "rows": 1,
+   "first": 0
+  },
+  {
+   "level": 9,
+   "width": 375,
+   "height": 130,
+   "cols": 2,
+   "rows": 1,
+   "first": 1
+  },
+  {
+   "level": 10,
+   "width": 750,
+   "height": 260,
+   "cols": 3,
+   "rows": 2,
+   "first": 3
+  },
+  {
+   "level": 11,
+   "width": 1500,
+   "height": 520,
+   "cols": 6,
+   "rows": 3,
+   "first": 9
+  },
+  {
+   "level": 12,
+   "width": 3000,
+   "height": 1040,
+   "cols": 12,
+   "rows": 5,
+   "first": 27
+  },
+  {
+   "level": 13,
+   "width": 6000,
+   "height": 2080,
+   "cols": 24,
+   "rows": 9,
+   "first": 87
+  }
+ ]
+}
