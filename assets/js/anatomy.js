@@ -522,6 +522,7 @@
       return this._systemsChanged(before, opts);
     }
     _systemsChanged(before, opts) {
+      if (this.infoSide === 'about') setTimeout(() => this._renderInfo(), 0);
       const keys = new Set([...Object.keys(before), ...Object.keys(this.on)]);
       keys.forEach((k) => {
         // (a system that the instructions ask for is reported even when it was shown already)
@@ -788,7 +789,13 @@
         h('h3', 'The models'),
         h('p', 'The body is a 3D atlas of a man’s body: the skeleton, the muscles, the heart and vessels, the organs, the brain and the nerves. Each structure is a separate model that you can select, hide, isolate or cut through.'),
         h('p.an-credit', { html: `The models are from <a href="${esc(links['Z-Anatomy'] || 'https://www.z-anatomy.com/')}" target="_blank" rel="noopener"><b>Z-Anatomy</b></a>, the libre 3D atlas of anatomy (by Gauthier Kervyn and others), most of them made from <a href="${esc(links.BodyParts3D || 'https://dbarchive.biosciencedbc.jp/en/bodyparts3d/')}" target="_blank" rel="noopener">BodyParts3D</a>, © The Database Center for Life Science (CC BY-SA 2.1 Japan). The surface of the brain is from <a href="${esc(links['Brain for Blender'] || 'https://brainder.org/research/brain-for-blender/')}" target="_blank" rel="noopener">Brain for Blender</a> by Anderson M. Winkler (CC BY-SA 3.0), and the cranial nerves follow “Cranial Nerves and Foramina” (University of Dundee, CAHID, CC BY 4.0). The definitions are the opening sentences of Wikipedia’s articles (CC BY-SA), as kept in Z-Anatomy.` }),
-        h('p.an-credit', { html: 'They were simplified and converted for the workbench (see <code>build/anatomy</code>) and are shared, like Z-Anatomy, under the <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0</a> licence: you may use and share them, and pictures you take of them, if you credit Z-Anatomy and BodyParts3D and share what you make in the same way.' }),
+        h('p.an-credit', { html: 'They were simplified and converted for the workbench (see <code>build/anatomy</code>) and are shared, like Z-Anatomy, under the <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0</a> licence: you may use and share them, and pictures you take of them, if you credit their sources (each picture carries them) and share what you make in the same way.' }),
+        h('h4', 'The sources of what is shown now'),
+        h('ul.an-look', this.creditKeys().map((k) => {
+          const S = (this.index.sources || {})[k];
+          if (!S) return null;
+          return h('li', S.url ? h('a', { href: S.url, target: '_blank', rel: 'noopener' }, S.name) : h('span', S.name), `, ${S.by} (${S.licence})` + (S.what ? `: ${S.what}` : ''));
+        })),
         h('h4', 'What is not here'),
         h('ul.an-look',
           h('li', 'The female reproductive organs: the body is a man’s (BodyParts3D was made from one man).'),
