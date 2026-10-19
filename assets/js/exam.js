@@ -20,6 +20,9 @@
      "showWordCount": true,                show "Words: …" under essays
      "toolbar": "default",                 the essay toolbar: "default", "basic" (bold, italic, underline, lists,
                                            undo and redo) or "plain" (plain text); a question can have its own
+     "clipboard": "exam",                  "exam" (the default): as in Inspera's exam browser, only what was copied in
+                                           the exam can be pasted into it; "any": anything can be pasted, as in an
+                                           exam taken in an ordinary web browser
      "instructions": "<p>…</p>",           HTML, on the paper's first page
      "resources": [ {"type": "calculator"},
                     {"type": "slide", "label": "Kidney", "spec": "kidney-cortex@1.2,0.8,10x"},   opens the Microscope
@@ -59,6 +62,8 @@
      exam:submit   {paper, answered, total}  the answers are submitted
      exam:download {paper, format}           a submission is downloaded (docx, pdf, html, txt) or saved (docx-file)
      exam:saved    {path}                    the attempt is saved to its file
+     exam:paste    {paper, q, refused}       something is pasted (or dropped) into the exam; refused: it was copied
+                                             from outside the exam, so it was not let in
      (the calculator: calc:open {}, calc:result {expr, value})
 
    THE PROGRAM: MG.ExamApp(root, {fs}) → .ready (a promise), .shown(), .openPaper(id), .newEssay(), .openFile(path),
@@ -305,6 +310,25 @@
     if (!m) return NaN;
     return parseFloat(m[0]);
   }
+  /* ------------------------------------------------------------------
+     the exam's own clipboard
+     ------------------------------------------------------------------ */
+  /* As in Inspera's exam browser (Inspera Exam Portal with its clipboard control, and Inspera Integrity Browser), only
+     what was copied in the exam can be pasted into it: text copied anywhere else – another tab of the workbench, the
+     instructions, another program – cannot be pasted in. Copying in the exam (the keys, the toolbar or the browser's
+     menu) puts the text here and on the computer's clipboard, and a paste is let in when what it brings is what was
+     copied here. (Copying out of the exam is not stopped: students may keep their writing.) A paper with
+     "clipboard": "any" lets anything be pasted, as an exam taken in an ordinary web browser does. */
+  const CLIP = { text: '', html: '' };
+  const clipKey = (t) => String(t || '').replace(/\s+/g, '');
+  function clipFromExam(text, html) {
+    const k = clipKey(text);
+    if (k) return k === clipKey(CLIP.text);
+    // (no text: a drawing copied in the exam)
+    const pics = String(html || '').match(/src="data:image\/[^"]{30,}"/g) || [];
+    return pics.length > 0 && pics.every((x) => CLIP.html.includes(x));
+  }
+
   function numericRight(q, value) {
     const v = parseNumber(value);
     if (!Number.isFinite(v) || q.answer == null) return null;
@@ -1634,6 +1658,12 @@
     }
     async _pasteButton() {
       this.focus();
+      if (this.o.clipboard !== 'any') {
+        // (only what was copied in the exam can be pasted, so the button pastes that: it does not read the computer's
+        // clipboard)
+        if (!clipKey(CLIP.text) && !CLIP.html) return this._note('Nothing has been copied in this exam yet: select some text and press Ctrl+C.');
+        return this.insertPasted(CLIP.html, CLIP.text);
+      }
       try {
         if (navigator.clipboard && navigator.clipboard.read) {
           const items = await navigator.clipboard.read();
@@ -1744,7 +1774,97 @@
       this._wordsEv = MG.debounce((q, n) => this.att && bus.emit('exam:words', { paper: this.att.paper.id, q, words: n }), 800);
       window.addEventListener('pagehide', () => this._saveNow(true));
       document.addEventListener('visibilitychange', () => document.visibilityState === 'hidden' && this._saveNow(true));
+      // the exam's clipboard (see CLIP): what is copied in the exam is remembered, and other pastes are kept out
+      document.addEventListener('copy', (e) => this._onCopy(e, false), true);
+      document.addEventListener('cut', (e) => this._onCopy(e, true), true);
+      document.addEventListener('paste', (e) => this._onPaste(e), true);
+      document.addEventListener('dragstart', (e) => (this._dragFromExam = this._inExam(e.target)), true);
+      document.addEventListener('dragend', () => (this._dragFromExam = false), true);
+      document.addEventListener('drop', (e) => this._onDrop(e), true);
       this.ready = this._init();
+    }
+
+    /* ---------------- the exam's clipboard ---------------- */
+    /** is copying and pasting kept within the exam just now? (an attempt in progress, on a paper that does not allow
+        pasting from anywhere) */
+    _clipKept() {
+      return !!(this.att && !this.att.submitted && this.page === 'question' && this.att.paper.clipboard !== 'any');
+    }
+    /** a node of the exam: the tab itself, its dialogs (formulas, special characters, drawings…) and the calculator */
+    _inExam(node) {
+      const el = node && (node.nodeType === 1 ? node : node.parentElement);
+      return !!el && (this.root.contains(el) || !!el.closest('.ex-dlg, .calc'));
+    }
+    _onCopy(e, cut) {
+      if (!this._clipKept()) return;
+      const t = e.target;
+      const field = t && t.nodeType === 1 && /^(INPUT|TEXTAREA)$/.test(t.tagName) ? t : null;
+      let text = '', html = '';
+      if (field) {
+        if (!this._inExam(field)) return;
+        const a = field.selectionStart || 0, b = field.selectionEnd || 0;
+        if (a === b) return;
+        text = field.value.slice(a, b);
+      } else {
+        const sel = window.getSelection();
+        if (!sel || !sel.rangeCount || sel.isCollapsed || !this._inExam(sel.anchorNode) || !this._inExam(sel.focusNode)) return;
+        text = sel.toString();
+        const d = document.createElement('div');
+        d.appendChild(sel.getRangeAt(0).cloneContents());
+        html = d.innerHTML;
+      }
+      CLIP.text = text;
+      CLIP.html = html;
+      // (the same text goes on the computer's clipboard – what the browser would put there can differ in its spaces,
+      // or its bullets – so that a paste can be recognised as what was copied here)
+      if (!e.clipboardData) return;
+      e.preventDefault();
+      e.clipboardData.setData('text/plain', text);
+      if (html) e.clipboardData.setData('text/html', html);
+      if (cut) this._cutOut(field);
+    }
+    /** a cut: the selection goes, as if it had been deleted with the keyboard */
+    _cutOut(field) {
+      if (field) {
+        if (field.readOnly || field.disabled) return;
+        field.setRangeText('', field.selectionStart, field.selectionEnd, 'end');
+        field.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
+      }
+      const ed = this.ed, sel = window.getSelection();
+      if (!ed || ed.readonly || !sel.rangeCount || !ed.area.contains(sel.anchorNode) || !ed.area.contains(sel.focusNode)) return;
+      ed.flush();
+      document.execCommand('delete');
+      ed.record();
+      ed._changed();
+    }
+    _onPaste(e) {
+      if (!this._clipKept() || !this._inExam(e.target)) return;
+      const cd = e.clipboardData;
+      const q = this.qcur && this.qcur.id, paper = this.att.paper.id;
+      if (cd && clipFromExam(cd.getData('text/plain'), cd.getData('text/html'))) {
+        bus.emit('exam:paste', { paper, q, refused: false });
+        return;
+      }
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      this._pasteRefused(e.target);
+    }
+    _onDrop(e) {
+      if (!this._clipKept() || this._dragFromExam || !this._inExam(e.target)) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      this._pasteRefused(e.target);
+    }
+    _pasteRefused(target) {
+      const msg = 'Only text copied in this exam can be pasted here.';
+      if (this.ed && this.ed.el.contains(target)) {
+        this.ed._note(msg);
+        this.ed.el.classList.remove('ex-limit-flash');
+        void this.ed.el.offsetWidth;
+        this.ed.el.classList.add('ex-limit-flash');
+      } else toast(msg + ' (Text copied from outside the exam cannot be pasted in.)', 'warn', 4500);
+      bus.emit('exam:paste', { paper: this.att.paper.id, q: this.qcur && this.qcur.id, refused: true });
     }
     now() {
       return Date.now() + this.skew;
@@ -2032,12 +2152,14 @@
       const hard = h('input', { type: 'checkbox' });
       const mins = h('input', { type: 'number', min: 5, max: 600, step: 5, placeholder: 'none' });
       const spell = h('input', { type: 'checkbox', checked: !!CFG.spellcheckDefault });
+      const paste = h('input', { type: 'checkbox' });
       const ok = h('button.btn.primary', { type: 'submit' }, 'Start writing');
       const cancel = h('button.btn', { type: 'button' }, 'Cancel');
       const form = h('form.ex-form',
         h('label.wide', h('span', 'Title (the question you are answering)'), title),
         h('label', h('span', 'Word limit'), words), h('label.check', hard, ' Stop me at the limit'),
         h('label', h('span', 'Time limit (minutes)'), mins), h('label.check', spell, ' Spelling checker on'),
+        h('label.check.wide', paste, ' Let me paste text from outside the exam (in an exam in Inspera’s exam browser you can paste only what you copied in the exam)'),
         h('div.prompt-actions', cancel, ok));
       const m = dialog('An essay of your own', form);
       cancel.addEventListener('click', () => m.close());
@@ -2048,7 +2170,7 @@
         m.close();
         const max = +words.value || null;
         const paper = {
-          id: 'essay-' + slug(t), title: t, kind: 'free', minutes: +mins.value || null, autoSubmit: false, spellcheck: spell.checked, showWordCount: true,
+          id: 'essay-' + slug(t), title: t, kind: 'free', minutes: +mins.value || null, autoSubmit: false, spellcheck: spell.checked, showWordCount: true, clipboard: paste.checked ? 'any' : 'exam',
           questions: [{ id: 'essay', type: 'essay', title: t, text: '', lines: 18, words: max ? { max, hard: hard.checked } : null }]
         };
         this._saveNow();
@@ -2297,6 +2419,7 @@
           spellcheck: !!this.att.settings.spellcheck,
           lines: q.lines || (q.type === 'short' ? 6 : 14),
           toolbar: q.toolbar || paper.toolbar || 'default',
+          clipboard: paper.clipboard === 'any' ? 'any' : 'exam',
           label: `Your answer to question ${this._numberOf(this._questions().indexOf(q))}`,
           readonly: this._locked(),
           onInput: (e) => {
@@ -2603,7 +2726,7 @@
       MG.modal('Keyboard help', `<ul class="ex-keys">
 <li>To get to the toolbar from your answer, press <kbd>Alt</kbd>+<kbd>F10</kbd> (on a Mac, <kbd>Fn</kbd>+<kbd>Option</kbd>+<kbd>F10</kbd>). Move along it with <kbd>←</kbd> and <kbd>→</kbd>, press <kbd>Enter</kbd> to use a button, and <kbd>Esc</kbd> to go back to your answer.</li>
 <li><kbd>Ctrl</kbd>+<kbd>B</kbd> bold, <kbd>Ctrl</kbd>+<kbd>I</kbd> italic, <kbd>Ctrl</kbd>+<kbd>U</kbd> underline (<kbd>⌘</kbd> on a Mac).</li>
-<li><kbd>Ctrl</kbd>+<kbd>Z</kbd> undo, <kbd>Ctrl</kbd>+<kbd>Y</kbd> redo; <kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>X</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> copy, cut and paste.</li>
+<li><kbd>Ctrl</kbd>+<kbd>Z</kbd> undo, <kbd>Ctrl</kbd>+<kbd>Y</kbd> redo; <kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>X</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> copy, cut and paste.${this.att && this.att.paper.clipboard === 'any' ? '' : ' As in Inspera’s exam browser, you can paste only what you copied in this exam (from your answers or the questions): text copied anywhere else cannot be pasted in.'}</li>
 <li>In a list, <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd> indent and outdent an item. Right-click in a table for its rows and columns.</li>
 <li>Double-click a formula or a drawing to change it. <kbd>Esc</kbd> leaves the expanded view.</li>
 <li>The calculator: type a calculation and press <kbd>Enter</kbd>; <kbd>↑</kbd> brings back the earlier ones, <kbd>Esc</kbd> clears it.</li>

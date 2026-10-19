@@ -7,7 +7,7 @@
  "autoSubmit": true,
  "spellcheck": false,
  "showWordCount": true,
- "instructions": "<p>Write one essay. You have 45 minutes, including the time to plan your answer.</p><ul><li>Plan before you write: a few minutes spent on an outline (headings, or a list that you delete later) gives a clearer essay.</li><li>Use paragraphs. Headings, a table or a labelled drawing can help, but they are not required.</li><li>The limit is 1000 words; you cannot type more than that. The word count is under the answer box.</li><li>The spelling checker is off, as in most exams. You can switch it on in the menu ☰.</li><li>When the time is up, your answer is submitted as it is.</li></ul>",
+ "instructions": "<p>Write one essay. You have 45 minutes, including the time to plan your answer.</p><ul><li>Plan before you write: a few minutes spent on an outline (headings, or a list that you delete later) gives a clearer essay.</li><li>Use paragraphs. Headings, a table or a labelled drawing can help, but they are not required.</li><li>The limit is 1000 words; you cannot type more than that. The word count is under the answer box.</li><li>Write the essay here: as in the real exam, text copied from outside the exam cannot be pasted in.</li><li>The spelling checker is off, as in most exams. You can switch it on in the menu ☰.</li><li>When the time is up, your answer is submitted as it is.</li></ul>",
  "resources": [
   {
    "type": "calculator"

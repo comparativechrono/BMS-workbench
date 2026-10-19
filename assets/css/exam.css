@@ -308,6 +308,8 @@
 .ex-form > label { display: flex; flex-direction: column; gap: 4px; font-size: 0.86rem; font-weight: 600; }
 .ex-form > label.wide { grid-column: 1 / -1; }
 .ex-form > label.check { flex-direction: row; align-items: center; font-weight: 500; padding-bottom: 6px; }
+.ex-form > label.check.wide { align-items: flex-start; line-height: 1.35; }
+.ex-form > label.check.wide input { margin-top: 2px; flex: none; }
 .ex-form input[type='text'], .ex-form input[type='number'] { border: 1px solid var(--line-2); border-radius: 7px; padding: 6px 9px; font-size: 0.95rem; font-weight: 400; width: 100%; }
 .ex-form .prompt-actions { grid-column: 1 / -1; }
 .ex-special h4 { margin: 12px 0 5px; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }

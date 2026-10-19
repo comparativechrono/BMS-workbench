@@ -226,13 +226,31 @@ check(p.js("() => document.querySelector('.ex-wc').classList.contains('over') &&
 check('limit of 300 words' in text('.ex-ednote'), f'a note says the limit is reached: {text(".ex-ednote")}')
 p.wait("() => EV.some(e => e[0] === 'exam:words' && e[1].paper === 'tour' && e[1].q === 'tissue' && e[1].words === 300)", timeout=4000)
 check(ev('exam:words', "d.paper === 'tour' && d.words > 59") >= 1, 'exam:words fired with the new count when the typing paused (paper=tour words>59)')
-# pasting at the limit: nothing goes in; with room for 2 words, 2 go in
 PASTE = """(a) => { const A = document.querySelector('.ex-area'); A.focus(); const dt = new DataTransfer(); if (a.html) dt.setData('text/html', a.html);
     dt.setData('text/plain', a.text || ''); A.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); }"""
+# (a copy made in the exam: text in the question box, selected and copied)
+COPY_IN = """(t) => { const R = document.querySelector('.ex-q'); const s = document.createElement('span'); s.textContent = t; R.appendChild(s);
+    const r = document.createRange(); r.selectNodeContents(s); const g = getSelection(); g.removeAllRanges(); g.addRange(r);
+    s.dispatchEvent(new ClipboardEvent('copy', { clipboardData: new DataTransfer(), bubbles: true, cancelable: true })); s.remove(); }"""
+# as in Inspera's exam browser, text copied outside the exam cannot be pasted in
+p.js(PASTE, {'text': 'Copied from a web page'})
+sleep(0.2)
+check('Copied from a web page' not in area_html() and 'Only text copied in this exam can be pasted here' in text('.ex-ednote'), f'text copied outside the exam is not pasted in, and a note says so: {text(".ex-ednote")}')
+check(ev('exam:paste', "d.paper === 'tour' && d.q === 'tissue' && d.refused === true") == 1, 'exam:paste {refused: true}')
+DROP = """(t) => { const A = document.querySelector('.ex-area'); const dt = new DataTransfer(); dt.setData('text/plain', t); const r = A.getBoundingClientRect();
+    A.dispatchEvent(new DragEvent('drop', { dataTransfer: dt, bubbles: true, cancelable: true, clientX: r.left + 20, clientY: r.top + 20 })); }"""
+p.js(DROP, 'Dragged in from another window')
+sleep(0.2)
+check('Dragged in' not in area_html() and ev('exam:paste', 'd.refused === true') == 2, 'text dragged in from outside the exam is kept out too')
+# pasting at the limit (what was copied in the exam): nothing goes in; with room for 2 words, 2 go in
+p.js(COPY_IN, 'one two three')
+caret_end()
 p.js(PASTE, {'text': 'one two three'})
 sleep(0.2)
 check(words_text() == 'Words: 300/300' and 'three' not in area_html(), 'pasting at the limit puts nothing in')
 p.js(f"(h) => {E}.ed.setHTML(h)", '<p>' + ' '.join(f'w{i}' for i in range(298)) + '</p>')
+caret_end()
+p.js(COPY_IN, 'one two three four')
 caret_end()
 P.keyboard.type(' ')
 p.js(PASTE, {'text': 'one two three four'})  # (at once: the paste goes where the cursor is now)
@@ -456,7 +474,8 @@ check(p.js("() => document.querySelector('.ex-ftex').value") == '\\tau = RC', 'a
 P.keyboard.press('Escape')
 tx = p.js("() => [MG.ExamTeX.text('x^{2}'), MG.ExamTeX.text('C_{1}V_{1} = C_{2}V_{2}'), MG.ExamTeX.text('\\\\frac{a}{b}'), MG.ExamTeX.text('\\\\text{mm Hg}'), MG.ExamTeX.check('[X]_{o}')]")
 check(tx == ['x²', 'C₁V₁ = C₂V₂', 'a/b', 'mm Hg', None], f'formulas as text: {tx}')
-# copy and paste with the buttons
+# copy and paste with the buttons: Copy puts the selection on the computer's clipboard too, and Paste pastes what was
+# copied in the exam – not what is on the computer's clipboard
 select_text('Alveoli')
 tb('copy')
 clip = p.js("async () => { try { return await navigator.clipboard.readText(); } catch (e) { return 'ERR ' + e.message; } }")
@@ -465,7 +484,37 @@ new_paragraph_at_end()
 p.js("async () => navigator.clipboard.writeText('pasted from the clipboard')")
 tb('paste')
 sleep(0.3)
-check('pasted from the clipboard' in area_html(), 'Paste puts in what is on the clipboard')
+check(area_text().count('Alveoli') == 2 and 'pasted from the clipboard' not in area_html(), 'Paste puts in what was copied in the exam, not what was copied elsewhere')
+# the keys: Ctrl+V with something copied outside the exam is refused; Ctrl+C and Ctrl+V in the exam work
+n0 = ev('exam:paste', 'd.refused === true')
+P.keyboard.press('Control+v')
+sleep(0.3)
+check('pasted from the clipboard' not in area_html() and ev('exam:paste', 'd.refused === true') == n0 + 1, 'Ctrl+V with text copied outside the exam pastes nothing')
+select_text('Alveoli')
+P.keyboard.press('Control+c')
+sleep(0.2)
+new_paragraph_at_end()
+P.keyboard.press('Control+v')
+sleep(0.3)
+check(area_text().count('Alveoli') == 3 and ev('exam:paste', "d.refused === false && d.q === 'tissue'") >= 1, f'Ctrl+C and then Ctrl+V in the exam paste the text: {area_text().count("Alveoli")}')
+# cutting in the exam: the text goes, and it can be pasted back
+new_paragraph_at_end('Cut this sentence out.')
+select_text('Cut this sentence out.')
+P.keyboard.press('Control+x')
+sleep(0.3)
+check('Cut this sentence' not in area_text(), 'Ctrl+X cuts the selection out')
+P.keyboard.press('Control+v')
+sleep(0.3)
+check(area_text().count('Cut this sentence out.') == 1, '… and Ctrl+V puts it back')
+# a paper that lets anything be pasted ("clipboard": "any"): as in an exam in an ordinary browser
+p.js(f"() => {{ {E}.att.paper.clipboard = 'any'; {E}.go({E}.att.current); }}")
+p.wait("() => document.querySelector('.ex-area')")
+sleep(0.2)
+new_paragraph_at_end()
+p.js("async () => navigator.clipboard.writeText('pasted from the clipboard')")
+tb('paste')
+sleep(0.3)
+check('pasted from the clipboard' in area_html(), 'with "clipboard": "any", Paste puts in what is on the computer’s clipboard')
 # pasting from a word processor: the formatting stays, the rest goes
 new_paragraph_at_end()
 p.js(PASTE, {'html': '<meta charset="utf-8"><b style="font-weight:normal" id="docs-internal-guid-1"><p style="font-family:Arial;color:red"><span style="font-weight:700">Strong</span> and <span style="font-style:italic">slanted</span> words <img src="https://example.com/x.png"><script>window.HACK=1</script><a href="javascript:alert(1)">link</a></p></b>',
@@ -475,6 +524,12 @@ h = area_html()
 check('<b>Strong</b>' in h and '<i>slanted</i>' in h, 'pasted bold and italic text keeps its bold and italic')
 check('style=' not in h and 'example.com' not in h and 'script' not in h and 'javascript' not in h and 'HACK' not in h and not p.js("() => window.HACK"),
       'pasting removes the styles, pictures, scripts and links of other programs')
+p.js(PASTE, {})
+check('Only text can be pasted' in (text('.ex-ednote') or ''), 'pasting a picture says that only text can be pasted')
+# back to the paper's own rule
+p.js(f"() => {{ delete {E}.att.paper.clipboard; {E}.go({E}.att.current); }}")
+p.wait("() => document.querySelector('.ex-area')")
+sleep(0.2)
 # undo and redo
 caret_end()
 P.keyboard.type(' zzz')
@@ -540,7 +595,7 @@ st = p.js("""() => { const m = document.querySelector('.ex-pmain'); m.scrollTop 
 check(st[1] > 0 and 0 <= st[0] <= 2, f'the toolbar stays at the top while a long answer scrolls: {st}')
 p.js("() => { document.querySelector('.ex-pmain').scrollTop = 0; }")
 p.js(PASTE, {})
-check('Only text can be pasted' in (text('.ex-ednote') or ''), 'pasting a picture says that only text can be pasted')
+check('Only text copied in this exam can be pasted here' in (text('.ex-ednote') or ''), 'pasting a picture from outside the exam is refused too')
 no_errors('the toolbar')
 
 # ====================================================================== flags and navigation
@@ -793,6 +848,13 @@ p.js(f"() => {E}.openPaper('calculations')")
 p.wait("() => document.querySelector('.ex-startcard h2') && document.querySelector('.ex-startcard h2').textContent === 'Calculations'")
 P.click('.ex-startacts .btn.primary')
 p.wait("() => document.querySelector('.ex-num')")
+NUMPASTE = """(t) => { const I = document.querySelector('.ex-num'); I.focus(); const dt = new DataTransfer(); dt.setData('text/plain', t);
+    I.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); }"""
+p.js(NUMPASTE, '24')
+sleep(0.3)
+check(p.js("() => document.querySelector('.ex-num').value") == '' and p.js("() => [...document.querySelectorAll('.toast')].some(t => t.textContent.includes('Only text copied in this exam'))"),
+      'a number copied outside the exam is not pasted into a number box, and a message says so')
+check(ev('exam:paste', "d.paper === 'calculations' && d.refused === true") == 1, 'exam:paste {paper: calculations, refused: true}')
 answers = {'graticule': '24', 'mito': '2.0 µm', 'c1v1': '3.6', 'dilution': '100', 'haemocytometer': '1.0 × 10^6', 'flow': '18', 'tau': '0.01', 'nernst': '−89.06'}
 for i, (k, v) in enumerate(answers.items()):
     if p.js(f"() => {E}.qcur.id") != k:
@@ -839,6 +901,7 @@ DLG = '.modal[aria-label="An essay of your own"]'
 p.wait(f"() => document.querySelector('{DLG} form')")
 P.fill(f'{DLG} input[type=text]', 'How do red blood cells carry oxygen?')
 P.fill(f'{DLG} input[type=number] >> nth=0', '200')
+P.check(f'{DLG} label:has-text("Let me paste text from outside the exam") input')
 P.click(f'{DLG} button:has-text("Start writing")')
 p.wait("() => document.querySelector('.ex-area') && document.querySelector('.ex-qt').textContent.startsWith('How do')")
 fe = [text('.ex-timer'), words_text(), text('.ex-qt')]
@@ -849,6 +912,9 @@ caret_end()
 P.keyboard.type('Haemoglobin binds oxygen in the lungs.')
 sleep(0.2)
 check(words_text() == 'Words: 6/200', f'the words are counted: {words_text()}')
+p.js(PASTE, {'text': 'Notes from my book.'})
+sleep(0.2)
+check('Notes from my book.' in area_html() and att('a.paper.clipboard') == 'any', 'a free essay can let text from outside the exam be pasted in')
 p.js(f"(h) => {E}.ed.setHTML(h)", '<p>' + ' '.join(['word'] * 205) + '</p>')
 sleep(0.1)
 check(words_text() == 'Words: 205/200' and p.js("() => document.querySelector('.ex-wc').classList.contains('over')"), 'over a limit that does not stop typing, the count is red')
@@ -945,7 +1011,7 @@ no_errors('the calculator')
 # ====================================================================== the events, all together
 ALL_EV += evs()
 kinds = set(e[0] for e in ALL_EV)
-want = ['exam:open', 'exam:start', 'exam:words', 'exam:format', 'exam:flag', 'exam:nav', 'exam:timeup', 'exam:submit', 'exam:download', 'exam:saved', 'calc:open', 'calc:result']
+want = ['exam:open', 'exam:start', 'exam:words', 'exam:format', 'exam:flag', 'exam:nav', 'exam:timeup', 'exam:submit', 'exam:download', 'exam:saved', 'exam:paste', 'calc:open', 'calc:result']
 check(all(k in kinds for k in want), f'every event fired: missing {[k for k in want if k not in kinds]}')
 
 # ====================================================================== the layout: a desktop's dialogs, then a phone

@@ -7,7 +7,7 @@
  "autoSubmit": false,
  "spellcheck": false,
  "showWordCount": true,
- "instructions": "<p>This paper is a tour of the way online exams work. Nothing is marked by a person: try every button.</p><ul><li>The time starts when you press <b>Start</b>. The time left is shown at the top left, under your candidate number.</li><li>Your answers are saved as you type. There is no Save button.</li><li>Move between the questions with the arrows at the bottom right, or with the numbered tiles along the bottom.</li><li>When you have finished, go to the submission page (the ✔ tile) and press <b>Submit now</b>.</li></ul>",
+ "instructions": "<p>This paper is a tour of the way online exams work. Nothing is marked by a person: try every button.</p><ul><li>The time starts when you press <b>Start</b>. The time left is shown at the top left, under your candidate number.</li><li>Your answers are saved as you type. There is no Save button.</li><li>As in Inspera’s exam browser, you can copy and paste within the exam (from your answers or from the questions), but text copied from anywhere else – another tab, a website, your notes – cannot be pasted in.</li><li>Move between the questions with the arrows at the bottom right, or with the numbered tiles along the bottom.</li><li>When you have finished, go to the submission page (the ✔ tile) and press <b>Submit now</b>.</li></ul>",
  "resources": [
   {
    "type": "calculator"

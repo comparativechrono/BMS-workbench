@@ -367,6 +367,11 @@ time.sleep(0.4)
 p.p.locator('.modal button', has_text='µ').first.click()
 time.sleep(0.4)
 check(ticked('e-format') and 'µ' in p.js("() => document.querySelector('#examRoot .ex-area').textContent"), 'a special character is inserted (e-format)')
+# a paste of something copied outside the exam (these instructions) is refused, and ticks e-paste
+p.js("""() => { const A = document.querySelector('#examRoot .ex-area'); A.focus(); const dt = new DataTransfer(); dt.setData('text/plain', 'Copy a sentence of these instructions');
+    A.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); }""")
+time.sleep(0.3)
+check(ticked('e-paste') and 'Copy a sentence' not in p.js("() => document.querySelector('#examRoot .ex-area').textContent"), 'text copied from the instructions is not pasted into the answer (e-paste)')
 p.p.click('#examRoot .ex-flag')
 time.sleep(0.3)
 check(ticked('e-flag'), 'the flag ticks e-flag')

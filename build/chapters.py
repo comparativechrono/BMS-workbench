@@ -245,7 +245,7 @@ def ch_circuits():
 def ch_exam():
     body = f'''
 <p>Your exams are written on a computer, in an online exam system (Inspera). The <b>Exam practice</b> tab works in the same way, so that you can get used to planning, writing and checking an essay in a browser – with a timer and a word limit – before it matters. Your practicals will set essays here too.</p>
-{callout("info", "What is the same, and what isn’t", "<p>The layout, the timer, the editor and its toolbar, flags, the calculator and the submission page work as they do in the exam system. But this is practice: your answers are saved only in this browser, nobody marks them, and after you submit you can review them alongside the marking guidance and download them as a Word document.</p>")}
+{callout("info", "What is the same, and what isn’t", "<p>The layout, the timer, the editor and its toolbar, flags, the calculator and the submission page work as they do in the exam system. As in the exam browser, you can copy and paste within the exam, but text copied from anywhere else can’t be pasted in – so write your answers here, not in another program. But this is practice: your answers are saved only in this browser, nobody marks them, and after you submit you can review them alongside the marking guidance and download them as a Word document.</p>")}
 
 <h2 id="e-paper">A short practice paper</h2>
 {activity("Take the paper", [
@@ -253,6 +253,7 @@ def ch_exam():
     task("e-start", 'Press <b>Start</b>. The time left is shown at the top left, under your candidate number.', auto="exam:start paper=tour"),
     task("e-write", 'Go to question 1 with the arrow at the bottom right (or the tile <b>1</b>). It asks you to look at a slide: the buttons at the top of the page open it in the Microscope tab, and the <b>Exam practice</b> tab brings you back. Write at least 60 words, and watch the word count under the box.', auto="exam:words paper=tour words>59"),
     task("e-format", 'Try the toolbar: make a word bold, start a bulleted list, and insert a special character such as µ or → (the <b>Ω</b> button).', auto="exam:format cmd=special"),
+    task("e-paste", 'Copy a sentence of these instructions (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and try to paste it into your answer (<kbd>Ctrl</kbd>+<kbd>V</kbd>): as in the exam browser, it won’t go in. What you copy in the exam itself – from your answer or from the question – can be pasted.', auto="exam:paste refused=true"),
     task("e-flag", 'Flag a question that you want to come back to (the bookmark at the top right of the question). Its tile at the bottom shows the flag.', auto="exam:flag on=true"),
     task("e-calc", 'Answer the calculation, using the calculator (at the top of the page).', auto="calc:result"),
     task("e-submit", 'Go to the submission page (the ✓ tile at the bottom right, or ☰ ▸ <i>Go to submission page</i>), look at what you have and haven’t answered, and submit.', auto="exam:submit paper=tour"),
