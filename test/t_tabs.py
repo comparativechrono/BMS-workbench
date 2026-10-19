@@ -46,8 +46,11 @@ def look(p, label, compact=None):
         check(all(t['lbl'] == 0 for t in tabs if not t['on']), f'{label}: the other tabs show only their icons')
     else:
         check(all(t['lbl'] > 20 and not t['cut'] for t in tabs), f'{label}: every tab shows its whole name ({st["mode"]})')
-    if W >= 360:
+    if W > 400:
         check(on['lbl'] > 20, f'{label}: the open tab ({on["id"]}) shows its name ({on["lbl"]:.0f} px{", shortened" if on["cut"] else ""})')
+    elif W >= 320:
+        # (the open tab is shown by its colour; on the 280-pixel screen of a folded phone the tabs are about 22 pixels)
+        check(all(t['right'] - t['left'] >= 24 for t in tabs), f'{label}: every tab is at least 24 pixels wide, to tap ({min(t["right"] - t["left"] for t in tabs):.0f} px)')
     return st
 
 

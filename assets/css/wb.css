@@ -67,9 +67,12 @@ body.tut-off .tut, body.tut-off .splitter { display: none; }
 .wb-tabs.compact .wb-tab:not(.on) .lbl { display: none; }
 :where(.wb-tabs.compact) .wb-tab { padding: 7px 10px 8px; }
 :where(.wb-tabs.tight) .wb-tab { padding: 7px 7px 8px; gap: 5px; font-size: 0.82rem; }
+:where(.wb-tabs.tiny) .wb-tab { padding: 7px 5px 8px; }
+.wb-tabs.tiny .bench-close .lbl { display: none; }
+.wb-tabs.tiny .bench-close { min-width: 34px; justify-content: center; padding: 4px 8px; }
 /* narrower still (a phone held upright): every tab keeps its icon, and the tabs become smaller, so that all of them and
    the button back to the instructions fit across the screen. The open tab keeps its name, shortened with … when there
-   isn't room for all of it; on the narrowest screens it shows only its icon, and the button back is just ✕. */
+   isn't room for all of it; on the narrowest phones it shows only its icon, and the button back is just ✕. */
 @container bench (max-width: 560px) {
   .wb-tabs { gap: 0; padding: 6px 4px 0; }
   .wb-tab { padding: 7px 5px 8px; gap: 5px; }
@@ -83,7 +86,9 @@ body.tut-off .tut, body.tut-off .splitter { display: none; }
   .bench-close .lbl { display: none; }
   .bench-close { min-width: 34px; justify-content: center; font-size: 0.95rem; }
 }
-@container bench (max-width: 359px) {
+/* (a phone up to 400 pixels wide: no room for the open tab's name as well – it is shown by its colour – and the tabs
+   share the width evenly, which makes them easier to tap) */
+@container bench (max-width: 400px) {
   .wb-tab, .wb-tab.on { flex: 1 1 0; min-width: 0; padding: 7px 0 8px; justify-content: center; }
   .wb-tab.on .lbl { display: none; }
 }

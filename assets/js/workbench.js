@@ -72,18 +72,21 @@
     // arrow keys move along the tabs (as in other tab lists)
     const list = $('.wb-tabs');
     /* the tabs' names: all of them when they fit across the workbench; else all of them in smaller type (.tight); else
-       only the open tab's, beside the others' icons (.compact). Measured with all the names, so that it is the same
+       only the open tab's, beside the others' icons (.compact), with smaller tabs and the button back to the
+       instructions as just ✕ if even that is too wide (.tiny). Measured with all the names, so that it is the same
        whichever tab is open. */
     const lbls = Array.from(list.querySelectorAll('.lbl'));
     // (too wide: the bar overflows, or a tab or a name is squeezed – on the narrowest phones the tabs shrink to fit)
     const over = () => list.scrollWidth > list.clientWidth + 1 || tabs.some((t) => t.scrollWidth > t.clientWidth + 1) || lbls.some((l) => l.offsetWidth && l.scrollWidth > l.clientWidth + 1);
     const fit = () => {
       if (!list.clientWidth) return;
-      list.classList.remove('compact', 'tight');
+      list.classList.remove('compact', 'tight', 'tiny');
       if (!over()) return;
       list.classList.add('tight');
       if (!over()) return;
       list.classList.replace('tight', 'compact');
+      if (!over()) return;
+      list.classList.add('tiny');
     };
     MG.app.fitTabs = fit;
     if (window.ResizeObserver) new ResizeObserver(() => fit()).observe(list);
