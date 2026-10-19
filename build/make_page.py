@@ -63,7 +63,7 @@ if os.path.isdir(edir):
             continue
         e = json.load(open(os.path.join(edir, f), encoding='utf-8'))
         papers.append({'id': e['id'], 'file': f, 'title': e['title'], 'kind': e.get('kind', 'practice'),
-                       'minutes': e.get('minutes'), 'questions': len(e.get('questions', [])),
+                       'minutes': e.get('minutes'), 'questions': len([q for q in e.get('questions', []) if q.get('type') != 'info']),
                        'description': e.get('description', ''), 'order': e.get('order', 0)})
     papers.sort(key=lambda x: (x['order'], x['title']))
     write_json(os.path.join(edir, 'index.json'), {'format': 'bms-exams-1', 'papers': papers})

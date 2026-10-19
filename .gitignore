@@ -1,4 +1,5 @@
 # test screenshots and Python's caches
 test/out/
+test/**/out/
 __pycache__/
 *.pyc

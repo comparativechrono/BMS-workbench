@@ -405,6 +405,6 @@
 
   /* Start afresh: forget what the tabs remember */
   MG.page.beforeReset = async () => {
-    for (const k of ['seeded', 'rsOpen', 'rsHistory', 'rlib', 'bench', 'scope', 'flow', 'circuit', 'exam']) store.remove(k);
+    for (const k of ['seeded', 'rsOpen', 'rsHistory', 'rlib', 'bench', 'scope', 'flow', 'circuit', 'exam', 'calc']) store.remove(k);
   };
 })();

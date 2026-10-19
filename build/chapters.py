@@ -258,7 +258,7 @@ def ch_exam():
     task("e-flag", 'Flag a question that you want to come back to (the bookmark at the top right of the question). Its tile at the bottom shows the flag.', auto="exam:flag on=true"),
     task("e-calc", 'Answer the calculation, using the calculator (at the top of the page).', auto="calc:result"),
     task("e-submit", 'Go to the submission page (the ✓ tile at the bottom right, or ☰ ▸ <i>Go to submission page</i>), look at what you have and haven’t answered, and submit.', auto="exam:submit paper=tour"),
-    task("e-word", 'Download your answers as a Word document.', auto="exam:download format=docx"),
+    task("e-word", 'Download your answers as a Word document.', auto="exam:download format~docx"),
 ])}
 {q("e-q-differ", "What is one thing about writing in the browser that is different from writing by hand, and how will you allow for it in an exam?", "For example: you can edit and move text, so it is worth writing a plan (headings, or a list that you delete later) and then filling it in; the word count shows how much you have written, so you can share your time between the sections; there is no spelling checker in most exams, so leave time to read your answer through; drawings take longer than on paper, so keep them simple; and you can’t see the whole essay at once, so a clear structure (paragraphs with a point each) matters even more.")}
 
