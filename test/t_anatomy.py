@@ -73,6 +73,13 @@ def idle(page=None):
     time.sleep(0.3)
 
 
+def search(q):
+    """types in the search box of the list (opening the list: beside the instructions, it takes the place of the panel)"""
+    p.js(f"() => {A}.togglePanel(true)")
+    p.p.locator('.an-search').fill(q)
+    time.sleep(0.4)
+
+
 def click_on(sid, touch=False, page=None):
     page = page or p
     pt = page.js(f"(id) => {A}.testPoint(id)", sid)
@@ -185,9 +192,7 @@ idle()
 ok = click_on('pulmonary-trunk')
 check(ok and wait_ticked('an-find-pt'), 'clicking on the pulmonary trunk ticks an-find-pt')
 # the list: search for the aortic arch, pick it, fade the others
-p.js(f"() => {A}.togglePanel(true)")
-p.p.locator('.an-search').fill('aortic arch')
-time.sleep(0.4)
+search('aortic arch')
 p.p.locator('.an-row-n', has_text='Aortic arch').first.click()
 idle()
 check(p.js(f"() => {A}.sel[0]") == 'aortic-arch', 'the search finds the aortic arch, and a click selects it')
@@ -200,7 +205,7 @@ check(wait_ticked('an-fade'), 'Fade the others ticks an-fade')
 faded = p.js(f"() => Object.values({A}.S).filter(s => s.mesh && s.mesh.visible && s.mesh.material.transparent).length")
 check(faded > 50, f'and the others are faint ({faded})')
 p.shot('anatomy-heart')
-p.p.locator('.an-search').fill('')
+search('')
 
 # ---------------------------------------------------------------- the search finds the chapter's own words
 words = {'adrenal': 'suprarenal-gland-left', 'adrenal glands': 'suprarenal-gland-right', 'pituitary': 'adenohypophysis', 'posterior pituitary': 'neurohypophysis',
@@ -217,10 +222,9 @@ for w, want in words.items():
 check(not miss, f'the search finds what the chapter names by the words it uses (adrenal, pituitary, larynx, heart…): missed {miss}')
 top = p.js(f"() => {A}.search_('heart').list.slice(0, 20).map(r => r.s.id)")
 check('left-ventricle' in top and 'right-atrium' in top, f"'heart' lists the heart's own parts first: {top[:6]}")
-p.p.locator('.an-search').fill('ovary')
-time.sleep(0.4)
+search('ovary')
 check('man’s body' in p.js(f"() => {A}.list.innerText"), 'a search for what the model does not have says so (the female organs)')
-p.p.locator('.an-search').fill('')
+search('')
 
 # ---------------------------------------------------------------- sections
 click('#anatomy button[data-anat="digestive+urinary+skeleton+section:transverse@0.63@inferior"]')

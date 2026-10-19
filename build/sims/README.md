@@ -52,27 +52,44 @@ redistributed by third parties". What the files contain (checked on 19 October 2
 - **PhET's own pictures and sounds.** Almost all the media are PhET's: marked "Copyright … University of Colorado
   Boulder" with the licence "contact phethelp@colorado.edu" (PhET does not explain this value; in these credits it
   marks media that PhET made, or had made for it). They reach this site only inside the whole, unchanged simulation,
-  which their owner, the University of Colorado, publishes under CC BY 4.0, and they are not used apart from it. The five older files list them in their own credits: **Neuron** (the PhET logo), **Under Pressure** (the
-  logo, the icons of the four pools, the 11 parts of the taps, and the screen's icon), **Molarity** (the logo, the
-  beaker, the keyboard-help icon, and 18 sounds), **Gene Expression Essentials** (the logo, the keyboard-help icon and
-  the icons of its three screens) and **Capacitor Lab: Basics** (the logo, the keyboard-help icon, the voltmeter, its
-  probes, the switch's cue arrow, the light bulb's base and a screen icon). The nine newer files list only their
+  which their owner, the University of Colorado, publishes under CC BY 4.0, and they are not used apart from it. The
+  four older files list them in their own credits: **Neuron** (the PhET logo), **Under Pressure** (the logo, the icons
+  of the four pools, the 11 parts of the taps, and the screen's icon), **Molarity** (the logo, the beaker, the
+  keyboard-help icon, and 18 sounds) and **Capacitor Lab: Basics** (the logo, the keyboard-help icon, the voltmeter,
+  its probes, the switch's cue arrow, the light bulb's base and a screen icon). The nine newer files list only their
   code; their pictures and sounds are listed in PhET's source repositories, which were read at the exact commits each
   file was built from (`phet.chipper.dependencies`), matching each listed file against what the simulation embeds:
   apart from the echo above, every picture and sound found in them is PhET's own.
-- **One photograph that is not PhET's: in Gene Expression Essentials 1.0.34.** The *Multiple Cells* screen has a
-  **Show Real Cells** button that opens a fluorescence micrograph of *Escherichia coli* cells expressing green
-  fluorescent protein, captioned "Note that though the cells are genetically identical, they are expressing differing
-  amounts of the protein" and credited on screen "Image Copyright Dennis Kunkel Microscopy, Inc.". The file's credits
-  list it as `GENE_EXPRESSION_ESSENTIALS/ecoli.jpg`: text "Copyright 2002-2015 University of Colorado Boulder", source
-  "Dennis Kunkel Microscopy", licence "contact phethelp@colorado.edu", notes "used with permission (purchased), terms
-  are on purchase invoice". Those terms are not public, so this one photograph cannot be assumed to be under CC BY 4.0
-  like the rest of the file. It illustrates a point of the screen and is not needed to use the simulation, but it
-  cannot be taken out without changing PhET's file. The simulation is included as PhET publishes it, and its About box
-  (`aboutNote` in `sims.json`) says that the photograph is Dennis Kunkel Microscopy's and may not be covered by
-  CC BY 4.0. PhET (phethelp@colorado.edu) can say whether the photograph may be redistributed with the file; if not,
-  remove the simulation: delete `sims/gene-expression-essentials/` and its entry in `sims.json` (and the topic
-  "Genes", which only it has), then run `python3 build/sims/fetch_sims.py --index`.
+
+### Left out: Gene Expression Essentials
+
+PhET's **Gene Expression Essentials** (its newest CC BY 4.0 version is 1.0.34, built 22 November 2025) was chosen for
+the library and then left out, on 19 October 2026, because it contains a photograph that is not PhET's and not under an
+open licence. Its *Multiple Cells* screen has a **Show Real Cells** button that opens a fluorescence micrograph of
+*Escherichia coli* cells expressing green fluorescent protein, credited on screen "Image Copyright Dennis Kunkel
+Microscopy, Inc.". The file's own credits list it as `GENE_EXPRESSION_ESSENTIALS/ecoli.jpg`, with the text "Copyright
+2002-2015 University of Colorado Boulder", the source "Dennis Kunkel Microscopy", the licence "contact
+phethelp@colorado.edu" and the notes "used with permission (purchased), terms are on purchase invoice". Those terms are
+not public, so the photograph cannot be assumed to be under CC BY 4.0 like the rest of the file, and it cannot be taken
+out without changing PhET's file. PhET can say whether the photograph may be redistributed with the file: the contact
+is **phethelp@colorado.edu**.
+
+If PhET confirms that it may, add the simulation back:
+
+1. Add this entry to the `sims` list of `sims.json` (where it was, after Beer's Law Lab), and `"Genes"` to its `topics`
+   (after "Light, vision and optics"):
+
+   ```json
+   {"id": "gene-expression-essentials", "title": "Gene Expression Essentials", "version": "1.0.34", "topics": ["Genes"],
+    "description": "Make proteins from a gene: transcription factors and RNA polymerase make mRNA, and ribosomes translate it.",
+    "why": "Transcription, its control by transcription factors, translation, and the breakdown of mRNA and protein that sets how much is made.",
+    "screens": ["Expression", "mRNA", "Multiple Cells"]}
+   ```
+
+2. Download it: `python3 build/sims/fetch_sims.py gene-expression-essentials` (version 1.0.34, 5.0 MB; its SHA-256 was
+   `37d31ba11bf75e7c04ca973db0e6dcafe6b9dcfe73f80b8059eed9fe18cbbcc0`), then `python3 test/t_sims.py`.
+3. If PhET's permission comes with conditions (a credit for the photograph, say), put them in the entry's `aboutNote`,
+   which the simulation's About box shows, and in THIRD_PARTY.md.
 
 **Privacy.** Out of the box, a PhET simulation reports its use to PhET (`phet.colorado.edu/yotta/…`), loads Google Tag
 Manager and Google Analytics, and checks PhET's site for a newer version. The tab opens every simulation with PhET's own
@@ -92,13 +109,12 @@ any other site. (Opened directly, without the parameter, the same file would rep
 | Acid-Base Solutions | `acid-base-solutions` | 1.3.13 | 2026-02-06 | 2.6 MB | Intro, My Solution |
 | Molarity | `molarity` | 1.5.21 | 2025-09-03 | 1.9 MB | – |
 | Beer's Law Lab | `beers-law-lab` | 1.8.4 | 2026-02-15 | 2.8 MB | Concentration, Beer's Law |
-| Gene Expression Essentials | `gene-expression-essentials` | 1.0.34 | 2025-11-22 | 5.0 MB | Expression, mRNA, Multiple Cells |
 | Color Vision | `color-vision` | 1.3.4 | 2026-03-16 | 5.8 MB | Single Bulb, RGB Bulbs |
 | Geometric Optics | `geometric-optics` | 1.3.14 | 2026-02-09 | 2.3 MB | Lens, Mirror |
 | Capacitor Lab: Basics | `capacitor-lab-basics` | 1.6.37 | 2026-02-08 | 1.5 MB | Capacitance, Light Bulb |
 | Least-Squares Regression | `least-squares-regression` | 1.2.3 | 2026-02-06 | 2.3 MB | – |
 
-38 MB in all (the pictures are 0.3 MB of it). A student downloads only the simulations they open.
+13 simulations, 33 MB in all (the pictures are 0.3 MB of it). A student downloads only the simulations they open.
 
 Why each one (the same sentences are in each simulation's About box):
 
@@ -111,7 +127,6 @@ Why each one (the same sentences are in each simulation's About box):
 - **Acid-Base Solutions** – weak acids that dissociate only partly: the basis of buffers, and of the bicarbonate buffer of the blood.
 - **Molarity** – concentration in mol L⁻¹, and the arithmetic of making up and diluting solutions for a practical.
 - **Beer's Law Lab** – spectrophotometry: the Beer–Lambert law (A = εcl), which turns the absorbance of a solution into its concentration.
-- **Gene Expression Essentials** – transcription and its control by transcription factors, translation, and the breakdown of mRNA and protein.
 - **Color Vision** – three kinds of cone and the mixing of their signals, and what filters do to the light that reaches the eye.
 - **Geometric Optics** – how a lens forms an image: the optics of the eye and of the microscope's objective and eyepiece.
 - **Capacitor Lab: Basics** – the cell membrane as a capacitor: a thin insulator that separates charge (Q = CV).
@@ -130,7 +145,11 @@ python3 test/t_sims.py
 To add a simulation, add an entry to `sims.json` (its PhET id – the name in its address on PhET's site – its title,
 topics, a one-line description, why it is there, and the names of its screens), run `--find` to pin its newest CC BY
 4.0 version, then download it. PhET's simulations published only after 29 March 2026 have no CC BY version and cannot
-be added. Their screens can be read in the browser's console from a running simulation:
+be added. Before keeping one, check what else it contains, as above: the file's own credits
+(`phet.chipper.thirdPartyLicenseEntries`) and, for a newer build that lists only its code, the `license.json` of the
+`images/`, `mipmaps/` and `sounds/` folders of PhET's repositories at the commits in its `phet.chipper.dependencies` –
+anything that is neither PhET's nor under an open licence (like the photograph in Gene Expression Essentials) needs
+PhET's word first. Their screens can be read in the browser's console from a running simulation:
 `phet.joist.sim.simScreens.map(s => s.nameProperty.value)` (in older ones, `phet.joist.sim.screens.map(s => s.name)`).
 
 ### What the tab watches (`watch`)

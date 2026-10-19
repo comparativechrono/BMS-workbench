@@ -48,6 +48,9 @@ for s in SIMS:
     if not os.path.isfile(os.path.join(SITE, 'sims', s.get('thumb', '-'))):
         bad.append(s['id'] + ' (picture)')
 check(not bad, f'the {len(SIMS)} simulations are on the site, each PhET’s CC BY 4.0 file of the version listed, with its picture: {bad}')
+left = 'gene-expression-essentials'
+check(left not in IDS and not os.path.exists(os.path.join(SITE, 'sims', left)) and 'Genes' not in INDEX['topics'],
+      'Gene Expression Essentials is left out: not listed, no files, and no “Genes” topic')
 total = sum(os.path.getsize(os.path.join(r, f)) for r, _, fs in os.walk(os.path.join(SITE, 'sims')) for f in fs)
 check(total < 70e6 and all(s['bytes'] < 25e6 for s in SIMS), f'sims/ is within its budget ({total / 1e6:.1f} MB)')
 
@@ -109,7 +112,7 @@ for s in SIMS:
         broken.append((s['id'], 'toolbar', st))
     if dt > 25:
         slow.append((s['id'], round(dt, 1)))
-    if s['id'] in ('neuron', 'membrane-transport', 'gene-expression-essentials', 'geometric-optics'):
+    if s['id'] in ('neuron', 'membrane-transport', 'color-vision', 'geometric-optics'):
         p.shot(f'sims-{s["id"]}')
 check(not broken, f'every simulation starts in its frame, drawn, with its title and its screens in the toolbar: {broken}')
 v = p.js(VISIBLE, '.sm-player .sm-foot')
@@ -176,14 +179,10 @@ check(events(p, 'sim:about'), 'opening the About box is reported (sim:about)')
 p.shot('sims-about')
 p.p.keyboard.press('Escape')
 time.sleep(0.3)
-# the one picture that is not PhET's (Gene Expression Essentials: a photograph used with permission) is named in its About
-p.js("() => MG.app.sims.about('gene-expression-essentials')")
-time.sleep(0.4)
-txt = p.js("() => document.querySelector('.modal') ? document.querySelector('.modal').innerText : ''")
-check('Dennis Kunkel Microscopy' in txt and 'may not be covered by CC BY 4.0' in txt and CREDIT in txt.replace('\n', ' '),
-      'the About box of Gene Expression Essentials says that its photograph of E. coli is not PhET’s')
-p.p.keyboard.press('Escape')
-time.sleep(0.3)
+# Gene Expression Essentials is left out (a photograph in it is not under an open licence: build/sims/README.md)
+check(p.js("() => MG.app.sims.open('gene-expression-essentials')") is False and p.js("() => !MG.app.sims.lib.hidden"),
+      'Gene Expression Essentials is not in the library (it is left out)')
+p.js("() => MG.app.sims.open('neuron')")
 if p.js("() => document.fullscreenEnabled"):
     p.p.locator('.sm-bar .sm-ib[title^="Full screen"]').click()
     time.sleep(0.6)

@@ -8,7 +8,6 @@
   "Solutions and pH",
   "Gases and pressure",
   "Light, vision and optics",
-  "Genes",
   "Data"
  ],
  "sims": [
@@ -353,35 +352,6 @@
     480,
     315
    ]
-  },
-  {
-   "id": "gene-expression-essentials",
-   "title": "Gene Expression Essentials",
-   "version": "1.0.34",
-   "topics": [
-    "Genes"
-   ],
-   "description": "Make proteins from a gene: transcription factors and RNA polymerase make mRNA, and ribosomes translate it.",
-   "why": "Transcription, its control by transcription factors, translation, and the breakdown of mRNA and protein that sets how much is made.",
-   "screens": [
-    "Expression",
-    "mRNA",
-    "Multiple Cells"
-   ],
-   "built": "2025-11-22 22:02:33 UTC",
-   "bytes": 5017567,
-   "credits": {
-    "leadDesign": "Steele Dalton, John Blanco",
-    "softwareDevelopment": "John Blanco, Aadish Gupta, Sharfudeen Ashraf, George Emanuel",
-    "team": "John Blanco, Mike Klymkowsky, Amanda McGarry, Ariel Paul, Katherine Perkins, Tom Perkins",
-    "qualityAssurance": "Steele Dalton, Kerrie Dochen, Bryce Griebenow, Ethan Johnson, Liam Mulhall, Arnab Purkayastha, Ben Roberts, Clara Wilson"
-   },
-   "thumb": "gene-expression-essentials/thumb.jpg",
-   "thumbSize": [
-    480,
-    315
-   ],
-   "aboutNote": "One picture in this simulation is not PhET’s: the photograph of E. coli cells that the Show Real Cells button shows, on the Multiple Cells screen, is © Dennis Kunkel Microscopy, Inc. PhET uses it with permission, so it may not be covered by CC BY 4.0 like the rest of the simulation."
   },
   {
    "id": "color-vision",
