@@ -95,7 +95,7 @@
 .ex-menubtn { flex: none; width: 2.4em; height: 2.3em; display: inline-grid; place-items: center; border: 1px solid var(--ex-line-2); background: var(--ex-panel); border-radius: 8px; cursor: pointer; }
 .ex-menubtn:hover, .ex-menubtn[aria-expanded='true'] { border-color: var(--ex-acc); color: var(--ex-acc); }
 .ex-pbody { flex: 1; min-height: 0; display: flex; }
-.ex-pmain { --ex-padtop: 18px; flex: 1; min-width: 0; min-height: 0; overflow: auto; padding: var(--ex-padtop) 20px 28px; outline: none; }
+.ex-pmain { --ex-padtop: 18px; --ex-padbot: 28px; flex: 1; min-width: 0; min-height: 0; overflow: auto; padding: var(--ex-padtop) 20px var(--ex-padbot); outline: none; }
 /* Previous and Next: round buttons in the bar along the bottom, between the tiles and the review tile */
 .ex-fabs { flex: none; display: flex; align-items: center; gap: 6px; padding-left: 8px; border-left: 1px solid var(--ex-line); }
 .ex-fab { width: 2.5em; height: 2.5em; border-radius: 50%; border: 1px solid var(--ex-acc); background: var(--ex-acc); color: var(--ex-acc-ink) !important; display: grid; place-items: center; cursor: pointer; box-shadow: 0 2px 6px rgba(40, 20, 50, 0.22); }
@@ -196,7 +196,7 @@
 .ex-area th, .ex-review th { background: var(--ex-acc-soft); font-weight: 700; text-align: left; }
 .ex-area img.ex-drawing, .ex-review img.ex-drawing { max-width: 100%; height: auto; border: 1px solid var(--ex-line); border-radius: 4px; vertical-align: top; background: #fff; }
 .ex-area img.ex-drawing { cursor: pointer; }
-.ex-edfoot { display: flex; align-items: center; gap: 8px; padding: 0.3em 0.75em; border-top: 1px solid var(--ex-line); font-size: 0.82em; color: var(--ex-muted); min-height: 2em; }
+.ex-edfoot { display: flex; align-items: center; gap: 8px; padding: 0.3em 0.75em; border-top: 1px solid var(--ex-line); font-size: 0.82em; color: var(--ex-muted); min-height: 2em; position: sticky; bottom: calc(-1 * var(--ex-padbot, 0px)); z-index: 2; background: var(--ex-panel); border-radius: 0 0 8px 8px; }
 .ex-ednote { color: var(--ex-red); font-weight: 600; }
 .ex-wc { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ex-wc.over { color: var(--ex-red); font-weight: 800; }
@@ -275,7 +275,7 @@
 .ex-app.ex-expanded .ex-right { padding: 0; flex: 1; display: flex; flex-direction: column; }
 .ex-app.ex-expanded .ex-answer { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .ex-app.ex-expanded .ex-ed { flex: 1; min-height: 0; }
-.ex-app.ex-expanded .ex-tb { position: static; }
+.ex-app.ex-expanded .ex-tb, .ex-app.ex-expanded .ex-edfoot { position: static; }
 .ex-app.ex-expanded .ex-area { flex: 1; min-height: 0 !important; overflow: auto; }
 
 /* ---------------- contrast ---------------- */

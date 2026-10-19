@@ -314,15 +314,44 @@
       if (rec.type === 'text' && saved.done) q.classList.add('answered');
     });
   }
-  /* a number in an answer: 1200, 1,200, 1.2e3, 1.2 x 10^3, 1.2 × 10³ – the first number of the answer */
+  /* a number in an answer: 1200, 1,200, 1 200, 22,5 (a decimal comma), 1.2e3, 1.2 x 10^3, 1.2 × 10³, 1.2 million, four.
+     It is the first number of the answer – or, when the answer is a working (100/0.25 = 400), of the side that is a
+     number rather than a sum */
+  const SUP = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-', '⁺': '+' };
+  const WORDS = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
+  const BIG = { hundred: 1e2, thousand: 1e3, million: 1e6, billion: 1e9 };
   function parseNumber(t) {
-    const sup = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-' };
-    let s = String(t || '').replace(/[−–]/g, '-').replace(/(\d),(?=\d{3}(\D|$))/g, '$1').replace(/\s+/g, ' ').trim();
-    s = s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g, (m) => '^' + m.split('').map((c) => sup[c]).join(''));
-    let m = /(-?\d+(?:\.\d+)?)\s*(?:x|×|\*)\s*10\s*\^\s*\(?\s*(-?\d+)/i.exec(s);
+    let s = String(t || '').replace(/[−–]/g, '-').replace(/[\u00a0\u2009\u202f]/g, ' ').replace(/\s+/g, ' ').trim();
+    // a working: the answer is the side of an = that is a number, not a sum (100/0.25 = 400, or 400 = 100/0.25)
+    const segs = s.split(/[=≈]/).map((x) => x.trim()).filter((x) => /[\da-z]/i.test(x));
+    if (segs.length > 1) {
+      const num = (x) => /^[-+~]?\s*\.?\d/.test(x);
+      const sum = (x) => /\d\s*(?:[/÷+]|[x×*·⋅](?!\s*10\s*\^))\s*[\d(.]/i.test(x) || /\d\s+-\s*\d/.test(x);
+      const last = segs[segs.length - 1], first = segs[0];
+      if (num(last) && !sum(last)) s = last;
+      else if (num(first) && !sum(first)) s = first;
+      else if (num(last)) s = last;
+    }
+    s = s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]+/g, (m) => '^' + m.split('').map((c) => SUP[c]).join(''));
+    // a decimal comma after a lone 0 (0,25); thousands separated by commas or spaces (1,200 or 1 200); other decimal commas (22,5)
+    s = s.replace(/(^|[^\d.,])(-?)0,(\d)/g, (m0, a, sign, d) => a + sign + '0.' + d);
+    s = s.replace(/(\d),(?=\d{3}(?:\D|$))/g, '$1').replace(/(\d) (?=\d{3}(?:[^\d.,]|$))/g, '$1');
+    s = s.replace(/(\d),(\d{1,2})(?!\d)/g, '$1.$2');
+    let m = /(-?\d*\.?\d+)\s*(?:x|×|\*|·|⋅)\s*10\s*\^\s*\(?\s*([-+]?\d+)/i.exec(s);
     if (m) return +m[1] * Math.pow(10, +m[2]);
-    m = /-?\d*\.?\d+(?:e[-+]?\d+)?/i.exec(s);
-    return m ? parseFloat(m[0]) : null;
+    m = /^10\s*\^\s*\(?\s*([-+]?\d+)/.exec(s);
+    if (m) return Math.pow(10, +m[1]);
+    m = /(-?\d*\.?\d+(?:e[-+]?\d+)?)(?:\s*(hundred|thousand|million|billion)\b)?/i.exec(s);
+    if (m) return parseFloat(m[1]) * (m[2] ? BIG[m[2].toLowerCase()] : 1);
+    // a number in words ("four", "twenty-two", "two hundred")
+    if (/\bpoint\b/i.test(s)) return null;
+    let total = 0, cur = 0, any = false;
+    for (const w of s.toLowerCase().split(/[^a-z]+/)) {
+      if (w in WORDS) (cur += WORDS[w]), (any = true);
+      else if (w === 'hundred' && any) cur *= 100;
+      else if ((w === 'thousand' || w === 'million' || w === 'billion') && any) (total += cur * BIG[w]), (cur = 0);
+    }
+    return any ? total + cur : null;
   }
   /* a numeric answer: "num:120..300" (a range), "num:0.25±0.02", "num:1.2e6±5%" (a tolerance), "num:42" */
   function numOk(spec, text) {
@@ -427,8 +456,14 @@
   /* ------------------------------------------------------------------
      Download answers / reset
      ------------------------------------------------------------------ */
+  /** the student's name: the one set with the button at the top of the page */
+  function studentName() {
+    if (state.name) return state.name;
+    const U = MG.user;
+    return U && U.name && U.name() && U.name() !== U.DEFAULT ? U.name() : '';
+  }
   function exportAnswers() {
-    const name = state.name || '';
+    const name = studentName();
     const date = new Date().toLocaleString('en-GB');
     let html = `<!doctype html><html><head><meta charset="utf-8"><title>My answers – ${esc(pageTitle())}</title>
 <style>body{font-family:Calibri,Arial,sans-serif;max-width:800px;margin:30px auto;color:#222;line-height:1.45}h1{font-size:22px}h2{font-size:17px;border-bottom:1px solid #ccc;margin-top:28px}
@@ -450,11 +485,11 @@
     html += '</body></html>';
     const fname = 'my-answers' + (name ? '-' + name.replace(/[^a-z0-9]+/gi, '-') : '') + '.html';
     MG.downloadText(html, fname, 'text/html');
-    toast('Saved <b>' + esc(fname) + '</b>. You can open it in a web browser or in Word.');
+    toast('Saved <b>' + esc(fname) + '</b>. You can open it in a web browser or in Word.' + (name ? '' : ' (To put your name on it, set your name with the button at the top of the page, then download it again.)'), null, name ? 4000 : 7000);
     bus.emit('answers:export', {});
   }
   async function copyAnswers() {
-    let out = `${pageTitle()} – my answers${state.name ? ' (' + state.name + ')' : ''}\n\n`;
+    let out = `${pageTitle()} – my answers${studentName() ? ' (' + studentName() + ')' : ''}\n\n`;
     chapters.forEach((ch) => {
       const qs = qEls.filter((x) => ch.contains(x.q));
       if (!qs.length) return;

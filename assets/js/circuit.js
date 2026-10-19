@@ -100,10 +100,13 @@
     'mmhg', 'ohms', 'ohm', 'Ω', 'hz', 'bpm', 'v', 'a', 'f', 'h', 's', 'w'];
   /** a number typed with an SI prefix and perhaps a unit ("4.7k", "10 µF", "2m", "100 mmHg", "-70 mV") → number, or NaN */
   function parseValue(text) {
-    let s = String(text == null ? '' : text).trim().replace(/[−–]/g, '-').replace(/×\s*10\^?/g, 'e').replace(/,/g, '');
+    let s = String(text == null ? '' : text).trim().replace(/[−–]/g, '-').replace(/×\s*10\^?/g, 'e');
+    // commas: a decimal comma after a lone 0 (0,47), thousands (1,000), and other decimal commas (2,2k)
+    s = s.replace(/(^|[^\d])0,(\d)/g, (m0, a, d) => a + '0.' + d).replace(/(\d),(?=\d{3}(?!\d))/g, '$1').replace(/(\d),(\d)/g, '$1.$2');
     if (!s) return NaN;
     const low = s.toLowerCase();
-    for (const u of UNIT_WORDS) {
+    for (const u0 of UNIT_WORDS) {
+      const u = u0.toLowerCase(); // (Ω in lower case is ω)
       if (low.endsWith(u) && low.length > u.length) {
         s = s.slice(0, s.length - u.length).trim();
         break;
@@ -115,7 +118,7 @@
     const pre = s.slice(m[1].length).trim();
     const f = pre ? PREFIX[pre] : 1;
     if (pre && f == null) return NaN;
-    const v = parseFloat(m[1]) * f;
+    const v = Number((parseFloat(m[1]) * f).toPrecision(15));
     return isFinite(v) ? v : NaN;
   }
   const SI = [[1e9, 'G'], [1e6, 'M'], [1e3, 'k'], [1, ''], [1e-3, 'm'], [1e-6, 'µ'], [1e-9, 'n'], [1e-12, 'p']];
@@ -1164,7 +1167,9 @@
         const b = h('button.ck-palbtn', { type: 'button', 'data-type': type, title: `${typeName(type, mode)}: click it, then click on the grid (or drag across it, or drag it onto the grid)`, html: paletteIcon(type, mode) + `<span>${esc(shortName(type, mode))}</span>` });
         if (this.tool === 'place:' + type || (type === 'wire' && this.tool === 'wire')) b.classList.add('on');
         b.addEventListener('click', () => {
-          if (type === 'wire') this.setTool(this.tool === 'wire' ? 'select' : 'wire');
+          // (the wire tool stays on after each wire, so clicking Wire again – as one does before each part – keeps it
+          // on: Select, or Esc, ends it)
+          if (type === 'wire') this.setTool('wire');
           else this.setTool(this.tool === 'place:' + type ? 'select' : 'place:' + type);
         });
         // drag from the palette onto the drawing
@@ -1184,7 +1189,7 @@
       B.undo.addEventListener('click', () => this.undo());
       B.redo.addEventListener('click', () => this.redo());
       B.select.addEventListener('click', () => this.setTool('select'));
-      B.wire.addEventListener('click', () => this.setTool(this.tool === 'wire' ? 'select' : 'wire'));
+      B.wire.addEventListener('click', () => this.setTool('wire'));
       B.probe.addEventListener('click', () => this.setTool(this.tool === 'probe' ? 'select' : 'probe'));
       B.rotate.addEventListener('click', () => this.rotateSel());
       B.flip.addEventListener('click', () => this.flipSel());
@@ -1222,6 +1227,14 @@
       sv.addEventListener('wheel', (e) => this._wheel(e), { passive: false });
       sv.addEventListener('contextmenu', (e) => this._context(e));
       this.stage.addEventListener('keydown', (e) => this._key(e));
+      // (Esc ends a tool also when the focus is on a button – the palette's, just after one was chosen)
+      this.root.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape' || e.target === this.stage || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+        if (this.tool !== 'select') {
+          e.preventDefault();
+          this.setTool('select');
+        }
+      });
       document.addEventListener('keydown', (e) => {
         // (Ctrl+S anywhere in the tab)
         if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S') && this._visible()) {
@@ -3078,8 +3091,30 @@
         x1 = y1 = 4;
       }
       const pad = 2.2;
-      const vx = (x0 - pad) * G, vy = (y0 - pad) * G, vw = (x1 - x0 + 2 * pad) * G, vh = (y1 - y0 + 2 * pad) * G;
+      let vx = (x0 - pad) * G, vy = (y0 - pad) * G, vw = (x1 - x0 + 2 * pad) * G, vh = (y1 - y0 + 2 * pad) * G;
       const body = this.layer.wires.outerHTML + this.layer.els.outerHTML + this.layer.dots.outerHTML + `<g class="ck-labels">${this.labelsSVG(1, 0, 0)}</g>`;
+      // (the labels can reach beyond the parts – a meter's reading, a long name: the picture takes in all that is drawn)
+      try {
+        const tmp = document.createElementNS(SVGNS, 'svg');
+        tmp.setAttribute('width', '10');
+        tmp.setAttribute('height', '10');
+        tmp.style.cssText = 'position:fixed;left:-10000px;top:0;visibility:hidden;pointer-events:none';
+        tmp.innerHTML = `<g style="font:600 12px system-ui,sans-serif">${body.replace(/ style="[^"]*"/g, '')}</g>`;
+        tmp.querySelectorAll('.ck-hl,.ck-hit,.ck-loose').forEach((n) => n.remove());
+        document.body.appendChild(tmp);
+        const b = tmp.firstChild.getBBox();
+        tmp.remove();
+        if (b && b.width > 0 && b.height > 0) {
+          const m = 10;
+          const X0 = Math.min(vx, b.x - m), Y0 = Math.min(vy, b.y - m);
+          vw = Math.max(vx + vw, b.x + b.width + m) - X0;
+          vh = Math.max(vy + vh, b.y + b.height + m) - Y0;
+          vx = X0;
+          vy = Y0;
+        }
+      } catch (e) {
+        /* the box of the parts, then */
+      }
       const style = `.ck-hl,.ck-hit,.ck-loose{display:none}.ck-w,.ck-lead,.ck-body,.ck-plate,.ck-sym,.ck-lever,.ck-gnd,.ck-nofill{stroke:#222;fill:none;stroke-width:2;stroke-linecap:round}
 .ck-plate{stroke-width:2.6}.ck-plate.thick{stroke-width:5}.ck-body{fill:#fff}.ck-solid{fill:#222}.ck-meter{fill:#fff}.ck-pin{fill:#222}.ck-sym.thin{stroke-width:1.3}
 .ck-junc{fill:#222}.ck-letter{font:700 15px system-ui,sans-serif;text-anchor:middle;fill:#222}.ck-pm{font:700 13px system-ui,sans-serif;fill:#222}
@@ -3126,7 +3161,11 @@
       const infos = this.doc.traces.map((tr, k) => this._traceInfo(tr, k));
       const head = ['time_s'].concat(infos.map((i) => `${i.label} (${qUnit(i.q, mode)})`.replace(/"/g, "'")));
       const lines = [head.map((x) => `"${x}"`).join(',')];
-      for (let i = 0; i < R.t.length; i++) lines.push([Number(R.t[i].toPrecision(8))].concat(R.v.map((a) => (isFinite(a[i]) ? Number(a[i].toPrecision(7)) : ''))).join(','));
+      for (let i = 0; i < R.t.length; i++) {
+        // (a trace added while the circuit runs has no values before then: rows with no values at all are left out)
+        if (!R.v.some((a) => isFinite(a[i]))) continue;
+        lines.push([Number(R.t[i].toPrecision(8))].concat(R.v.map((a) => (isFinite(a[i]) ? Number(a[i].toPrecision(7)) : ''))).join(','));
+      }
       return lines.join('\n') + '\n';
     }
     async exportCSV() {

@@ -1662,22 +1662,27 @@
     _context(e) {
       e.preventDefault();
       const t = e.target;
+      // (the handles of a selected box or arrow belong to it: the bend handle of an arrow, the resize handle of a box)
+      const hd = t.closest && t.closest('[data-handle]');
       const ne = t.closest && t.closest('[data-node]');
       const ee = t.closest && t.closest('[data-edge]');
-      if (ne) {
-        if (!this.selN.has(ne.dataset.node)) {
+      let nid = ne ? ne.dataset.node : null, eid = !ne && ee ? ee.dataset.edge : null;
+      if (hd && hd.dataset.handle === 'bend' && this.edge(hd.dataset.id)) (eid = hd.dataset.id), (nid = null);
+      else if (hd && this.node(hd.dataset.id)) (nid = hd.dataset.id), (eid = null);
+      if (nid) {
+        if (!this.selN.has(nid)) {
           this.selN.clear();
           this.selE.clear();
-          this.selN.add(ne.dataset.node);
+          this.selN.add(nid);
           this._selChanged();
         }
-        this._menuFor({ node: ne.dataset.node }, e.clientX, e.clientY);
-      } else if (ee) {
+        this._menuFor({ node: nid }, e.clientX, e.clientY);
+      } else if (eid) {
         this.selN.clear();
         this.selE.clear();
-        this.selE.add(ee.dataset.edge);
+        this.selE.add(eid);
         this._selChanged();
-        this._menuFor({ edge: ee.dataset.edge }, e.clientX, e.clientY);
+        this._menuFor({ edge: eid }, e.clientX, e.clientY);
       } else {
         const W = this._world(e);
         this._menuAt(e.clientX, e.clientY, [

@@ -45,6 +45,39 @@ p.p.keyboard.press('4')
 time.sleep(1.2)
 check(abs(p.js("() => MG.app.scope.mag()") - 10) < 0.3, 'key 4 chooses the 10x objective')
 check(any(e['mag'] == 10 for e in events('scope:mag')), 'scope:mag fired with 10')
+# OpenSeadragon's own keys are off: r would turn the slide, f mirror it, w a s d move it
+p.js("() => MG.app.scope.view.focus()")
+c0 = p.js("() => { const c = MG.app.scope.viewer.viewport.getCenter(true); return [c.x, c.y]; }")
+for k in ['r', 'f', 'w', 'd']:
+    p.p.keyboard.press(k)
+time.sleep(0.8)
+vp = p.js("() => { const v = MG.app.scope.viewer.viewport, c = v.getCenter(true); return [v.getRotation(), v.getFlip(), c.x, c.y]; }")
+check(vp[0] == 0 and vp[1] is False and abs(vp[2] - c0[0]) < 1e-6 and abs(vp[3] - c0[1]) < 1e-6, f'the keys r, f, w and d do nothing to the slide: {vp}')
+# the teaching labels are hidden at first
+check(p.js("() => MG.app.scope.st.showLabels") is False and not p.js("() => MG.app.scope.svg.querySelector('.ms-tlabel')"), 'the slide’s labels are hidden at first')
+# the side panel shows all four of its tabs
+for w in [1366, 1920]:
+    p.p.set_viewport_size({'width': w, 'height': 900})
+    time.sleep(0.5)
+    p.js("() => MG.app.scope.showSide('about')")
+    time.sleep(0.3)
+    t = p.js("""() => { const T = document.querySelector('.ms-side-tabs'), L = MG.app.scope.sideTabs.labels.getBoundingClientRect(), R = T.getBoundingClientRect();
+        return [T.scrollWidth <= T.clientWidth + 1, L.right <= R.right + 1]; }""")
+    check(all(t), f'at {w} px the side panel’s four tabs are all in sight: {t}')
+p.p.set_viewport_size({'width': 1500, 'height': 950})
+time.sleep(0.5)
+# choosing a tool does not change the height of the toolbar (its name used to appear, and the bar to wrap)
+h0 = p.js("() => document.querySelector('.ms-bar').getBoundingClientRect().height")
+p.js("() => MG.app.scope.tool('measure')")
+time.sleep(0.2)
+h1 = p.js("() => document.querySelector('.ms-bar').getBoundingClientRect().height")
+p.js("() => MG.app.scope.tool('pan')")
+check(h0 == h1, f'choosing a tool does not change the height of the toolbar ({h0} → {h1})')
+# tiles that cannot be loaded: a notice stays until they load, with a button to try again
+p.js("() => MG.app.scope._tileFailed()")
+check(p.js("() => !MG.app.scope.netNote.hidden"), 'a tile that fails to load puts up a notice')
+p.js("() => [...MG.app.scope.netNote.querySelectorAll('button')].find(b => b.textContent === 'Try again').click()")
+check(p.js("() => MG.app.scope.netNote.hidden"), 'Try again takes the notice down (and loads the tiles again)')
 
 # measure a length by dragging: at 10x one screen pixel is 1 µm
 p.js("() => MG.app.scope.tool('measure')")
@@ -107,6 +140,7 @@ check(events('scope:capture'), 'scope:capture fired')
 p.js("() => MG.app.scope.setEyepiece(true)")
 time.sleep(1)
 check(p.js("() => !MG.app.scope.eye.hidden && MG.app.scope.grat.innerHTML.includes('path')"), 'the eyepiece and its graticule are drawn')
+check(p.js("() => MG.app.scope.eyeNote.hidden"), 'in a large view the whole graticule fits the field: no note')
 vb = view_box()
 p.js("() => MG.app.scope.tool('pan')")
 p.p.mouse.move(vb['x'] + vb['w'] / 2, vb['y'] + vb['h'] / 2)
@@ -115,13 +149,35 @@ time.sleep(1.2)
 m = p.js("() => MG.app.scope.mag()")
 check(abs(m - 20) < 0.5, f'in the eyepiece view the wheel moves to the next objective (20x: {m:.2f})')
 p.shot('scope-eyepiece')
+# a picture in the eyepiece view has the graticule on it
+pe = p.js("() => MG.app.scope.capture()")
+check(bool(pe), 'a picture is taken in the eyepiece view')
+# a wide view that is not tall (a phone on its side): the field is as wide as the graticule, cut off at the top and bottom
+p.p.set_viewport_size({'width': 1500, 'height': 420})
+time.sleep(0.8)
+eh = p.js("() => [MG.app.scope.view.clientHeight, MG.app.scope._eyeR(), MG.app.scope.eyeNote.hidden]")
+check(eh[1] * 2 >= 406 and eh[2], f'in a view {eh[0]} px tall the field is still as wide as the graticule (radius {eh[1]}), and there is no note')
+p.p.set_viewport_size({'width': 1500, 'height': 950})
+time.sleep(0.6)
 p.js("() => MG.app.scope.setEyepiece(false)")
 
 # a picture from Files as a slide, with a scale
 p.js(f"() => MG.app.scope.openImage('{path}')")
 time.sleep(1.5)
 check(p.js("() => MG.app.scope.current()") == 'file:' + path, 'a picture opens as a slide')
-check('(no scale)' in p.js("() => MG.app.scope.readout.textContent"), 'a picture has no scale at first')
+ro = p.js("() => MG.app.scope.readout.textContent")
+check('(no scale)' not in ro and p.js(f"() => MG.app.scope.st.scales['{path}'] > 0"), f'a picture taken with the microscope keeps its scale: {ro}')
+# a picture of one's own has no scale at first
+own = p.js("""async () => { const c = document.createElement('canvas'); c.width = 400; c.height = 300; const g = c.getContext('2d');
+    g.fillStyle = '#d9a3c4'; g.fillRect(0, 0, 400, 300); g.fillStyle = '#5a2a6a'; g.beginPath(); g.arc(200, 150, 60, 0, 7); g.fill();
+    const b = await new Promise((r) => c.toBlob(r, 'image/png')); return MG.app.saveToFiles('my-own.png', b, { folder: '~/microscope/pictures', ask: false, quiet: true }); }""")
+p.js(f"() => MG.app.scope.openImage('{own}')")
+time.sleep(1.5)
+check('(no scale)' in p.js("() => MG.app.scope.readout.textContent"), 'a picture of my own has no scale at first')
+# a small picture cannot be shown at 1×: the microscope says so
+p.js("() => document.querySelector('.ms-obj[data-mag=\"1\"]').click()")
+time.sleep(0.4)
+check(p.js("() => [...document.querySelectorAll('.toast')].some(t => t.textContent.includes('too small to see at 1×'))"), 'an objective that a small picture cannot be shown at gives a message')
 p.js("() => { MG.app.scope.slide.mpp = 0.5; MG.app.scope._redraw(); }")
 check('(no scale)' not in p.js("() => MG.app.scope.readout.textContent"), 'with a scale the readout gives a magnification')
 

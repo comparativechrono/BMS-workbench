@@ -66,8 +66,7 @@ def ch_start():
 </ul>
 {callout("info", "Where things are saved", "<p>Look in the <b>Files</b> tab for what the tools save: <code>microscope/</code> holds your measurements (<code>measurements.csv</code>), counts (<code>counts.csv</code>) and pictures; <code>diagrams/</code> and <code>circuits/</code> hold the diagrams and circuits you save; and <code>essays/</code> holds your answers to exam practice.</p>")}
 {activity("Find your way around", [
-    task("s-scope", f'Open the <b>Microscope</b> tab {bench("scope", "show me")}. The slide box on its left lists the slides, sorted by the system of the body they come from.', auto="app:bench name=scope", check="bench:scope"),
-    task("s-slide", 'Click on any slide in the slide box to open it.', auto="scope:open"),
+    task("s-slide", f'In the <b>Microscope</b> tab {bench("scope", "show me")}, the slide box on the left lists the slides, sorted by the system of the body they come from. Click on any slide to open it.', auto="scope:open"),
     task("s-files", f'Have a look at the <b>Files</b> tab {bench("editor", "show me")}, where you will find the folders for your microscope work, diagrams, circuits and essays.', auto="app:bench name=editor"),
 ])}
 '''
@@ -96,10 +95,10 @@ def ch_microscope():
 {q("m-q-field", "At 10×, read the width of the field of view in the readout at the bottom right of the view. Change to 40×. How does the width of the field change, and why?", "At 40× the field of view is a quarter as wide as at 10× (and covers a sixteenth of the area), because the magnification is four times as great: the same window shows a smaller part of the slide. (The width depends on the size of your window: about 600 µm at 10× in a typical window, and about 150 µm at 40×.)")}
 
 <h2 id="m-find">Finding things</h2>
-<p>In the practicals, you will often be asked to find a structure on a slide and click on it. The microscope checks your click against the examples marked on the slide, and if you are stuck, <b>Show me</b> takes you to one.</p>
+<p>In the practicals, you will often be asked to find a structure on a slide and click on it. The microscope checks your click against the examples marked on the slide, and tells you when you have clicked on something else that it knows. If you are stuck, <b>Show me</b> takes you to an example and rings it in yellow: click on it to carry on (<b>Show me another</b> goes to the next one).</p>
 {activity("Find a renal corpuscle, and look at the tubules", [
     task("m-glom", f'{scopefind("kidney-cortex:glomerulus", "Find a renal corpuscle")}. A renal corpuscle is a round knot of capillaries, the glomerulus, inside a thin capsule. This is where the blood is filtered. Look at 4× or 10×.', auto="scope:find slide=kidney-cortex target=glomerulus ok=true"),
-    task("m-labels", f'Show the slide’s labels {scopetool("labels", "show me")} (the tag button in the toolbar). The <b>Labels</b> panel lists them: click <i>Proximal convoluted tubule</i> to go to one, and look at it at 20× or 40×. Most of the tubules of the cortex are proximal convoluted tubules: their cells are the pinkest, with a fuzzy brush border lining the lumen (which often looks lacy in this slide). Compare them with the smaller tubules that have clear lumens and more nuclei.', auto="scope:labels on=true"),
+    task("m-labels", f'Show the slide’s labels {scopetool("labels", "show me")} (the tag button in the toolbar: the labels are hidden at first, so that you can look for things yourself). The <b>Labels</b> panel lists them: click <i>Proximal convoluted tubule</i> to go to one, and look at it at 20× or 40×. Most of the tubules of the cortex are proximal convoluted tubules: their cells are the pinkest, with a fuzzy brush border lining the lumen (which often looks lacy in this slide). Compare them with the smaller tubules that have clear lumens and more nuclei.', auto="scope:labels on=true"),
 ])}
 
 <h2 id="m-lab">Your own labels and pictures</h2>
@@ -113,8 +112,8 @@ def ch_microscope():
 <h2 id="m-liver">Another tissue: the liver</h2>
 {activity("Look at the liver", [
     task("m-liver", f'Open the slide of the liver {scope("liver", "show me")}, and look at it at 1× and then at 4×.', auto="scope:open slide=liver", check="slide:liver"),
-    task("m-cv", f'{scopefind("liver:central-vein", "Find a central vein")}: a thin-walled vein, with plates of liver cells running out from it like the spokes of a wheel.', auto="scope:find slide=liver target=central-vein ok=true"),
-    task("m-pt", f'{scopefind("liver:portal-tract", "Find a portal tract")}: a patch of connective tissue holding a branch of the portal vein, a small artery (hard to see on this slide) and one or more bile ducts.', auto="scope:find slide=liver target=portal-tract ok=true"),
+    task("m-pt", f'{scopefind("liver:portal-tract", "Find a portal tract")}: a patch of connective tissue holding a branch of the portal vein, a small artery (hard to see on this slide) and one or more bile ducts. There are several on this slide, one of them large.', auto="scope:find slide=liver target=portal-tract ok=true"),
+    task("m-cv", f'{scopefind("liver:central-vein", "Find a central vein")}: a thin-walled vein, with plates of liver cells running out from it like the spokes of a wheel, and no bile duct or connective tissue beside it. There are only a few on this slide, so take your time.', auto="scope:find slide=liver target=central-vein ok=true"),
 ])}
 {q("m-q-cv", "How could you tell a central vein from a portal tract at low power?", "A central vein is a single thin-walled vessel with liver cells right up to its wall, and the plates of liver cells run out from it like spokes. A portal tract is a patch of pink connective tissue that holds several tubes: a branch of the portal vein, a small artery and one or more bile ducts.")}
 '''
@@ -284,7 +283,7 @@ def ch_molecules():
 <h2 id="v-lib">The library</h2>
 <p>The viewer has a library of proteins of physiology and of small molecules – hormones, transmitters and others – ready to open. They are kept with the workbench, so they open quickly.</p>
 {activity("Open a small molecule", [
-    task("v-library", 'Click <b>Library</b>, at the top left of the viewer, to see what it holds.', auto="viewer:library"),
+    task("v-library", 'Click <b>Library</b> (the button with a book, at the top left of the viewer) to see what it holds.', auto="viewer:library"),
     task("v-glucose", f'Open glucose {viewer("clear; molecule glucose; only ballstick; color cpk", "show me")} (the button clears haemoglobin away first). A small molecule is drawn with every atom: here as balls and sticks, coloured by element – grey for carbon, red for oxygen and white for hydrogen.', auto="viewer:molecule name=Glucose"),
     task("v-atp", f'Open ATP in the same way {viewer("clear; molecule atp; only ballstick; color cpk", "show me")} and find its three phosphate groups (phosphorus is orange).', auto="viewer:molecule name=ATP"),
 ])}
@@ -318,7 +317,7 @@ def ch_r():
 {codefile("scripts/haemocytometer.R", HAEMO_R, note="<b>Create this file</b> saves the script in your files and opens it in RStudio.")}
 {activity("Run the calculation", [
     task("r-make", 'Click <b>Create this file</b> above.', auto="file:create name=haemocytometer.R"),
-    task("r-source", 'Click <b>Source</b> at the top of the script, which runs the whole script, or run it line by line. Check that R gets the same answers as you did.', auto="rstudio:source path~haemocytometer||r:input kind=rstudio line~cells_per_mL||r:input kind=rstudio line~haemocytometer.R"),
+    task("r-source", 'Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd> (<kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd> on a Mac), or choose <b>Source with Echo</b> from the arrow beside the <b>Source</b> button: R runs the whole script and shows each line and its result in the Console. (The <b>Source</b> button itself runs the script without showing the results.) Check that R gets the same answers as you did.', auto="rstudio:source path~haemocytometer||r:input kind=rstudio line~cells_per_mL||r:input kind=rstudio line~haemocytometer.R"),
     task("r-change", 'Change the counts to <code>live &lt;- c(48, 52, 50, 46)</code>, save the script (<kbd>Ctrl</kbd>+<kbd>S</kbd>) and run it again.', check=HAEMO_CHECK),
 ])}
 {q("r-q-new", "With the new counts (48, 52, 50 and 46 living cells, and the same dead cells), how many living cells were there per mL of the original suspension?", "9.8 × 10<sup>5</sup> cells per mL: the mean is 196 ÷ 4 = 49 cells per large square, and 49 ÷ 10<sup>−4</sup> mL × 2 = 980 000 cells per mL.", accept="num:9.8e5±1%", placeholder="cells per mL")}

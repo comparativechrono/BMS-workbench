@@ -16,7 +16,7 @@
      scope:tool     {name}                                  a tool is chosen (pan, measure, area, count, label)
      scope:measure  {slide, kind, value, unit, label, n}    a length (µm) or an area (µm²) is measured; n: how many
                                                             measurements of that slide there are now
-     scope:count    {slide, category, n, total}             a cell (or anything) is counted
+     scope:count    {slide, category, n, total}             a cell (or anything) is counted (n: in that category)
      scope:label    {slide, text}                           a label of the student's own is added
      scope:labels   {on}                                    the slide's teaching labels are shown or hidden
      scope:eyepiece {on}                                    the eyepiece view is switched on or off
@@ -151,8 +151,12 @@
     constructor(root, opts = {}) {
       this.root = root;
       this.fs = opts.fs || MG.app.fs;
-      this.st = Object.assign({ slide: null, views: {}, measures: [], counts: [], labels: [], cats: ['Cells', 'Type B'], cat: 0, mlabel: '', showLabels: true, eyepiece: false, box: true, side: 'about', scales: {} }, store.get('scope', {}) || {});
+      this.st = Object.assign({ slide: null, views: {}, measures: [], counts: [], labels: [], cats: ['Cells', 'Type B'], cat: 0, mlabel: '', showLabels: false, eyepiece: false, box: true, side: 'about', scales: {} }, store.get('scope', {}) || {});
       if (!Array.isArray(this.st.cats) || !this.st.cats.length) this.st.cats = ['Cells', 'Type B'];
+      // (a mark keeps the name of its category, so that renaming a category later changes only this slide's marks)
+      this.st.counts.forEach((c) => {
+        if (!c.name) c.name = this.st.cats[c.cat] || 'Category ' + ((c.cat || 0) + 1);
+      });
       this.toolName = 'pan';
       this.slide = null; // the open slide: {id, info, base, mpp, file}
       this.pending = null; // a measurement being drawn
@@ -185,7 +189,7 @@
       this.objBar = h('div.ms-objs', { role: 'group', 'aria-label': 'Objectives' });
       OBJ.forEach((o, k) => {
         const b = h('button.ms-obj', { type: 'button', title: `${o}× objective (key ${k + 1})`, dataset: { mag: o } }, o + '×');
-        b.addEventListener('click', () => this.setMag(o));
+        b.addEventListener('click', () => this.setMag(o, false, true));
         this.objBar.appendChild(b);
       });
       this.toolBtns = {};
@@ -222,8 +226,13 @@
       this.scaleBar = h('div.ms-scale', h('i'), h('span'));
       this.readout = h('div.ms-readout');
       this.banner = h('div.ms-banner', { hidden: true, role: 'status', 'aria-live': 'polite' });
+      const retry = h('button.tbtn', { type: 'button' }, 'Try again');
+      retry.addEventListener('click', () => this._retryTiles());
+      this.netNote = h('div.ms-net', { hidden: true, role: 'status' }, h('span', 'Parts of the slide could not be loaded. Check your internet connection.'), retry);
+      window.addEventListener('online', () => this._retryTiles());
+      this.eyeNote = h('div.ms-eyenote', { hidden: true }, 'The window is too small for the whole graticule: make the window larger, close the panels, or turn the phone sideways.');
       this.empty = h('div.ms-empty', h('div', h('h3', 'Choose a slide'), h('p', 'Pick a slide from the slide box to start.')));
-      this.view = h('div.ms-view', this.viewEl, this.svg, this.eye, this.scaleBar, this.readout, this.banner, this.empty);
+      this.view = h('div.ms-view', this.viewEl, this.svg, this.eye, this.eyeNote, this.scaleBar, this.readout, this.banner, this.netNote, this.empty);
 
       // the side panel
       this.sideTabs = {};
@@ -263,7 +272,6 @@
         drawer: 'canvas',
         crossOriginPolicy: false,
         maxZoomPixelRatio: 2.3,
-        preserveImageSizeOnResize: true, // (a wider or narrower view shows more or less of the slide, at the same magnification)
         minZoomImageRatio: 0.6,
         visibilityRatio: 0.25,
         constrainDuringPan: true,
@@ -285,7 +293,16 @@
       });
       this.viewer.addHandler('animation', () => this._redraw());
       this.viewer.addHandler('update-viewport', () => this._redraw());
-      this.viewer.addHandler('resize', () => this._redraw());
+      this.viewer.addHandler('resize', () => {
+        this._redraw();
+        // (a slide opened before OpenSeadragon had the size of its view is put in place now – once OpenSeadragon has
+        // finished resizing, which pans and zooms after this event)
+        if (this._pendingPlace) {
+          setTimeout(() => {
+            if (this._pendingPlace && this._isSized()) this._place(this._pendingPlace);
+          }, 0);
+        }
+      });
       this.viewer.addHandler('animation-finish', () => this._settled());
       this.viewer.addHandler('canvas-press', (e) => this._press(e));
       this.viewer.addHandler('canvas-drag', (e) => this._drag(e));
@@ -294,7 +311,14 @@
       this.viewer.addHandler('canvas-double-click', (e) => this._dblclick(e));
       this.viewer.addHandler('canvas-scroll', (e) => this._scroll(e));
       this.viewer.addHandler('open-failed', (e) => this._failed(e && e.message));
-      this.viewer.addHandler('tile-load-failed', () => this._tileFailed());
+      this.viewer.addHandler('tile-load-failed', (e) => this._tileFailed(e && e.tile));
+      this.viewer.addHandler('tile-loaded', () => {
+        if (!this.netNote.hidden && Date.now() - (this._tileWarned || 0) > 3000) this.netNote.hidden = true;
+      });
+      // (OpenSeadragon's own keys – arrows, w a s d, r to rotate, f to flip – would act as well as the microscope's)
+      this.viewer.addHandler('canvas-key', (e) => {
+        e.preventDefaultAction = true;
+      });
       this.viewEl.addEventListener('pointermove', (e) => this._hover(e));
       this.navVisible(this.st.navigator !== false);
       this._applyToggles();
@@ -312,7 +336,7 @@
       if (this.st.slide && !this.slide) {
         const s = this.st.slide;
         if (s.startsWith('file:')) {
-          if (this.fs.exists(s.slice(5))) await this.openImage(s.slice(5), { quiet: true }).catch(() => {});
+          if (this.fs.exists(s.slice(5))) await this.openImage(s.slice(5), { quiet: true, restore: true }).catch(() => {});
         } else if (this._entry(s)) await this.open(s, { restore: true, quiet: true }).catch(() => {});
       }
       this.showSide((this.root.clientWidth || 1000) >= 900 ? this.st.side || null : null, true);
@@ -327,6 +351,25 @@
       }, 30);
     }
     _layoutChanged() {
+      const W = this.viewEl.clientWidth, H = this.viewEl.clientHeight;
+      if (W && H && this.viewer && this.slide) {
+        if (this._pendingPlace) {
+          const o = this._pendingPlace;
+          this._sized().then(() => this._place(o));
+        } else if (this._keep && this._keep.slide === this.slide.id) {
+          // (OpenSeadragon keeps the zoom in proportion to the width of the view: a microscope keeps its magnification
+          // and shows more or less of the slide)
+          const k = this._keep;
+          this._resizing = true;
+          this._sized().then(() => {
+            this._resizing = false;
+            if (!this.slide || this.slide.id !== k.slide) return;
+            this.setMag(k.m, true);
+            this.viewer.viewport.panTo(k.c, true);
+            this._redraw();
+          });
+        }
+      }
       this._redraw();
       this._eyeDraw();
     }
@@ -382,10 +425,15 @@
       const m = /^([^@]+)(?:@\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*x?)?)?$/i.exec(String(spec).trim());
       if (!m) throw new Error('A slide is named like this: kidney-cortex, or kidney-cortex@1.2,0.8,20x');
       const id = m[1].trim(), at = m[2] ? { x: +m[2], y: +m[3], mag: m[4] ? +m[4] : null } : {};
+      const sized = this.slide && this.slide.id === id ? await this._sized() : false;
       const ti = this._ti();
       if (this.slide && this.slide.id === id && ti) {
-        // the slide is open already: move to the place (or show the whole slide)
-        if (at.x != null) {
+        // the slide is open already: move to the place (or show the whole slide) – or, when the view has no size yet
+        // (a hidden tab), as soon as it has one (see _layoutChanged and the resize handler)
+        if (!sized) {
+          this._keep = null;
+          this._pendingPlace = at.x != null ? at : {};
+        } else if (at.x != null) {
           this.viewer.viewport.panTo(ti.imageToViewportCoordinates(new OSD.Point((at.x * 1000) / this.slide.mpp, (at.y * 1000) / this.slide.mpp)));
           if (at.mag) this.setMag(at.mag);
         } else this.viewer.viewport.goHome();
@@ -411,6 +459,7 @@
         throw err;
       }
       this._clearTasks();
+      await this._sized();
       this.slide = { id, info, base, mpp: info.mpp, title: info.title, system: info.system };
       const ts = tileSource(info, base, idx);
       await this._openSource(ts, opts);
@@ -430,7 +479,6 @@
       });
     }
     _afterOpen(opts = {}) {
-      this._syncSize();
       this._loading(false);
       this.empty.hidden = true;
       const s = this.slide;
@@ -439,24 +487,47 @@
       this.st.slide = s.id;
       this._save();
       $$('.ms-slide', this.boxList).forEach((b) => b.classList.toggle('on', b.dataset.id === s.id));
-      const v = this.st.views[s.id];
-      const ti = this._ti();
-      if (opts.x != null && ti) {
-        const p = new OSD.Point((opts.x * 1000) / s.mpp, (opts.y * 1000) / s.mpp);
-        this.viewer.viewport.panTo(ti.imageToViewportCoordinates(p), true);
-        if (opts.mag) this.setMag(opts.mag, true);
-      } else if (opts.restore && v && ti) {
-        if (v.m) this.setMag(v.m, true);
-        else this.viewer.viewport.zoomTo(v.z, null, true);
-        this.viewer.viewport.panTo(new OSD.Point(v.x, v.y), true);
-      } else if (opts.mag) this.setMag(opts.mag, true);
+      this._keep = null;
+      this._lastMag = null;
+      // (opened by a button, on a narrow workbench: the slide box and the side panel would cover the slide)
+      if (!opts.quiet && !this.box.hidden && this.root.clientWidth < 1200) this.toggleBox(false, true);
+      if (!opts.quiet && this._narrow()) this.showSide(null);
+      if (this._isSized()) this._place(opts);
+      else this._pendingPlace = opts; // (the tab is hidden: placed when it is shown, see _layoutChanged)
       this._applyToggles();
       this._renderSide();
-      this._redraw();
-      this._lastMag = null;
-      setTimeout(() => this._settled(), 50);
       if (!opts.quiet || opts.x != null) bus.emit('scope:open', { slide: s.id, title: s.title, system: s.system || '' });
-      if (!opts.quiet && this._narrow()) this.showSide(null);
+      // (keys 1 to 6, the arrows, + and − work at once, also after a button in the instructions opened the slide)
+      if (!opts.quiet && document.activeElement && document.activeElement !== document.body && !this.root.contains(document.activeElement)) {
+        try {
+          this.view.focus({ preventScroll: true });
+        } catch (e) {
+          /* ignore */
+        }
+      }
+    }
+    /** put the open slide in the view: fitted, then at the place, objective or view that opts ask for */
+    _place(opts = {}) {
+      const s = this.slide, ti = this._ti();
+      if (!s || !ti) return;
+      this._pendingPlace = null;
+      const vp = this.viewer.viewport;
+      vp.goHome(true);
+      const v = this.st.views[s.id];
+      if (opts.x != null && s.mpp) {
+        const p = new OSD.Point((opts.x * 1000) / s.mpp, (opts.y * 1000) / s.mpp);
+        vp.panTo(ti.imageToViewportCoordinates(p), true);
+        if (opts.mag) this.setMag(opts.mag, true);
+      } else if (opts.restore && v) {
+        if (v.m) this.setMag(v.m, true);
+        else vp.zoomTo(v.z, null, true);
+        vp.panTo(new OSD.Point(v.x, v.y), true);
+      } else if (opts.mag) this.setMag(opts.mag, true);
+      this._redraw();
+      // (what a change of the layout straight after this – a panel opening – keeps)
+      const m = this.mag();
+      if (m > 0) this._keep = { slide: s.id, m, c: vp.getCenter(true) };
+      setTimeout(() => this._settled(), 50);
     }
     _loading(on, title) {
       if (on) {
@@ -468,11 +539,24 @@
       this.empty.hidden = false;
       this.empty.innerHTML = `<div><h3>The slide could not be shown</h3><p>${esc(msg || 'Something went wrong.')}</p><p>Check your internet connection and try again. If you opened the workbench as a file, open it through a web server instead (for example <code>python3 serve.py</code>).</p></div>`;
     }
-    _tileFailed() {
-      const t = Date.now();
-      if (this._tileWarned && t - this._tileWarned < 30000) return;
-      this._tileWarned = t;
-      toast('Some parts of the slide could not be loaded. Check your internet connection; the microscope tries again as you move.', 'warn', 6000);
+    _tileFailed(tile) {
+      this._tileWarned = Date.now();
+      if (tile) (this._failedTiles = this._failedTiles || new Set()).add(tile);
+      this.netNote.hidden = false;
+    }
+    /** load again the tiles that failed (OpenSeadragon gives up on a tile that has failed) */
+    _retryTiles() {
+      const f = this._failedTiles;
+      this._failedTiles = null;
+      this.netNote.hidden = true;
+      if (!f || !this.viewer) return;
+      f.forEach((t) => {
+        t.exists = true;
+        t.loading = false;
+      });
+      const it = this.viewer.world.getItemAt(0);
+      if (it) it._needsDraw = true;
+      this.viewer.forceRedraw();
     }
     _ti() {
       return this.viewer && this.viewer.world.getItemCount() ? this.viewer.world.getItemAt(0) : null;
@@ -515,6 +599,7 @@
       this.slide = { id, file: path, base: null, mpp, title: path.split('/').pop(), system: 'My pictures', info: { title: path.split('/').pop(), width: size.w, height: size.h, labels: [], description: 'A picture from your files: ' + fs.pretty(path) + '.' } };
       if (this._picUrl) URL.revokeObjectURL(this._picUrl);
       this._picUrl = url;
+      await this._sized();
       await this._openSource({ type: 'image', url, buildPyramid: true }, {});
       this._afterOpen(opts);
       if (!mpp && !opts.quiet) toast('This picture has no scale yet, so lengths are in pixels. Use <b>⋯ → Set the scale</b> to measure in micrometres.', null, 7000);
@@ -549,22 +634,51 @@
       const imgZoom = ti.viewportToImageZoom(this.viewer.viewport.getZoom(true));
       return (imgZoom * umPerPx(1)) / (this.slide.mpp || U20) / 1; // screen px per image px × µm per screen px at 1x / µm per image px
     }
-    /** OpenSeadragon only notices a change in the size of the view at its next frame (and not while it opens a slide):
-        bring its idea of the size up to date before a magnification is turned into a zoom */
-    _syncSize() {
+    /** has the view a size, and does OpenSeadragon know it? (It notices a change of size only at its next frame; while the
+        tab is hidden the view has no size at all.) */
+    _isSized() {
       const v = this.viewer && this.viewer.viewport;
       const W = this.viewEl.clientWidth, H = this.viewEl.clientHeight;
-      if (!v || !W || !H) return;
+      if (!v || !W || !H) return false;
       const cs = v.getContainerSize();
-      if (Math.abs(cs.x - W) > 0.5 || Math.abs(cs.y - H) > 0.5) v.resize(new OSD.Point(W, H), true);
+      return Math.abs(cs.x - W) < 1 && Math.abs(cs.y - H) < 1;
     }
-    setMag(m, immediately) {
+    /** → a promise that resolves (true) once the view has a size that OpenSeadragon knows, or (false) after maxMs */
+    _sized(maxMs = 1500) {
+      if (this._isSized()) return Promise.resolve(true);
+      // (OpenSeadragon notices a new size of its view only while it shows an image – and a hidden view has no size to
+      // wait for: the slide is then put in place when OpenSeadragon has the size, see the resize handler)
+      if (!this.viewer || !this.viewer.isOpen() || !this.viewEl.clientWidth || !this.viewEl.clientHeight) return Promise.resolve(false);
+      return new Promise((resolve) => {
+        let done = false;
+        const finish = (ok) => {
+          if (!done) {
+            done = true;
+            resolve(ok);
+          }
+        };
+        const check = () => {
+          if (done) return;
+          if (this._isSized()) return finish(true);
+          requestAnimationFrame(check);
+        };
+        requestAnimationFrame(check);
+        setTimeout(() => finish(this._isSized()), maxMs);
+      });
+    }
+    /** choose an objective (m×). say: tell the student when the slide cannot be shown at it (a small picture cannot be
+        made smaller than the view allows, and nothing can be enlarged past 2.3 screen pixels to one of the image's) */
+    setMag(m, immediately, say) {
       const ti = this._ti();
       if (!ti || !this.slide) return;
-      this._syncSize();
       const imgZoom = (this.slide.mpp || U20) / umPerPx(m);
-      this.viewer.viewport.zoomTo(ti.imageToViewportZoom(imgZoom), null, !!immediately);
-      if (!immediately) this.viewer.viewport.applyConstraints();
+      const vp = this.viewer.viewport;
+      vp.zoomTo(ti.imageToViewportZoom(imgZoom), null, !!immediately);
+      if (!immediately) vp.applyConstraints();
+      if (say) {
+        const got = (ti.viewportToImageZoom(vp.getZoom(false)) * umPerPx(1)) / (this.slide.mpp || U20);
+        if (Math.abs(got / m - 1) > 0.1) toast(got > m ? `This ${this.slide.file ? 'picture' : 'slide'} is too small to see at ${m}× in this window: it is shown as small as the microscope allows (${fmtMag(got)}).` : `This ${this.slide.file ? 'picture' : 'slide'} cannot be enlarged to ${m}×: it is shown as large as the microscope allows (${fmtMag(got)}).`, null, 4500);
+      }
     }
     _redraw() {
       if (!this.viewer) return;
@@ -598,6 +712,10 @@
       const vp = this.viewer.viewport;
       const c = vp.getCenter(true), z = vp.getZoom(true);
       const m = this.mag();
+      // (while OpenSeadragon has not caught up with a new size of its view, its zoom gives a wrong magnification:
+      // nothing is kept, and nothing is said, until it has)
+      if (!(this._isSized() && !this._resizing && !this._pendingPlace && m > 0)) return;
+      this._keep = { slide: this.slide.id, m, c };
       // (the magnification is kept too: the zoom alone would give another magnification in a view of another width)
       this.st.views[this.slide.id] = { x: +c.x.toFixed(6), y: +c.y.toFixed(6), z: +z.toFixed(6), m: +m.toFixed(4) };
       this._save();
@@ -628,6 +746,11 @@
     setEyepiece(on) {
       this.st.eyepiece = !!on;
       this._save();
+      // (the graticule is 100 divisions of DIV_PX pixels: make room for it, closing the panels if need be)
+      if (on && 2 * this._eyeR() < 100 * DIV_PX + 6) {
+        if (this.st.side) this.showSide(null, true);
+        if (!this.box.hidden && this.root.clientWidth < 1200) this.toggleBox(false, true);
+      }
       this._applyToggles();
       if (on && this.slide) this.setMag(nearestObj(this.mag() || 10));
       bus.emit('scope:eyepiece', { on: !!on });
@@ -643,12 +766,15 @@
       this._overlayDraw();
     }
     /** the radius of the eyepiece's field of view: as big as the view allows, up to 230 pixels (a field of view of a
-        fixed size, as in a real eyepiece) */
+        fixed size, as in a real eyepiece). In a view that is wide but not tall (a phone held sideways), the field is
+        as wide as the graticule, and its top and bottom are cut off */
     _eyeR() {
       const W = this.view.clientWidth, H = this.view.clientHeight;
-      return Math.max(60, Math.min(230, Math.min(W, H) / 2 - 8));
+      const fit = Math.min(W, H) / 2 - 8, need = (100 * DIV_PX) / 2 + 6;
+      return Math.max(60, Math.min(230, fit >= need ? fit : W / 2 - 8 >= need ? need : fit));
     }
     _eyeDraw() {
+      this.eyeNote.hidden = !this.st.eyepiece || 2 * this._eyeR() >= 100 * DIV_PX + 6;
       if (!this.st.eyepiece) return;
       const W = this.view.clientWidth, H = this.view.clientHeight;
       const R = this._eyeR();
@@ -683,7 +809,11 @@
       }
       if (name === 'capture') return this.capture();
       if (name === 'eyepiece') return this.setEyepiece(arg == null ? !this.st.eyepiece : arg !== 'off');
-      if (name === 'labels') return this.setShowLabels(arg !== 'off');
+      if (name === 'labels') {
+        this.setShowLabels(arg !== 'off');
+        if (arg !== 'off' && !this._narrow()) this.showSide('labels');
+        return;
+      }
       if (arg != null) {
         if (name === 'measure' || name === 'area') this.st.mlabel = arg.slice(0, 60);
         if (name === 'count' && arg) this._setCats(arg.split(',').map((x) => x.trim()).filter(Boolean));
@@ -703,11 +833,9 @@
       bus.emit('scope:tool', { name });
     }
     _setCats(names) {
-      const used = new Set(this.st.counts.map((c) => c.cat));
-      if (!this.st.cats.some((x, k) => used.has(k))) this.st.cats = names.slice(0, CAT_COLOURS.length);
-      else names.forEach((n) => {
-        if (!this.st.cats.includes(n) && this.st.cats.length < CAT_COLOURS.length) this.st.cats.push(n);
-      });
+      // these categories, and after them any others that marks on this slide use (marks keep their own names)
+      const used = [...new Set(this._mineFor(this.st.counts).map((c) => c.name))].filter((n) => !names.includes(n));
+      this.st.cats = names.concat(used).slice(0, CAT_COLOURS.length);
       const k = this.st.cats.indexOf(names[0]);
       this.st.cat = k >= 0 ? k : 0;
       this._renderSide();
@@ -823,7 +951,7 @@
       const vp = this.viewer.viewport;
       const k = e.key;
       if (/^[1-9]$/.test(k) && OBJ[+k - 1]) {
-        this.setMag(OBJ[+k - 1]);
+        this.setMag(OBJ[+k - 1], false, true);
         return e.preventDefault();
       }
       if (k === '+' || k === '=') return vp.zoomBy(1.25), vp.applyConstraints(), e.preventDefault();
@@ -909,11 +1037,11 @@
         this._changed('counts');
         return;
       }
-      const cat = this.st.cat || 0;
-      this.st.counts.push({ id: uid(), slide: s.id, cat, x: p.x, y: p.y, mag: nearestObj(this.mag()), time: nowISO() });
+      const cat = this.st.cat || 0, name = this.st.cats[cat] || 'Category ' + (cat + 1);
+      this.st.counts.push({ id: uid(), slide: s.id, cat, name, x: p.x, y: p.y, mag: nearestObj(this.mag()), time: nowISO() });
       this._changed('counts');
       const mine = this._mineFor(this.st.counts);
-      bus.emit('scope:count', { slide: s.id, category: this.st.cats[cat], n: mine.filter((c) => c.cat === cat).length, total: mine.length });
+      bus.emit('scope:count', { slide: s.id, category: name, n: mine.filter((c) => c.name === name).length, total: mine.length });
     }
     clearCounts() {
       if (!this.slide) return;
@@ -975,7 +1103,7 @@
           const rows = [['slide', 'category', 'x_um', 'y_um', 'objective', 'time']];
           cs.forEach((c) => {
             const sc = this._mppOf(c.slide) || 1;
-            rows.push([c.slide.replace(/^file:/, ''), this.st.cats[c.cat] || 'Category ' + (c.cat + 1), (c.x * sc).toFixed(1), (c.y * sc).toFixed(1), c.mag + 'x', c.time]);
+            rows.push([c.slide.replace(/^file:/, ''), c.name || this.st.cats[c.cat] || 'Category ' + (c.cat + 1), (c.x * sc).toFixed(1), (c.y * sc).toFixed(1), c.mag + 'x', c.time]);
           });
           const text = rows.map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
           if (!fs.exists(H + '/counts.csv') || this._lastCounts !== text) fs.writeText(H + '/counts.csv', text);
@@ -1018,6 +1146,13 @@
           if (vis(p)) parts.push(this._pin(p, L.text, 'ms-tlabel'));
         });
       }
+      // the example that Show me found
+      const F = this.findTask && this.findTask.shown;
+      if (F) {
+        const p = S(F.x, F.y);
+        if (F.poly) parts.push(`<path class="ms-hint" d="M${F.poly.map(([x, y]) => { const q = S(x, y); return q.x.toFixed(1) + ' ' + q.y.toFixed(1); }).join('L')}Z"/>`);
+        else parts.push(`<circle class="ms-hint" cx="${p.x}" cy="${p.y}" r="${Math.max(10, Math.abs(S(F.x + (F.r || 20), F.y).x - p.x))}"/>`);
+      }
       // the student's labels
       this._mineFor(this.st.labels).forEach((L) => {
         const p = S(L.x, L.y);
@@ -1054,7 +1189,8 @@
       this._mineFor(this.st.counts).forEach((c) => {
         const p = S(c.x, c.y);
         if (!vis(p)) return;
-        const col = CAT_COLOURS[c.cat % CAT_COLOURS.length];
+        const k = this.st.cats.indexOf(c.name);
+        const col = CAT_COLOURS[(k >= 0 ? k : c.cat || 0) % CAT_COLOURS.length];
         parts.push(`<g class="ms-mark"><circle cx="${p.x}" cy="${p.y}" r="6.5" fill="${col}"/><path d="M${p.x - 3} ${p.y}h6M${p.x} ${p.y - 3}v6" stroke="#fff" stroke-width="1.6"/></g>`);
       });
       svg.innerHTML = parts.join('');
@@ -1074,12 +1210,15 @@
       return `<g class="${cls} ms-tagg"><rect x="${p.x - w / 2}" y="${p.y - 10}" width="${w}" height="20" rx="10"/><text x="${p.x}" y="${p.y + 4}">${esc(text)}</text></g>`;
     }
     _pin(p, text, cls) {
-      // the label goes to the right of its pin, or to the left near the right-hand edge of the view
+      // the label goes above and to the right of its pin: to the left near the right-hand edge of the view, and below
+      // near its top edge
       const w = text.length * 6.7 + 14;
       const W = (this.view && this.view.clientWidth) || 1e9;
       const left = p.x + 14 + w > W - 4 && p.x - 14 - w >= 4;
+      const down = p.y - 26 < 2;
       const x0 = left ? p.x - 14 - w : p.x + 14, lx = left ? p.x - 14 : p.x + 14;
-      return `<g class="${cls}"><circle cx="${p.x}" cy="${p.y}" r="5"/><path d="M${p.x} ${p.y}L${lx} ${p.y - 14}"/><rect x="${x0}" y="${p.y - 26}" width="${w}" height="22" rx="5"/><text x="${x0 + 7}" y="${p.y - 11}">${esc(text)}</text></g>`;
+      const ly = down ? p.y + 14 : p.y - 14, ry = down ? p.y + 4 : p.y - 26;
+      return `<g class="${cls}"><circle cx="${p.x}" cy="${p.y}" r="5"/><path d="M${p.x} ${p.y}L${lx} ${ly}"/><rect x="${x0}" y="${ry}" width="${w}" height="22" rx="5"/><text x="${x0 + 7}" y="${ry + 15}">${esc(text)}</text></g>`;
     }
 
     /* ---------------- find tasks: "find the … and click on it" ---------------- */
@@ -1104,7 +1243,7 @@
       const zoom = ti ? ti.viewportToImageZoom(this.viewer.viewport.getZoom(true)) : 1; // screen pixels per image pixel
       const tol = 6 / Math.max(zoom, 1e-6);
       const hit = T.labels.find((L) => inLabel(p, L)) || T.labels.find((L) => nearLabel(p, L, tol));
-      bus.emit('scope:find', { slide: T.slide, target: T.key, ok: !!hit });
+      bus.emit('scope:find', { slide: T.slide, target: T.key, ok: !!hit, shown: !!T.shown });
       if (hit) {
         this._showBanner(`✓ Yes – that is ${esc(T.text)}.`, 'ok', [['Done', () => this.cancelFind()]]);
         this.findTask = null;
@@ -1114,22 +1253,35 @@
         }, 6000);
       } else {
         T.tries++;
-        // (the slide's labels mark examples – not necessarily every one on the slide – so a miss is said as it is)
-        this._findBanner(`That isn’t one of the examples of <b>${esc(T.text)}</b> marked on this slide. Keep looking${T.tries >= 2 ? ', or click “Show me”' : ''}.`, 'no');
+        const more = `Keep looking${T.tries >= 2 ? ', or click “Show me”' : ''}.`;
+        // (a click on something else that the slide's labels mark says what it is: the smallest such region, since a
+        // region can lie inside another – a bile duct in a portal tract)
+        const area = (L) => (L.poly ? Math.abs(L.poly.reduce((a, q, i) => { const n = L.poly[(i + 1) % L.poly.length]; return a + q[0] * n[1] - n[0] * q[1]; }, 0)) / 2 : Math.PI * L.r * L.r);
+        const other = (this.slide.info.labels || []).filter((L) => (L.key || L.id) !== T.key && (L.r || L.poly) && nearLabel(p, L, tol)).sort((x, y) => area(x) - area(y))[0];
+        if (other) {
+          const what = esc(other.find || other.text.charAt(0).toLowerCase() + other.text.slice(1));
+          // (a region that holds the examples sought – a portal tract, when a bile duct is sought – is "in")
+          const holds = T.labels.some((L) => inLabel({ x: L.x, y: L.y }, other));
+          this._findBanner(holds ? `You clicked in ${what}, but not on <b>${esc(T.text)}</b>. ${more}` : `You clicked on ${what}, not <b>${esc(T.text)}</b>. ${more}`, 'no');
+        } else {
+          // (the slide's labels mark examples – not necessarily every one on the slide – so a miss is said as it is)
+          this._findBanner(`That isn’t one of the examples of <b>${esc(T.text)}</b> marked on this slide. ${more}`, 'no');
+        }
       }
     }
     _findShow() {
       const T = this.findTask;
       if (!T) return;
-      const L = T.labels[0];
-      const ti = this._ti();
-      this.viewer.viewport.panTo(ti.imageToViewportCoordinates(new OSD.Point(L.x, L.y)));
-      this.findTask = null;
-      const was = this.st.showLabels;
-      this.st.showLabels = true;
-      this._applyToggles();
-      this.st.showLabels = was;
-      this._showBanner(`Here it is: ${esc(T.text)}.`, 'info', [['Done', () => this.cancelFind()]]);
+      // the next example each time Show me is pressed, at an objective that makes it about 120 screen pixels across
+      const L = T.labels[(T.shownK = T.shownK == null ? 0 : (T.shownK + 1) % T.labels.length)];
+      // (a region drawn round a large structure – a polygon – is seen whole)
+      const r = L.r || (L.poly ? Math.max(...L.poly.map(([x, y]) => Math.hypot(x - L.x, y - L.y))) / 2 : 60);
+      const want = (60 / r) * U20 * 20 / (this.slide.mpp || U20);
+      const mag = L.mag || OBJ.filter((o) => o <= Math.max(OBJ[0], want)).pop() || OBJ[0];
+      this._goTo(L, mag);
+      T.shown = L;
+      this._overlayDraw();
+      this._showBanner(`Here is ${esc(T.text)}, ringed in yellow. Click on it to carry on.`, 'info', [['Show me another', () => this._findShow()], ['Stop', () => this.cancelFind()]]);
       bus.emit('scope:find', { slide: T.slide, target: T.key, ok: false, shown: true });
     }
     cancelFind(quiet) {
@@ -1157,6 +1309,21 @@
       if (!this.slide) return toast('Open a slide first.', 'warn');
       const cv = this.viewer.drawer && this.viewer.drawer.canvas;
       if (!cv) return toast('The picture could not be taken in this browser.', 'error');
+      // (straight after a move, the sharp tiles may still be on their way: wait for them, for a few seconds at most)
+      const ti = this._ti();
+      if (ti && !ti.getFullyLoaded()) {
+        await new Promise((res) => {
+          const done = () => {
+            clearTimeout(t);
+            ti.removeHandler('fully-loaded-change', on);
+            res();
+          };
+          const on = (e) => e.fullyLoaded && done();
+          const t = setTimeout(done, 4000);
+          ti.addHandler('fully-loaded-change', on);
+        });
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      }
       const W = this.view.clientWidth, Hh = this.view.clientHeight;
       const dpr = cv.width / W || 1;
       // the caption under the picture, wrapped to its width
@@ -1164,7 +1331,8 @@
       const date = new Date().toLocaleDateString('en-GB');
       const who = MG.user && MG.user.name() !== MG.user.DEFAULT ? ' · ' + MG.user.name() : '';
       const m = this.mag();
-      const title = `${this.slide.title} · ${this.slide.info.stain ? this.slide.info.stain.replace(/ \(.*\)$/, '') + ' · ' : ''}${fmtMag(m)}${who} · ${date}`;
+      const stain = this.slide.info.stain && !/^none\b/i.test(this.slide.info.stain) ? this.slide.info.stain.replace(/ \(.*\)$/, '') + ' · ' : '';
+      const title = `${this.slide.title} · ${stain}${fmtMag(m)}${who} · ${date}`;
       const meas = document.createElement('canvas').getContext('2d');
       const wrap = (text, font) => {
         meas.font = font;
@@ -1206,6 +1374,7 @@
         g.arc(W / 2, Hh / 2, R, 0, Math.PI * 2, true);
         g.fill('evenodd');
         g.restore();
+        await this._drawSvgOn(g, W, Hh, this.grat, GRAT_CSS);
       }
       // the scale bar
       if (this.slide.mpp) {
@@ -1238,14 +1407,19 @@
       do path = `${dir}/${base}-${k++}.png`;
       while (fs.exists(path));
       const p = await MG.app.saveToFiles(path.split('/').pop(), blob, { folder: '~/microscope/pictures', ask: false });
+      if (p && this.slide.mpp) {
+        // (the picture keeps its scale: opened again in the microscope, it can be measured at once)
+        this.st.scales[p] = umPerPx(m) / dpr;
+        this._save();
+      }
       if (p) bus.emit('scope:capture', { slide: this.slide.id, path: p });
       if (opts.download) MG.downloadBlob(blob, path.split('/').pop());
       return p;
     }
-    _drawSvgOn(g, W, H) {
+    _drawSvgOn(g, W, H, el, styles) {
       return new Promise((resolve) => {
-        const xml = new XMLSerializer().serializeToString(this.svg);
-        const css = `<style>${SVG_CSS}</style>`;
+        const xml = new XMLSerializer().serializeToString(el || this.svg);
+        const css = `<style>${styles || SVG_CSS}</style>`;
         const src = xml.replace(/^<svg([^>]*)>/, (m, attrs) => `<svg${/xmlns=/.test(attrs) ? '' : ' xmlns="http://www.w3.org/2000/svg"'}${attrs} width="${W}" height="${H}">${css}`);
         const im = new Image();
         im.onload = () => {
@@ -1324,7 +1498,7 @@
       B.appendChild(h('p.ms-help', this.toolName === 'measure' ? 'Drag across what you want to measure (or click at each end).' : this.toolName === 'area' ? 'Click round the edge; click the first point again (or double-click) to finish.' : 'Choose Measure or Area in the toolbar.'));
       // the label that new measurements get (what is being measured), so that R can group them
       const nl = h('input.ms-lab', { type: 'text', value: this.st.mlabel || '', placeholder: 'e.g. glomerulus', maxlength: 60, 'aria-label': 'The label of new measurements' });
-      nl.addEventListener('change', () => {
+      nl.addEventListener('input', () => {
         this.st.mlabel = nl.value.trim();
         this._save();
       });
@@ -1345,12 +1519,19 @@
           ul.appendChild(h('li', h('span.ms-v', this._val(m)), lab, go, del));
         });
         B.appendChild(ul);
-        const vals = mine.filter((m) => m.kind === 'length' && m.unit === 'µm').map((m) => m.value);
-        if (vals.length > 1) {
+        // the mean and standard deviation of the lengths with each label
+        const groups = new Map();
+        mine.filter((m) => m.kind === 'length' && m.unit === 'µm').forEach((m) => {
+          const k = m.label || 'no label';
+          if (!groups.has(k)) groups.set(k, []);
+          groups.get(k).push(m.value);
+        });
+        groups.forEach((vals, k) => {
+          if (vals.length < 2) return;
           const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
           const sd = Math.sqrt(vals.reduce((a, b) => a + (b - mean) * (b - mean), 0) / (vals.length - 1));
-          B.appendChild(h('p.ms-sum', `${vals.length} lengths: mean ${fmtLen(mean)}, SD ${fmtLen(sd)}`));
-        }
+          B.appendChild(h('p.ms-sum', `${k}: ${vals.length} lengths, mean ${fmtLen(mean)}, SD ${fmtLen(sd)}`));
+        });
         const clr = h('button.tbtn', { type: 'button', html: I('trash') + '<span>Delete them all</span>' });
         clr.addEventListener('click', async () => {
           if (await MG.confirmBox('Delete the measurements?', `<p>Delete all ${mine.length} measurements of this slide?</p>`, 'Delete them', { danger: true })) {
@@ -1367,7 +1548,7 @@
       B.appendChild(h('p.ms-help', this.toolName === 'count' ? 'Click on each one you count. Click a mark again to remove it.' : 'Choose Count in the toolbar, then click on each one you count.'));
       const ul = h('ul.ms-cats');
       this.st.cats.forEach((name, k) => {
-        const n = mine.filter((c) => c.cat === k).length;
+        const n = mine.filter((c) => c.name === name).length;
         const radio = h('input', { type: 'radio', name: 'ms-cat', checked: this.st.cat === k, 'aria-label': 'Count ' + name });
         radio.addEventListener('change', () => {
           this.st.cat = k;
@@ -1376,7 +1557,12 @@
         });
         const nm = h('input.ms-lab', { type: 'text', value: name, maxlength: 40, 'aria-label': 'The name of category ' + (k + 1) });
         nm.addEventListener('change', () => {
-          this.st.cats[k] = nm.value.trim() || 'Category ' + (k + 1);
+          const old = this.st.cats[k], v = nm.value.trim() || 'Category ' + (k + 1);
+          this.st.cats[k] = v;
+          // (the marks on this slide follow the new name; those on other slides keep theirs)
+          this._mineFor(this.st.counts).forEach((c) => {
+            if (c.name === old) c.name = v;
+          });
           this._changed('counts');
         });
         ul.appendChild(h('li', h('label.ms-cat', radio, h('i', { style: { background: CAT_COLOURS[k % CAT_COLOURS.length] } })), nm, h('b.ms-n', String(n))));
@@ -1487,9 +1673,9 @@
 <li><b>The scale bar</b> (bottom left) and the readout (bottom right) show the magnification and how wide the field of view is.</li>
 <li><b>Measure</b> lengths (drag across a cell, or click at each end) and <b>areas</b> (click round the edge). Every measurement goes into <code>~/microscope/measurements.csv</code>, which R can read.</li>
 <li><b>Count</b>: click on each thing you count; click a mark again to remove it. You can count several categories at once (name them in the Counts panel). The marks go into <code>~/microscope/counts.csv</code>.</li>
-<li><b>Labels</b>: some slides come with labels (the tag button shows or hides them); you can add your own.</li>
-<li><b>The eyepiece</b> view shows a round field of view with a graticule of 100 divisions, as in a real eyepiece, and the objectives click from one to the next. Calibrate the graticule with the stage micrometer slide.</li>
-<li><b>Pictures</b> (the camera) are saved in <code>~/microscope/pictures</code> with a scale bar and the slide’s credit. You can also open a picture of your own from your files and set its scale.</li>
+<li><b>Labels</b>: some slides come with labels of what is on them. They are hidden at first, so that you can look for things yourself: the tag button shows or hides them (and the Labels panel lists them). You can add labels of your own.</li>
+<li><b>The eyepiece</b> view shows a round field of view with a graticule of 100 divisions, as in a real eyepiece, and the objectives click from one to the next. Calibrate the graticule with the stage micrometer slide. The whole graticule needs a view at least 410 pixels high: on a small screen, close the panels or make the window larger.</li>
+<li><b>Pictures</b> (the camera) are saved in <code>~/microscope/pictures</code> with a scale bar and the slide’s credit. They keep their scale: open one again in the microscope (<b>⋯ → Open a picture from my files</b>) and you can measure on it. You can also open a picture of your own and set its scale.</li>
 </ul><p class="muted">The slides of human tissue are sections from the GTEx project (of normal tissue, except the coronary artery, which has atherosclerosis), scanned at 20× (about 0.5 µm per pixel); at 40× the microscope enlarges the scan.</p>`);
     }
   }
@@ -1500,17 +1686,23 @@ m <- read.csv("~/microscope/measurements.csv")
 head(m)
 
 # measurements without a label are called "unlabelled"
-m$label <- ifelse(is.na(m$label) | m$label == "", "unlabelled", m$label)
+m$label[is.na(m$label) | m$label == ""] <- "unlabelled"
 
-# lengths only, in micrometres
+# the lengths, in micrometres
 lengths <- subset(m, kind == "length" & unit == "um")
 summary(lengths$value)
 
-# the mean, standard deviation and number of lengths for each label you gave them
-aggregate(value ~ label, data = lengths, FUN = function(x) c(mean = mean(x), sd = sd(x), n = length(x)))
+# for each label: how many lengths, and their mean and standard deviation (µm)
+table(lengths$label)
+round(tapply(lengths$value, lengths$label, mean), 1)
+round(tapply(lengths$value, lengths$label, sd), 1)
 
-# a box plot of the lengths by label
-boxplot(value ~ label, data = lengths, xlab = "", ylab = "Length (µm)", col = "lavender")
+# a box plot of the lengths, by label (show.names: the name is shown even when there is only one label)
+if (nrow(lengths) > 0) boxplot(value ~ label, data = lengths, xlab = "", ylab = "Length (µm)", col = "lavender", show.names = TRUE)
+
+# the areas, in square micrometres
+areas <- subset(m, kind == "area" & unit == "um2")
+round(tapply(areas$value, areas$label, mean))
 `;
   const R_COUNTS = `# Counts from the microscope
 # (each row is one mark that you placed with the Count tool)
@@ -1524,13 +1716,16 @@ table(counts$slide, counts$category)
 prop.table(table(counts$slide, counts$category), margin = 1)
 `;
 
+  // the graticule, for pictures taken in the eyepiece view
+  const GRAT_CSS = `.g{stroke:#0b2f7a;stroke-width:1.2;fill:none}text{fill:#0b2f7a;font:650 10px system-ui,sans-serif;text-anchor:middle;paint-order:stroke;stroke:rgba(255,255,255,.85);stroke-width:3px}`;
   // the styles of the overlay, for pictures (the page's stylesheet does not reach an SVG drawn as an image)
   const SVG_CSS = `.ms-line-bg{stroke:rgba(0,0,0,.55);stroke-width:5;fill:none;stroke-linecap:round}.ms-line{stroke:#ffd43b;stroke-width:2.2;fill:none;stroke-linecap:round}
 .ms-tagg rect{fill:rgba(20,20,30,.82)}.ms-tagg text{fill:#fff;font:600 12px system-ui,sans-serif;text-anchor:middle}
 .ms-area{fill:rgba(255,212,59,.18);stroke:#ffd43b;stroke-width:2}.ms-region{fill:rgba(59,130,246,.08);stroke:rgba(59,130,246,.55);stroke-width:1.5;stroke-dasharray:5 4}
 .ms-tlabel circle,.ms-mylabel circle{stroke:#fff;stroke-width:2}.ms-tlabel circle{fill:#1c7ed6}.ms-mylabel circle{fill:#e8590c}
 .ms-tlabel path,.ms-mylabel path{stroke:#fff;stroke-width:2}.ms-tlabel rect{fill:rgba(16,40,80,.85)}.ms-mylabel rect{fill:rgba(120,40,0,.85)}
-.ms-tlabel text,.ms-mylabel text{fill:#fff;font:600 12px system-ui,sans-serif}.ms-mark circle{stroke:#fff;stroke-width:1.5}`;
+.ms-tlabel text,.ms-mylabel text{fill:#fff;font:600 12px system-ui,sans-serif}.ms-mark circle{stroke:#fff;stroke-width:1.5}
+.ms-hint{fill:rgba(255,212,59,.12);stroke:#ffd43b;stroke-width:3.5}`;
 
   function $$(sel, root) {
     return Array.from((root || document).querySelectorAll(sel));

@@ -194,7 +194,7 @@
    "mpp": 0.4942,
    "credit": "Image: the GTEx Consortium (sample GTEX-RWSA-1425), via the NCI Imaging Data Commons. CC BY 4.0.",
    "bytes": 14782316,
-   "labels": 10,
+   "labels": 16,
    "order": 0
   },
   {
@@ -431,7 +431,7 @@
    "height": 2080,
    "mpp": 0.25,
    "credit": "A drawing made for the BMS workbench (not a photograph). CC0.",
-   "bytes": 127302,
+   "bytes": 135818,
    "labels": 2,
    "order": 1
   },

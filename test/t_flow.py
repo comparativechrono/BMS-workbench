@@ -167,6 +167,14 @@ check(p.js(f"() => {F}.edge('{back}').bend !== 0"), 'an arrow back the other way
 # select the arrow b → c by clicking it, and set its strength to 3
 P.mouse.click(*edge_point(eid))
 check(p.js(f"() => {F}.selE.has('{eid}')"), 'clicking an arrow selects it')
+# the selected arrow's bend handle sits on its middle: a right-click there gives the arrow's menu
+hb = P.locator(f'circle.fl-bend[data-id="{eid}"]').bounding_box()
+P.mouse.click(*centre(hb), button='right')
+time.sleep(0.2)
+check(P.locator('.popmenu button:has-text("Block this arrow")').count() == 1, 'a right-click on the bend handle of an arrow gives the arrow’s menu')
+P.keyboard.press('Escape')
+time.sleep(0.15)
+P.mouse.click(*edge_point(eid))
 P.fill('.fl-side input[data-f="gain"]', '3')
 P.click('.fl-runbtn')
 time.sleep(0.3)

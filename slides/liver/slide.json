@@ -5,8 +5,8 @@
  "look_for": [
   "Hepatocytes: large polygonal cells in plates, with one or two round nuclei",
   "Sinusoids: the pale spaces between the plates of hepatocytes",
-  "Central veins (terminal hepatic venules): thin-walled veins with no bile duct beside them",
-  "A portal tract: a branch of the portal vein and small bile ducts in connective tissue (the branch of the hepatic artery is small and hard to pick out here)"
+  "Portal tracts: a branch of the portal vein and small bile ducts in connective tissue (the branch of the hepatic artery is small and hard to pick out here). This slide has several, among them a large one across its middle",
+  "Central veins (terminal hepatic venules): thin-walled veins with no bile duct or connective tissue beside them. There are only a few on this slide; the liver cells around them often hold brown granules of lipofuscin"
  ],
  "labels": [
   {
@@ -14,16 +14,16 @@
    "text": "Central vein",
    "find": "a central vein",
    "x": 650,
-   "y": 3570,
-   "r": 40
+   "y": 3590,
+   "r": 80
   },
   {
    "key": "central-vein",
    "text": "Central vein",
    "find": "a central vein",
-   "x": 3765,
-   "y": 1320,
-   "r": 40
+   "x": 6720,
+   "y": 4730,
+   "r": 100
   },
   {
    "key": "portal-tract",
@@ -31,7 +31,269 @@
    "find": "a portal tract",
    "x": 4130,
    "y": 3300,
+   "poly": [
+    [
+     3400,
+     5600
+    ],
+    [
+     3420,
+     5200
+    ],
+    [
+     3520,
+     5000
+    ],
+    [
+     3600,
+     4800
+    ],
+    [
+     3640,
+     4560
+    ],
+    [
+     3700,
+     4380
+    ],
+    [
+     3760,
+     4200
+    ],
+    [
+     3800,
+     3900
+    ],
+    [
+     3820,
+     3700
+    ],
+    [
+     3860,
+     3500
+    ],
+    [
+     3860,
+     3200
+    ],
+    [
+     3880,
+     2900
+    ],
+    [
+     3900,
+     2700
+    ],
+    [
+     3960,
+     2560
+    ],
+    [
+     4140,
+     2560
+    ],
+    [
+     4180,
+     2800
+    ],
+    [
+     4200,
+     3040
+    ],
+    [
+     4240,
+     3140
+    ],
+    [
+     4340,
+     3040
+    ],
+    [
+     4440,
+     2860
+    ],
+    [
+     4640,
+     2660
+    ],
+    [
+     4720,
+     2440
+    ],
+    [
+     4780,
+     2200
+    ],
+    [
+     4860,
+     1960
+    ],
+    [
+     4940,
+     1600
+    ],
+    [
+     5140,
+     1600
+    ],
+    [
+     5080,
+     2000
+    ],
+    [
+     5000,
+     2280
+    ],
+    [
+     4960,
+     2560
+    ],
+    [
+     4920,
+     2800
+    ],
+    [
+     4820,
+     3000
+    ],
+    [
+     4620,
+     3180
+    ],
+    [
+     4420,
+     3300
+    ],
+    [
+     4320,
+     3420
+    ],
+    [
+     4300,
+     3680
+    ],
+    [
+     4240,
+     4000
+    ],
+    [
+     4160,
+     4360
+    ],
+    [
+     4100,
+     4600
+    ],
+    [
+     4220,
+     4800
+    ],
+    [
+     4220,
+     4920
+    ],
+    [
+     4000,
+     4960
+    ],
+    [
+     3900,
+     5200
+    ],
+    [
+     3840,
+     5600
+    ]
+   ]
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 3790,
+   "y": 1150,
+   "poly": [
+    [
+     3680,
+     930
+    ],
+    [
+     3920,
+     930
+    ],
+    [
+     3900,
+     1300
+    ],
+    [
+     3880,
+     1640
+    ],
+    [
+     3710,
+     1640
+    ],
+    [
+     3690,
+     1300
+    ]
+   ]
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 740,
+   "y": 150,
+   "r": 180
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 400,
+   "y": 1020,
    "r": 130
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 1760,
+   "y": 2620,
+   "r": 150
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 2030,
+   "y": 5120,
+   "r": 120
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 5710,
+   "y": 760,
+   "r": 180
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 6400,
+   "y": 2830,
+   "r": 190
+  },
+  {
+   "key": "portal-tract",
+   "text": "Portal tract",
+   "find": "a portal tract",
+   "x": 6800,
+   "y": 3840,
+   "r": 160
   },
   {
    "key": "portal-vein",
@@ -72,22 +334,6 @@
    "x": 2000,
    "y": 2000,
    "r": 100
-  },
-  {
-   "key": "central-vein",
-   "text": "Central vein",
-   "find": "a central vein",
-   "x": 740,
-   "y": 210,
-   "r": 70
-  },
-  {
-   "key": "central-vein",
-   "text": "Central vein",
-   "find": "a central vein",
-   "x": 2170,
-   "y": 960,
-   "r": 70
   }
  ],
  "id": "liver",

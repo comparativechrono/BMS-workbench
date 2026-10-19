@@ -69,6 +69,11 @@
     if (!m) throw new Error(`The library has no molecule called “${key}”.`);
     const V = MG.app.viewer;
     const st = await V.loadURL(BASE + m[1] + '.sdf', 'sdf', m[2]);
+    // (beside a protein, a small molecule is lost inside it: the view goes to the molecule)
+    if (V.structures && V.structures.length > 1 && st && st.comp) {
+      st.comp.autoView(500);
+      toast(`${esc(m[2])} is added to the structures already open, and the view moves to it. To see it alone, type <code>clear</code> before you open it, or hide the others.`, null, 6000);
+    }
     bus.emit('viewer:molecule', { name: m[2], code: m[1] });
     return st;
   }

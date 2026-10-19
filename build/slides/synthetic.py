@@ -8,7 +8,7 @@
                      of cells per millilitre and the proportion alive. The true counts are kept in slide.json
                      ("counts"), for checking students' answers.
 
-usage:  python3 build/slides/synthetic.py      (then python3 build/make_page.py)
+usage:  python3 build/slides/synthetic.py [stage-micrometer|haemocytometer]     (then python3 build/make_page.py)
 """
 import json, math, os, sys
 import numpy as np
@@ -62,8 +62,11 @@ def micrometer():
             f = font(um(26))
             tw = d.textlength(s, font=f)
             d.text((x - tw / 2, y0 - um(t) - um(40)), s, font=f, fill=ink)
+    # (centred under the middle of the scale, where the microscope opens it: at 10× the caption is inside the eyepiece)
     f = font(um(22))
-    d.text((x0, y0 + um(40)), '1 mm in 100 divisions: 1 division = 0.01 mm (10 µm)', font=f, fill=ink)
+    for k, s in enumerate(['1 division = 0.01 mm (10 µm)', 'the whole scale: 1 mm = 100 divisions']):
+        tw = d.textlength(s, font=f)
+        d.text((x0 + um(500) - tw / 2, y0 + um(36) + k * um(30)), s, font=f, fill=ink)
     im = im.filter(ImageFilter.GaussianBlur(0.6))
     meta = {
         'id': 'stage-micrometer', 'title': 'Stage micrometer', 'system': 'Measuring', 'order': 1,
@@ -201,8 +204,10 @@ def haemocytometer():
     return np.asarray(im), meta
 
 
-def main():
+def main(ids):
     for make in (micrometer, haemocytometer):
+        if ids and {micrometer: 'stage-micrometer', haemocytometer: 'haemocytometer'}[make] not in ids:
+            continue
         img, meta = make()
         print(meta['id'], img.shape)
         pyramid.build(img, os.path.join(SITE, 'slides', meta['id']), meta, quality=80)
@@ -211,4 +216,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

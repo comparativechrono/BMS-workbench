@@ -1992,7 +1992,8 @@
         c.addEventListener('click', () => this.openFile(going.path));
         const again = h('button.btn', { type: 'button' }, 'Start again (a new attempt)');
         again.addEventListener('click', () => this._start(paper));
-        acts.append(h('p', `You have an attempt in progress, started ${fmtWhen(going.att.started)}: ${this._answeredCount(going.att)} of ${this._questions(going.att).filter((q) => q.type !== 'info').length} questions answered.`), c, again);
+        const nq = this._questions(going.att).filter((q) => q.type !== 'info').length;
+        acts.append(h('p', `You have an attempt in progress, started ${fmtWhen(going.att.started)}: ${this._answeredCount(going.att)} of ${nq} ${nq === 1 ? 'question' : 'questions'} answered.`), c, again);
       } else {
         const s = h('button.btn.primary', { type: 'button' }, 'Start');
         s.addEventListener('click', () => this._start(paper));
@@ -2272,7 +2273,15 @@
       if (!opts.silent) bus.emit('exam:nav', { paper: this.att.paper.id, q: q.id });
       this._dirty = true;
       this._write(true);
-      if (this.ed && !this._locked() && !opts.noFocus) setTimeout(() => this.ed && this.ed.focus(), 50);
+      // the focus goes to the answer – or, for a question without an editor, to the question, so that Tab goes on
+      // through it (and not from the top of the page)
+      if (!opts.noFocus) {
+        setTimeout(() => {
+          if (this.main !== M || !M.isConnected) return;
+          if (this.ed && !this._locked()) this.ed.focus();
+          else if (!M.contains(document.activeElement)) M.focus({ preventScroll: true });
+        }, 50);
+      }
     }
     _numberOf(i) {
       // information pages have no number
@@ -2715,7 +2724,7 @@
       V.appendChild(h('div.ex-receipt',
         h('div.ex-tick', { 'aria-hidden': 'true', html: IC.check }),
         h('h2', `You submitted at ${fmtClock(when)} on ${fmtDate(when)}`),
-        h('p', h('b', att.paper.title), ` · ${this._answeredCount(att)} of ${total} questions answered${att.autoSubmitted ? ' · submitted when the time ran out' : ''}`),
+        h('p', h('b', att.paper.title), ` · ${this._answeredCount(att)} of ${total} ${total === 1 ? 'question' : 'questions'} answered${att.autoSubmitted ? ' · submitted when the time ran out' : ''}`),
         essays.length ? h('p.muted', essays.map((q) => `${q.title || 'Essay'}: ${plural((att.answers[q.id] || {}).words || 0, 'word')}`).join(' · ')) : null,
         h('div.ex-recacts', dl, save, rev, again, back),
         h('p.hint', `Your attempt is kept in Files: ${this.fs.pretty(path)}. Nothing has been sent anywhere: to hand your answers in, download them.`)));

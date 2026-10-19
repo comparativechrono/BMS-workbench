@@ -97,6 +97,14 @@ setval('1k')
 check(p.js("() => MG.app.circuit.byId('R1').value") == 1000, 'typing 1k sets 1000 Ω')
 I = read('R1')
 check(abs(I - 0.009) < 1e-9, f'Ohm’s law: 9 V / 1 kΩ = 9 mA (got {I})')
+# values typed as people write them: a decimal comma, thousands, the ohm sign
+pv = p.js("() => ['2,2k', '47 Ω', '2.2 kΩ', '1,000', '0,47 µF', '12,5 V', '10 µF'].map(MG.CircuitSim.parseValue)")
+check(pv == [2200, 47, 2200, 1000, 4.7e-07, 12.5, 1e-05], f'values with a decimal comma, thousands or Ω are read: {pv}')
+# the Wire button keeps the wire tool on when it is clicked again, as one does before each part; Esc ends it
+palette('wire'); palette('wire')
+check(p.js("() => MG.app.circuit.tool") == 'wire', 'clicking Wire twice leaves the wire tool on')
+p.p.keyboard.press('Escape')
+check(p.js("() => MG.app.circuit.tool") == 'select', 'Esc ends the wire tool')
 # a voltmeter across the resistor, with two more wires
 palette('voltmeter'); drag((13, 9), (13, 4))
 p.p.click('#circuitRoot .tbtn.tool[title^="Draw wires"]')
@@ -310,10 +318,20 @@ accept_prompt()
 csv = p.js("() => MG.app.fs.get('/home/user/circuits/charging-and-discharging-a-capacitor-run.csv').text")
 lines = csv.strip().split('\n')
 check(lines[0].startswith('"time_s","Voltage across C1 (V)"') and len(lines) > 100, f'the CSV has time and one column per trace ({len(lines)} lines): {lines[0][:80]}')
+check(all(any(c != '' for c in l.split(',')[1:]) for l in lines[1:]), 'every row of the CSV has a value (a trace added during a run has none before it)')
 last = [float(x) for x in lines[-1].split(',')[:2]]
 check(abs(last[1] - 5 * (1 - math.exp(-last[0]))) < 0.05, f'its last row agrees with 5(1 − e^(−t/τ)): t = {last[0]:.2f}, V = {last[1]:.3f}')
 fmts = sorted(set(d['format'] for d in ev('circuit:export')))
 check(fmts == ['csv', 'png', 'svg'], 'circuit:export for png, svg and csv: ' + str(fmts))
+# the picture takes in every label (the readings of meters at the sides were cut off)
+for ex in ['resting-potential', 'windkessel', 'membrane-rc', 'voltage-divider']:
+    p.js(f"() => MG.app.circuit.open('example:{ex}', {{ force: true }})")
+    time.sleep(0.5)
+    fit = p.js("""() => { const s = MG.app.circuit.pictureSVG(); const vb = /viewBox="([^"]+)"/.exec(s)[1].split(' ').map(Number);
+        const host = document.createElement('div'); host.style.cssText = 'position:fixed;left:-9999px;top:0'; host.innerHTML = s; document.body.appendChild(host);
+        const b = host.querySelector('.ck-labels').getBBox(); host.remove();
+        return [b.x >= vb[0] - 0.5 && b.y >= vb[1] - 0.5 && b.x + b.width <= vb[0] + vb[2] + 0.5 && b.y + b.height <= vb[1] + vb[3] + 0.5, vb.map(Math.round), [b.x, b.y, b.width, b.height].map(Math.round)]; }""")
+    check(fit[0], f'the picture of {ex} takes in all its labels: view {fit[1]}, labels {fit[2]}')
 # traces from the Plot tool: click a part, choose from the menu
 p.js("() => MG.app.circuit.open('example:ohms-law', { force: true })")
 p.wait("() => MG.app.circuit.doc.title === 'Ohm’s law'")
