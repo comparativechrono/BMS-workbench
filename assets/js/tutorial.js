@@ -152,12 +152,15 @@
      Tasks (tick automatically when the matching thing happens)
      ------------------------------------------------------------------ */
   const taskEls = [];
+  /* "event field=value field~text field>n field<n || another" (field names: letters, digits and _) */
   function parseSpec(spec) {
     return spec.split('||').map((one) => {
-      const parts = one.trim().split(/\s+(?=[a-zA-Z_]+[=~<>])/);
+      const parts = one.trim().split(/\s+(?=[a-zA-Z_][a-zA-Z0-9_]*[=~<>])/);
       const ev = parts.shift();
+      // (an event name with a space left in it is a condition that could not be read: say so, rather than never tick)
+      if (/\s/.test(ev)) console.warn('A step’s data-auto has a part that could not be read:', one);
       const conds = parts.map((p) => {
-        const m = /^([a-zA-Z_]+)([=~<>])(.*)$/.exec(p.trim());
+        const m = /^([a-zA-Z_][a-zA-Z0-9_]*)([=~<>])(.*)$/.exec(p.trim());
         return m ? { k: m[1], op: m[2], v: m[3] } : null;
       }).filter(Boolean);
       return { ev, conds };

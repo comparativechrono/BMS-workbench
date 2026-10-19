@@ -32,13 +32,14 @@
    cursors lie on an ECG with beats (other for anything else); the menu beside the Data pad button, and each row of the
    data pad, can change it. The data pad's heart rate comes from its R-R rows only.
 
-   Events (MG.bus), for the steps of the practicals that tick themselves:
+   Events (MG.bus), for the steps of the practicals that tick themselves (their fields are named with letters and _
+   only, as the steps' specs can test no others):
      rec:open     {id, title, group}                     a recording is opened
      rec:view     {id, t0, t1, span}                     the view settles after a move or a zoom (seconds)
      rec:tool     {name}                                 pan, calipers or marker is chosen
      rec:play     {id, on, speed}                        playing starts or stops
-     rec:measure  {id, kind: 'interval', channel, signal, interval, t1, t2, dt, dy, rate, hz, units}
-                                                         the calipers measure an interval: t1 < t2 and dt in s, rate per
+     rec:measure  {id, kind: 'interval', channel, signal, interval, from, to, dt, dy, rate, hz, units}
+                                                         the calipers measure an interval: from < to and dt in s, rate per
                                                          minute (60 / dt) and hz (1 / dt), dy the change in the channel;
                                                          signal: the kind of channel (ecg, eeg, emg, bp, …); interval:
                                                          R-R, PR, QRS, QT or other
@@ -1003,7 +1004,8 @@
       const pxS = pw / this.span; // px per second
       const pxMV = Math.abs(yOf(0) - yOf(1)); // px per mV
       const minor = pxS * 0.04 >= 4 && pxMV * 0.1 >= 4;
-      const major = pxS * 0.2 >= 7 && pxMV * 0.5 >= 7;
+      // (at a wide span the lines of 0.2 s would crowd the trace: plain lines then)
+      const major = pxS * 0.2 >= 10 && pxMV * 0.5 >= 7;
       if (!major) return false;
       const [lo, hi] = this._range(L);
       const lines = (dt, dv, colour) => {
@@ -1478,7 +1480,7 @@
       if (!m) return;
       bus.emit('rec:measure', {
         id: this.R.id, kind: 'interval', channel: m.channel, signal: m.lane.kind, interval: m.interval,
-        t1: +Math.min(m.t1, m.t2).toFixed(4), t2: +Math.max(m.t1, m.t2).toFixed(4), dt: +m.dt.toFixed(4), dy: num(m.dy),
+        from: +Math.min(m.t1, m.t2).toFixed(4), to: +Math.max(m.t1, m.t2).toFixed(4), dt: +m.dt.toFixed(4), dy: num(m.dy),
         rate: +m.rate.toFixed(2), hz: +(+m.hz).toPrecision(4), units: m.units || ''
       });
     }

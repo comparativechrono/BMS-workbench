@@ -175,7 +175,7 @@ for k in range(3):
 ok = all(abs(g[0] - bt[k]) <= px and abs(g[1] - bt[k + 1]) <= px and g[3] == 'R-R' for k, g in enumerate(got))
 check(ok, f'three R–R intervals in a row, each drag starting on the B of the last: each is one interval, and an R–R: {got} (beats {bt[:4]})')
 ev = [e[1] for e in evs(p, 'rec:measure')][-3:]
-check(all(e['kind'] == 'interval' and e['interval'] == 'R-R' and e['signal'] == 'ecg' and e['t1'] < e['t2'] and abs(e['hz'] - 1 / e['dt']) < 0.01 for e in ev), f'rec:measure says what was measured: {ev[-1]}')
+check(all(e['kind'] == 'interval' and e['interval'] == 'R-R' and e['signal'] == 'ecg' and e['from'] < e['to'] and abs(e['hz'] - 1 / e['dt']) < 0.01 for e in ev), f'rec:measure says what was measured: {ev[-1]}')
 band = p.js(f"() => {RC}._bandH()")
 top = p.js(f"() => {RC}.cv.getBoundingClientRect().top")
 A0, B0 = p.js(f"() => [{RC}.A, {RC}.B]")
