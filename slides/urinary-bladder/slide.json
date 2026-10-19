@@ -85,7 +85,7 @@
  "stain": "H&E (haematoxylin and eosin)",
  "species": "Human",
  "mpp": 0.4942,
- "scan": "20x (Aperio scanner)",
+ "scan": "20× (Aperio scanner)",
  "source": {
   "name": "GTEx (Genotype-Tissue Expression) project",
   "sample": "GTEX-OOBK-1925",

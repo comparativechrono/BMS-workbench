@@ -11,7 +11,7 @@ needs, with HTTP range requests.
 usage:  python3 build/slides/gtex.py                 # every slide in gtex-slides.json that is not made yet
         python3 build/slides/gtex.py adrenal-gland   # one slide (made again)
         python3 build/slides/gtex.py --preview ID    # only a preview of the crop (build/slides/previews/ID.jpg)
-Needs: numpy, pillow, opencv-python (pip install numpy pillow opencv-python-headless). Then run build/make_page.py,
+Needs: numpy, pillow, opencv-python and pydicom (pip install numpy pillow opencv-python-headless pydicom). Then run build/make_page.py,
 which lists the slides in slides/index.json.
 """
 import io
@@ -114,7 +114,7 @@ def meta_of(entry, region):
     m = {k: entry[k] for k in keep if k in entry}
     m.update({
         'id': entry['id'], 'stain': 'H&E (haematoxylin and eosin)', 'species': 'Human', 'mpp': entry['idc']['mpp'],
-        'scan': '20x (Aperio scanner)',
+        'scan': '20× (Aperio scanner)',
         'source': {
             'name': 'GTEx (Genotype-Tissue Expression) project',
             'sample': entry['sample'],

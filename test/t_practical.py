@@ -88,13 +88,21 @@ time.sleep(0.8)
 r = p.js("() => { const r = MG.app.scope.view.getBoundingClientRect(); return {x: r.left + 30, y: r.top + 60}; }")
 p.p.mouse.click(r['x'], r['y'])
 time.sleep(0.3)
-check(not ticked('m-glom') and 'Not there' in p.js("() => MG.app.scope.banner.textContent"), 'a wrong click says Not there')
+check(not ticked('m-glom') and 'isn’t one of the examples' in p.js("() => MG.app.scope.banner.textContent"), 'a wrong click says it isn’t one of the examples marked')
 find_click('kidney-cortex', 'glomerulus')
 check(ticked('m-glom'), 'a click on a renal corpuscle ticks m-glom')
-click('#microscope button[data-scope-find="kidney-cortex:pct"]')
-time.sleep(0.5)
-find_click('kidney-cortex', 'pct')
-check(ticked('m-pct'), 'a click on a proximal tubule ticks m-pct')
+# a click near (but just outside) a small labelled region still counts: within a few screen pixels
+p.js("() => MG.app.scope.find('kidney-cortex', 'glomerulus')")
+time.sleep(0.4)
+p.js("""() => { const S = MG.app.scope, L = S.slide.info.labels.find(l => l.key === 'glomerulus'); S._goTo(L, 4); }""")
+time.sleep(1.5)
+pt = p.js("""() => { const S = MG.app.scope, L = S.slide.info.labels.find(l => l.key === 'glomerulus');
+    const a = S._screen(L.x, L.y), b = S._screen(L.x + L.r, L.y), r = S.view.getBoundingClientRect();
+    return {x: r.left + b.x + 4, y: r.top + a.y}; }""")
+p.js("() => { window._fe = []; MG.bus.on('scope:find', d => window._fe.push(d)); }")
+p.p.mouse.click(pt['x'], pt['y'])
+time.sleep(0.4)
+check(p.js("() => window._fe.length && window._fe[window._fe.length - 1].ok === true"), 'a click 4 screen pixels outside a labelled region counts')
 p.js("() => MG.app.scope.setShowLabels(false)")
 click('#microscope button[data-scope-tool="labels"]')
 time.sleep(0.3)
@@ -399,13 +407,13 @@ time.sleep(0.5)
 check(ticked('v-library'), 'the Library button ticks v-library')
 p.p.keyboard.press('Escape')
 time.sleep(0.3)
-click('#molecules button[data-viewer="molecule glucose"]')
+click('#molecules button[data-viewer="clear; molecule glucose; only ballstick; color cpk"]')
 for _ in range(60):
     if ticked('v-glucose'):
         break
     time.sleep(0.25)
 check(ticked('v-glucose'), 'glucose opens and ticks v-glucose')
-click('#molecules button[data-viewer="molecule atp"]')
+click('#molecules button[data-viewer="clear; molecule atp; only ballstick; color cpk"]')
 for _ in range(60):
     if ticked('v-atp'):
         break

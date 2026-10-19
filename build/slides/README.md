@@ -11,7 +11,7 @@ Each slide of the microscope's slide box is a folder `slides/<id>/` with four fi
 
 The microscope reads `tiles.idx`, and then asks for each tile it needs with an HTTP *range request* into `tiles.pack`. A student who looks at a slide only downloads the parts they look at, and the site needs four files per slide instead of tens of thousands. `python3 build/make_page.py` lists the slides in `slides/index.json`, sorted by system (the list of systems is in `make_page.py`).
 
-The scripts here make and check the slides. They need Python 3 with numpy, Pillow and OpenCV (`pip install numpy pillow opencv-python-headless`).
+The scripts here make and check the slides. They need Python 3 with numpy, Pillow and OpenCV (`pip install numpy pillow opencv-python-headless`); `gtex.py` also needs pydicom (`pip install pydicom`).
 
 | Script | What it does |
 | --- | --- |
@@ -24,7 +24,7 @@ The scripts here make and check the slides. They need Python 3 with numpy, Pillo
 
 ## The GTEx slides
 
-29 of the slides are sections of normal human tissue from the **Genotype-Tissue Expression (GTEx) project**, which took samples of many tissues from nearly a thousand donors (most of them after death), fixed them in PAXgene, embedded them in paraffin, stained sections with haematoxylin and eosin (H&E), and scanned them with an Aperio scanner at 20× (0.4942 µm per pixel). The scans are kept by the **NCI Imaging Data Commons** (IDC, collection `gtex`) as DICOM files in a public bucket, under the **Creative Commons Attribution 4.0** licence; the credit is *the GTEx Consortium*, and each slide's `slide.json`, *About* panel and the pictures students take give the GTEx sample it comes from.
+29 of the slides are sections of human tissue from the **Genotype-Tissue Expression (GTEx) project** (normal tissues, except the coronary artery, which has atherosclerosis), which took samples of many tissues from nearly a thousand donors (most of them after death), fixed them in PAXgene, embedded them in paraffin, stained sections with haematoxylin and eosin (H&E), and scanned them with an Aperio scanner at 20× (0.4942 µm per pixel). The scans are kept by the **NCI Imaging Data Commons** (IDC, collection `gtex`; [doi:10.5281/zenodo.11099100](https://doi.org/10.5281/zenodo.11099100)) as DICOM files in a public bucket, under the **Creative Commons Attribution 4.0** licence; the credit is *the GTEx Consortium*, and each slide's `slide.json`, *About* panel and the pictures students take give the GTEx sample it comes from.
 
 For each tissue, a section was chosen from the IDC's list (with the [idc-index](https://github.com/ImagingDataCommons/idc-index) package) and checked against the GTEx pathologist's notes (in GTEx's sample attributes, given in each slide's *About* panel), preferring well-preserved sections with the typical features of the tissue. Then a region of a few millimetres that shows the tissue well was chosen (`crop_mm`, in millimetres from the top left of the scan). `gtex.py` reads the DICOM file's table of tiles and downloads only the tiles of that region, with range requests, so a slide costs a few megabytes to make instead of the whole scan's gigabyte. The region is then encoded again as WebP tiles (quality 70); nothing else about the picture is changed.
 
@@ -55,11 +55,14 @@ python3 build/slides/render.py kidney-cortex check.jpg --down 8 --grid 1000 --la
 python3 build/slides/render.py kidney-cortex detail.jpg --down 2 --box 4000,1000,6000,2500   # a part, in more detail
 ```
 
-Every GTEx slide carries labels for its main structures (`slides/index.json` gives the number for each slide, and the microscope's *Labels* panel lists them). Check the labels of a slide before you set a *find* task on it, and add your own where you need them: a structure that is easy to confuse with another needs a region that covers all of it, and several labels with the same key if there are several good examples.
+Every GTEx slide carries labels for its main structures (`slides/index.json` gives the number for each slide, and the microscope's *Labels* panel lists them). Check the labels of a slide before you set a *find* task on it, and add your own where you need them:
+
+- A *find* task only knows the examples that are labelled. A click elsewhere is answered "That isn't one of the examples marked on this slide", so set *find* tasks on structures that are labelled **everywhere** they occur in the slide (the renal corpuscles of the kidney, for example) or that occur only once. For something found all over a slide (proximal tubules, hepatocytes), label a few good examples and ask students to look at them, or to label others themselves, rather than to find one.
+- A structure that is easy to confuse with another needs a region that covers all of it (`poly` for an irregular one), and several labels with the same key if there are several good examples. A click within a few screen pixels of a region also counts, so that small structures can be hit at low power.
 
 ### What some slides do and don't show
 
-These are sections of normal tissue, mostly from donors after death, cut from routine GTEx samples, so they don't all show everything a textbook would. When the slides were labelled, every label was checked at high power, and these points were noted:
+These are sections of normal tissue (apart from the coronary artery), mostly from donors after death, cut from routine GTEx samples, so they don't all show everything a textbook would. When the slides were labelled, every label was checked at high power, and these points were noted:
 
 - **Ovary**: most of the region is one large antral follicle (its antrum, granulosa and theca) and the ovarian stroma; there is no oocyte, no smaller follicle and no corpus luteum.
 - **Coronary artery**: the plaque is a much-thickened intima with foam cells and inflammatory cells; there is no lipid core, no cholesterol clefts, no calcification and no distinct fibrous cap, and the lumen is still wide.
@@ -73,7 +76,7 @@ These are sections of normal tissue, mostly from donors after death, cut from ro
 `synthetic.py` draws two slides for practising measurement, which are drawings rather than photographs (CC0):
 
 - **stage-micrometer**: a stage micrometer, 1 mm divided into 100 divisions of 10 µm, drawn at 0.25 µm per pixel. With the eyepiece view, its graticule of 100 divisions covers 4 µm per division at 10× and 1 µm at 40×.
-- **haemocytometer**: an improved Neubauer chamber (depth 0.1 mm; nine large squares of 1 mm) holding cells mixed 1:1 with trypan blue: clear (living) cells and blue (dead) cells, drawn at 0.5 µm per pixel. The true counts of each large square, following the usual rule (count the cells that touch the top or left line, not the bottom or right), are kept in its `slide.json` (`counts`): the four corner squares hold 60, 64, 60 and 45 living cells and 8, 8, 8 and 2 dead ones, so the suspension held 1.145 × 10⁶ living cells per mL, 89.8% of them alive. Changing the random seed in `synthetic.py` draws a different suspension (and new counts), for a practical of your own.
+- **haemocytometer**: an improved Neubauer chamber (depth 0.1 mm; nine large squares of 1 mm) holding cells mixed 1:1 with trypan blue: clear (living) cells and blue (dead) cells, drawn at 0.5 µm per pixel. The true counts of each large square, following the usual rule (count the cells that touch the top or left line, not the bottom or right), are kept in its `slide.json` (`counts`): the four corner squares hold 60, 64, 60 and 45 living cells and 8, 8, 8 and 2 dead ones, so the suspension held 1.145 × 10⁶ living cells per mL, 89.8% of them alive. Changing the random seed in `synthetic.py` draws a different suspension, for a practical of your own; the new counts are written into `slide.json`, but the numbers quoted in the starter practical (`build/chapters.py`) and here would then need changing too.
 
 ## Slides of your own
 

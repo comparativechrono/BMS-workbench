@@ -152,7 +152,7 @@
    "mpp": 0.4942,
    "credit": "Image: the GTEx Consortium (sample GTEX-1497J-0825), via the NCI Imaging Data Commons. CC BY 4.0.",
    "bytes": 10092034,
-   "labels": 17,
+   "labels": 21,
    "order": 0
   },
   {
@@ -194,7 +194,7 @@
    "mpp": 0.4942,
    "credit": "Image: the GTEx Consortium (sample GTEX-RWSA-1425), via the NCI Imaging Data Commons. CC BY 4.0.",
    "bytes": 14782316,
-   "labels": 8,
+   "labels": 10,
    "order": 0
   },
   {

@@ -72,13 +72,29 @@
    "x": 2000,
    "y": 2000,
    "r": 100
+  },
+  {
+   "key": "central-vein",
+   "text": "Central vein",
+   "find": "a central vein",
+   "x": 740,
+   "y": 210,
+   "r": 70
+  },
+  {
+   "key": "central-vein",
+   "text": "Central vein",
+   "find": "a central vein",
+   "x": 2170,
+   "y": 960,
+   "r": 70
   }
  ],
  "id": "liver",
  "stain": "H&E (haematoxylin and eosin)",
  "species": "Human",
  "mpp": 0.4942,
- "scan": "20x (Aperio scanner)",
+ "scan": "20× (Aperio scanner)",
  "source": {
   "name": "GTEx (Genotype-Tissue Expression) project",
   "sample": "GTEX-RWSA-1425",

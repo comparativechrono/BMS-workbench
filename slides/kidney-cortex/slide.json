@@ -112,7 +112,7 @@
    "find": "a proximal convoluted tubule",
    "x": 5630,
    "y": 2150,
-   "r": 40
+   "r": 60
   },
   {
    "key": "pct",
@@ -120,7 +120,7 @@
    "find": "a proximal convoluted tubule",
    "x": 3050,
    "y": 5970,
-   "r": 35
+   "r": 60
   },
   {
    "key": "medullary-ray",
@@ -145,13 +145,45 @@
    "x": 2940,
    "y": 5740,
    "r": 30
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 5005,
+   "y": 480,
+   "r": 160
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 3410,
+   "y": 2820,
+   "r": 160
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 2850,
+   "y": 4000,
+   "r": 120
+  },
+  {
+   "key": "glomerulus",
+   "text": "Renal corpuscle (glomerulus)",
+   "find": "a renal corpuscle",
+   "x": 2680,
+   "y": 5100,
+   "r": 130
   }
  ],
  "id": "kidney-cortex",
  "stain": "H&E (haematoxylin and eosin)",
  "species": "Human",
  "mpp": 0.4942,
- "scan": "20x (Aperio scanner)",
+ "scan": "20× (Aperio scanner)",
  "source": {
   "name": "GTEx (Genotype-Tissue Expression) project",
   "sample": "GTEX-1497J-0825",

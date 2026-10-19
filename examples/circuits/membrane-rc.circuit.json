@@ -4,7 +4,7 @@
  "group": "Membranes",
  "order": 5,
  "mode": "electrical",
- "description": "A small cell. Its membrane is a capacitor (100 pF) in parallel with a leak: a resistance of 100 MΩ in series with a battery at the leak’s reversal potential, −70 mV. Pulses of current (100 pA) are injected into the cell. The membrane potential does not jump: it rises towards −60 mV (Δ<i>V</i> = <i>IR</i> = 10 mV) with the time constant τ = <i>RC</i> = 10 ms, and falls back the same way. Find τ on the plot (the time to reach 63% of the change), then halve the capacitance and look again.",
+ "description": "A cell. Its membrane is a capacitor (100 pF) in parallel with a leak: a resistance of 100 MΩ in series with a battery at the leak’s reversal potential, −70 mV. Pulses of current (100 pA) are injected into the cell. The membrane potential does not jump: it rises towards −60 mV (Δ<i>V</i> = <i>IR</i> = 10 mV) with the time constant τ = <i>RC</i> = 10 ms, and falls back the same way. Find τ on the plot (the time to reach 63% of the change), then halve the capacitance and look again.",
  "elements": [
   {
    "id": "I1",

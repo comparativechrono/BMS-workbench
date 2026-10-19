@@ -616,7 +616,7 @@
     "find": "a proximal convoluted tubule",
     "x": 5630,
     "y": 2150,
-    "r": 40
+    "r": 60
    },
    {
     "key": "pct",
@@ -624,7 +624,7 @@
     "find": "a proximal convoluted tubule",
     "x": 3050,
     "y": 5970,
-    "r": 35
+    "r": 60
    },
    {
     "key": "medullary-ray",
@@ -649,6 +649,38 @@
     "x": 2940,
     "y": 5740,
     "r": 30
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 5005,
+    "y": 480,
+    "r": 160
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 3410,
+    "y": 2820,
+    "r": 160
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 2850,
+    "y": 4000,
+    "r": 120
+   },
+   {
+    "key": "glomerulus",
+    "text": "Renal corpuscle (glomerulus)",
+    "find": "a renal corpuscle",
+    "x": 2680,
+    "y": 5100,
+    "r": 130
    }
   ]
  },
@@ -744,6 +776,22 @@
     "x": 2000,
     "y": 2000,
     "r": 100
+   },
+   {
+    "key": "central-vein",
+    "text": "Central vein",
+    "find": "a central vein",
+    "x": 740,
+    "y": 210,
+    "r": 70
+   },
+   {
+    "key": "central-vein",
+    "text": "Central vein",
+    "find": "a central vein",
+    "x": 2170,
+    "y": 960,
+    "r": 70
    }
   ]
  },
@@ -866,7 +914,7 @@
   "look_for": [
    "Cardiac muscle cells with one or two central nuclei",
    "Branching fibres, and intercalated discs (dark lines across the fibres) at high power",
-   "Cross-striations, best seen at 40x",
+   "Cross-striations, best seen at 40×",
    "Connective tissue (endomysium) with many capillaries between the fibres"
   ],
   "labels": [
@@ -2859,9 +2907,9 @@
     "r": 30
    },
    {
-    "key": "capsule",
-    "text": "Capsule (dense connective tissue)",
-    "find": "the capsule",
+    "key": "connective-edge",
+    "text": "Connective tissue at the edge of the gland",
+    "find": "the connective tissue at the edge of the gland",
     "x": 3700,
     "y": 2360,
     "r": 30
@@ -2892,7 +2940,7 @@
   "description": "The tube cut across: a highly folded mucosa in the lumen, with smooth muscle around it.",
   "look_for": [
    "Mucosal folds (plicae) projecting into the lumen",
-   "Simple columnar epithelium covering the folds (it is made of ciliated cells and secretory \"peg\" cells, although the cilia are too fine to make out in this scan)",
+   "Simple columnar epithelium covering the folds (it is made of ciliated cells and secretory ‘peg’ cells, although the cilia are too fine to make out in this scan)",
    "Lamina propria in the core of each fold",
    "Smooth muscle layers around the mucosa"
   ],

@@ -4,7 +4,7 @@
  "description": "The tube cut across: a highly folded mucosa in the lumen, with smooth muscle around it.",
  "look_for": [
   "Mucosal folds (plicae) projecting into the lumen",
-  "Simple columnar epithelium covering the folds (it is made of ciliated cells and secretory \"peg\" cells, although the cilia are too fine to make out in this scan)",
+  "Simple columnar epithelium covering the folds (it is made of ciliated cells and secretory ‘peg’ cells, although the cilia are too fine to make out in this scan)",
   "Lamina propria in the core of each fold",
   "Smooth muscle layers around the mucosa"
  ],
@@ -78,7 +78,7 @@
  "stain": "H&E (haematoxylin and eosin)",
  "species": "Human",
  "mpp": 0.4942,
- "scan": "20x (Aperio scanner)",
+ "scan": "20× (Aperio scanner)",
  "source": {
   "name": "GTEx (Genotype-Tissue Expression) project",
   "sample": "GTEX-S341-0825",

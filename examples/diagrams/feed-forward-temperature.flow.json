@@ -89,7 +89,7 @@
   },
   {
    "id": "loss",
-   "text": "Heat loss (sweating, skin blood flow)",
+   "text": "Heat loss (skin blood flow)",
    "role": "quantity",
    "shape": "round",
    "color": "teal",
@@ -142,7 +142,7 @@
    "from": "cmp",
    "to": "heat",
    "sign": "+",
-   "gain": 20,
+   "gain": 5,
    "label": "nerves",
    "bend": -170
   },
@@ -159,7 +159,7 @@
    "from": "cmp",
    "to": "loss",
    "sign": "-",
-   "gain": 5
+   "gain": 20
   },
   {
    "id": "e7",

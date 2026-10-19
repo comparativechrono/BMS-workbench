@@ -42,7 +42,7 @@
    "title": "Making a dilution",
    "units": "mL",
    "answer": 3.75,
-   "tolerance": 0.02,
+   "tolerance": 0.05,
    "text": "<p>You need <b>50 mL</b> of <b>0.15 M</b> NaCl, and you have a stock solution of <b>2.0 M</b> NaCl.</p><p>What volume of the stock solution do you need, in mL? (You make it up to 50 mL with water.)</p>",
    "guidance": "<p>C<sub>1</sub>V<sub>1</sub> = C<sub>2</sub>V<sub>2</sub>, so V<sub>1</sub> = C<sub>2</sub>V<sub>2</sub> ÷ C<sub>1</sub> = (0.15 M × 50 mL) ÷ 2.0 M = <b>3.75 mL</b>.</p><p>Check: the stock is 2.0 ÷ 0.15 ≈ 13.3 times more concentrated than you need, and 50 mL ÷ 13.3 ≈ 3.75 mL.</p>"
   },

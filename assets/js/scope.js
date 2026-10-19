@@ -1114,7 +1114,8 @@
         }, 6000);
       } else {
         T.tries++;
-        this._findBanner(`Not there. Keep looking for <b>${esc(T.text)}</b>${T.tries >= 3 ? ' – or click “Show me”' : ''}.`, 'no');
+        // (the slide's labels mark examples – not necessarily every one on the slide – so a miss is said as it is)
+        this._findBanner(`That isn’t one of the examples of <b>${esc(T.text)}</b> marked on this slide. Keep looking${T.tries >= 2 ? ', or click “Show me”' : ''}.`, 'no');
       }
     }
     _findShow() {
@@ -1300,7 +1301,7 @@
         const p = h('p.ms-credit');
         p.innerHTML = `${esc(src.name)}${src.sample ? `, sample <code>${esc(src.sample)}</code>` : ''}${src.tissue_site ? ` (${esc(src.tissue_site)})` : ''}${src.via ? `, from the ${esc(src.via)}` : ''}. ${src.licence ? `Licence: <a href="${esc(src.licence_url || '#')}" target="_blank" rel="noopener">${esc(src.licence)}</a>.` : ''} ${src.changes ? esc(src.changes) : ''}`;
         B.appendChild(p);
-        if (src.pathology_note) B.appendChild(h('p.ms-note', h('b', 'The pathologist’s note (GTEx): '), src.pathology_note));
+        if (src.pathology_note) B.appendChild(h('p.ms-note', h('b', 'The GTEx pathologist’s note (as written): '), src.pathology_note));
       }
       if (s.file) {
         const b = h('button.tbtn', { type: 'button', html: I('ruler') + '<span>Set the scale…</span>' });
@@ -1489,7 +1490,7 @@
 <li><b>Labels</b>: some slides come with labels (the tag button shows or hides them); you can add your own.</li>
 <li><b>The eyepiece</b> view shows a round field of view with a graticule of 100 divisions, as in a real eyepiece, and the objectives click from one to the next. Calibrate the graticule with the stage micrometer slide.</li>
 <li><b>Pictures</b> (the camera) are saved in <code>~/microscope/pictures</code> with a scale bar and the slide’s credit. You can also open a picture of your own from your files and set its scale.</li>
-</ul><p class="muted">The slides of human tissue are sections of normal tissue from the GTEx project, scanned at 20× (about 0.5 µm per pixel); at 40× the microscope enlarges the scan.</p>`);
+</ul><p class="muted">The slides of human tissue are sections from the GTEx project (of normal tissue, except the coronary artery, which has atherosclerosis), scanned at 20× (about 0.5 µm per pixel); at 40× the microscope enlarges the scan.</p>`);
     }
   }
 

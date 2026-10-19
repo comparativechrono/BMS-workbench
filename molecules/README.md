@@ -18,13 +18,13 @@ so a new download differs from these in a few bytes, but its content is the same
 | --- | --- | --- | --- | --- | --- |
 | [4HHB](https://www.rcsb.org/structure/4HHB) | Haemoglobin (human, deoxy) | X-ray, 1.74 Å | Fermi et al. (1984) *J Mol Biol* 175: 159 | 123,272 | `e1f6ce1c5a3a4808…` |
 | [1MBN](https://www.rcsb.org/structure/1MBN) | Myoglobin (sperm whale) | X-ray, 2.0 Å | Watson (1969) *Prog Stereochem* 4: 299 | 71,045 | `c44d436f06580e15…` |
-| [4INS](https://www.rcsb.org/structure/4INS) | Insulin (pig, 2-zinc hexamer) | X-ray, 1.5 Å | Baker et al. (1988) *Phil Trans R Soc Lond B* 319: 369 | 80,862 | `d797d1a5cb3670af…` |
+| [4INS](https://www.rcsb.org/structure/4INS) | Insulin (pig; two of the six molecules of the 2-zinc hexamer, with both zinc ions) | X-ray, 1.5 Å | Baker et al. (1988) *Phil Trans R Soc Lond B* 319: 369 | 80,862 | `d797d1a5cb3670af…` |
 | [3SN6](https://www.rcsb.org/structure/3SN6) | β₂-adrenergic receptor with the Gs protein | X-ray, 3.2 Å | Rasmussen et al. (2011) *Nature* 477: 549 | 207,446 | `0fcd4972889f6cd7…` |
 | [1M2Z](https://www.rcsb.org/structure/1M2Z) | Glucocorticoid receptor ligand-binding domain with dexamethasone | X-ray, 2.5 Å | Bledsoe et al. (2002) *Cell* 110: 93 | 120,406 | `8524480e3e9e0679…` |
 | [1A52](https://www.rcsb.org/structure/1A52) | Oestrogen receptor α ligand-binding domain with oestradiol | X-ray, 2.8 Å | Tanenbaum et al. (1998) *Proc Natl Acad Sci U S A* 95: 5998 | 114,535 | `9b5d052b75ea5399…` |
-| [2ROX](https://www.rcsb.org/structure/2ROX) | Transthyretin with thyroxine | X-ray, 2.0 Å | Wojtczak et al. (1996) *Acta Crystallogr D Biol Crystallogr* 52: 758 | 78,476 | `44a650ab7aa95631…` |
+| [2ROX](https://www.rcsb.org/structure/2ROX) | Transthyretin with thyroxine (two of its four subunits) | X-ray, 2.0 Å | Wojtczak et al. (1996) *Acta Crystallogr D Biol Crystallogr* 52: 758 | 78,476 | `44a650ab7aa95631…` |
 | [1BM0](https://www.rcsb.org/structure/1BM0) | Human serum albumin | X-ray, 2.5 Å | Sugio et al. (1999) *Protein Eng* 12: 439 | 183,082 | `7947f0e126079f99…` |
-| [1J4N](https://www.rcsb.org/structure/1J4N) | Aquaporin-1 (cow) | X-ray, 2.2 Å | Sui et al. (2001) *Nature* 414: 872 | 76,782 | `32cdd546fddafdfa…` |
+| [1J4N](https://www.rcsb.org/structure/1J4N) | Aquaporin-1 (cow; one of its four subunits) | X-ray, 2.2 Å | Sui et al. (2001) *Nature* 414: 872 | 76,782 | `32cdd546fddafdfa…` |
 | [4PYP](https://www.rcsb.org/structure/4PYP) | Glucose transporter GLUT1 (human) | X-ray, 3.166 Å | Deng et al. (2014) *Nature* 510: 121 | 93,557 | `0f9941ca832ea337…` |
 | [3WGU](https://www.rcsb.org/structure/3WGU) | Na⁺/K⁺-ATPase (pig kidney) | X-ray, 2.8 Å | Kanai et al. (2013) *Nature* 502: 201 | 372,812 | `ee2423df57b79e6d…` |
 | [1BL8](https://www.rcsb.org/structure/1BL8) | Potassium channel KcsA (Streptomyces lividans) | X-ray, 3.2 Å | Doyle et al. (1998) *Science* 280: 69 | 93,897 | `d4e2af06b5cba6e8…` |
@@ -32,7 +32,7 @@ so a new download differs from these in a few bytes, but its content is the same
 | [3HHR](https://www.rcsb.org/structure/3HHR) | Growth hormone with its receptor (human) | X-ray, 2.8 Å | de Vos et al. (1992) *Science* 255: 306 | 120,673 | `04e944f4033f3901…` |
 | [1CLL](https://www.rcsb.org/structure/1CLL) | Calmodulin with four Ca²⁺ | X-ray, 1.7 Å | Chattopadhyaya et al. (1992) *J Mol Biol* 228: 1177 | 80,669 | `10222a340623fa24…` |
 | [1ATP](https://www.rcsb.org/structure/1ATP) | Protein kinase A catalytic subunit (mouse), with ATP | X-ray, 2.2 Å | Zheng et al. (1993) *Acta Crystallogr D Biol Crystallogr* 49: 362 | 107,680 | `be40a385c3ca5162…` |
-| [1CGD](https://www.rcsb.org/structure/1CGD) | Collagen-like peptide (triple helix) | X-ray, 1.85 Å | Bella et al. (1995) *Structure* 3: 893 | 65,185 | `4d574078cb5ac62d…` |
+| [1CGD](https://www.rcsb.org/structure/1CGD) | Collagen-like peptide (triple helix; one glycine replaced by alanine) | X-ray, 1.85 Å | Bella et al. (1995) *Structure* 3: 893 | 65,185 | `4d574078cb5ac62d…` |
 
 ## Small molecules: `CODE.sdf`
 
@@ -69,6 +69,8 @@ not taken from any one crystal structure), as SDF files: `https://files.rcsb.org
    `assets/js/viewer-bms.js`. A protein in the list is then loaded from `molecules/` whenever it is asked for
    (`load 1ABC`, or `pdb('1ABC')` in the instructions), and a small molecule with `molecule key`.
 3. Add it to the tables above.
+
+The files hold what the PDB calls the *asymmetric unit* – the atoms in each entry's file – which is not always the whole working molecule: the crystal's symmetry makes the rest. The library's descriptions say where that is the case (insulin, aquaporin-1 and transthyretin).
 
 Structures that are not in the library are still available: the viewer loads any PDB ID from RCSB PDB, and AlphaFold
 models from AlphaFold DB, when students ask for them.

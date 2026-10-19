@@ -1,7 +1,7 @@
 {
  "format": "bms-flow-1",
  "title": "Negative feedback: body temperature",
- "description": "Cold surroundings make the body lose heat. The hypothalamus compares core temperature with its set point and turns up heat production and turns down heat loss, so that temperature falls only a little. Try blocking the arrows from the comparator to see what the temperature would do without control.",
+ "description": "Cold surroundings make the body lose heat. The hypothalamus compares core temperature with its set point, and when it is low it turns down heat loss (the blood vessels of the skin constrict, the stronger arm here) and turns up heat production (shivering), so that the temperature falls only a little. Try blocking the arrows from the comparator to see what the temperature would do without control.",
  "group": "Feedback",
  "order": 1,
  "nodes": [
@@ -89,7 +89,7 @@
   },
   {
    "id": "loss",
-   "text": "Heat loss (sweating, skin blood flow)",
+   "text": "Heat loss (skin blood flow)",
    "role": "quantity",
    "shape": "round",
    "color": "teal",
@@ -127,7 +127,7 @@
    "from": "cmp",
    "to": "heat",
    "sign": "+",
-   "gain": 20,
+   "gain": 5,
    "label": "nerves",
    "bend": -170
   },
@@ -144,7 +144,7 @@
    "from": "cmp",
    "to": "loss",
    "sign": "-",
-   "gain": 5
+   "gain": 20
   },
   {
    "id": "e7",

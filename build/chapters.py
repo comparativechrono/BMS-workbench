@@ -62,7 +62,7 @@ def ch_start():
 <li>Each activity is a list of steps. When you complete a step, it is ticked automatically and marked <span class="auto-tag">✓ spotted</span>, but you can also tick steps yourself. Buttons such as {scope("liver", "show me")} do things for you: they open a slide, a diagram or a paper, or choose a tool.</li>
 <li>Type your answers to the questions in the boxes. Some questions check your answer (a number, for example) as soon as you press <b>Check</b>; others show a model answer when you click <b>Show answer</b>.</li>
 <li>Your answers, essays and files are saved in this web browser, on this computer. To keep a copy, use <b>My answers</b> to download your answers and <b>My files</b> to download all your files as a .zip file. Some lab computers clear the browser’s storage when you log out, so download your work before you leave.</li>
-<li>The slides, the molecules and R itself are downloaded as you use them. A slide is a few megabytes; R is about 30 MB, the first time you open RStudio.</li>
+<li>The slides, the molecules and R itself are downloaded as you use them: looking at a slide downloads a few megabytes, and R is about 30 MB, the first time you open RStudio.</li>
 </ul>
 {callout("info", "Where things are saved", "<p>Look in the <b>Files</b> tab for what the tools save: <code>microscope/</code> holds your measurements (<code>measurements.csv</code>), counts (<code>counts.csv</code>) and pictures; <code>diagrams/</code> and <code>circuits/</code> hold the diagrams and circuits you save; and <code>essays/</code> holds your answers to exam practice.</p>")}
 {activity("Find your way around", [
@@ -77,7 +77,7 @@ def ch_start():
 # ---------------------------------------------------------------------------------------------------------------------
 def ch_microscope():
     body = f'''
-<p>Its objectives work as they do in digital microscopy: at 20× you see a slide at the full resolution of its scan, and 10× shows it half as big, 40× twice as big. The slides are sections of normal human tissues, stained with haematoxylin and eosin (H&amp;E) and scanned at high resolution, so you can look at a whole section at low power and then zoom in on single cells. Haematoxylin stains nuclei blue-purple and eosin stains cytoplasm and collagen pink.</p>
+<p>Its objectives work as they do in digital microscopy: at 20× you see a slide at the full resolution of its scan, and 10× shows it half as big, 40× twice as big. The slides are sections of human tissues (normal, apart from one coronary artery with atherosclerosis), stained with haematoxylin and eosin (H&amp;E) and scanned at high resolution, so you can look at a whole section at low power and then zoom in on single cells. Haematoxylin stains nuclei blue-purple and eosin stains cytoplasm and collagen pink.</p>
 
 <h2 id="m-box">From low power to high power</h2>
 <p>Always start with a low-power objective, which shows you the whole section, so that you can see how the tissue is organised and choose where to look. Then move up through the objectives. The readout at the bottom right of the view shows the magnification and the size of the field of view, and the map at the top right shows which part of the slide you are looking at.</p>
@@ -96,11 +96,10 @@ def ch_microscope():
 {q("m-q-field", "At 10×, read the width of the field of view in the readout at the bottom right of the view. Change to 40×. How does the width of the field change, and why?", "At 40× the field of view is a quarter as wide as at 10× (and covers a sixteenth of the area), because the magnification is four times as great: the same window shows a smaller part of the slide. (The width depends on the size of your window: about 600 µm at 10× in a typical window, and about 150 µm at 40×.)")}
 
 <h2 id="m-find">Finding things</h2>
-<p>In the practicals, you will often be asked to find a structure on a slide and click on it. The microscope tells you whether you are right. If you are stuck, <b>Show me</b> takes you to it.</p>
-{activity("Find two parts of the kidney", [
+<p>In the practicals, you will often be asked to find a structure on a slide and click on it. The microscope checks your click against the examples marked on the slide, and if you are stuck, <b>Show me</b> takes you to one.</p>
+{activity("Find a renal corpuscle, and look at the tubules", [
     task("m-glom", f'{scopefind("kidney-cortex:glomerulus", "Find a renal corpuscle")}. A renal corpuscle is a round knot of capillaries, the glomerulus, inside a thin capsule. This is where the blood is filtered. Look at 4× or 10×.', auto="scope:find slide=kidney-cortex target=glomerulus ok=true"),
-    task("m-pct", f'{scopefind("kidney-cortex:pct", "Find a proximal convoluted tubule")}. Most of the cortex is made of tubules, seen here in cross section. The proximal tubules have the pinkest cells, with a fuzzy brush border lining the lumen. Look at 20× or 40×.', auto="scope:find slide=kidney-cortex target=pct ok=true"),
-    task("m-labels", f'Show the slide’s labels {scopetool("labels", "show me")} (the tag button in the toolbar). The <b>Labels</b> panel lists them: click on one to go to it.', auto="scope:labels on=true"),
+    task("m-labels", f'Show the slide’s labels {scopetool("labels", "show me")} (the tag button in the toolbar). The <b>Labels</b> panel lists them: click <i>Proximal convoluted tubule</i> to go to one, and look at it at 20× or 40×. Most of the tubules of the cortex are proximal convoluted tubules: their cells are the pinkest, with a fuzzy brush border lining the lumen (which often looks lacy in this slide). Compare them with the smaller tubules that have clear lumens and more nuclei.', auto="scope:labels on=true"),
 ])}
 
 <h2 id="m-lab">Your own labels and pictures</h2>
@@ -115,7 +114,7 @@ def ch_microscope():
 {activity("Look at the liver", [
     task("m-liver", f'Open the slide of the liver {scope("liver", "show me")}, and look at it at 1× and then at 4×.', auto="scope:open slide=liver", check="slide:liver"),
     task("m-cv", f'{scopefind("liver:central-vein", "Find a central vein")}: a thin-walled vein, with plates of liver cells running out from it like the spokes of a wheel.', auto="scope:find slide=liver target=central-vein ok=true"),
-    task("m-pt", f'{scopefind("liver:portal-tract", "Find a portal tract")}: a patch of connective tissue holding a branch of the portal vein, a small artery and one or more bile ducts.', auto="scope:find slide=liver target=portal-tract ok=true"),
+    task("m-pt", f'{scopefind("liver:portal-tract", "Find a portal tract")}: a patch of connective tissue holding a branch of the portal vein, a small artery (hard to see on this slide) and one or more bile ducts.', auto="scope:find slide=liver target=portal-tract ok=true"),
 ])}
 {q("m-q-cv", "How could you tell a central vein from a portal tract at low power?", "A central vein is a single thin-walled vessel with liver cells right up to its wall, and the plates of liver cells run out from it like spokes. A portal tract is a patch of pink connective tissue that holds several tubes: a branch of the portal vein, a small artery and one or more bile ducts.")}
 '''
@@ -155,7 +154,7 @@ def ch_measuring():
 {eq("magnification = size in the picture ÷ real size &nbsp;&nbsp;so&nbsp;&nbsp; real size = size in the picture ÷ magnification")}
 <p>Both sizes have to be in the same units: 1 mm = 1000 µm. A picture that carries a scale bar is safer than a magnification, because the scale bar grows or shrinks with the picture when it is printed or shown at a different size. (The pictures you take with the microscope carry a scale bar.) The calculator {calc("open it")} is the same as the one in Exam practice.</p>
 {q("n-q-mag", "In a printed micrograph, a scale bar labelled 50 µm is 20 mm long. What is the magnification of the print?", "×400. The scale bar is 20 mm = 20 000 µm long in the print and stands for 50 µm, so the magnification is 20 000 µm ÷ 50 µm = 400.", accept="num:400±2", placeholder="e.g. 250")}
-{q("n-q-real", "In the same print, a cell is 9 mm wide. How wide is the real cell, in micrometres?", "22.5 µm. 9 mm = 9000 µm in the print, and 9000 µm ÷ 400 = 22.5 µm.", accept="num:22.5±0.3", placeholder="µm")}
+{q("n-q-real", "In the same print, a cell is 9 mm wide. How wide is the real cell, in micrometres?", "22.5 µm. 9 mm = 9000 µm in the print, and 9000 µm ÷ 400 = 22.5 µm.", accept="num:22.5±0.5", placeholder="µm")}
 
 <h2 id="n-haemo">Counting cells: the haemocytometer</h2>
 <p>A haemocytometer is a thick glass slide with a counting chamber of known depth, 0.1 mm, and a grid ruled on its floor. In the commonest kind (the improved Neubauer), the grid has nine large squares, each 1 mm × 1 mm, so the volume above one large square is 1 mm × 1 mm × 0.1 mm = 0.1 mm³ = 0.1 µL = 10<sup>−4</sup> mL. You count the cells in several large squares, and work out how many cells there are in a millilitre:</p>
@@ -286,8 +285,8 @@ def ch_molecules():
 <p>The viewer has a library of proteins of physiology and of small molecules – hormones, transmitters and others – ready to open. They are kept with the workbench, so they open quickly.</p>
 {activity("Open a small molecule", [
     task("v-library", 'Click <b>Library</b>, at the top left of the viewer, to see what it holds.', auto="viewer:library"),
-    task("v-glucose", f'Open glucose {viewer("molecule glucose", "show me")}. A small molecule is drawn with every atom, as balls and sticks: grey for carbon, red for oxygen and white for hydrogen.', auto="viewer:molecule name=Glucose"),
-    task("v-atp", f'Open ATP {viewer("molecule atp", "show me")} and find its three phosphate groups (phosphorus is orange).', auto="viewer:molecule name=ATP"),
+    task("v-glucose", f'Open glucose {viewer("clear; molecule glucose; only ballstick; color cpk", "show me")} (the button clears haemoglobin away first). A small molecule is drawn with every atom: here as balls and sticks, coloured by element – grey for carbon, red for oxygen and white for hydrogen.', auto="viewer:molecule name=Glucose"),
+    task("v-atp", f'Open ATP in the same way {viewer("clear; molecule atp; only ballstick; color cpk", "show me")} and find its three phosphate groups (phosphorus is orange).', auto="viewer:molecule name=ATP"),
 ])}
 {q("v-q-draw", "Why is a protein drawn as a cartoon, while a small molecule is drawn with all its atoms?", "A protein has thousands of atoms (haemoglobin has about 4500, not counting hydrogens), so drawing them all gives a tangle in which you cannot see the fold. The cartoon follows the backbone of each chain and shows its helices and sheets. A small molecule has only a few dozen atoms, so all of them can be shown, and its chemistry is in the atoms themselves.")}
 '''

@@ -21,13 +21,13 @@
   const PROTEINS = [
     ['4HHB', 'Haemoglobin', 'Human deoxyhaemoglobin: two α and two β globin chains, each holding a haem group that binds oxygen.'],
     ['1MBN', 'Myoglobin', 'The oxygen store of muscle: one globin chain with one haem (sperm whale; the first protein structure to be solved).'],
-    ['4INS', 'Insulin', 'Insulin as it is stored in the β cells: six molecules round two zinc ions. Each molecule is an A and a B chain joined by disulfide bonds (pig).'],
+    ['4INS', 'Insulin', 'Insulin as it is stored in the β cells, where six molecules pack round two zinc ions. Each molecule is an A and a B chain joined by disulfide bonds (pig). This file holds two of the six molecules, with the two zinc ions: the symmetry of the crystal makes the rest.'],
     ['3SN6', 'β₂-adrenergic receptor and its G protein', 'A G-protein-coupled receptor in the membrane, activated by an agonist and bound to the Gs protein (α, β and γ subunits) – the first step of the cascade that makes cAMP. A nanobody and a lysozyme were added to help it crystallise.'],
     ['1M2Z', 'Glucocorticoid receptor with dexamethasone', 'The hormone-binding part of an intracellular steroid receptor (human), holding the synthetic glucocorticoid dexamethasone and a peptide of a coactivator.'],
     ['1A52', 'Oestrogen receptor with oestradiol', 'The hormone-binding part of oestrogen receptor α (human), with oestradiol in its pocket.'],
-    ['2ROX', 'Transthyretin carrying thyroxine', 'A carrier protein of the plasma (human), with thyroxine (T₄) bound in the channel between its subunits.'],
+    ['2ROX', 'Transthyretin carrying thyroxine', 'A carrier protein of the plasma (human), with thyroxine (T₄) bound in the channel between its subunits. Transthyretin has four subunits: this file holds two of them, so the channel is only half there.'],
     ['1BM0', 'Serum albumin', 'Human serum albumin, the most abundant protein of the plasma, which carries fatty acids, some hormones and many drugs.'],
-    ['1J4N', 'Aquaporin-1', 'A water channel of red blood cells and the kidney (cow): four subunits, each with a pore that lets water through but not ions.'],
+    ['1J4N', 'Aquaporin-1', 'A water channel of red blood cells and the kidney (cow). It has four subunits, each with a pore that lets water through but not ions; this file holds one of them (the symmetry of the crystal makes the other three).'],
     ['4PYP', 'Glucose transporter GLUT1', 'Facilitated diffusion: the human glucose transporter GLUT1, in the membrane.'],
     ['3WGU', 'Na⁺/K⁺-ATPase', 'The sodium–potassium pump (pig kidney), a primary active transporter that uses ATP to move 3 Na⁺ out of the cell and 2 K⁺ in.'],
     ['1BL8', 'Potassium channel KcsA', 'A bacterial K⁺ channel: four subunits round a selectivity filter that lets K⁺ through but not Na⁺ – the model for the K⁺ channels of nerve and muscle.'],
@@ -35,7 +35,7 @@
     ['3HHR', 'Growth hormone and its receptor', 'One molecule of human growth hormone holding two receptor chains together – how receptors of this family are switched on.'],
     ['1CLL', 'Calmodulin', 'A calcium-binding protein (human) with four Ca²⁺ ions, which passes calcium signals on to enzymes.'],
     ['1ATP', 'Protein kinase A', 'The catalytic subunit of the kinase switched on by cAMP (mouse), with ATP and a peptide inhibitor.'],
-    ['1CGD', 'Collagen triple helix', 'A collagen-like peptide: three chains wound round each other, with glycine at every third position.']
+    ['1CGD', 'Collagen triple helix', 'A collagen-like peptide: three chains wound round each other, with glycine at every third position – except at one point, where alanine replaces it, the kind of change that causes brittle bone disease (osteogenesis imperfecta).']
   ];
   const SMALL = [
     ['cortisol', 'HCY', 'Cortisol', 'Steroid hormone (glucocorticoid)'],
@@ -50,7 +50,7 @@
     ['adrenaline', 'ALE', 'Adrenaline', 'Catecholamine hormone and transmitter'],
     ['noradrenaline', 'LNR', 'Noradrenaline', 'Catecholamine transmitter and hormone'],
     ['dopamine', 'LDP', 'Dopamine', 'Catecholamine transmitter'],
-    ['melatonin', 'ML1', 'Melatonin', 'Hormone of the pineal gland (an indolamine)'],
+    ['melatonin', 'ML1', 'Melatonin', 'Hormone of the pineal gland (an indoleamine)'],
     ['acetylcholine', 'ACH', 'Acetylcholine', 'Transmitter of nerve and the neuromuscular junction'],
     ['glucose', 'GLC', 'Glucose', 'α-D-glucose'],
     ['atp', 'ATP', 'ATP', 'Adenosine triphosphate'],

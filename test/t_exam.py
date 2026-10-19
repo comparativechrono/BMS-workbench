@@ -793,7 +793,7 @@ p.js(f"() => {E}.openPaper('calculations')")
 p.wait("() => document.querySelector('.ex-startcard h2') && document.querySelector('.ex-startcard h2').textContent === 'Calculations'")
 P.click('.ex-startacts .btn.primary')
 p.wait("() => document.querySelector('.ex-num')")
-answers = {'graticule': '24', 'mito': '2.0 µm', 'c1v1': '3.7', 'dilution': '100', 'haemocytometer': '1.0 × 10^6', 'flow': '18', 'tau': '0.01', 'nernst': '−89.06'}
+answers = {'graticule': '24', 'mito': '2.0 µm', 'c1v1': '3.6', 'dilution': '100', 'haemocytometer': '1.0 × 10^6', 'flow': '18', 'tau': '0.01', 'nernst': '−89.06'}
 for i, (k, v) in enumerate(answers.items()):
     if p.js(f"() => {E}.qcur.id") != k:
         check(False, f'question {i + 1} is {k}')

@@ -13,7 +13,7 @@
    "id": "negative-feedback-temperature",
    "file": "diagrams/negative-feedback-temperature.flow.json",
    "title": "Negative feedback: body temperature",
-   "description": "Cold surroundings make the body lose heat. The hypothalamus compares core temperature with its set point and turns up heat production and turns down heat loss, so that temperature falls only a little. Try blocking the arrows from the comparator to see what the temperature would do without control.",
+   "description": "Cold surroundings make the body lose heat. The hypothalamus compares core temperature with its set point, and when it is low it turns down heat loss (the blood vessels of the skin constrict, the stronger arm here) and turns up heat production (shivering), so that the temperature falls only a little. Try blocking the arrows from the comparator to see what the temperature would do without control.",
    "group": "Feedback",
    "order": 1
   },
@@ -95,7 +95,7 @@
    "id": "membrane-rc",
    "file": "circuits/membrane-rc.circuit.json",
    "title": "The membrane as an RC circuit",
-   "description": "A small cell. Its membrane is a capacitor (100 pF) in parallel with a leak: a resistance of 100 MΩ in series with a battery at the leak’s reversal potential, −70 mV. Pulses of current (100 pA) are injected into the cell. The membrane potential does not jump: it rises towards −60 mV (Δ<i>V</i> = <i>IR</i> = 10 mV) with the time constant τ = <i>RC</i> = 10 ms, and falls back the same way. Find τ on the plot (the time to reach 63% of the change), then halve the capacitance and look again.",
+   "description": "A cell. Its membrane is a capacitor (100 pF) in parallel with a leak: a resistance of 100 MΩ in series with a battery at the leak’s reversal potential, −70 mV. Pulses of current (100 pA) are injected into the cell. The membrane potential does not jump: it rises towards −60 mV (Δ<i>V</i> = <i>IR</i> = 10 mV) with the time constant τ = <i>RC</i> = 10 ms, and falls back the same way. Find τ on the plot (the time to reach 63% of the change), then halve the capacitance and look again.",
    "group": "Membranes",
    "order": 5
   },
@@ -111,7 +111,7 @@
    "id": "windkessel",
    "file": "circuits/windkessel.circuit.json",
    "title": "The Windkessel model of the circulation",
-   "description": "The two-element Windkessel model. The heart pumps blood into the aorta in pulses (a flow source, 75 beats a minute, about 70 mL a beat); the aortic valve lets it through one way only. The elastic arteries store blood as they stretch (a compliance, 1 mL/mmHg) and the arterioles resist its flow out to the tissues (the peripheral resistance, 1.1 mmHg·s/mL). Run it: the aortic pressure swings between about 75 mmHg (diastolic) and 125 mmHg (systolic), and the flow to the tissues stays steady even though the heart pumps in bursts. Make the arteries stiffer (lower the compliance) and watch the pulse pressure grow.",
+   "description": "The two-element Windkessel model. The heart pumps blood into the aorta in pulses (a flow source, 75 beats a minute, about 70 mL a beat); the aortic valve lets it through one way only. The elastic arteries store blood as they stretch (a compliance, 1 mL/mmHg) and the arterioles resist its flow out to the tissues (the peripheral resistance, 1.1 mmHg·s/mL). Run it: the aortic pressure swings between about 75 mmHg (diastolic) and 125 mmHg (systolic), and blood keeps flowing to the tissues between beats – smoothed, though it still rises and falls with each beat – even though the heart pumps in bursts. Make the arteries stiffer (lower the compliance) and watch the pulse pressure grow.",
    "group": "Physiology",
    "order": 7
   }

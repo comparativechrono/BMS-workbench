@@ -4,7 +4,7 @@
  "group": "Physiology",
  "order": 7,
  "mode": "physiology",
- "description": "The two-element Windkessel model. The heart pumps blood into the aorta in pulses (a flow source, 75 beats a minute, about 70 mL a beat); the aortic valve lets it through one way only. The elastic arteries store blood as they stretch (a compliance, 1 mL/mmHg) and the arterioles resist its flow out to the tissues (the peripheral resistance, 1.1 mmHg·s/mL). Run it: the aortic pressure swings between about 75 mmHg (diastolic) and 125 mmHg (systolic), and the flow to the tissues stays steady even though the heart pumps in bursts. Make the arteries stiffer (lower the compliance) and watch the pulse pressure grow.",
+ "description": "The two-element Windkessel model. The heart pumps blood into the aorta in pulses (a flow source, 75 beats a minute, about 70 mL a beat); the aortic valve lets it through one way only. The elastic arteries store blood as they stretch (a compliance, 1 mL/mmHg) and the arterioles resist its flow out to the tissues (the peripheral resistance, 1.1 mmHg·s/mL). Run it: the aortic pressure swings between about 75 mmHg (diastolic) and 125 mmHg (systolic), and blood keeps flowing to the tissues between beats – smoothed, though it still rises and falls with each beat – even though the heart pumps in bursts. Make the arteries stiffer (lower the compliance) and watch the pulse pressure grow.",
  "elements": [
   {
    "id": "I1",

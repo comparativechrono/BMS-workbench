@@ -309,6 +309,7 @@
      data-pdb="4HHB"                    load a structure in the 3D viewer
      data-viewer="load 4HHB; color chain"   run commands of the 3D viewer
      data-rs-open="path"  data-rs-run="code"   open a file in RStudio / run code in its console
+     data-rcon="code"                   type code into RStudio's console (the student presses Enter)
      data-edit="path"                   open a file in Files
      data-file-create="path"            make the file shown in the instructions (a .codefile)
      ------------------------------------------------------------------ */
@@ -338,6 +339,7 @@
   MG.actions.viewer = async (cmds) => MG.app.viewerRun(code(cmds));
   MG.actions.rsOpen = async (p) => MG.app.openInRStudio(inHome(p));
   MG.actions.rsRun = async (c) => (await tab('rstudio', 'rstudio')).consoleRun(code(c));
+  MG.actions.rcon = async (c) => (await tab('rstudio', 'rstudio')).consoleType(code(c));
   MG.actions.edit = async (p) => MG.app.editFile(inHome(p), { create: true });
   const codeOf = (btn) => {
     const box = btn.closest('.codefile');

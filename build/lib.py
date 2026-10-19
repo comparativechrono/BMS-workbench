@@ -11,14 +11,8 @@ def c(s):
     return f'<code>{esc(s)}</code>'
 
 
-def show(cmd, label='show me'):
-    """a button that types a command into the terminal (the student presses Enter)"""
-    return f'<button class="do showme" type="button" data-term="{esc(cmd)}">{label}</button>'
 
 
-def cmd(line, label='show me'):
-    """a command, with a button that types it"""
-    return f'{c(line)} {show(line, label)}'
 
 
 def edit(path, label=None):
@@ -33,14 +27,6 @@ def goto(target, label):
     return f'<button class="do showme" type="button" data-goto="{esc(target)}">{label}</button>'
 
 
-def prompt(text, tab='chat', mode=None, title=None, button=None):
-    """a prompt for the AI, shown in full; the button puts it into the AI's box (the student sends it)"""
-    t = title or ('A prompt for the assistant' if tab == 'chat' else 'A task for the agent')
-    m = f' data-mode="{esc(mode)}"' if mode else ''
-    b = button or ('Put it in the chat box' if tab == 'chat' else 'Put it in the agent’s box')
-    return (f'<div class="prompt-card"><div class="pc-head"><span class="pc-t">{t}</span><span class="grow"></span>'
-            f'<button class="do ask" type="button" data-prompt="{esc(text)}" data-tab="{esc(tab)}"{m}>{b}</button></div>'
-            f'<div class="pc-text">{esc(text)}</div></div>')
 
 
 def codefile(path, text, create=True, note=None, button='Create this file'):
@@ -87,12 +73,12 @@ def chapter(cid, num, title, bench_name, h1, minutes, lede, body):
 
 
 def rcon(code, label='show me'):
-    """a button that types R code into the R console (the student presses Enter)"""
+    """a button that types R code into RStudio's Console (the student presses Enter to run it)"""
     return f'<button class="do showme" type="button" data-rcon="{esc(code)}">{label}</button>'
 
 
 def rcode(code, label='show me'):
-    """R code, with a button that types it into the R console"""
+    """R code, with a button that types it into RStudio's Console"""
     return f'{c(code)} {rcon(code, label)}'
 
 
@@ -105,8 +91,6 @@ def rsrun(code, label='run it in RStudio'):
     return f'<button class="do" type="button" data-rs-run="{esc(code)}">{label}</button>'
 
 
-def nbopen(path, label=None):
-    return f'<button class="do showme" type="button" data-nb-open="{esc(path)}">{label or "open " + esc(path.split("/")[-1])}</button>'
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -139,7 +123,8 @@ def scoper(what='measurements', label=None):
 
 
 def flow(ref, label='open it'):
-    """a button that opens a diagram: 'example:negative-feedback' or '~/diagrams/my.flow.json'"""
+    """a button that opens a diagram: 'example:negative-feedback-temperature', 'example:blank' (a new diagram) or
+    '~/diagrams/my.flow.json'"""
     return _btn('flow', ref, label)
 
 
@@ -148,7 +133,7 @@ def flowrun(label='run it'):
 
 
 def circuit(ref, label='open it'):
-    """a button that opens a circuit: 'example:rc-charging' or '~/circuits/my.circuit.json'"""
+    """a button that opens a circuit: 'example:rc-circuit' or '~/circuits/my.circuit.json'"""
     return _btn('circuit', ref, label)
 
 
