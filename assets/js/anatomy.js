@@ -410,6 +410,7 @@
           this._bbox = null;
           this._renderSystems();
           this._applyVis();
+          if (this.infoSide === 'about') this._renderInfo();
           this.render();
         })
         .catch((e) => {
