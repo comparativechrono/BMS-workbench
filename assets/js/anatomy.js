@@ -886,10 +886,17 @@
     }
 
     /* ================================================================ the camera */
+    /** what the view is framed on: the structures shown in full – and not the skeleton when other systems are shown with
+        it (it is there for context) */
+    _main() {
+      const list = Object.values(this.S).filter((s) => this._isShown(s) && !this._isFaded(s));
+      const organs = list.filter((s) => s.systems.some((k) => k !== 'skeleton' && this.on[k]));
+      return organs.length ? organs : list;
+    }
     _box(ids) {
       const T = this.T;
       const box = new T.Box3();
-      const list = ids ? ids.map((id) => this.S[id]).filter(Boolean) : Object.values(this.S).filter((s) => this._isShown(s) && !this._isFaded(s));
+      const list = ids ? ids.map((id) => this.S[id]).filter(Boolean) : this._main();
       const use = list.length ? list : Object.values(this.S).filter((s) => this._isShown(s));
       use.forEach((s) => {
         box.expandByPoint(new T.Vector3().fromArray(s.min));
@@ -993,8 +1000,7 @@
       const keepBelow = n.getComponent(A.k) < 0;
       const lo = keepBelow ? c - 0.14 : c, hi = keepBelow ? c : c + 0.14;
       const box = new T.Box3();
-      Object.values(this.S).forEach((s) => {
-        if (!this._isShown(s) || this._isFaded(s)) return;
+      this._main().forEach((s) => {
         if (s.max[A.k] < lo || s.min[A.k] > hi) return;
         box.expandByPoint(new T.Vector3().fromArray(s.min));
         box.expandByPoint(new T.Vector3().fromArray(s.max));
@@ -1180,6 +1186,7 @@
         list.forEach((p) => {
           p.lx = k === 0 ? 10 : W - 10;
           p.anchor = k === 0 ? 'start' : 'end';
+          p.text = this._fitText(p.text, W / 2 - 18);
           out.push(p);
         });
       });
@@ -1191,6 +1198,17 @@
         this._ctx2.font = '600 12px system-ui, -apple-system, Segoe UI, sans-serif';
       }
       return this._ctx2.measureText(t).width;
+    }
+    /** a name cut short (…) to a width in pixels */
+    _fitText(t, w) {
+      if (this._textW(t) <= w) return t;
+      let a = 0, b = t.length;
+      while (a < b) {
+        const m = Math.ceil((a + b) / 2);
+        if (this._textW(t.slice(0, m).trimEnd() + '…') <= w) a = m;
+        else b = m - 1;
+      }
+      return t.slice(0, Math.max(1, a)).trimEnd() + '…';
     }
     /** where a label's line meets its text */
     _lineEnd(p, many) {

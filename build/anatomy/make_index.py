@@ -107,6 +107,8 @@ def summary(text):
         p = re.sub(r'\[\d+\]', '', p)
         p = re.sub(r'\s+', ' ', p).strip()
         # (what is left of pronunciations and other parts that Z-Anatomy's copy left out: "The femur (, pl. femurs )")
+        p = re.sub(r'/[^/()]*[ˈˌəɪʊæɒʌɜːθðʃʒŋ][^/()]*/\s*[;,]?\s*', '', p)  # pronunciations (IPA)
+        p = re.sub(r'\(\s*(?:English|Latin)\s*:?\s*\)', '', p)  # "(English:)", once followed by a pronunciation
         p = re.sub(r'\(\s*[,;]\s*', '(', p)
         p = re.sub(r'\s+\)', ')', p)
         p = re.sub(r'\s*\(\s*\)', '', p)

@@ -597,6 +597,7 @@
       this.lastAdd = null;
       this.lastWash = null;
       this.washSeen = 0;
+      this.peak = {}; // drug → its concentration in the bath after it was last added (what is left after washes is not shown)
       this.ei = 0;
       this.onEvent = null;
       this.box = Math.max(3, Math.round(this.P.smooth / DT)); // samples averaged to read a response
@@ -680,6 +681,7 @@
       if (ev.type === 'add') {
         const a = this.P.act[ev.d] || {};
         const conc = S.add(ev.d, ev.S, ev.v);
+        this.peak[ev.d] = conc;
         this.lastAdd = t;
         if (a.kind) this._openRow(i, ev, conc, live);
         else this._modulator(ev.d, conc, t);
@@ -1511,7 +1513,7 @@
       const items = [];
       for (const [d, c] of Object.entries(S.cb)) {
         const u = unitOf(d);
-        if (c < (u === 'mM' ? 1e-5 : 1e-10)) continue;
+        if (c < (u === 'mM' ? 1e-5 : 1e-10) || c < (E.peak[d] || 0) * 1e-3) continue;
         items.push(`<span class="ob-chip${(E.P.act[d] || {}).kind ? '' : ' mod'}" title="${esc(DRUGS[d].name)}">${esc(DRUGS[d].short)} ${esc(fmtC(c, u))}</span>`);
       }
       const res = Object.entries(S.res).filter(([, c]) => c > 0);
@@ -2187,15 +2189,16 @@
       const E = this.exp, T = E.T;
       const rows = Object.entries(T.act).filter(([d]) => !DRUGS[d].unknown).map(([d, a]) => {
         const acts = [];
-        if (a.rec) for (const [rec, x] of Object.entries(a.rec)) acts.push(x.pKA != null ? `agonist at ${esc(T.recNames[rec])} (pK<sub>A</sub> ${x.pKA}, τ ${x.tau})` : `antagonist at ${esc(T.recNames[rec])} (pK<sub>B</sub> ${x.pKB})`);
+        const f1 = (v) => Number(v).toFixed(1);
+        if (a.rec) for (const [rec, x] of Object.entries(a.rec)) acts.push(x.pKA != null ? `agonist at ${esc(T.recNames[rec])} (pK<sub>A</sub> ${f1(x.pKA)}, τ ${x.tau})` : `antagonist at ${esc(T.recNames[rec])} (pK<sub>B</sub> ${f1(x.pKB)})`);
         if (a.kcl) acts.push(`depolarisation (EC<sub>50</sub> about ${Math.round(a.kcl.ec50 * 1000)} mM K⁺ in all)`);
-        if (a.relax) acts.push(`relaxes the muscle (pIC<sub>50</sub> ${a.relax.pIC50})`);
-        if (a.ache) acts.push(`inhibits cholinesterase (pIC<sub>50</sub> ${a.ache.pIC50})`);
-        if (a.nblock) acts.push(`blocks the channels of the nicotinic receptors of the enteric neurones (pIC<sub>50</sub> ${a.nblock.pIC50}): no amount of nicotine overcomes it`);
+        if (a.relax) acts.push(`relaxes the muscle (pIC<sub>50</sub> ${f1(a.relax.pIC50)})`);
+        if (a.ache) acts.push(`inhibits cholinesterase (pIC<sub>50</sub> ${f1(a.ache.pIC50)})`);
+        if (a.nblock) acts.push(`blocks the channels of the nicotinic receptors of the enteric neurones (pIC<sub>50</sub> ${f1(a.nblock.pIC50)}): no amount of nicotine overcomes it`);
         if (a.irrev) acts.push('inactivates the receptors it binds, irreversibly');
-        if (a.no) acts.push(`releases NO (pEC<sub>50</sub> ${a.no.pEC50})`);
-        if (a.nos) acts.push(`inhibits NO synthase (pIC<sub>50</sub> ${a.nos.pIC50})`);
-        if (a.ccb) acts.push(`blocks L-type Ca²⁺ channels (pIC<sub>50</sub> ${a.ccb.pIC50})`);
+        if (a.no) acts.push(`releases NO (pEC<sub>50</sub> ${f1(a.no.pEC50)})`);
+        if (a.nos) acts.push(`inhibits NO synthase (pIC<sub>50</sub> ${f1(a.nos.pIC50)})`);
+        if (a.ccb) acts.push(`blocks L-type Ca²⁺ channels (pIC<sub>50</sub> ${f1(a.ccb.pIC50)})`);
         return `<tr><td>${esc(DRUGS[d].name)}</td><td>${acts.join('; ')}</td></tr>`;
       }).join('');
       const unk = E.P.act.drugX ? `<p><b>Drugs X and Y</b> are unknowns: each tissue has its own. ${reveal ? `<br>X is ${E.P.act.drugX.truth}.<br>Y is ${E.P.act.drugY.truth}.` : '<button class="linkbtn ob-reveal" type="button">Show what they are</button>'}</p>` : '';
@@ -2285,7 +2288,7 @@ for (k in unique(d$kind)) {
   ks <- names(curves)[sapply(curves, function(g) g$kind[1] == k)]
   plot(dk$log_bath_M, dk$y, type = "n", xlab = "log [agonist] (M)",
        ylab = if (k == "contraction") "Contraction (g)" else "Relaxation (% of the tone)",
-       ylim = c(0, max(dk$y, na.rm = TRUE) * 1.15), main = paste("${title}:", k))
+       ylim = c(0, max(dk$y, na.rm = TRUE) * 1.35), main = paste("${title}:", k))
   for (i in seq_along(ks)) {
     g <- curves[[ks[i]]]
     p <- fits[ks[i], ]

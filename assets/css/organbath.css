@@ -163,30 +163,31 @@
 
 /* ---------------- narrower ---------------- */
 @container ob (max-width: 900px) {
-  .ob-mid { grid-template-columns: 236px minmax(0, 1fr); }
-  .ob-svg { max-height: 190px; }
+  .ob-mid { grid-template-columns: 240px minmax(0, 1fr); }
+  /* (the drawing beside what is in the bath, so that the form, below them, is in view) */
+  .ob-sidetop { flex-direction: row; align-items: flex-start; }
+  .ob-bathbox { width: 86px; flex: none; padding: 6px 0 0 6px; }
+  .ob-sideinfo { flex: 1; min-width: 0; padding: 4px 8px 6px 6px; }
   .ob-labels { display: none; }
-  .ob-form { gap: 5px; padding-top: 6px; }
-  .ob-what { display: none; }
   .ob-reshint { display: none; }
   .ob-table .ob-c-log { display: none; }
+  .ob-form { gap: 5px; padding-top: 6px; }
+  .ob-what { display: none; }
 }
 @container ob (max-width: 700px) {
   .ob-title { display: none; }
   .ob-table .ob-c-add { display: none; }
   .ob-reshead .tbtn span { display: none; }
 }
-/* a phone, or a narrow pane: the chart on top, the bath and the form under it, side by side */
+/* a phone, or a narrow pane: the chart on top; under it the bath beside the form, and what is in the bath under them */
 @container ob (max-width: 600px) {
   .ob-mid { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(280px, 1fr) auto; overflow-y: auto; }
   .ob-chart { order: -1; min-height: 280px; border-bottom: 1px solid var(--line); }
-  .ob-side { border-right: 0; overflow: visible; flex-direction: row; align-items: flex-start; }
-  .ob-sidetop { width: 128px; flex: none; }
-  .ob-bathbox { padding: 4px 2px 0; }
-  .ob-svg { max-height: 180px; }
-  .ob-sideinfo { padding: 0 4px 6px 8px; }
-  .ob-form { border-top: 0; border-left: 1px solid var(--line); flex: 1; min-width: 0; padding: 8px; }
-  .ob-what { display: none; }
+  .ob-side { display: grid; grid-template-columns: 108px minmax(0, 1fr); grid-template-areas: "draw form" "info info"; border-right: 0; overflow: visible; }
+  .ob-sidetop { display: contents; }
+  .ob-bathbox { grid-area: draw; width: auto; padding: 8px 2px 0 6px; }
+  .ob-sideinfo { grid-area: info; padding: 6px 10px 8px; border-top: 1px solid var(--line); }
+  .ob-form { grid-area: form; border-top: 0; border-left: 1px solid var(--line); padding: 8px; }
   .ob-res { height: 190px; }
   .ob-table .ob-c-with { max-width: 7.5em; }
   .ob-table .ob-c-pct, .ob-table .ob-c-time { display: none; }
@@ -194,7 +195,7 @@
   .ob-top { gap: 3px; padding: 5px 6px; }
 }
 @container ob (max-width: 380px) {
-  .ob-sidetop { width: 104px; }
+  .ob-side { grid-template-columns: 92px minmax(0, 1fr); }
   .ob-row2 { grid-template-columns: minmax(0, 1fr); }
   .ob-chip { font-size: 0.68rem; }
 }
